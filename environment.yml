@@ -1,0 +1,19 @@
+name: astronomy-python
+
+dependencies:
+  - python>=3.6
+  - jupyter
+  - numpy
+  - numba
+  - matplotlib
+  - seaborn
+  - pandas
+  - statsmodels
+  - scipy
+  - astropy
+  - requests
+  - beautifulsoup4
+  - lxml
+  - pip
+  - pip:
+    - wotan
