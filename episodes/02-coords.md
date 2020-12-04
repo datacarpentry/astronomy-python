@@ -466,13 +466,7 @@ INFO: Query finished. [astroquery.utils.tap.core]
           pmdec float64 mas / yr                             Proper motion in declination direction      0
        parallax float64      mas                                                           Parallax      0
  parallax_error float64      mas                                         Standard error of parallax      0
-radial_velocity float64   km / s                                                    Radial velocity 139374
-Jobid: 1605624329053O
-Phase: COMPLETED
-Owner: None
-Output file: async_20201117094529.vot
-Results: None
-
+[Output truncated]
 ~~~
 {: .output}
 

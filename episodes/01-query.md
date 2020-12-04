@@ -195,115 +195,7 @@ external.sdssdr13_photoprimary
 external.skymapperdr1_master
 external.skymapperdr2_master
 external.tmass_xsc
-public.hipparcos
-public.hipparcos_newreduction
-public.hubble_sc
-public.igsl_source
-public.igsl_source_catalog_ids
-public.tycho2
-public.dual
-tap_config.coord_sys
-tap_config.properties
-tap_schema.columns
-tap_schema.key_columns
-tap_schema.keys
-tap_schema.schemas
-tap_schema.tables
-gaiaedr3.gaia_source
-gaiaedr3.agn_cross_id
-gaiaedr3.commanded_scan_law
-gaiaedr3.dr2_neighbourhood
-gaiaedr3.frame_rotator_source
-gaiaedr3.hipparcos2_best_neighbour
-gaiaedr3.hipparcos2_neighbourhood
-gaiaedr3.panstarrs1_best_neighbour
-gaiaedr3.panstarrs1_join
-gaiaedr3.panstarrs1_neighbourhood
-gaiaedr3.sdssdr13_best_neighbour
-gaiaedr3.sdssdr13_join
-gaiaedr3.sdssdr13_neighbourhood
-gaiaedr3.skymapperdr2_best_neighbour
-gaiaedr3.skymapperdr2_join
-gaiaedr3.skymapperdr2_neighbourhood
-gaiaedr3.tycho2tdsc_merge_best_neighbour
-gaiaedr3.tycho2tdsc_merge_neighbourhood
-gaiaedr3.urat1_best_neighbour
-gaiaedr3.urat1_neighbourhood
-gaiaedr3.gaia_source_simulation
-gaiaedr3.gaia_universe_model
-gaiaedr3.tycho2tdsc_merge
-gaiadr1.aux_qso_icrf2_match
-gaiadr1.ext_phot_zero_point
-gaiadr1.allwise_best_neighbour
-gaiadr1.allwise_neighbourhood
-gaiadr1.gsc23_best_neighbour
-gaiadr1.gsc23_neighbourhood
-gaiadr1.ppmxl_best_neighbour
-gaiadr1.ppmxl_neighbourhood
-gaiadr1.sdss_dr9_best_neighbour
-gaiadr1.sdss_dr9_neighbourhood
-gaiadr1.tmass_best_neighbour
-gaiadr1.tmass_neighbourhood
-gaiadr1.ucac4_best_neighbour
-gaiadr1.ucac4_neighbourhood
-gaiadr1.urat1_best_neighbour
-gaiadr1.urat1_neighbourhood
-gaiadr1.cepheid
-gaiadr1.phot_variable_time_series_gfov
-gaiadr1.phot_variable_time_series_gfov_statistical_parameters
-gaiadr1.rrlyrae
-gaiadr1.variable_summary
-gaiadr1.allwise_original_valid
-gaiadr1.gsc23_original_valid
-gaiadr1.ppmxl_original_valid
-gaiadr1.sdssdr9_original_valid
-gaiadr1.tmass_original_valid
-gaiadr1.ucac4_original_valid
-gaiadr1.urat1_original_valid
-gaiadr1.gaia_source
-gaiadr1.tgas_source
-gaiadr2.aux_allwise_agn_gdr2_cross_id
-gaiadr2.aux_iers_gdr2_cross_id
-gaiadr2.aux_sso_orbit_residuals
-gaiadr2.aux_sso_orbits
-gaiadr2.dr1_neighbourhood
-gaiadr2.allwise_best_neighbour
-gaiadr2.allwise_neighbourhood
-gaiadr2.apassdr9_best_neighbour
-gaiadr2.apassdr9_neighbourhood
-gaiadr2.gsc23_best_neighbour
-gaiadr2.gsc23_neighbourhood
-gaiadr2.hipparcos2_best_neighbour
-gaiadr2.hipparcos2_neighbourhood
-gaiadr2.panstarrs1_best_neighbour
-gaiadr2.panstarrs1_neighbourhood
-gaiadr2.ppmxl_best_neighbour
-gaiadr2.ppmxl_neighbourhood
-gaiadr2.ravedr5_best_neighbour
-gaiadr2.ravedr5_neighbourhood
-gaiadr2.sdssdr9_best_neighbour
-gaiadr2.sdssdr9_neighbourhood
-gaiadr2.tmass_best_neighbour
-gaiadr2.tmass_neighbourhood
-gaiadr2.tycho2_best_neighbour
-gaiadr2.tycho2_neighbourhood
-gaiadr2.urat1_best_neighbour
-gaiadr2.urat1_neighbourhood
-gaiadr2.sso_observation
-gaiadr2.sso_source
-gaiadr2.vari_cepheid
-gaiadr2.vari_classifier_class_definition
-gaiadr2.vari_classifier_definition
-gaiadr2.vari_classifier_result
-gaiadr2.vari_long_period_variable
-gaiadr2.vari_rotation_modulation
-gaiadr2.vari_rrlyrae
-gaiadr2.vari_short_timescale
-gaiadr2.vari_time_series_statistics
-gaiadr2.panstarrs1_original_valid
-gaiadr2.gaia_source
-gaiadr2.ruwe
-
+[Output truncated]
 ~~~
 {: .output}
 
@@ -380,92 +272,7 @@ dec
 dec_error
 parallax
 parallax_error
-parallax_over_error
-pmra
-pmra_error
-pmdec
-pmdec_error
-ra_dec_corr
-ra_parallax_corr
-ra_pmra_corr
-ra_pmdec_corr
-dec_parallax_corr
-dec_pmra_corr
-dec_pmdec_corr
-parallax_pmra_corr
-parallax_pmdec_corr
-pmra_pmdec_corr
-astrometric_n_obs_al
-astrometric_n_obs_ac
-astrometric_n_good_obs_al
-astrometric_n_bad_obs_al
-astrometric_gof_al
-astrometric_chi2_al
-astrometric_excess_noise
-astrometric_excess_noise_sig
-astrometric_params_solved
-astrometric_primary_flag
-astrometric_weight_al
-astrometric_pseudo_colour
-astrometric_pseudo_colour_error
-mean_varpi_factor_al
-astrometric_matched_observations
-visibility_periods_used
-astrometric_sigma5d_max
-frame_rotator_object_type
-matched_observations
-duplicated_source
-phot_g_n_obs
-phot_g_mean_flux
-phot_g_mean_flux_error
-phot_g_mean_flux_over_error
-phot_g_mean_mag
-phot_bp_n_obs
-phot_bp_mean_flux
-phot_bp_mean_flux_error
-phot_bp_mean_flux_over_error
-phot_bp_mean_mag
-phot_rp_n_obs
-phot_rp_mean_flux
-phot_rp_mean_flux_error
-phot_rp_mean_flux_over_error
-phot_rp_mean_mag
-phot_bp_rp_excess_factor
-phot_proc_mode
-bp_rp
-bp_g
-g_rp
-radial_velocity
-radial_velocity_error
-rv_nb_transits
-rv_template_teff
-rv_template_logg
-rv_template_fe_h
-phot_variable_flag
-l
-b
-ecl_lon
-ecl_lat
-priam_flags
-teff_val
-teff_percentile_lower
-teff_percentile_upper
-a_g_val
-a_g_percentile_lower
-a_g_percentile_upper
-e_bp_min_rp_val
-e_bp_min_rp_percentile_lower
-e_bp_min_rp_percentile_upper
-flame_flags
-radius_val
-radius_percentile_lower
-radius_percentile_upper
-lum_val
-lum_percentile_lower
-lum_percentile_upper
-datalink_url
-epoch_photometry_url
-
+[Output truncated]
 ~~~
 {: .output}
 
@@ -495,38 +302,6 @@ their names?
 > >     print(column.name)
 > > ~~~
 > > {: .language-python}
-> > 
-> > ~~~
-> > obj_name
-> > obj_id
-> > ra
-> > dec
-> > ra_error
-> > dec_error
-> > epoch_mean
-> > g_mean_psf_mag
-> > g_mean_psf_mag_error
-> > g_flags
-> > r_mean_psf_mag
-> > r_mean_psf_mag_error
-> > r_flags
-> > i_mean_psf_mag
-> > i_mean_psf_mag_error
-> > i_flags
-> > z_mean_psf_mag
-> > z_mean_psf_mag_error
-> > z_flags
-> > y_mean_psf_mag
-> > y_mean_psf_mag_error
-> > y_flags
-> > n_detections
-> > zone_id
-> > obj_info_flag
-> > quality_flag
-> > 
-> > ~~~
-> > {: .output}
-> > 
 > {: .solution}
 {: .challenge}
 
@@ -603,9 +378,7 @@ ref_epoch float64   yr                                                    Refere
 Jobid: None
 Phase: COMPLETED
 Owner: None
-Output file: sync_20201203154608.xml.gz
-Results: None
-
+[Output truncated]
 ~~~
 {: .output}
 
@@ -735,10 +508,7 @@ ref_epoch float64   yr                                                    Refere
  parallax float64  mas                                                           Parallax
 Jobid: 1607028117072O
 Phase: COMPLETED
-Owner: None
-Output file: async_20201203154157.vot
-Results: None
-
+[Output truncated]
 ~~~
 {: .output}
 
@@ -983,11 +753,7 @@ print(job3)
        parallax float64      mas                                                           Parallax     0
 radial_velocity float64   km / s                                                    Radial velocity     9
 Jobid: None
-Phase: COMPLETED
-Owner: None
-Output file: sync_20201203155727.xml.gz
-Results: None
-
+[Output truncated]
 ~~~
 {: .output}
 
