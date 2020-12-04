@@ -65,11 +65,61 @@ here](http://www.ivoa.net/documents/ADQL/20180112/PR-ADQL-2.1-20180112.html).
 But you might find it easier to learn from [this ADQL
 Cookbook](https://www.gaia.ac.uk/data/gaia-data-release-1/adql-cookbook).
 
+## Using Jupyter
+
+If you have not worked with Jupyter notebooks before, you might start
+with [the tutorial on from Jupyter.org called "Try Classic
+Notebook"](https://jupyter.org/try), or [this tutorial from
+DataQuest](https://www.dataquest.io/blog/jupyter-notebook-tutorial/).
+
+There are two environments you can use to write and run notebooks: 
+
+* "Jupyter Notebook" is the original, and
+
+* "Jupyter Lab" is a newer environment with more features.
+
+For these lessons, you can use either one.
+
+If you are too impatient for the tutorials, here's are the most
+important things to know:
+
+1. Notebooks are made up of code cells and text cells (and a few other
+less common kinds).  Code cells contain code; text cells, like this
+one, contain explanatory text written in
+[Markdown](https://www.markdownguide.org/).
+
+2. To run a code cell, click the cell to select it and press
+Shift-Enter.  The output of the code should appear below the cell.
+
+3. In general, notebooks only run correctly if you run every code cell
+in order from top to bottom.  If you run cells out of order, you are
+likely to get errors.
+
+4. You can modify existing cells, but then you have to run them again
+to see the effect.
+
+5. You can add new cells, but again, you might have to be careful
+about the order you run them in.
+
+6. If you have added or modified cells and the behavior of the
+notebook seems strange, you can restart the "kernel", which clears all
+of the variables and functions you have defined, and run the cells
+again from the beginning.
+
+* If you are using Jupyter notebook, open the Kernel menu and select
+"Restart and Run All".
+
+* In Jupyter Lab...
+
+* In Colab, open the Runtime menu and select "Restart and run all"
+
+Before you go on, you might want to explore the other menus and the
+toolbar to see what else you can do.
+
 ## Connecting to Gaia
 
 The library we'll use to get Gaia data is
 [Astroquery](https://astroquery.readthedocs.io/en/latest/).
-
 Astroquery provides `Gaia`, which is an [object that represents a
 connection to the Gaia
 database](https://astroquery.readthedocs.io/en/latest/gaia/gaia.html).
@@ -98,12 +148,8 @@ Created TAP+ (v1.2.1) - Connection:
 
 Running this import statement has the effect of creating a
 [TAP+](http://www.ivoa.net/documents/TAP/) connection; TAP stands for
-"Table Access Protocol".  It is a network protocol for sending queries
-to the database and getting back the results.
-
-It looks like it connects to two servers, `gea.esac.esa.int` and
-`geadata.esac.esa.int`; we don't know why, but possibly one of them is
-used for metadata and the other for data.
+"Table Access Protocol", which is a network protocol for sending
+queries to the database and getting back the results.
 
 ## Databases and Tables
 
@@ -116,8 +162,7 @@ of data, but when we are talking about ADQL or SQL:
 
 We can use `Gaia.load_tables` to get the names of the tables in the
 Gaia database.  With the option `only_names=True`, it loads
-information about the tables, called the "metadata", not the data
-itself.
+information about the tables, called "metadata", not the data itself.
 
 ~~~
 tables = Gaia.load_tables(only_names=True)
@@ -148,6 +193,7 @@ external.ravedr5_gra
 external.ravedr5_on
 external.sdssdr13_photoprimary
 external.skymapperdr1_master
+external.skymapperdr2_master
 external.tmass_xsc
 public.hipparcos
 public.hipparcos_newreduction
@@ -163,6 +209,29 @@ tap_schema.key_columns
 tap_schema.keys
 tap_schema.schemas
 tap_schema.tables
+gaiaedr3.gaia_source
+gaiaedr3.agn_cross_id
+gaiaedr3.commanded_scan_law
+gaiaedr3.dr2_neighbourhood
+gaiaedr3.frame_rotator_source
+gaiaedr3.hipparcos2_best_neighbour
+gaiaedr3.hipparcos2_neighbourhood
+gaiaedr3.panstarrs1_best_neighbour
+gaiaedr3.panstarrs1_join
+gaiaedr3.panstarrs1_neighbourhood
+gaiaedr3.sdssdr13_best_neighbour
+gaiaedr3.sdssdr13_join
+gaiaedr3.sdssdr13_neighbourhood
+gaiaedr3.skymapperdr2_best_neighbour
+gaiaedr3.skymapperdr2_join
+gaiaedr3.skymapperdr2_neighbourhood
+gaiaedr3.tycho2tdsc_merge_best_neighbour
+gaiaedr3.tycho2tdsc_merge_neighbourhood
+gaiaedr3.urat1_best_neighbour
+gaiaedr3.urat1_neighbourhood
+gaiaedr3.gaia_source_simulation
+gaiaedr3.gaia_universe_model
+gaiaedr3.tycho2tdsc_merge
 gaiadr1.aux_qso_icrf2_match
 gaiadr1.ext_phot_zero_point
 gaiadr1.allwise_best_neighbour
@@ -251,7 +320,7 @@ each star observed by Gaia with the same star observed by PanSTARRS.
 
 We can use `load_table` (not `load_tables`) to get the metadata for a
 single table.  The name of this function is misleading, because it
-only downloads metadata.
+only downloads metadata, not the contents of the table.
 
 ~~~
 meta = Gaia.load_table('gaiadr2.gaia_source')
@@ -289,26 +358,6 @@ Num. columns: 96
 ~~~
 {: .output}
 
-In `meta`, the name of the table appears as
-`gaiadr2.gaiadr2.gaia_source`, which is the "qualified name", but when
-we load the metadata, we refer to it as `gaiadr2.gaia_source`.
-
-~~~
-# Solution
-
-# The error message, last time we tried, was
-
-# Retrieving table 'gaiadr2.gaiadr2.gaia_source'
-# 500 Error 500:
-# esavo.tap.TAPException: esavo.tap.TAPException: Schema cannot be null
-
-# Which is not remotely helpful.
-
-# The point of this exercise is to alert the participants to the difficulty
-# of debugging queries with VERY limited feedback.  So developing and testing
-# incrementally is very important.
-~~~
-{: .language-python}
 ## Columns
 
 The following loop prints the names of the columns in the table.
@@ -429,138 +478,61 @@ If you want to know what can go wrong when you don't read the
 documentation, [you might like this
 article](https://www.vox.com/future-perfect/2019/6/4/18650969/married-women-miserable-fake-paul-dolan-happiness).
 
-### Exercise
-
-One of the other tables we'll use is
+> ## Exercise
+> 
+> One of the other tables we'll use is
 `gaiadr2.panstarrs1_original_valid`.  Use `load_table` to get the
 metadata for this table.  How many columns are there and what are
 their names?
 
-~~~
-# Solution
-
-meta2 = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
-print(meta2)
-~~~
-{: .language-python}
-
-~~~
-Retrieving table 'gaiadr2.panstarrs1_original_valid'
-Parsing table 'gaiadr2.panstarrs1_original_valid'...
-Done.
-TAP Table name: gaiadr2.gaiadr2.panstarrs1_original_valid
-Description: The Panoramic Survey Telescope and Rapid Response System (Pan-STARRS) is
-a system for wide-field astronomical imaging developed and operated by
-the Institute for Astronomy at the University of Hawaii. Pan-STARRS1
-(PS1) is the first part of Pan-STARRS to be completed and is the basis
-for Data Release 1 (DR1). The PS1 survey used a 1.8 meter telescope and
-its 1.4 Gigapixel camera to image the sky in five broadband filters (g,
-r, i, z, y).
-
-The current table contains a filtered subsample of the 10 723 304 629
-entries listed in the original ObjectThin table.
-We used only ObjectThin and MeanObject tables to extract
-panstarrs1OriginalValid table, this means that objects detected only in
-stack images are not included here. The main reason for us to avoid the
-use of objects detected in stack images is that their astrometry is not
-as good as the mean objects astrometry: “The stack positions (raStack,
-decStack) have considerably larger systematic astrometric errors than
-the mean epoch positions (raMean, decMean).” The astrometry for the
-MeanObject positions uses Gaia DR1 as a reference catalog, while the
-stack positions use 2MASS as a reference catalog.
-
-In details, we filtered out all objects where:
-
--   nDetections = 1
-
--   no good quality data in Pan-STARRS, objInfoFlag 33554432 not set
-
--   mean astrometry could not be measured, objInfoFlag 524288 set
-
--   stack position used for mean astrometry, objInfoFlag 1048576 set
-
--   error on all magnitudes equal to 0 or to -999;
-
--   all magnitudes set to -999;
-
--   error on RA or DEC greater than 1 arcsec.
-
-The number of objects in panstarrs1OriginalValid is 2 264 263 282.
-
-The panstarrs1OriginalValid table contains only a subset of the columns
-available in the combined ObjectThin and MeanObject tables. A
-description of the original ObjectThin and MeanObjects tables can be
-found at:
-https://outerspace.stsci.edu/display/PANSTARRS/PS1+Database+object+and+detection+tables
-
-Download:
-http://mastweb.stsci.edu/ps1casjobs/home.aspx
-Documentation:
-https://outerspace.stsci.edu/display/PANSTARRS
-http://pswww.ifa.hawaii.edu/pswww/
-References:
-The Pan-STARRS1 Surveys, Chambers, K.C., et al. 2016, arXiv:1612.05560
-Pan-STARRS Data Processing System, Magnier, E. A., et al. 2016,
-arXiv:1612.05240
-Pan-STARRS Pixel Processing: Detrending, Warping, Stacking, Waters, C.
-Z., et al. 2016, arXiv:1612.05245
-Pan-STARRS Pixel Analysis: Source Detection and Characterization,
-Magnier, E. A., et al. 2016, arXiv:1612.05244
-Pan-STARRS Photometric and Astrometric Calibration, Magnier, E. A., et
-al. 2016, arXiv:1612.05242
-The Pan-STARRS1 Database and Data Products, Flewelling, H. A., et al.
-2016, arXiv:1612.05243
-
-Catalogue curator:
-SSDC - ASI Space Science Data Center
-https://www.ssdc.asi.it/
-Num. columns: 26
-
-~~~
-{: .output}
-
-~~~
-# Solution
-
-for column in meta2.columns:
-    print(column.name)
-~~~
-{: .language-python}
-
-~~~
-obj_name
-obj_id
-ra
-dec
-ra_error
-dec_error
-epoch_mean
-g_mean_psf_mag
-g_mean_psf_mag_error
-g_flags
-r_mean_psf_mag
-r_mean_psf_mag_error
-r_flags
-i_mean_psf_mag
-i_mean_psf_mag_error
-i_flags
-z_mean_psf_mag
-z_mean_psf_mag_error
-z_flags
-y_mean_psf_mag
-y_mean_psf_mag_error
-y_flags
-n_detections
-zone_id
-obj_info_flag
-quality_flag
-
-~~~
-{: .output}
+> > 
+> > ~~~
+> > 
+> > meta2 = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
+> > print(meta2)
+> > 
+> > for column in meta2.columns:
+> >     print(column.name)
+> > ~~~
+> > {: .language-python}
+> > 
+> > ~~~
+> > obj_name
+> > obj_id
+> > ra
+> > dec
+> > ra_error
+> > dec_error
+> > epoch_mean
+> > g_mean_psf_mag
+> > g_mean_psf_mag_error
+> > g_flags
+> > r_mean_psf_mag
+> > r_mean_psf_mag_error
+> > r_flags
+> > i_mean_psf_mag
+> > i_mean_psf_mag_error
+> > i_flags
+> > z_mean_psf_mag
+> > z_mean_psf_mag_error
+> > z_flags
+> > y_mean_psf_mag
+> > y_mean_psf_mag_error
+> > y_flags
+> > n_detections
+> > zone_id
+> > obj_info_flag
+> > quality_flag
+> > 
+> > ~~~
+> > {: .output}
+> > 
+> {: .solution}
+{: .challenge}
 
 ## Writing queries
 
-By now you might be wondering how we actually download the data.  With
+By now you might be wondering how we download the actual data.  With
 tables this big, you generally don't.  Instead, you use queries to
 select only the data you want.
 
@@ -627,11 +599,11 @@ source_id   int64      Unique source identifier (unique within a particular Data
 ref_epoch float64   yr                                                    Reference epoch     0
        ra float64  deg                                                    Right ascension     0
       dec float64  deg                                                        Declination     0
- parallax float64  mas                                                           Parallax     3
+ parallax float64  mas                                                           Parallax     5
 Jobid: None
 Phase: COMPLETED
 Owner: None
-Output file: sync_20201117154748.xml.gz
+Output file: sync_20201203154608.xml.gz
 Results: None
 
 ~~~
@@ -692,13 +664,14 @@ store measurements with a fraction part.
 This information comes from the Gaia database, and has been stored in
 the Astropy `Table` by Astroquery.
 
-### Exercise
-
-Read [the documentation of this
+> ## Exercise
+> 
+> Read [the documentation of this
 table](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html)
 and choose a column that looks interesting to you.  Add the column
 name to the query and run it again.  What are the units of the column
 you selected?  What is its data type?
+
 
 ## Asynchronous queries
 
@@ -760,10 +733,10 @@ ref_epoch float64   yr                                                    Refere
        ra float64  deg                                                    Right ascension
       dec float64  deg                                                        Declination
  parallax float64  mas                                                           Parallax
-Jobid: 1605646069281O
+Jobid: 1607028117072O
 Phase: COMPLETED
 Owner: None
-Output file: async_20201117154749.vot
+Output file: async_20201203154157.vot
 Results: None
 
 ~~~
@@ -788,31 +761,28 @@ explains](https://www.cosmos.esa.int/web/gaia/archive-tips#negative%20parallax),
 Negative parallaxes have "no physical meaning," but they can be a
 "useful diagnostic on the quality of the astrometric solution."
 
-Later we will see an example where we use `parallax` and
-`parallax_error` to identify stars where the distance estimate is
-likely to be inaccurate.
-
-### Exercise
-
-The clauses in a query have to be in the right order.  Go back and
+> ## Exercise
+> 
+> The clauses in a query have to be in the right order.  Go back and
 change the order of the clauses in `query2` and run it again.
-
-The query should fail, but notice that you don't get much useful
+> 
+> The query should fail, but notice that you don't get much useful
 debugging information.
-
-For this reason, developing and debugging ADQL queries can be really
+> 
+> For this reason, developing and debugging ADQL queries can be really
 hard.  A few suggestions that might help:
+> 
+> * Whenever possible, start with a working query, either an example
+you find online or a query you have used in the past.
+> 
+> * Make small changes and test each change before you continue.
+> 
+> * While you are debugging, use `TOP` to limit the number of rows in
+the result.  That will make each test run faster, which reduces your
+development time.
+> 
+> * Launching test queries synchronously might make them start faster, too.
 
-* Whenever possible, start with a working query, either an example you
-find online or a query you have used in the past.
-
-* Make small changes and test each change before you continue.
-
-* While you are debugging, use `TOP` to limit the number of rows in
-the result.  That will make each attempt run faster, which reduces
-your testing time.
-
-* Launching test queries synchronously might make them start faster, too.
 
 ## Operators
 
@@ -840,46 +810,48 @@ You can combine comparisons using the logical operators:
 
 Finally, you can use `NOT` to invert the result of a comparison. 
 
-### Exercise
-
-[Read about SQL operators
+> ## Exercise
+> 
+> [Read about SQL operators
 here](https://www.w3schools.com/sql/sql_operators.asp) and then modify
 the previous query to select rows where `bp_rp` is between `-0.75` and
 `2`.
-
-You can [read about this variable
+> 
+> You can [read about this variable
 here](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html).
 
-~~~
-# Solution
+> > 
+> > ~~~
+> > 
+> > # Here's a solution using > and < operators
+> > 
+> > query = """SELECT TOP 10
+> > source_id, ref_epoch, ra, dec, parallax
+> > FROM gaiadr2.gaia_source
+> > WHERE parallax < 1 
+> >   AND bp_rp > -0.75 AND bp_rp < 2
+> > """
+> > 
+> > # And here's a solution using the BETWEEN operator
+> > 
+> > query = """SELECT TOP 10
+> > source_id, ref_epoch, ra, dec, parallax
+> > FROM gaiadr2.gaia_source
+> > WHERE parallax < 1 
+> >   AND bp_rp BETWEEN -0.75 AND 2
+> > """
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
 
-# This is what most people will probably do
-
-query = """SELECT TOP 10
-source_id, ref_epoch, ra, dec, parallax
-FROM gaiadr2.gaia_source
-WHERE parallax < 1 
-  AND bp_rp > -0.75 AND bp_rp < 2
-"""
-~~~
-{: .language-python}
-~~~
-# Solution
-
-# But if someone notices the BETWEEN operator, 
-# they might do this
-
-query = """SELECT TOP 10
-source_id, ref_epoch, ra, dec, parallax
-FROM gaiadr2.gaia_source
-WHERE parallax < 1 
-  AND bp_rp BETWEEN -0.75 AND 2
-"""
-~~~
-{: .language-python}
 This [Hertzsprung-Russell
 diagram](https://sci.esa.int/web/gaia/-/60198-gaia-hertzsprung-russell-diagram)
-shows the BP-RP color and luminosity of stars in the Gaia catalog.
+shows the BP-RP color and luminosity of stars in the Gaia catalog
+(Copyright: ESA/Gaia/DPAC, CC BY-SA 3.0 IGO).
+
+<img width="300"
+src="https://github.com/AllenDowney/AstronomicalData/raw/main/images/1567214809100-ESA_Gaia_DR2_HRD_Gaia_625.jpg">
 
 Selecting stars with `bp-rp` less than 2 excludes many [class M dwarf
 stars](https://xkcd.com/2360/), which are low temperature, low
@@ -908,7 +880,7 @@ Gaia.remove_jobs([job2.jobid])
 {: .language-python}
 
 ~~~
-Removed jobs: '['1605646069281O']'.
+Removed jobs: '['1607028117072O']'.
 
 ~~~
 {: .output}
@@ -934,7 +906,7 @@ except the column names.
 Here's the list of columns we'll select.  
 
 ~~~
-columns = 'source_id, ra, dec, pmra, pmdec, parallax, parallax_error, radial_velocity'
+columns = 'source_id, ra, dec, pmra, pmdec, parallax, radial_velocity'
 ~~~
 {: .language-python}
 And here's the base; it's a string that contains at least one format
@@ -980,7 +952,7 @@ print(query3)
 
 ~~~
 SELECT TOP 10 
-source_id, ra, dec, pmra, pmdec, parallax, parallax_error, radial_velocity
+source_id, ra, dec, pmra, pmdec, parallax, radial_velocity
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2
@@ -1009,12 +981,11 @@ print(job3)
            pmra float64 mas / yr                         Proper motion in right ascension direction     0
           pmdec float64 mas / yr                             Proper motion in declination direction     0
        parallax float64      mas                                                           Parallax     0
- parallax_error float64      mas                                         Standard error of parallax     0
-radial_velocity float64   km / s                                                    Radial velocity    10
+radial_velocity float64   km / s                                                    Radial velocity     9
 Jobid: None
 Phase: COMPLETED
 Owner: None
-Output file: sync_20201117154752.xml.gz
+Output file: sync_20201203155727.xml.gz
 Results: None
 
 ~~~
@@ -1032,58 +1003,33 @@ results3
 
 Good so far.
 
-### Exercise
-
-This query always selects sources with `parallax` less than 1.  But
+> ## Exercise
+> 
+> This query always selects sources with `parallax` less than 1.  But
 suppose you want to take that upper bound as an input.
-
-Modify `query3_base` to replace `1` with a format specifier like
+> 
+> Modify `query3_base` to replace `1` with a format specifier like
 `{max_parallax}`.  Now, when you call `format`, add a keyword argument
 that assigns a value to `max_parallax`, and confirm that the format
 specifier gets replaced with the value you provide.
 
-~~~
-# Solution
-
-query4_base = """SELECT TOP 10
-{columns}
-FROM gaiadr2.gaia_source
-WHERE parallax < {max_parallax} AND 
-bp_rp BETWEEN -0.75 AND 2
-"""
-~~~
-{: .language-python}
-~~~
-# Solution
-
-query4 = query4_base.format(columns=columns,
-                          max_parallax=0.5)
-print(query)
-~~~
-{: .language-python}
-
-~~~
-SELECT TOP 10
-source_id, ref_epoch, ra, dec, parallax
-FROM gaiadr2.gaia_source
-WHERE parallax < 1 
-  AND bp_rp BETWEEN -0.75 AND 2
-
-
-~~~
-{: .output}
-
-**Style note:**  You might notice that the variable names in this
-notebook are numbered, like `query1`, `query2`, etc.
-
-The advantage of this style is that it isolates each section of the
-notebook from the others, so if you go back and run the cells out of
-order, it's less likely that you will get unexpected interactions.
-
-A drawback of this style is that it can be a nuisance to update the
-notebook if you add, remove, or reorder a section.
-
-What do you think of this choice?  Are there alternatives you prefer?
+> > 
+> > ~~~
+> > 
+> > query4_base = """SELECT TOP 10
+> > {columns}
+> > FROM gaiadr2.gaia_source
+> > WHERE parallax < {max_parallax} AND 
+> > bp_rp BETWEEN -0.75 AND 2
+> > """
+> > 
+> > query4 = query4_base.format(columns=columns,
+> >                             max_parallax=0.5)
+> > print(query)
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
 
 ## Summary
 
@@ -1096,6 +1042,9 @@ This notebook demonstrates the following steps:
 3. Writing a query and sending it to the server, and finally
 
 4. Downloading the response from the server as an Astropy `Table`.
+
+In the next lesson we will extend these queries to select a particular
+region of the sky.
 
 ## Best practices
 
