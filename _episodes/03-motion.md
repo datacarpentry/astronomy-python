@@ -1,3 +1,38 @@
+---
+title: "Plotting and Pandas"
+teaching: 3000
+exercises: 0
+questions:
+
+- "How do we make scatter plots in Matplotlib?"
+
+- "How do we store data in a Pandas `DataFrame`?"
+
+objectives:
+
+- "Select rows and columns from an Astropy `Table`."
+
+- "Use Matplotlib to make a scatter plot."
+
+- "Use Gala to transform coordinates."
+
+- "Make a Pandas `DataFrame` and use a Boolean `Series` to select rows."
+
+- "Save a `DataFrame` in an HDF5 file."
+
+keypoints:
+
+- "When you make a scatter plot, adjust the size of the markers and their transparency so the figure is not overplotted; otherwise it can misrepresent the data badly.
+
+- "For simple scatter plots in Matplotlib, `plot` is faster than `scatter`.
+
+- "An Astropy `Table` and a Pandas `DataFrame` are similar in many ways and they provide many of the same functions.  They have pros and cons, but for many projects, either one would be a reasonable choice."
+
+---
+FIXME
+
+{% include links.md %}
+
 # Chapter 3
 
 This is the third in a series of notebooks related to astronomy data.
@@ -418,7 +453,8 @@ transformed back to GD-1 coordinates, it's a rectangle again.
 
 ## Pandas DataFrame
 
-At this point we have two objects containing different subsets of the data.
+At this point we have two objects containing different subsets of the
+data.  `results` is the Astropy `Table` we downloaded from Gaia.
 
 ~~~
 type(results)
@@ -429,6 +465,9 @@ type(results)
 ~~~
 {: .output}
 
+And `gd1_coord` is a `SkyCoord` object that contains the transformed
+coordinates and proper motions.
+
 ~~~
 type(gd1_coord)
 ~~~
@@ -438,8 +477,9 @@ type(gd1_coord)
 ~~~
 {: .output}
 
-On one hand, this makes sense, since each object provides different
-capabilities.  But working with multiple object types can be awkward.
+On one hand, this division of labor makes sense because each object
+provides different capabilities.  But working with multiple object
+types can be awkward.
 
 It will be more convenient to choose one object and get all of the
 data into it.  We'll use a Pandas DataFrame, for two reasons:
@@ -483,7 +523,7 @@ df.head()
 ~~~
 {: .output}
 
-Python detail: `shape` is an attribute, so we can display it's value
+Python detail: `shape` is an attribute, so we display its value
 without calling it as a function; `head` is a function, so we need the
 parentheses.
 
@@ -521,6 +561,50 @@ df.shape
 
 We could have: `proper_motion` contains the same data as
 `pm_phi1_cosphi2` and `pm_phi2`, but in a different format.
+
+## Exploring data
+
+One benefit of using Pandas is that it provides function for exploring
+the data and checking for problems.
+
+One of the most useful of these functions is `describe`, which
+computes summary statistics for each column.
+
+~~~
+df.describe()
+~~~
+{: .language-python}
+
+~~~
+~~~
+{: .output}
+
+> ## Exercise
+> 
+> Review the summary statistics in this table.
+> 
+> * Do the values makes senses based on what you know about the context?
+> 
+> * Do you see any values that seem problematic, or evidence of other
+data issues?
+
+> > 
+> > ~~~
+> > 
+> > # A few issues that are likely to come up:
+> > 
+> > # 1. Why are some of the parallax values negative?
+> > #    Some parallax measurements are inaccurate, especially
+> > #    stars that are far away.
+> > 
+> > # 2. Why are some of the radial velocities 1e20?
+> > #    It seems like this value is used to indicate invalid data.
+> > #    Notice that the 25th percentile is 1e20, which indicates
+> > #    that at least 75% of these values are invalid.
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
 
 ## Plot proper motion
 

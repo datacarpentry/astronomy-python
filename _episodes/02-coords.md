@@ -1,3 +1,34 @@
+---
+title: "Coordinate Transformations"
+teaching: 3000
+exercises: 0
+questions:
+
+- "How do we transform celestial coordinates from one frame to another and save results in files?"
+
+objectives:
+
+- "Use Python string formatting to compose more complex ADQL queries."
+
+- "Work with coordinates and other quantities that have units."
+
+- "Download the results of a query and store them in a file."
+
+keypoints:
+
+- "For measurements with units, use `Quantity` objects that represent units explicitly and check for errors."
+
+- "Use the `format` function to compose queries; it is often faster and less error-prone."
+
+- "Develop queries incrementally: start with something simple, test it, and add a little bit at a time."
+
+- "Once you have a query working, save the data in a local file.  If you shut down the notebook and come back to it later, you can reload the file; you don't have to run the query again."
+
+---
+FIXME
+
+{% include links.md %}
+
 # Coordinates and units
 
 This is the second in a series of notebooks related to astronomy data.
