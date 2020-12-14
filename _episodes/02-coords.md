@@ -131,6 +131,18 @@ Created TAP+ (v1.2.1) - Connection:
 	Port: 443
 	SSL Port: 443
 
+<Table length=10>
+     source_id     
+       int64       
+-------------------
+4057468321929794432
+4057468287575835392
+4057482027171038976
+4057470349160630656
+4057470039924301696
+4057469868125641984
+4057468351995073024
+[Output truncated]
 ~~~
 {: .output}
 
@@ -201,6 +213,7 @@ u
 {: .language-python}
 
 ~~~
+<module 'astropy.units' from '/home/downey/anaconda3/envs/AstronomicalData/lib/python3.8/site-packages/astropy/units/__init__.py'>
 ~~~
 {: .output}
 
@@ -215,6 +228,18 @@ dir(u)
 {: .language-python}
 
 ~~~
+['A',
+ 'AA',
+ 'AB',
+ 'ABflux',
+ 'ABmag',
+ 'AU',
+ 'Angstrom',
+ 'B',
+ 'Ba',
+ 'Barye',
+ 'Bi',
+[Output truncated]
 ~~~
 {: .output}
 
@@ -227,6 +252,7 @@ type(coordinate)
 {: .language-python}
 
 ~~~
+astropy.units.quantity.Quantity
 ~~~
 {: .output}
 
@@ -240,6 +266,7 @@ coordinate
 {: .language-python}
 
 ~~~
+<Quantity 30. deg>
 ~~~
 {: .output}
 
@@ -288,6 +315,7 @@ type(corners)
 {: .language-python}
 
 ~~~
+gala.coordinates.gd1.GD1Koposov10
 ~~~
 {: .output}
 
@@ -299,6 +327,8 @@ corners
 {: .language-python}
 
 ~~~
+<GD1Koposov10 Coordinate: (phi1, phi2) in deg
+    [(-55., -8.), (-55.,  4.), (-45.,  4.), (-45., -8.)]>
 ~~~
 {: .output}
 
@@ -313,6 +343,7 @@ type(corners_icrs)
 {: .language-python}
 
 ~~~
+astropy.coordinates.builtin_frames.icrs.ICRS
 ~~~
 {: .output}
 
@@ -324,6 +355,9 @@ corners_icrs
 {: .language-python}
 
 ~~~
+<ICRS Coordinate: (ra, dec) in deg
+    [(146.27533314, 19.26190982), (135.42163944, 25.87738723),
+     (141.60264825, 34.3048303 ), (152.81671045, 27.13611254)]>
 ~~~
 {: .output}
 
@@ -414,6 +448,10 @@ t
 {: .language-python}
 
 ~~~
+['146.27533313607782, 19.261909820533692',
+ '135.42163944306296, 25.87738722767213',
+ '141.60264825107333, 34.304830296257144',
+ '152.81671044675923, 27.136112541397996']
 ~~~
 {: .output}
 
@@ -427,6 +465,7 @@ point_list
 {: .language-python}
 
 ~~~
+'146.27533313607782, 19.261909820533692, 135.42163944306296, 25.87738722767213, 141.60264825107333, 34.304830296257144, 152.81671044675923, 27.136112541397996'
 ~~~
 {: .output}
 
@@ -509,6 +548,7 @@ len(results)
 {: .language-python}
 
 ~~~
+140340
 ~~~
 {: .output}
 
