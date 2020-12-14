@@ -28,7 +28,6 @@ capitalize the keywords, but you should."
 lines, but you should."
 
 ---
-FIXME
 
 {% include links.md %}
 

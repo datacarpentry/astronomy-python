@@ -25,7 +25,6 @@ keypoints:
 - "On the other hand, CSV is a 'least common denominator' format; that is, it can be read by practically any application that works with data."
 
 ---
-FIXME
 
 {% include links.md %}
 

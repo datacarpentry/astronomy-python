@@ -25,7 +25,6 @@ keypoints:
 - "Once you have a query working, save the data in a local file.  If you shut down the notebook and come back to it later, you can reload the file; you don't have to run the query again."
 
 ---
-FIXME
 
 {% include links.md %}
 
