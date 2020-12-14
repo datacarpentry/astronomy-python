@@ -1,5 +1,5 @@
 ---
-title: "Title"
+title: "Photometry"
 teaching: 3000
 exercises: 0
 questions:
