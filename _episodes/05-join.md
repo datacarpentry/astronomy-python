@@ -16,7 +16,7 @@ keypoints:
 
 - "Use `JOIN` operations to combine data from multiple tables in a databased, using some kind of identifier to match up records from one table with records from another."
 
-* "This is another example of a practice we saw in the previous notebook, moving the computation to the data."
+- "This is another example of a practice we saw in the previous notebook, moving the computation to the data."
 
 ---
 
