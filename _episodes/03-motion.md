@@ -20,7 +20,7 @@ objectives:
 
 keypoints:
 
-- "When you make a scatter plot, adjust the size of the markers and their transparency so the figure is not overplotted; otherwise it can misrepresent the data badly.
+- "When you make a scatter plot, adjust the size of the markers and their transparency so the figure is not overplotted; otherwise it can misrepresent the data badly."
 
 - "For simple scatter plots in Matplotlib, `plot` is faster than `scatter`.
 
