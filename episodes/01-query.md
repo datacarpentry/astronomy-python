@@ -4,6 +4,7 @@ teaching: 3000
 exercises: 0
 questions:
 - "How can we select and download the data we want from the Gaia server?"
+
 objectives:
 - "Compose a basic query in ADQL/SQL."
 - "Use queries to explore a database and its tables."
@@ -224,6 +225,7 @@ Retrieving table 'gaiadr2.gaia_source'
 Parsing table 'gaiadr2.gaia_source'...
 Done.
 
+<astroquery.utils.tap.model.taptable.TapTableMeta at 0x7eff7a9d80a0>
 ~~~
 {: .output}
 
@@ -353,6 +355,7 @@ job1
 {: .language-python}
 
 ~~~
+<astroquery.utils.tap.model.job.Job at 0x7eff7aa87d00>
 ~~~
 {: .output}
 
@@ -394,6 +397,7 @@ type(results1)
 {: .language-python}
 
 ~~~
+astropy.table.table.Table
 ~~~
 {: .output}
 
@@ -424,6 +428,18 @@ results1
 {: .language-python}
 
 ~~~
+<Table length=10>
+     source_id      ref_epoch ...         dec               parallax     
+                        yr    ...         deg                 mas        
+       int64         float64  ...       float64             float64      
+------------------- --------- ... ------------------- -------------------
+5958819901197208576    2015.5 ...  -42.03004488213482 -0.5002044267802102
+5958821378666779136    2015.5 ...   -42.0248496385989                  --
+5958828525443694976    2015.5 ...  -43.16302120806172                  --
+5958821103796633472    2015.5 ... -42.036988110447425                  --
+5958823886946980352    2015.5 ... -41.922401166547274                  --
+5958822890506247552    2015.5 ...  -41.95720763183602                  --
+[Output truncated]
 ~~~
 {: .output}
 
@@ -520,6 +536,18 @@ results2
 {: .language-python}
 
 ~~~
+<Table length=3000>
+     source_id      ref_epoch ...         dec               parallax      
+                        yr    ...         deg                 mas         
+       int64         float64  ...       float64             float64       
+------------------- --------- ... ------------------- --------------------
+6101968476761520256    2015.5 ... -40.712359294192744   0.9580315447630948
+6102006203756731136    2015.5 ...  -40.18295977800455   0.4654078698855609
+6101999537971250816    2015.5 ...  -40.38078271831785   0.6324535932708285
+6101989230045046912    2015.5 ...  -40.30216757702745  -0.1120282976060022
+6102019432256470144    2015.5 ...  -40.07122353409279   0.4252570435065329
+6101990020319424768    2015.5 ...  -40.29644668414232  -0.5473391189616934
+[Output truncated]
 ~~~
 {: .output}
 
@@ -638,6 +666,7 @@ job1.jobid, job2.jobid
 {: .language-python}
 
 ~~~
+(None, '1607028117072O')
 ~~~
 {: .output}
 
@@ -709,6 +738,7 @@ query3
 {: .language-python}
 
 ~~~
+'SELECT TOP 10 \nsource_id, ra, dec, pmra, pmdec, parallax, radial_velocity\nFROM gaiadr2.gaia_source\nWHERE parallax < 1\n  AND bp_rp BETWEEN -0.75 AND 2\n'
 ~~~
 {: .output}
 
@@ -763,6 +793,18 @@ results3
 {: .language-python}
 
 ~~~
+<Table length=10>
+     source_id              ra         ...  radial_velocity  
+                           deg         ...       km / s      
+       int64             float64       ...      float64      
+------------------- ------------------ ... ------------------
+5933096203842096896 243.78205426182762 ... -42.33885843170957
+5933101877528899712 243.97057838444422 ...                 --
+5933092909682644736 243.79077939157932 ...                 --
+5933099403674089344 244.10992316666963 ...                 --
+5933099712864927488 244.14352482183628 ...                 --
+5933100430094343296 244.05583528078185 ...                 --
+[Output truncated]
 ~~~
 {: .output}
 

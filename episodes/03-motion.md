@@ -125,6 +125,17 @@ results.info
 {: .language-python}
 
 ~~~
+<Table length=140340>
+      name       dtype    unit                              description                            
+--------------- ------- -------- ------------------------------------------------------------------
+      source_id   int64          Unique source identifier (unique within a particular Data Release)
+             ra float64      deg                                                    Right ascension
+            dec float64      deg                                                        Declination
+           pmra float64 mas / yr                         Proper motion in right ascension direction
+          pmdec float64 mas / yr                             Proper motion in declination direction
+       parallax float64      mas                                                           Parallax
+ parallax_error float64      mas                                         Standard error of parallax
+radial_velocity float64   km / s                                                    Radial velocity
 ~~~
 {: .output}
 
@@ -143,6 +154,14 @@ results.colnames
 {: .language-python}
 
 ~~~
+['source_id',
+ 'ra',
+ 'dec',
+ 'pmra',
+ 'pmdec',
+ 'parallax',
+ 'parallax_error',
+ 'radial_velocity']
 ~~~
 {: .output}
 
@@ -154,6 +173,18 @@ results['ra']
 {: .language-python}
 
 ~~~
+<Column name='ra' dtype='float64' unit='deg' description='Right ascension' length=140340>
+142.48301935991023
+142.25452941346344
+142.64528557468074
+142.57739430926034
+142.58913564478618
+141.81762228999614
+143.18339801317677
+ 142.9347319464589
+142.26769745823267
+142.89551292869012
+[Output truncated]
 ~~~
 {: .output}
 
@@ -166,6 +197,7 @@ type(results['ra'])
 {: .language-python}
 
 ~~~
+astropy.table.column.Column
 ~~~
 {: .output}
 
@@ -178,6 +210,12 @@ results[0]
 {: .language-python}
 
 ~~~
+<Row index=0>
+    source_id              ra                dec                pmra              pmdec             parallax        parallax_error  radial_velocity
+                          deg                deg              mas / yr           mas / yr             mas                mas             km / s    
+      int64             float64            float64            float64            float64            float64            float64          float64    
+------------------ ------------------ ----------------- ------------------- ----------------- ------------------- ----------------- ---------------
+637987125186749568 142.48301935991023 21.75771616932985 -2.5168384683875766 2.941813096629439 -0.2573448962333354 0.823720794509811           1e+20
 ~~~
 {: .output}
 
@@ -189,6 +227,7 @@ type(results[0])
 {: .language-python}
 
 ~~~
+astropy.table.row.Row
 ~~~
 {: .output}
 
@@ -207,6 +246,7 @@ results['ra'][0]
 {: .language-python}
 
 ~~~
+142.48301935991023
 ~~~
 {: .output}
 
@@ -218,6 +258,7 @@ results[0]['ra']
 {: .language-python}
 
 ~~~
+142.48301935991023
 ~~~
 {: .output}
 
@@ -272,6 +313,7 @@ plt.ylabel('dec (degree ICRS)');
 {: .language-python}
 
 ~~~
+<Figure size 432x288 with 1 Axes>
 ~~~
 {: .output}
 
@@ -352,6 +394,7 @@ type(skycoord)
 {: .language-python}
 
 ~~~
+astropy.coordinates.sky_coordinate.SkyCoord
 ~~~
 {: .output}
 
@@ -367,6 +410,7 @@ type(transformed)
 {: .language-python}
 
 ~~~
+astropy.coordinates.sky_coordinate.SkyCoord
 ~~~
 {: .output}
 
@@ -413,6 +457,7 @@ type(gd1_coord)
 {: .language-python}
 
 ~~~
+astropy.coordinates.sky_coordinate.SkyCoord
 ~~~
 {: .output}
 
@@ -443,6 +488,7 @@ plt.ylabel('dec (degree GD1)');
 {: .language-python}
 
 ~~~
+<Figure size 432x288 with 1 Axes>
 ~~~
 {: .output}
 
@@ -461,6 +507,7 @@ type(results)
 {: .language-python}
 
 ~~~
+astropy.table.table.Table
 ~~~
 {: .output}
 
@@ -473,6 +520,7 @@ type(gd1_coord)
 {: .language-python}
 
 ~~~
+astropy.coordinates.sky_coordinate.SkyCoord
 ~~~
 {: .output}
 
@@ -505,6 +553,7 @@ df.shape
 {: .language-python}
 
 ~~~
+(140340, 8)
 ~~~
 {: .output}
 
@@ -519,6 +568,18 @@ df.head()
 {: .language-python}
 
 ~~~
+            source_id          ra        dec       pmra      pmdec  parallax  \
+0  637987125186749568  142.483019  21.757716  -2.516838   2.941813 -0.257345   
+1  638285195917112960  142.254529  22.476168   2.662702 -12.165984  0.422728   
+2  638073505568978688  142.645286  22.166932  18.306747  -7.950660  0.103640   
+3  638086386175786752  142.577394  22.227920   0.987786  -2.584105 -0.857327   
+4  638049655615392384  142.589136  22.110783   0.244439  -4.941079  0.099625   
+
+   parallax_error  radial_velocity  
+0        0.823721     1.000000e+20  
+1        0.297472     1.000000e+20  
+2        0.544584     1.000000e+20  
+[Output truncated]
 ~~~
 {: .output}
 
@@ -538,6 +599,7 @@ df.shape
 {: .language-python}
 
 ~~~
+(140340, 12)
 ~~~
 {: .output}
 
@@ -552,6 +614,7 @@ df.shape
 {: .language-python}
 
 ~~~
+(140340, 12)
 ~~~
 {: .output}
 
@@ -575,6 +638,18 @@ df.describe()
 {: .language-python}
 
 ~~~
+          source_id             ra            dec           pmra  \
+count  1.403400e+05  140340.000000  140340.000000  140340.000000   
+mean   6.792378e+17     143.822971      26.780161      -2.484410   
+std    3.792015e+16       3.697824       3.052639       5.913923   
+min    6.214900e+17     135.425699      19.286617    -106.755260   
+25%    6.443515e+17     140.967807      24.592348      -5.038746   
+50%    6.888056e+17     143.734183      26.746169      -1.834971   
+75%    6.976578e+17     146.607180      28.990490       0.452995   
+max    7.974418e+17     152.777393      34.285481     104.319923   
+
+               pmdec       parallax  parallax_error  radial_velocity  \
+[Output truncated]
 ~~~
 {: .output}
 
@@ -647,6 +722,7 @@ type(phi2)
 {: .language-python}
 
 ~~~
+pandas.core.series.Series
 ~~~
 {: .output}
 
@@ -666,6 +742,7 @@ type(mask)
 {: .language-python}
 
 ~~~
+pandas.core.series.Series
 ~~~
 {: .output}
 
@@ -675,6 +752,7 @@ mask.dtype
 {: .language-python}
 
 ~~~
+dtype('bool')
 ~~~
 {: .output}
 
@@ -686,6 +764,12 @@ mask.head()
 {: .language-python}
 
 ~~~
+0    False
+1    False
+2    False
+3    False
+4    False
+Name: phi2, dtype: bool
 ~~~
 {: .output}
 
@@ -700,6 +784,7 @@ type(subset)
 {: .language-python}
 
 ~~~
+pandas.core.frame.DataFrame
 ~~~
 {: .output}
 
@@ -727,6 +812,7 @@ phi_mask.sum()
 {: .language-python}
 
 ~~~
+25084
 ~~~
 {: .output}
 
@@ -740,6 +826,7 @@ len(centerline)
 {: .language-python}
 
 ~~~
+25084
 ~~~
 {: .output}
 
@@ -757,6 +844,7 @@ plt.ylabel('Proper motion phi2 (GD1 frame)');
 {: .language-python}
 
 ~~~
+<Figure size 432x288 with 1 Axes>
 ~~~
 {: .output}
 
@@ -781,6 +869,7 @@ plt.ylim(-10, 10);
 {: .language-python}
 
 ~~~
+<Figure size 432x288 with 1 Axes>
 ~~~
 {: .output}
 
@@ -841,6 +930,7 @@ plt.ylim(-10, 10);
 {: .language-python}
 
 ~~~
+<Figure size 432x288 with 1 Axes>
 ~~~
 {: .output}
 
@@ -876,6 +966,7 @@ pm_mask.sum()
 {: .language-python}
 
 ~~~
+1049
 ~~~
 {: .output}
 
@@ -888,6 +979,7 @@ len(selected)
 {: .language-python}
 
 ~~~
+1049
 ~~~
 {: .output}
 
@@ -906,6 +998,7 @@ plt.ylabel('dec (degree GD1)');
 {: .language-python}
 
 ~~~
+<Figure size 432x288 with 1 Axes>
 ~~~
 {: .output}
 
@@ -926,6 +1019,7 @@ type(selected_table)
 {: .language-python}
 
 ~~~
+astropy.table.table.Table
 ~~~
 {: .output}
 
@@ -1025,6 +1119,7 @@ read_back_df.shape
 {: .language-python}
 
 ~~~
+(140340, 12)
 ~~~
 {: .output}
 
