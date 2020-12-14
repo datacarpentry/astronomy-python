@@ -4,9 +4,7 @@ teaching: 3000
 exercises: 0
 questions:
 
-- "How do we make scatter plots in Matplotlib?"
-
-- "How do we store data in a Pandas `DataFrame`?"
+- "How do we make scatter plots in Matplotlib? How do we store data in a Pandas `DataFrame`?"
 
 objectives:
 
