@@ -33,7 +33,7 @@ FIXME
 
 {% include links.md %}
 
-# Chapter 3
+# Proper Motion
 
 This is the third in a series of notebooks related to astronomy data.
 
@@ -564,8 +564,8 @@ We could have: `proper_motion` contains the same data as
 
 ## Exploring data
 
-One benefit of using Pandas is that it provides function for exploring
-the data and checking for problems.
+One benefit of using Pandas is that it provides functions for
+exploring the data and checking for problems.
 
 One of the most useful of these functions is `describe`, which
 computes summary statistics for each column.
