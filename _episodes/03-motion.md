@@ -29,7 +29,6 @@ keypoints:
 - "An Astropy `Table` and a Pandas `DataFrame` are similar in many ways and they provide many of the same functions.  They have pros and cons, but for many projects, either one would be a reasonable choice."
 
 ---
-FIXME
 
 {% include links.md %}
 
