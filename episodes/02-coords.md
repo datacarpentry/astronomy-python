@@ -32,21 +32,21 @@ keypoints:
 
 This is the second in a series of notebooks related to astronomy data.
 
-As a running example, we are replicating parts of the analysis in a
-recent paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
-of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian M.
-Price-Whelan and Ana Bonaca.
+As a running example, we are replicating parts of the analysis in a recent
+paper, "[Off the beaten path: Gaia reveals GD-1 stars outside of the main
+stream](https://arxiv.org/abs/1805.00425)" by Adrian M. Price-Whelan and Ana
+Bonaca.
 
-In the first notebook, we wrote ADQL queries and used them to select
-and download data from the Gaia server.
+In the first notebook, we wrote ADQL queries and used them to select and
+download data from the Gaia server.
 
-In this notebook, we'll pick up where we left off and write a query to
-select stars from the region of the sky where we expect GD-1 to be.
+In this notebook, we'll pick up where we left off and write a query to select
+stars from the region of the sky where we expect GD-1 to be.
 
 ## Outline
 
-We'll start with an example that does a "cone search"; that is, it
-selects stars that appear in a circular region of the sky.
+We'll start with an example that does a "cone search"; that is, it selects
+stars that appear in a circular region of the sky.
 
 Then, to select stars in the vicinity of GD-1, we'll:
 
@@ -54,8 +54,8 @@ Then, to select stars in the vicinity of GD-1, we'll:
 
 * Use the `Gala` library to convert coordinates from one frame to another.
 
-* Use the ADQL keywords `POLYGON`, `CONTAINS`, and `POINT` to select
-stars that fall within a polygonal region.
+* Use the ADQL keywords `POLYGON`, `CONTAINS`, and `POINT` to select stars
+that fall within a polygonal region.
 
 * Submit a query and download the results.
 
@@ -71,14 +71,13 @@ After completing this lesson, you should be able to
 
 ## Selecting a region
 
-One of the most common ways to restrict a query is to select stars in
-a particular region of the sky.
+One of the most common ways to restrict a query is to select stars in a
+particular region of the sky.
 
 For example, here's a query from the [Gaia archive
 documentation](https://gea.esac.esa.int/archive-help/adql/examples/index.html)
-that selects "all the objects ... in a circular region centered at
-(266.41683, -29.00781) with a search radius of 5 arcmin (0.08333
-deg)."
+that selects "all the objects ... in a circular region centered at (266.41683,
+-29.00781) with a search radius of 5 arcmin (0.08333 deg)."
 
 ~~~
 query = """
@@ -97,11 +96,11 @@ This query uses three keywords that are specific to ADQL (not SQL):
 coordinates](https://en.wikipedia.org/wiki/International_Celestial_Reference_System),
 specified in degrees of right ascension and declination.
 
-* `CIRCLE`: a circle where the first two values are the coordinates of
-the center and the third is the radius in degrees.
+* `CIRCLE`: a circle where the first two values are the coordinates of the
+center and the third is the radius in degrees.
 
-* `CONTAINS`: a function that returns `1` if a `POINT` is contained in
-a shape and `0` otherwise.
+* `CONTAINS`: a function that returns `1` if a `POINT` is contained in a shape
+and `0` otherwise.
 
 Here is the [documentation of
 `CONTAINS`](http://www.ivoa.net/documents/ADQL/20180112/PR-ADQL-2.1-20180112.html#tth_sEc4.2.12).
@@ -148,16 +147,18 @@ Created TAP+ (v1.2.1) - Connection:
 
 > ## Exercise
 > 
-> When you are debugging queries like this, you can use `TOP` to limit
-> the size of the results, but then you still don't know how big the
-> results will be.
+> When you are debugging queries like this, you can use `TOP` to limit the
+size
+> of the results, but then you still don't know how big the results will be.
 > 
-> An alternative is to use `COUNT`, which asks for the number of rows
-> that would be selected, but it does not return them.
+> An alternative is to use `COUNT`, which asks for the number of rows that
+would
+> be selected, but it does not return them.
 > 
-> In the previous query, replace `TOP 10 source_id` with
-> `COUNT(source_id)` and run the query again.  How many stars has Gaia
-> identified in the cone we searched?
+> In the previous query, replace `TOP 10 source_id` with `COUNT(source_id)`
+and
+> run the query again.  How many stars has Gaia identified in the cone we
+> searched?
 
 > > 
 > > ~~~
@@ -177,47 +178,47 @@ Created TAP+ (v1.2.1) - Connection:
 
 ## Getting GD-1 Data
 
-From the Price-Whelan and Bonaca paper, we will try to reproduce
-Figure 1, which includes this representation of stars likely to belong
-to GD-1:
+From the Price-Whelan and Bonaca paper, we will try to reproduce Figure 1,
+which includes this representation of stars likely to belong to GD-1:
 
 <img
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png">
 
-Along the axis of right ascension ($\phi_1$) the figure extends from
--100 to 20 degrees.
+Along the axis of right ascension ($\phi_1$) the figure extends from -100 to
+20 degrees.
 
-Along the axis of declination ($\phi_2$) the figure extends from about
--8 to 4 degrees.
+Along the axis of declination ($\phi_2$) the figure extends from about -8 to 4
+degrees.
 
-Ideally, we would select all stars from this rectangle, but there are
-more than 10 million of them, so
+Ideally, we would select all stars from this rectangle, but there are more
+than 10 million of them, so
 
 * That would be difficult to work with,
 
 * As anonymous users, we are limited to 3 million rows in a single query, and
 
-* While we are developing and testing code, it will be faster to work
-with a smaller dataset.
+* While we are developing and testing code, it will be faster to work with a
+smaller dataset.
 
-So we'll start by selecting stars in a smaller rectangle, from -55 to
--45 degrees right ascension and -8 to 4 degrees of declination.
+So we'll start by selecting stars in a smaller rectangle, from -55 to -45
+degrees right ascension and -8 to 4 degrees of declination.
 
 But first we let's see how to represent quantities with units like degrees.
 
 ## Working with coordinates
 
-Coordinates are physical quantities, which means that they have two
-parts, a value and a unit.
+Coordinates are physical quantities, which means that they have two parts, a
+value and a unit.
 
-For example, the coordinate $30^{\circ}$ has value 30 and its units are degrees.
+For example, the coordinate $30^{\circ}$ has value 30 and its units are
+degrees.
 
-Until recently, most scientific computation was done with values only;
-units were left out of the program altogether, [often with disastrous
+Until recently, most scientific computation was done with values only; units
+were left out of the program altogether, [often with disastrous
 results](https://en.wikipedia.org/wiki/Mars_Climate_Orbiter#Cause_of_failure).
 
-Astropy provides tools for including units explicitly in computations,
-which makes it possible to detect errors before they cause disasters.
+Astropy provides tools for including units explicitly in computations, which
+makes it possible to detect errors before they cause disasters.
 
 To use Astropy units, we import them like this:
 
@@ -288,8 +289,8 @@ coordinate
 
 ## Selecting a rectangle
 
-Now we'll select a rectangle from -55 to -45 degrees right ascension
-and -8 to 4 degrees of declination.
+Now we'll select a rectangle from -55 to -45 degrees right ascension and -8 to
+4 degrees of declination.
 
 We'll define variables to contain these limits.
 
@@ -300,19 +301,19 @@ phi2_min = -8
 phi2_max = 4
 ~~~
 {: .language-python}
-To represent a rectangle, we'll use two lists of coordinates and
-multiply by their units.
+To represent a rectangle, we'll use two lists of coordinates and multiply by
+their units.
 
 ~~~
 phi1_rect = [phi1_min, phi1_min, phi1_max, phi1_max] * u.deg
 phi2_rect = [phi2_min, phi2_max, phi2_max, phi2_min] * u.deg
 ~~~
 {: .language-python}
-`phi1_rect` and `phi2_rect` represent the coordinates of the corners
-of a rectangle.
+`phi1_rect` and `phi2_rect` represent the coordinates of the corners of a
+rectangle.
 
-But they are in "[a Heliocentric spherical coordinate system defined
-by the orbit of the GD1
+But they are in "[a Heliocentric spherical coordinate system defined by the
+orbit of the GD1
 stream](https://gala-astro.readthedocs.io/en/latest/_modules/gala/coordinates/gd1.html)"
 
 In order to use them in a Gaia query, we have to convert them to
@@ -382,9 +383,8 @@ rectangle in another.  In this example, the result is a polygon.
 
 ## Selecting a polygon
 
-In order to use this polygon as part of an ADQL query, we have to
-convert it to a string with a comma-separated list of coordinates, as
-in this example:
+In order to use this polygon as part of an ADQL query, we have to convert it
+to a string with a comma-separated list of coordinates, as in this example:
 
 ```
 """
@@ -395,8 +395,8 @@ POLYGON(143.65, 20.98,
 """
 ```
 
-`corners_icrs` behaves like a list, so we can use a `for` loop to
-iterate through the points.
+`corners_icrs` behaves like a list, so we can use a `for` loop to iterate
+through the points.
 
 ~~~
 for point in corners_icrs:
@@ -434,8 +434,8 @@ for point in corners_icrs:
 ~~~
 {: .output}
 
-The results are quantities with units, but if we select the `value`
-part, we get a dimensionless floating-point number.
+The results are quantities with units, but if we select the `value` part, we
+get a dimensionless floating-point number.
 
 ~~~
 for point in corners_icrs:
@@ -471,8 +471,8 @@ t
 ~~~
 {: .output}
 
-The result is a list of strings, which we can join into a single
-string using `join`.
+The result is a list of strings, which we can join into a single string using
+`join`.
 
 ~~~
 point_list = ', '.join(t)
@@ -487,15 +487,15 @@ point_list
 
 Notice that we invoke `join` on a string and pass the list as an argument.
 
-Before we can assemble the query, we need `columns` again (as we saw
-in the previous notebook).
+Before we can assemble the query, we need `columns` again (as we saw in the
+previous notebook).
 
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec, parallax, parallax_error, radial_velocity'
 ~~~
 {: .language-python}
-Here's the base for the query, with format specifiers for `columns`
-and `point_list`.
+Here's the base for the query, with format specifiers for `columns` and
+`point_list`.
 
 ~~~
 query_base = """SELECT {columns}
@@ -528,10 +528,11 @@ WHERE parallax < 1
 ~~~
 {: .output}
 
-As always, we should take a minute to proof-read the query before we launch it.
+As always, we should take a minute to proof-read the query before we launch
+it.
 
-The result will be bigger than our previous queries, so it will take a
-little longer.
+The result will be bigger than our previous queries, so it will take a little
+longer.
 
 ~~~
 job = Gaia.launch_job_async(query)
@@ -568,16 +569,16 @@ len(results)
 ~~~
 {: .output}
 
-There are more than 100,000 stars in this polygon, but that's a
-manageable size to work with.
+There are more than 100,000 stars in this polygon, but that's a manageable
+size to work with.
 
 ## Saving results
 
-This is the set of stars we'll work with in the next step.  But since
-we have a substantial dataset now, this is a good time to save it.
+This is the set of stars we'll work with in the next step.  But since we have
+a substantial dataset now, this is a good time to save it.
 
-Storing the data in a file means we can shut down this notebook and
-pick up where we left off without running the previous query again.
+Storing the data in a file means we can shut down this notebook and pick up
+where we left off without running the previous query again.
 
 Astropy `Table` objects provide `write`, which writes the table to disk.
 
@@ -586,16 +587,15 @@ filename = 'gd1_results.fits'
 results.write(filename, overwrite=True)
 ~~~
 {: .language-python}
-Because the filename ends with `fits`, the table is written in the
-[FITS format](https://en.wikipedia.org/wiki/FITS), which preserves the
-metadata associated with the table.
+Because the filename ends with `fits`, the table is written in the [FITS
+format](https://en.wikipedia.org/wiki/FITS), which preserves the metadata
+associated with the table.
 
 If the file already exists, the `overwrite` argument causes it to be
 overwritten.
 
-To see how big the file is, we can use `ls` with the `-lh` option,
-which prints information about the file including its size in
-human-readable form.
+To see how big the file is, we can use `ls` with the `-lh` option, which
+prints information about the file including its size in human-readable form.
 
 ~~~
 !ls -lh gd1_results.fits
@@ -608,8 +608,8 @@ human-readable form.
 ~~~
 {: .output}
 
-The file is about 8.6 MB.  If you are using Windows, `ls` might not
-work; in that case, try:
+The file is about 8.6 MB.  If you are using Windows, `ls` might not work; in
+that case, try:
 
 ```
 !dir gd1_results.fits
@@ -617,25 +617,25 @@ work; in that case, try:
 
 ## Summary
 
-In this notebook, we composed more complex queries to select stars
-within a polygonal region of the sky.  Then we downloaded the results
-and saved them in a FITS file.
+In this notebook, we composed more complex queries to select stars within a
+polygonal region of the sky.  Then we downloaded the results and saved them in
+a FITS file.
 
-In the next notebook, we'll reload the data from this file and
-replicate the next step in the analysis, using proper motion to
-identify stars likely to be in GD-1.
+In the next notebook, we'll reload the data from this file and replicate the
+next step in the analysis, using proper motion to identify stars likely to be
+in GD-1.
 
 ## Best practices
 
-* For measurements with units, use `Quantity` objects that represent
-units explicitly and check for errors.
+* For measurements with units, use `Quantity` objects that represent units
+explicitly and check for errors.
 
-* Use the `format` function to compose queries; it is often faster and
-less error-prone.
+* Use the `format` function to compose queries; it is often faster and less
+error-prone.
 
-* Develop queries incrementally: start with something simple, test it,
-and add a little bit at a time.
+* Develop queries incrementally: start with something simple, test it, and add
+a little bit at a time.
 
-* Once you have a query working, save the data in a local file.  If
-you shut down the notebook and come back to it later, you can reload
-the file; you don't have to run the query again.
+* Once you have a query working, save the data in a local file.  If you shut
+down the notebook and come back to it later, you can reload the file; you
+don't have to run the query again.
