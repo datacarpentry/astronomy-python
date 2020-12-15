@@ -2,6 +2,7 @@
 title: "Plotting and Pandas"
 teaching: 3000
 exercises: 0
+
 questions:
 
 - "How do we make scatter plots in Matplotlib? How do we store data in a Pandas `DataFrame`?"
@@ -22,7 +23,7 @@ keypoints:
 
 - "When you make a scatter plot, adjust the size of the markers and their transparency so the figure is not overplotted; otherwise it can misrepresent the data badly."
 
-- "For simple scatter plots in Matplotlib, `plot` is faster than `scatter`.
+- "For simple scatter plots in Matplotlib, `plot` is faster than `scatter`."
 
 - "An Astropy `Table` and a Pandas `DataFrame` are similar in many ways and they provide many of the same functions.  They have pros and cons, but for many projects, either one would be a reasonable choice."
 
