@@ -149,15 +149,15 @@ Created TAP+ (v1.2.1) - Connection:
 > ## Exercise
 > 
 > When you are debugging queries like this, you can use `TOP` to limit
-the size of the results, but then you still don't know how big the
-results will be.
+> the size of the results, but then you still don't know how big the
+> results will be.
 > 
 > An alternative is to use `COUNT`, which asks for the number of rows
-that would be selected, but it does not return them.
+> that would be selected, but it does not return them.
 > 
 > In the previous query, replace `TOP 10 source_id` with
-`COUNT(source_id)` and run the query again.  How many stars has Gaia
-identified in the cone we searched?
+> `COUNT(source_id)` and run the query again.  How many stars has Gaia
+> identified in the cone we searched?
 
 > > 
 > > ~~~
