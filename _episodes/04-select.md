@@ -32,35 +32,34 @@ keypoints:
 
 This is the fourth in a series of notebooks related to astronomy data.
 
-As a running example, we are replicating parts of the analysis in a
-recent paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
-of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian M.
-Price-Whelan and Ana Bonaca.
+As a running example, we are replicating parts of the analysis in a recent
+paper, "[Off the beaten path: Gaia reveals GD-1 stars outside of the main
+stream](https://arxiv.org/abs/1805.00425)" by Adrian M. Price-Whelan and Ana
+Bonaca.
 
 In the first lesson, we wrote ADQL queries and used them to select and
 download data from the Gaia server.
 
-In the second lesson, we write a query to select stars from the region
-of the sky where we expect GD-1 to be, and save the results in a FITS
-file.
+In the second lesson, we write a query to select stars from the region of the
+sky where we expect GD-1 to be, and save the results in a FITS file.
 
-In the third lesson, we read that data back and identified stars with
-the proper motion we expect for GD-1.
+In the third lesson, we read that data back and identified stars with the
+proper motion we expect for GD-1.
 
 ## Outline
 
 Here are the steps in this lesson:
 
-1. Using data from the previous lesson, we'll identify the values of
-proper motion for stars likely to be in GD-1.
+1. Using data from the previous lesson, we'll identify the values of proper
+motion for stars likely to be in GD-1.
 
-2. Then we'll compose an ADQL query that selects stars based on proper
-motion, so we can download only the data we need.
+2. Then we'll compose an ADQL query that selects stars based on proper motion,
+so we can download only the data we need.
 
 3. We'll also see how to write the results to a CSV file.
 
-That will make it possible to search a bigger region of the sky in a
-single query.
+That will make it possible to search a bigger region of the sky in a single
+query.
 
 After completing this lesson, you should be able to
 
@@ -74,8 +73,8 @@ After completing this lesson, you should be able to
 
 ## Reload the data
 
-The following cells download the data from the previous lesson, if
-necessary, and load it into a Pandas `DataFrame`.
+The following cells download the data from the previous lesson, if necessary,
+and load it into a Pandas `DataFrame`.
 
 ~~~
 import os
@@ -100,32 +99,31 @@ selected = pd.read_hdf(filename, 'selected')
 
 Let's review how we got to this point.
 
-1. We made an ADQL query to the Gaia server to get data for stars in
-the vicinity of GD-1.
+1. We made an ADQL query to the Gaia server to get data for stars in the
+vicinity of GD-1.
 
-2. We transformed the coordinates to the `GD1Koposov10` frame so we
-could select stars along the centerline of GD-1.
+2. We transformed the coordinates to the `GD1Koposov10` frame so we could
+select stars along the centerline of GD-1.
 
-3. We plotted the proper motion of the centerline stars to identify
-the bounds of the overdense region.
+3. We plotted the proper motion of the centerline stars to identify the bounds
+of the overdense region.
 
-4. We made a mask that selects stars whose proper motion is in the
-overdense region.
+4. We made a mask that selects stars whose proper motion is in the overdense
+region.
 
-At this point we have downloaded data for a relatively large number of
-stars (more than 100,000) and selected a relatively small number
-(around 1000).
+At this point we have downloaded data for a relatively large number of stars
+(more than 100,000) and selected a relatively small number (around 1000).
 
-It would be more efficient to use ADQL to select only the stars we
-need.  That would also make it possible to download data covering a
-larger region of the sky.
+It would be more efficient to use ADQL to select only the stars we need.  That
+would also make it possible to download data covering a larger region of the
+sky.
 
-However, the selection we did was based on proper motion in the
-`GD1Koposov10` frame.  In order to do the same selection in ADQL, we
-have to work with proper motions in ICRS.
+However, the selection we did was based on proper motion in the `GD1Koposov10`
+frame.  In order to do the same selection in ADQL, we have to work with proper
+motions in ICRS.
 
-As a reminder, here's the rectangle we selected based on proper motion
-in the `GD1Koposov10` frame.
+As a reminder, here's the rectangle we selected based on proper motion in the
+`GD1Koposov10` frame.
 
 ~~~
 pm1_min = -8.9
@@ -175,8 +173,8 @@ plt.ylim(-10, 10);
 ~~~
 {: .output}
 
-Now we'll make the same plot using proper motions in the ICRS frame,
-which are stored in columns `pmra` and `pmdec`.
+Now we'll make the same plot using proper motions in the ICRS frame, which are
+stored in columns `pmra` and `pmdec`.
 
 ~~~
 pm1 = centerline['pmra']
@@ -200,22 +198,20 @@ plt.ylim([-20, 5]);
 ~~~
 {: .output}
 
-The proper motions of the selected stars are more spread out in this
-frame, which is why it was preferable to do the selection in the GD-1
-frame.
+The proper motions of the selected stars are more spread out in this frame,
+which is why it was preferable to do the selection in the GD-1 frame.
 
-But now we can define a polygon that encloses the proper motions of
-these stars in ICRS, and use that polygon as a selection criterion in
-an ADQL query.
+But now we can define a polygon that encloses the proper motions of these
+stars in ICRS, and use that polygon as a selection criterion in an ADQL query.
 
 ## Convex Hull
 
 SciPy provides a function that computes the [convex
-hull](https://en.wikipedia.org/wiki/Convex_hull) of a set of points,
-which is the smallest convex polygon that contains all of the points.
+hull](https://en.wikipedia.org/wiki/Convex_hull) of a set of points, which is
+the smallest convex polygon that contains all of the points.
 
-To use it, we'll select columns `pmra` and `pmdec` and convert them to
-a NumPy array.
+To use it, we'll select columns `pmra` and `pmdec` and convert them to a NumPy
+array.
 
 ~~~
 import numpy as np
@@ -238,8 +234,8 @@ points = selected[['pmra','pmdec']].values
 
 ```
 
-We'll pass the points to `ConvexHull`, which returns an object that
-contains the results.
+We'll pass the points to `ConvexHull`, which returns an object that contains
+the results.
 
 ~~~
 from scipy.spatial import ConvexHull
@@ -254,8 +250,8 @@ hull
 ~~~
 {: .output}
 
-`hull.vertices` contains the indices of the points that fall on the
-perimeter of the hull.
+`hull.vertices` contains the indices of the points that fall on the perimeter
+of the hull.
 
 ~~~
 hull.vertices
@@ -299,12 +295,12 @@ To plot the resulting polygon, we have to pull out the x and y coordinates.
 pmra_poly, pmdec_poly = np.transpose(pm_vertices)
 ~~~
 {: .language-python}
-This use of `transpose` is a bit of a NumPy trick.  Because
-`pm_vertices` has two columns, its transpose has two rows, which are
-assigned to the two variables `pmra_poly` and `pmdec_poly`.
+This use of `transpose` is a bit of a NumPy trick.  Because `pm_vertices` has
+two columns, its transpose has two rows, which are assigned to the two
+variables `pmra_poly` and `pmdec_poly`.
 
-The following figure shows proper motion in ICRS again, along with the
-convex hull we just computed.
+The following figure shows proper motion in ICRS again, along with the convex
+hull we just computed.
 
 ~~~
 pm1 = centerline['pmra']
@@ -350,16 +346,16 @@ WHERE parallax < 1
 {: .language-python}
 And here are the changes we'll make in this lesson:
 
-1. We will add another clause to select stars whose proper motion is
-in the polygon we just computed, `pm_vertices`.
+1. We will add another clause to select stars whose proper motion is in the
+polygon we just computed, `pm_vertices`.
 
 2. We will select stars with coordinates in a larger region.
 
-To use `pm_vertices` as part of an ADQL query, we have to convert it
-to a string.
+To use `pm_vertices` as part of an ADQL query, we have to convert it to a
+string.
 
-We'll use `flatten` to convert from a 2-D array to a 1-D array, and
-`str` to convert each element to a string.
+We'll use `flatten` to convert from a 2-D array to a 1-D array, and `str` to
+convert each element to a string.
 
 ~~~
 t = [str(x) for x in pm_vertices.flatten()]
@@ -383,8 +379,8 @@ t
 ~~~
 {: .output}
 
-Now `t` is a list of strings; we can use `join` to make a single
-string with commas between the elements.
+Now `t` is a list of strings; we can use `join` to make a single string with
+commas between the elements.
 
 ~~~
 pm_point_list = ', '.join(t)
@@ -397,8 +393,8 @@ pm_point_list
 ~~~
 {: .output}
 
-We'll add this string to the query soon, but first let's compute the
-other polygon, the one that specifies the region of the sky we want.
+We'll add this string to the query soon, but first let's compute the other
+polygon, the one that specifies the region of the sky we want.
 
 Here are the coordinates of the rectangle we'll select, in the GD-1 frame.
 
@@ -431,8 +427,8 @@ WARNING: AstropyDeprecationWarning: Transforming a frame instance to a frame cla
 ~~~
 {: .output}
 
-To use `corners_icrs` as part of an ADQL query, we have to convert it
-to a string.  Here's how we do that, as we saw in the previous lesson.
+To use `corners_icrs` as part of an ADQL query, we have to convert it to a
+string.  Here's how we do that, as we saw in the previous lesson.
 
 ~~~
 point_base = "{point.ra.value}, {point.dec.value}"
@@ -466,9 +462,9 @@ WHERE parallax < 1
 {: .language-python}
 > ## Exercise
 > 
-> Modify `query_base` by adding a new clause to select stars whose
-> coordinates of proper motion, `pmra` and `pmdec`, fall within the
-> polygon defined by `pm_point_list`.
+> Modify `query_base` by adding a new clause to select stars whose coordinates
+> of proper motion, `pmra` and `pmdec`, fall within the polygon defined by
+> `pm_point_list`.
 
 > > 
 > > ~~~
@@ -497,7 +493,8 @@ columns = 'source_id, ra, dec, pmra, pmdec, parallax, radial_velocity'
 > ## Exercise
 > 
 > Use `format` to format `query_base` and define `query`, filling in the
-> values of `columns`, `point_list`, and `pm_point_list`.
+values
+> of `columns`, `point_list`, and `pm_point_list`.
 
 > > 
 > > ~~~
@@ -569,12 +566,11 @@ plt.ylabel('dec (degree ICRS)');
 ~~~
 {: .output}
 
-Here we can see why it was useful to transform these coordinates.  In
-ICRS, it is more difficult to identity the stars near the centerline
-of GD-1.
+Here we can see why it was useful to transform these coordinates.  In ICRS, it
+is more difficult to identity the stars near the centerline of GD-1.
 
-So, before we move on to the next step, let's collect the code we used
-to transform the coordinates and make a Pandas `DataFrame`:
+So, before we move on to the next step, let's collect the code we used to
+transform the coordinates and make a Pandas `DataFrame`:
 
 ~~~
 def make_dataframe(table):
@@ -629,8 +625,8 @@ plt.ylabel('dec (degree GD1)');
 
 We're starting to see GD-1 more clearly.
 
-We can compare this figure with one of these panels in Figure 1 from
-the original paper:
+We can compare this figure with one of these panels in Figure 1 from the
+original paper:
 
 <img height="150"
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-2.png">
@@ -638,22 +634,20 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-2.pn
 <img height="150"
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png">
 
-The top panel shows stars selected based on proper motion only, so it
-is comparable to our figure (although notice that it covers a wider
-region).
+The top panel shows stars selected based on proper motion only, so it is
+comparable to our figure (although notice that it covers a wider region).
 
-In the next lesson, we will use photometry data from Pan-STARRS to do
-a second round of filtering, and see if we can replicate the bottom
-panel.
+In the next lesson, we will use photometry data from Pan-STARRS to do a second
+round of filtering, and see if we can replicate the bottom panel.
 
-We'll also learn how to add annotations like the ones in the figure
-from the paper, and customize the style of the figure to present the
-results clearly and compellingly.
+We'll also learn how to add annotations like the ones in the figure from the
+paper, and customize the style of the figure to present the results clearly
+and compellingly.
 
 ## Saving the DataFrame
 
-Let's save this `DataFrame` so we can pick up where we left off
-without running this query again.
+Let's save this `DataFrame` so we can pick up where we left off without
+running this query again.
 
 ~~~
 filename = 'gd1_candidates.hdf5'
@@ -686,17 +680,17 @@ Pandas can write a variety of other formats, [which you can read about
 here](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html).
 
 We won't cover all of them, but one other important one is
-[CSV](https://en.wikipedia.org/wiki/Comma-separated_values), which
-stands for "comma-separated values".
+[CSV](https://en.wikipedia.org/wiki/Comma-separated_values), which stands for
+"comma-separated values".
 
-CSV is a plain-text format with minimal formatting requirements, so it
-can be read and written by pretty much any tool that works with data.
-In that sense, it is the "least common denominator" of data formats.
+CSV is a plain-text format with minimal formatting requirements, so it can be
+read and written by pretty much any tool that works with data.  In that sense,
+it is the "least common denominator" of data formats.
 
-However, it has an important limitation: some information about the
-data gets lost in translation, notably the data types.  If you read a
-CSV file from someone else, you might need some additional information
-to make sure you are getting it right.
+However, it has an important limitation: some information about the data gets
+lost in translation, notably the data types.  If you read a CSV file from
+someone else, you might need some additional information to make sure you are
+getting it right.
 
 Also, CSV files tend to be big, and slow to read and write.
 
@@ -719,8 +713,8 @@ We can check the file size like this:
 ~~~
 {: .output}
 
-The CSV file about 2 times bigger than the HDF5 file (so that's not
-that bad, really).
+The CSV file about 2 times bigger than the HDF5 file (so that's not that bad,
+really).
 
 We can see the first few lines like this:
 
@@ -783,42 +777,38 @@ read_back_csv.head(3)
 ~~~
 {: .output}
 
-Notice that the index in `candidate_df` has become an unnamed column
-in `read_back_csv`.  The Pandas functions for writing and reading CSV
-files provide options to avoid that problem, but this is an example of
-the kind of thing that can go wrong with CSV files.
+Notice that the index in `candidate_df` has become an unnamed column in
+`read_back_csv`.  The Pandas functions for writing and reading CSV files
+provide options to avoid that problem, but this is an example of the kind of
+thing that can go wrong with CSV files.
 
 ## Summary
 
-In the previous lesson we downloaded data for a large number of stars
-and then selected a small fraction of them based on proper motion.
+In the previous lesson we downloaded data for a large number of stars and then
+selected a small fraction of them based on proper motion.
 
-In this lesson, we improved this process by writing a more complex
-query that uses the database to select stars based on proper motion.
-This process requires more computation on the Gaia server, but then
-we're able to either:
+In this lesson, we improved this process by writing a more complex query that
+uses the database to select stars based on proper motion.  This process
+requires more computation on the Gaia server, but then we're able to either:
 
 1. Search the same region and download less data, or
 
 2. Search a larger region while still downloading a manageable amount of data.
 
-In the next lesson, we'll learn about the databased `JOIN` operation
-and use it to download photometry data from Pan-STARRS.
+In the next lesson, we'll learn about the databased `JOIN` operation and use
+it to download photometry data from Pan-STARRS.
 
 ## Best practices
 
-* When possible, "move the computation to the data"; that is, do as
-much of the work as possible on the database server before downloading
-the data.
+* When possible, "move the computation to the data"; that is, do as much of
+the work as possible on the database server before downloading the data.
 
-* For most applications, saving data in FITS or HDF5 is better than
-CSV.  FITS and HDF5 are binary formats, so the files are usually
-smaller, and they store metadata, so you don't lose anything when you
-read the file back.
+* For most applications, saving data in FITS or HDF5 is better than CSV.  FITS
+and HDF5 are binary formats, so the files are usually smaller, and they store
+metadata, so you don't lose anything when you read the file back.
 
-* On the other hand, CSV is a "least common denominator" format; that
-is, it can be read by practically any application that works with
-data.
+* On the other hand, CSV is a "least common denominator" format; that is, it
+can be read by practically any application that works with data.
 
 ~~~
 
