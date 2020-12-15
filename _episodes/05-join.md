@@ -300,9 +300,9 @@ If you are using Windows, `ls` might not work; in that case, try:
 
 > ## Exercise
 > 
-> There's a gotcha here we want to warn you about.  Why do you think
-we used double brackets to specify the column we wanted?  What happens
-if you use single brackets?
+> There's a gotcha here we want to warn you about.  Why do you think we
+> used double brackets to specify the column we wanted?  What happens if
+> you use single brackets?
 > 
 > Run these cells to find out.
 
@@ -661,7 +661,7 @@ Since we've done everything here before, we'll do these steps as an exercise.
 > ## Exercise
 > 
 > Select `source_id` and `original_ext_source_id` from `results1` and
-write the resulting table as a file named `external.xml`.
+> write the resulting table as a file named `external.xml`.
 
 > > 
 > > ~~~
@@ -698,30 +698,31 @@ Use `!head` to confirm that the file exists and contains an XML VOTable.
 > ## Exercise
 > 
 > Read [the documentation of the Pan-STARRS
+>
 table](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_external_catalogues/ssec_dm_panstarrs1_original_valid.html)
-and make note of `obj_id`, which contains the object IDs we'll use to
-find the rows we want.
+> and make note of `obj_id`, which contains the object IDs we'll use to
+> find the rows we want.
 > 
 > Write a query that uses each value of `original_ext_source_id` from
-the uploaded table to find a row in
-`gaiadr2.panstarrs1_original_valid` with the same value in `obj_id`,
-and select all columns from both tables.
+> the uploaded table to find a row in
+> `gaiadr2.panstarrs1_original_valid` with the same value in `obj_id`,
+> and select all columns from both tables.
 > 
 > Suggestion: Develop and test your query incrementally.  For example:
 > 
 > 1. Write a query that downloads all columns from the uploaded table.
-Test to make sure we can read the uploaded table.
+> Test to make sure we can read the uploaded table.
 > 
 > 2. Write a query that downloads the first 10 rows from
-`gaiadr2.panstarrs1_original_valid`.  Test to make sure we can access
-Pan-STARRS data.
+> `gaiadr2.panstarrs1_original_valid`.  Test to make sure we can access
+> Pan-STARRS data.
 > 
 > 3. Write a query that joins the two tables and selects all columns.
-Test that the join works as expected.
+> Test that the join works as expected.
 > 
 > 
 > As a bonus exercise, write a query that joins the two tables and
-selects just the columns we need:
+> selects just the columns we need:
 > 
 > * `source_id` from the uploaded table
 > 
@@ -729,8 +730,8 @@ selects just the columns we need:
 > 
 > * `i_mean_psf_mag` from `gaiadr2.panstarrs1_original_valid`
 > 
-> Hint: When you select a column from a join, you have to specify
-which table the column is in.
+> Hint: When you select a column from a join, you have to specify which
+> table the column is in.
 
 > > 
 > > ~~~
@@ -810,8 +811,9 @@ results2
 > Optional Challenge: Do both joins in one query.
 > 
 > There's an [example
+>
 here](https://github.com/smoh/Getting-started-with-Gaia/blob/master/gaia-adql-snippets.md)
-you could start with.
+> you could start with.
 
 > > 
 > > ~~~

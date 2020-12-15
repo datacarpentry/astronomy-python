@@ -467,8 +467,8 @@ WHERE parallax < 1
 > ## Exercise
 > 
 > Modify `query_base` by adding a new clause to select stars whose
-coordinates of proper motion, `pmra` and `pmdec`, fall within the
-polygon defined by `pm_point_list`.
+> coordinates of proper motion, `pmra` and `pmdec`, fall within the
+> polygon defined by `pm_point_list`.
 
 > > 
 > > ~~~
@@ -496,8 +496,8 @@ columns = 'source_id, ra, dec, pmra, pmdec, parallax, radial_velocity'
 {: .language-python}
 > ## Exercise
 > 
-> Use `format` to format `query_base` and define `query`, filling in
-the values of `columns`, `point_list`, and `pm_point_list`.
+> Use `format` to format `query_base` and define `query`, filling in the
+> values of `columns`, `point_list`, and `pm_point_list`.
 
 > > 
 > > ~~~

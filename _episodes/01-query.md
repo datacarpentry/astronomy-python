@@ -19,13 +19,13 @@ keypoints:
 
 - "Use ADQL features like `TOP` and `COUNT` to test before you run a query that might return a lot of data."
 
-- "If you know your query will return fewer than 3000 rows, you can
+- "If you know your query will return fewer than 3000 rows, you can 
 run it synchronously, which might complete faster (but it doesn't seem to make much difference).  If it might return more than 3000 rows, you should run it asynchronously."
 
-- "ADQL and SQL are not case-sensitive, so you don't have to
+- "ADQL and SQL are not case-sensitive, so you don't have to 
 capitalize the keywords, but you should."
 
-- "ADQL and SQL don't require you to break a query into multiple
+- "ADQL and SQL don't require you to break a query into multiple 
 lines, but you should."
 
 ---
@@ -72,7 +72,7 @@ with [the tutorial on from Jupyter.org called "Try Classic
 Notebook"](https://jupyter.org/try), or [this tutorial from
 DataQuest](https://www.dataquest.io/blog/jupyter-notebook-tutorial/).
 
-There are two environments you can use to write and run notebooks:
+There are two environments you can use to write and run notebooks: 
 
 * "Jupyter Notebook" is the original, and
 
@@ -287,18 +287,18 @@ documentation, [you might like this
 article](https://www.vox.com/future-perfect/2019/6/4/18650969/married-women-miserable-fake-paul-dolan-happiness).
 
 > ## Exercise
->
+> 
 > One of the other tables we'll use is
-> `gaiadr2.panstarrs1_original_valid`.  
-> Use `load_table` to get the metadata for this table.  
-> How many columns are there and what are their names?
->
-> >
+> `gaiadr2.panstarrs1_original_valid`.  Use `load_table` to get the
+> metadata for this table.  How many columns are there and what are
+> their names?
+
+> > 
 > > ~~~
-> >
+> > 
 > > meta2 = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
 > > print(meta2)
-> >
+> > 
 > > for column in meta2.columns:
 > >     print(column.name)
 > > ~~~
@@ -318,9 +318,9 @@ database, the query language is a dialect of SQL called ADQL.
 Here's an example of an ADQL query.
 
 ~~~
-query1 = """SELECT
+query1 = """SELECT 
 TOP 10
-source_id, ref_epoch, ra, dec, parallax
+source_id, ref_epoch, ra, dec, parallax 
 FROM gaiadr2.gaia_source"""
 ~~~
 {: .language-python}
@@ -453,16 +453,17 @@ This information comes from the Gaia database, and has been stored in
 the Astropy `Table` by Astroquery.
 
 > ## Exercise
->
+> 
 > Read [the documentation of this
+>
 table](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html)
-and choose a column that looks interesting to you.  Add the column
-name to the query and run it again.  What are the units of the column
-you selected?  What is its data type?
+> and choose a column that looks interesting to you.  Add the column
+> name to the query and run it again.  What are the units of the column
+> you selected?  What is its data type?
 
-> >
+> > 
 > > ~~~
-> >
+> > 
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -566,30 +567,30 @@ Negative parallaxes have "no physical meaning," but they can be a
 "useful diagnostic on the quality of the astrometric solution."
 
 > ## Exercise
->
+> 
 > The clauses in a query have to be in the right order.  Go back and
-change the order of the clauses in `query2` and run it again.
->
+> change the order of the clauses in `query2` and run it again.
+> 
 > The query should fail, but notice that you don't get much useful
-debugging information.
->
+> debugging information.
+> 
 > For this reason, developing and debugging ADQL queries can be really
-hard.  A few suggestions that might help:
->
-> * Whenever possible, start with a working query, either an example
-you find online or a query you have used in the past.
->
+> hard.  A few suggestions that might help:
+> 
+> * Whenever possible, start with a working query, either an example you
+> find online or a query you have used in the past.
+> 
 > * Make small changes and test each change before you continue.
->
+> 
 > * While you are debugging, use `TOP` to limit the number of rows in
-the result.  That will make each test run faster, which reduces your
-development time.
->
+> the result.  That will make each test run faster, which reduces your
+> development time.
+> 
 > * Launching test queries synchronously might make them start faster, too.
 
-> >
+> > 
 > > ~~~
-> >
+> > 
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -619,36 +620,37 @@ You can combine comparisons using the logical operators:
 * AND: true if both comparisons are true
 * OR: true if either or both comparisons are true
 
-Finally, you can use `NOT` to invert the result of a comparison.
+Finally, you can use `NOT` to invert the result of a comparison. 
 
 > ## Exercise
->
+> 
 > [Read about SQL operators
-here](https://www.w3schools.com/sql/sql_operators.asp) and then modify
-the previous query to select rows where `bp_rp` is between `-0.75` and
-`2`.
->
+> here](https://www.w3schools.com/sql/sql_operators.asp) and then modify
+> the previous query to select rows where `bp_rp` is between `-0.75` and
+> `2`.
+> 
 > You can [read about this variable
+>
 here](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html).
 
-> >
+> > 
 > > ~~~
-> >
+> > 
 > > # Here's a solution using > and < operators
-> >
+> > 
 > > query = """SELECT TOP 10
 > > source_id, ref_epoch, ra, dec, parallax
 > > FROM gaiadr2.gaia_source
-> > WHERE parallax < 1
+> > WHERE parallax < 1 
 > >   AND bp_rp > -0.75 AND bp_rp < 2
 > > """
-> >
+> > 
 > > # And here's a solution using the BETWEEN operator
-> >
+> > 
 > > query = """SELECT TOP 10
 > > source_id, ref_epoch, ra, dec, parallax
 > > FROM gaiadr2.gaia_source
-> > WHERE parallax < 1
+> > WHERE parallax < 1 
 > >   AND bp_rp BETWEEN -0.75 AND 2
 > > """
 > > ~~~
@@ -725,7 +727,7 @@ And here's the base; it's a string that contains at least one format
 specifier in curly brackets (braces).
 
 ~~~
-query3_base = """SELECT TOP 10
+query3_base = """SELECT TOP 10 
 {columns}
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
@@ -764,7 +766,7 @@ print(query3)
 {: .language-python}
 
 ~~~
-SELECT TOP 10
+SELECT TOP 10 
 source_id, ra, dec, pmra, pmdec, parallax, radial_velocity
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
@@ -825,25 +827,25 @@ results3
 Good so far.
 
 > ## Exercise
->
+> 
 > This query always selects sources with `parallax` less than 1.  But
-suppose you want to take that upper bound as an input.
->
+> suppose you want to take that upper bound as an input.
+> 
 > Modify `query3_base` to replace `1` with a format specifier like
-`{max_parallax}`.  Now, when you call `format`, add a keyword argument
-that assigns a value to `max_parallax`, and confirm that the format
-specifier gets replaced with the value you provide.
+> `{max_parallax}`.  Now, when you call `format`, add a keyword argument
+> that assigns a value to `max_parallax`, and confirm that the format
+> specifier gets replaced with the value you provide.
 
-> >
+> > 
 > > ~~~
-> >
+> > 
 > > query4_base = """SELECT TOP 10
 > > {columns}
 > > FROM gaiadr2.gaia_source
-> > WHERE parallax < {max_parallax} AND
+> > WHERE parallax < {max_parallax} AND 
 > > bp_rp BETWEEN -0.75 AND 2
 > > """
-> >
+> > 
 > > query4 = query4_base.format(columns=columns,
 > >                             max_parallax=0.5)
 > > print(query)
