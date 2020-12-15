@@ -8,7 +8,7 @@ questions:
 
 objectives:
 
-- "Use Matplotlib to specify a `Polygon` and determine which points fall inside it."
+- "Use Matplotlib to specify a polygon and determine which points fall inside it."
 
 - "Use Pandas to merge data from multiple `DataFrames`, much like a database `JOIN` operation."
 

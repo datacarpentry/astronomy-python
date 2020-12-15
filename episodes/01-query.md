@@ -460,6 +460,13 @@ and choose a column that looks interesting to you.  Add the column
 name to the query and run it again.  What are the units of the column
 you selected?  What is its data type?
 
+> > 
+> > ~~~
+> > 
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
 
 ## Asynchronous queries
 
@@ -580,6 +587,13 @@ development time.
 > 
 > * Launching test queries synchronously might make them start faster, too.
 
+> > 
+> > ~~~
+> > 
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
 
 ## Operators
 
