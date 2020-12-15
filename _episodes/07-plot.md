@@ -84,46 +84,57 @@ with the caption:
 <img width="500"
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.png">
 
-**Exercise:** Think about the following questions:
-
-1. What is the primary scientific result of this work?
-
-2. What story is this figure telling?
-
-3. In the design of this figure, can you identify 1-2 choices the
+> ## Exercise
+> 
+> Think about the following questions:
+> 
+> 1. What is the primary scientific result of this work?
+> 
+> 2. What story is this figure telling?
+> 
+> 3. In the design of this figure, can you identify 1-2 choices the
 authors made that you think are effective?  Think about big-picture
 elements, like the number of panels and how they are arranged, as well
 as details like the choice of typeface.
-
-4. Can you identify 1-2 elements that could be improved, or that you
+> 
+> 4. Can you identify 1-2 elements that could be improved, or that you
 might have done differently?
 
-Some topics that might come up in this discussion:
-
-1. The primary result is that the multiple stages of selection make it
-possible to separate likely candidates from the background more
-effectively than in previous work, which makes it possible to see the
-structure of GD-1 in "unprecedented detail".
-
-2. The figure documents the selection process as a sequence of steps.
-Reading right-to-left, top-to-bottom, we see selection based on proper
-motion, the results of the first selection, selection based on color
-and magnitude, and the results of the second selection.  So this
-figure documents the methodology and presents the primary result.
-
-3. It's mostly black and white, with minimal use of color, so it will
-work well in print.  The annotations in the bottom left panel guide
-the reader to the most important results.  It contains enough
-technical detail for a professional audience, but most of it is also
-comprehensible to a more general audience.  The two left panels have
-the same dimensions and their axes are aligned.
-
-4. Since the panels represent a sequence, it might be better to
-arrange them left-to-right.  The placement and size of the axis labels
-could be tweaked.  The entire figure could be a little bigger to match
-the width and proportion of the caption.  The top left panel has
-unnused white space (but that leaves space for the annotations in the
-bottom left).
+> > 
+> > ~~~
+> > 
+> > # Some topics that might come up in this discussion:
+> > 
+> > # 1. The primary result is that the multiple stages of selection 
+> > # make it possible to separate likely candidates from the 
+> > # background more effectively than in previous work, which makes 
+> > # it possible to see the structure of GD-1 in "unprecedented detail".
+> > 
+> > # 2. The figure documents the selection process as a sequence of 
+> > # steps.  Reading right-to-left, top-to-bottom, we see selection 
+> > # based on proper motion, the results of the first selection, 
+> > # selection based on color and magnitude, and the results of the 
+> > # second selection.  So this figure documents the methodology and 
+> > # presents the primary result.
+> > 
+> > # 3. It's mostly black and white, with minimal use of color, so 
+> > # it will work well in print.  The annotations in the bottom 
+> > # left panel guide the reader to the most important results.  
+> > # It contains enough technical detail for a professional audience, 
+> > # but most of it is also comprehensible to a more general audience.  
+> > # The two left panels have the same dimensions and their axes are 
+> > # aligned.
+> > 
+> > # 4. Since the panels represent a sequence, it might be better to 
+> > # arrange them left-to-right.  The placement and size of the axis 
+> > # labels could be tweaked.  The entire figure could be a little 
+> > # bigger to match the width and proportion of the caption.  
+> > # The top left panel has unnused white space (but that leaves 
+> > # space for the annotations in the bottom left).
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
 
 ## Plotting GD-1
 
@@ -141,6 +152,13 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
+
+~~~
+gd1_merged.hdf5
+
+~~~
+{: .output}
+
 ~~~
 import pandas as pd
 
@@ -188,20 +206,23 @@ region of GD-1,
 
 * Several annotations that combine text and arrows to identify features of GD-1.
 
-As an exercise, choose any or all of these features and add them to the figure:
-
-* To draw vertical lines, see
+> ## Exercise
+> 
+> Choose any or all of these features and add them to the figure:
+> 
+> * To draw vertical lines, see
 [`plt.vlines`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.vlines.html)
 and
 [`plt.axvline`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.axvline.html#matplotlib.pyplot.axvline).
-
-* To add text, see
+> 
+> * To add text, see
 [`plt.text`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.text.html).
-
-* To add an annotation with text and an arrow, see [plt.annotate]().
-
-And here is some [additional information about text and
+> 
+> * To add an annotation with text and an arrow, see [plt.annotate]().
+> 
+> And here is some [additional information about text and
 arrows](https://matplotlib.org/3.3.1/tutorials/text/annotations.html#plotting-guide-annotation).
+
 > > 
 > > ~~~
 > > 
@@ -254,9 +275,12 @@ Here's how you can put the ticks on the inside of the figure:
 plt.gca().tick_params(direction='in')
 ```
 
-**Exercise:** Read the documentation of
+> ## Exercise
+> 
+> Read the documentation of
 [`tick_params`](https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.axes.Axes.tick_params.html)
 and use it to put ticks on the top and right sides of the axes.
+
 > > 
 > > ~~~
 > > 
@@ -289,9 +313,9 @@ And sets it to a new value:
 plt.rcParams['font.size'] = 14
 ~~~
 {: .language-python}
-**Exercise:** Plot the previous figure again, and see what font sizes
-have changed.  Look up any other element of `rcParams`, change its
-value, and check the effect on the figure.
+As an exercise, plot the previous figure again, and see what font
+sizes have changed.  Look up any other element of `rcParams`, change
+its value, and check the effect on the figure.
 
 If you find yourself making the same customizations in several
 notebooks, you can put changes to `rcParams` in a `matplotlibrc` file,
@@ -350,7 +374,7 @@ The style sheet you choose will affect the appearance of all figures
 you plot after calling `use`, unless you override any of the options
 or call `use` again.
 
-**Exercise:** Choose one of the styles on the list and select it by
+As an exercise, choose one of the styles on the list and select it by
 calling `use`.  Then go back and plot one of the figures above and see
 what effect it has.
 
@@ -484,6 +508,13 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
+
+~~~
+gd1_dataframe.hdf5
+
+~~~
+{: .output}
+
 ~~~
 import pandas as pd
 
@@ -581,6 +612,13 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
+
+~~~
+gd1_candidates.hdf5
+
+~~~
+{: .output}
+
 ~~~
 import pandas as pd
 
@@ -668,11 +706,9 @@ plot_cmd(merged)
 ~~~
 {: .output}
 
-**Exercise:** Add a few lines to `plot_cmd` to show the Polygon we
-selected as a shaded area.
-
-Run these cells to get the polygon coordinates we saved in the
-previous notebook.
+The following cell downloads an HDF file that contains the polygon we
+used to select starts in the color-magnitude diagram, if it doesn't
+already exist.
 
 ~~~
 import os
@@ -684,32 +720,72 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
+
 ~~~
-coords_df = pd.read_hdf(filename, 'coords_df')
-coords = coords_df.to_numpy()
+gd1_polygon.hdf5
+
+~~~
+{: .output}
+
+And here's how we read it back.
+
+~~~
+loop = pd.read_hdf(filename, 'loop')
+loop
+~~~
+{: .language-python}
+
+~~~
+gi
+0.587571    21.411746
+0.567801    21.322466
+0.548134    21.233380
+0.528693    21.144427
+0.509300    21.054549
+              ...    
+0.773743    21.054549
+0.798829    21.144427
+0.824000    21.233380
+0.849503    21.322466
+[Output truncated]
+~~~
+{: .output}
+
+~~~
+coords = loop.reset_index().to_numpy()
 coords
 ~~~
 {: .language-python}
 
 ~~~
-array([[ 0.26433692, 17.84253127],
-       [ 0.35394265, 18.799117  ],
-       [ 0.47491039, 19.68211921],
-       [ 0.63172043, 20.45474614],
-       [ 0.76612903, 20.78587196],
-       [ 0.80645161, 21.41133186],
-       [ 0.58691756, 21.30095659],
-       [ 0.39426523, 20.56512141],
-       [ 0.22401434, 19.2406181 ],
-       [ 0.19713262, 18.02649007]])
+array([[ 0.58757135, 21.41174601],
+       [ 0.56780097, 21.32246601],
+       [ 0.54813409, 21.23338001],
+       [ 0.5286928 , 21.14442701],
+       [ 0.50929987, 21.05454901],
+       [ 0.48991266, 20.96383501],
+       [ 0.47084777, 20.87386601],
+       [ 0.45222635, 20.78511001],
+       [ 0.43438902, 20.69865301],
+       [ 0.42745198, 20.66469601],
+       [ 0.42067029, 20.63135301],
+[Output truncated]
 ~~~
 {: .output}
+
+> ## Exercise
+> 
+> Add a few lines to `plot_cmd` to show the polygon we selected as a
+shaded area.
+> 
+> Hint: pass `coords` as an argument to `Polygon` and plot it using `add_patch`.
+
 > > 
 > > ~~~
 > > 
-> > #poly = Polygon(coords, closed=True, 
-> > #               facecolor='C1', alpha=0.4)
-> > #plt.gca().add_patch(poly)
+> > # poly = Polygon(coords, closed=True, 
+> > #                facecolor='C1', alpha=0.4)
+> > # plt.gca().add_patch(poly)
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -764,7 +840,7 @@ We use
 at the end, which adjusts the sizes of the panels to make sure the
 titles and axis labels don't overlap.
 
-**Exercise:** See what happens if you leave out `tight_layout`.
+As an exercise, see what happens if you leave out `tight_layout`.
 
 ## Adjusting proportions
 
@@ -813,8 +889,37 @@ plt.tight_layout()
 
 This is looking more and more like the figure in the paper.
 
-**Exercise:** In this example, the ratio of the widths of the panels
-is 3:1.  How would you adjust it if you wanted the ratio to be 3:2?
+> ## Exercise
+> 
+> In this example, the ratio of the widths of the panels is 3:1.  How
+would you adjust it if you wanted the ratio to be 3:2?
+
+> > 
+> > ~~~
+> > 
+> > # plt.figure(figsize=(9, 4.5))
+> > 
+> > # shape = (2, 5)                                   # CHANGED
+> > # plt.subplot2grid(shape, (0, 0), colspan=3)
+> > # plot_first_selection(candidate_df)
+> > 
+> > # plt.subplot2grid(shape, (0, 3), colspan=2)       # CHANGED
+> > # plot_proper_motion(centerline)
+> > 
+> > # plt.subplot2grid(shape, (1, 0), colspan=3)
+> > # plot_second_selection(selected)
+> > 
+> > # plt.subplot2grid(shape, (1, 3), colspan=2)       # CHANGED
+> > # plot_cmd(merged)
+> > # poly = Polygon(coords, closed=True, 
+> > #                facecolor='C1', alpha=0.4)
+> > # plt.gca().add_patch(poly)
+> > 
+> > # plt.tight_layout()
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
 
 ## Summary
 

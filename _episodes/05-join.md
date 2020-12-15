@@ -825,12 +825,12 @@ you could start with.
 > >   ON ps.obj_id = best.original_ext_source_id
 > > """
 > > 
-> > job3 = Gaia.launch_job_async(query=query3, 
+> > # job3 = Gaia.launch_job_async(query=query3, 
 > >                        upload_resource='candidate_df.xml', 
 > >                        upload_table_name='candidate_df')
 > > 
-> > results3 = job3.get_results()
-> > results3
+> > # results3 = job3.get_results()
+> > # results3
 > > ~~~
 > > {: .language-python}
 > {: .solution}

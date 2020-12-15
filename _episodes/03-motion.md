@@ -330,16 +330,16 @@ distinguish between high and low density areas.
 To fix this, we can provide optional arguments to control the size and
 transparency of the points.
 
-## Exercise
-
-In the call to `plt.plot`, add the keyword argument `markersize=0.1`
+> ## Exercise
+> 
+> In the call to `plt.plot`, add the keyword argument `markersize=0.1`
 to make the markers smaller.
-
-Then add the argument `alpha=0.1` to make the markers nearly transparent.
-
-Adjust these arguments until you think the figure shows the data most clearly.
-
-Note: Once you have made these changes, you might notice that the
+> 
+> Then add the argument `alpha=0.1` to make the markers nearly transparent.
+> 
+> Adjust these arguments until you think the figure shows the data most clearly.
+> 
+> Note: Once you have made these changes, you might notice that the
 figure shows stripes with lower density of stars.  These stripes are
 caused by the way Gaia scans the sky, which [you can read about
 here](https://www.cosmos.esa.int/web/gaia/scanning-law).  The dataset
@@ -347,6 +347,14 @@ we are using, [Gaia Data Release
 2](https://www.cosmos.esa.int/web/gaia/dr2), covers 22 months of
 observations; during this time, some parts of the sky were scanned
 more than others.
+
+> > 
+> > ~~~
+> > 
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
 
 ## Transform back
 
@@ -1062,10 +1070,12 @@ provide a name, or "key", that identifies the Dataset in the file.
 We could use any string as the key, but in this example I use the
 variable name `df`.
 
-## Exercise 
+> ## Exercise
+> 
+> We're going to need `centerline` and `selected` later as well.
+Write a line or two of code to add it as a second Dataset in the HDF5
+file.
 
-We're going to need `centerline` and `selected` later as well.  Write
-a line or two of code to add it as a second Dataset in the HDF5 file.
 > > 
 > > ~~~
 > > 

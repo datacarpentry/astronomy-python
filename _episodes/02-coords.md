@@ -146,18 +146,34 @@ Created TAP+ (v1.2.1) - Connection:
 ~~~
 {: .output}
 
-## Exercise
-
-When you are debugging queries like this, you can use `TOP` to limit
+> ## Exercise
+> 
+> When you are debugging queries like this, you can use `TOP` to limit
 the size of the results, but then you still don't know how big the
 results will be.
-
-An alternative is to use `COUNT`, which asks for the number of rows
+> 
+> An alternative is to use `COUNT`, which asks for the number of rows
 that would be selected, but it does not return them.
-
-In the previous query, replace `TOP 10 source_id` with
+> 
+> In the previous query, replace `TOP 10 source_id` with
 `COUNT(source_id)` and run the query again.  How many stars has Gaia
 identified in the cone we searched?
+
+> > 
+> > ~~~
+> > 
+> > query = """
+> > SELECT 
+> > COUNT(source_id)
+> > FROM gaiadr2.gaia_source
+> > WHERE 1=CONTAINS(
+> >   POINT(ra, dec),
+> >   CIRCLE(266.41683, -29.00781, 0.08333333))
+> > """
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
 
 ## Getting GD-1 Data
 
