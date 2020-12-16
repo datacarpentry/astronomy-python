@@ -304,36 +304,31 @@ If you are using Windows, `ls` might not work; in that case, try:
 > used double brackets to specify the column we wanted?  What happens if
 > you use single brackets?
 > 
-> Run these cells to find out.
+> Run these code snippets to find out.
+> 
+> ```
+> table_id = candidate_table[['source_id']]
+> print(type(table_id))
+> ```
+> 
+> ```
+> column = candidate_table['source_id']
+> print(type(column))
+> ```
+> 
+> ```
+> # This one should cause an error
+> writeto(column, 'candidate_df.xml')
+> ```
+> > 
+> > ~~~
+> > 
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
 
-~~~
-table_id = candidate_table[['source_id']]
-type(table_id)
-~~~
-{: .language-python}
 
-~~~
-astropy.table.table.Table
-~~~
-{: .output}
-
-~~~
-column = candidate_table['source_id']
-type(column)
-~~~
-{: .language-python}
-
-~~~
-astropy.table.column.Column
-~~~
-{: .output}
-
-~~~
-# This line is commented out because it would cause an error
-
-# writeto(column, 'candidate_df.xml')
-~~~
-{: .language-python}
 ## Uploading a table
 
 The next step is to upload this table to the Gaia server and use it as
