@@ -30,53 +30,55 @@ keypoints:
 
 This is the sixth in a series of notebooks related to astronomy data.
 
-As a continuing example, we will replicate part of the analysis in a recent
-paper, "[Off the beaten path: Gaia reveals GD-1 stars outside of the main
-stream](https://arxiv.org/abs/1805.00425)" by Adrian M. Price-Whelan and Ana
-Bonaca.
+As a continuing example, we will replicate part of the analysis in a
+recent paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
+of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian M.
+Price-Whelan and Ana Bonaca.
 
-In the previous lesson we downloaded photometry data from Pan-STARRS, which is
-available from the same server we've been using to get Gaia data.
+In the previous lesson we downloaded photometry data from Pan-STARRS,
+which is available from the same server we've been using to get Gaia
+data.
 
-The next step in the analysis is to select candidate stars based on the
-photometry data.
-The following figure from the paper is a color-magnitude diagram showing the
-stars we previously selected based on proper motion:
+The next step in the analysis is to select candidate stars based on
+the photometry data.
+The following figure from the paper is a color-magnitude diagram
+showing the stars we previously selected based on proper motion:
 
 <img width="300"
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-3.png">
 
-In red is a theoretical isochrone, showing where we expect the stars in GD-1
-to fall based on the metallicity and age of their original globular cluster.
+In red is a theoretical isochrone, showing where we expect the stars
+in GD-1 to fall based on the metallicity and age of their original
+globular cluster.
 
-By selecting stars in the shaded area, we can further distinguish the main
-sequence of GD-1 from mostly younger background stars.
+By selecting stars in the shaded area, we can further distinguish the
+main sequence of GD-1 from mostly younger background stars.
 
 ## Outline
 
 Here are the steps in this notebook:
 
-1. We'll reload the data from the previous notebook and make a color-magnitude
-diagram.
+1. We'll reload the data from the previous notebook and make a
+color-magnitude diagram.
 
-2. We'll use an isochrone computed by MIST to specify a polygonal region in
-the color-magnitude diagram and select the stars inside it.
+2. We'll use an isochrone computed by MIST to specify a polygonal
+region in the color-magnitude diagram and select the stars inside it.
 
-3. Then we'll merge the photometry data with the list of candidate stars,
-storing the result in a Pandas `DataFrame`.
+3. Then we'll merge the photometry data with the list of candidate
+stars, storing the result in a Pandas `DataFrame`.
 
 After completing this lesson, you should be able to
 
-* Use Matplotlib to specify a `Polygon` and determine which points fall inside
-it.
+* Use Matplotlib to specify a `Polygon` and determine which points
+fall inside it.
 
-* Use Pandas to merge data from multiple `DataFrames`, much like a database
-`JOIN` operation.
+* Use Pandas to merge data from multiple `DataFrames`, much like a
+database `JOIN` operation.
 
 ## Reload the data
 
-The following cell downloads the photometry data we created in the previous
-notebook.
+The following cell downloads the photometry data we created in the
+previous notebook.
 
 ~~~
 import os
@@ -110,23 +112,23 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-3.pn
 The y-axis shows the apparent magnitude of each source with the [g
 filter](https://en.wikipedia.org/wiki/Photometric_system).
 
-The x-axis shows the difference in apparent magnitude between the g and i
-filters, which indicates color.
+The x-axis shows the difference in apparent magnitude between the g
+and i filters, which indicates color.
 
-Stars with lower values of (g-i) are brighter in g-band than in i-band,
-compared to other stars, which means they are bluer.
+Stars with lower values of (g-i) are brighter in g-band than in
+i-band, compared to other stars, which means they are bluer.
 
-Stars in the lower-left quadrant of this diagram are less bright and less
-metallic than the others, which means they are [likely to be
+Stars in the lower-left quadrant of this diagram are less bright and
+less metallic than the others, which means they are [likely to be
 older](http://spiff.rit.edu/classes/ladder/lectures/ordinary_stars/ordinary.html).
 
-Since we expect the stars in GD-1 to be older than the background stars, the
-stars in the lower-left are more likely to be in GD-1.
+Since we expect the stars in GD-1 to be older than the background
+stars, the stars in the lower-left are more likely to be in GD-1.
 
-The following function takes a table containing photometry data and draws a
-color-magnitude diagram.
-The input can be an Astropy `Table` or Pandas `DataFrame`, as long as it has
-columns named `g_mean_psf_mag` and `i_mean_psf_mag`.
+The following function takes a table containing photometry data and
+draws a color-magnitude diagram.
+The input can be an Astropy `Table` or Pandas `DataFrame`, as long as
+it has columns named `g_mean_psf_mag` and `i_mean_psf_mag`.
 
 
 
@@ -151,12 +153,12 @@ def plot_cmd(table):
     plt.xlabel('$(g-i)_0$')
 ~~~
 {: .language-python}
-`plot_cmd` uses a new function, `invert_yaxis`, to invert the `y` axis, which
-is conventional when plotting magnitudes, since lower magnitude indicates
-higher brightness.
+`plot_cmd` uses a new function, `invert_yaxis`, to invert the `y`
+axis, which is conventional when plotting magnitudes, since lower
+magnitude indicates higher brightness.
 
-`invert_yaxis` is a little different from the other functions we've used.  You
-can't call it like this:
+`invert_yaxis` is a little different from the other functions we've
+used.  You can't call it like this:
 
 ```
 plt.invert_yaxis()          # doesn't work
@@ -168,12 +170,13 @@ You have to call it like this:
 plt.gca().invert_yaxis()          # works
 ```
 
-`gca` stands for "get current axis".  It returns an object that represents the
-axes of the current figure, and that object provides `invert_yaxis`.
+`gca` stands for "get current axis".  It returns an object that
+represents the axes of the current figure, and that object provides
+`invert_yaxis`.
 
-**In case anyone asks:** The most likely reason for this inconsistency in the
-interface is that `invert_yaxis` is a lesser-used function, so it's not made
-available at the top level of the interface.
+**In case anyone asks:** The most likely reason for this inconsistency
+in the interface is that `invert_yaxis` is a lesser-used function, so
+it's not made available at the top level of the interface.
 
 Here's what the results look like.
 
@@ -187,27 +190,28 @@ plot_cmd(photo_table)
 ~~~
 {: .output}
 
-Our figure does not look exactly like the one in the paper because we are
-working with a smaller region of the sky, so we don't have as many stars.  But
-we can see an overdense region in the lower left that contains stars with the
-photometry we expect for GD-1.
+Our figure does not look exactly like the one in the paper because we
+are working with a smaller region of the sky, so we don't have as many
+stars.  But we can see an overdense region in the lower left that
+contains stars with the photometry we expect for GD-1.
 
-In the next section we'll use an isochrone to specify a polygon that contains
-this overdense regioin.
+In the next section we'll use an isochrone to specify a polygon that
+contains this overdense regioin.
 
 ## Isochrone
 
-Based on our best estimates for the ages of the stars in GD-1 and their
-metallicity, we can compute a [stellar
-isochrone](https://en.wikipedia.org/wiki/Stellar_isochrone) that predicts the
-relationship between their magnitude and color.
+Based on our best estimates for the ages of the stars in GD-1 and
+their metallicity, we can compute a [stellar
+isochrone](https://en.wikipedia.org/wiki/Stellar_isochrone) that
+predicts the relationship between their magnitude and color.
 
 In fact, we can use [MESA Isochrones & Stellar
-Tracks](http://waps.cfa.harvard.edu/MIST/) (MIST) to compute it for us.
+Tracks](http://waps.cfa.harvard.edu/MIST/) (MIST) to compute it for
+us.
 
 Using the [MIST Version 1.2 web
-interface](http://waps.cfa.harvard.edu/MIST/interp_isos.html), we computed an
-isochrone with the following parameters:
+interface](http://waps.cfa.harvard.edu/MIST/interp_isos.html), we
+computed an isochrone with the following parameters:
     
 * Rotation initial v/v_crit = 0.4
 
@@ -340,8 +344,8 @@ array([0., 0., 0., ..., 6., 6., 6.])
 ~~~
 {: .output}
 
-We can use `phase` to select the part of the isochrone for stars in the main
-sequence and red giant phases.
+We can use `phase` to select the part of the isochrone for stars in
+the main sequence and red giant phases.
 
 ~~~
 phase_mask = (iso_array['phase'] >= 0) & (iso_array['phase'] < 3)
@@ -365,12 +369,12 @@ len(main_sequence)
 ~~~
 {: .output}
 
-The other two columns we'll use are `PS_g` and `PS_i`, which contain simulated
-photometry data for stars with the given age and metallicity, based on a model
-of the Pan-STARRS sensors.
+The other two columns we'll use are `PS_g` and `PS_i`, which contain
+simulated photometry data for stars with the given age and
+metallicity, based on a model of the Pan-STARRS sensors.
 
-We'll use these columns to superimpose the isochrone on the color-magnitude
-diagram, but first we have to use a [distance
+We'll use these columns to superimpose the isochrone on the
+color-magnitude diagram, but first we have to use a [distance
 modulus](https://en.wikipedia.org/wiki/Distance_modulus) to scale the
 isochrone based on the estimated distance of GD-1.
 
@@ -398,8 +402,8 @@ g = main_sequence['PS_g'] + distmod
 gi = main_sequence['PS_g'] - main_sequence['PS_i']
 ~~~
 {: .language-python}
-To make this data easier to work with, we'll put it in a Pandas `Series` with
-that contains `gi` as the index and `g` as the values.
+To make this data easier to work with, we'll put it in a Pandas
+`Series` with that contains `gi` as the index and `g` as the values.
 
 ~~~
 import pandas as pd
@@ -432,11 +436,11 @@ iso_series.plot();
 ~~~
 {: .output}
 
-The theoretical isochrone passes through the overdense region where we expect
-to find stars in GD-1.
+The theoretical isochrone passes through the overdense region where we
+expect to find stars in GD-1.
 
-Let's save this result so we can reload it later without repeating the steps
-in this section.
+Let's save this result so we can reload it later without repeating the
+steps in this section.
 
 ~~~
 filename = 'gd1_isochrone.hdf5'
@@ -446,8 +450,8 @@ iso_series.to_hdf(filename, 'iso_series')
 {: .language-python}
 ## Making a polygon
 
-The following cell downloads the isochrone series we made in the previous
-section, if necessary.
+The following cell downloads the isochrone series we made in the
+previous section, if necessary.
 
 ~~~
 import os
@@ -478,11 +482,11 @@ dtype: float64
 ~~~
 {: .output}
 
-To select the stars in the overdense region of the color-magnitude diagram, we
-want to stretch the isochrone into a polygon.
+To select the stars in the overdense region of the color-magnitude
+diagram, we want to stretch the isochrone into a polygon.
 
-We'll use the following formulas to compute the left and right sides of the
-polygons.
+We'll use the following formulas to compute the left and right sides
+of the polygons.
 
 ~~~
 g = iso_series.to_numpy()
@@ -500,12 +504,13 @@ To explain the terms:
 
 * Raising the normalized magnitudes to the 5th power [DOES WHAT?]
 
-* Then we add and subtract the result from `gi` to shift the isochrone left
-and right.  The factors 0.4 and 0.7 were chosen by eye to enclose the
-overdense region.
+* Then we add and subtract the result from `gi` to shift the isochrone
+left and right.  The factors 0.4 and 0.7 were chosen by eye to enclose
+the overdense region.
 
-To make the shifted isochrones easier to work with, we'll put them in a Pandas
-`Series` with that contains both `g` and the scaled values of `gi`.
+To make the shifted isochrones easier to work with, we'll put them in
+a Pandas `Series` with that contains both `g` and the scaled values of
+`gi`.
 
 ~~~
 import pandas as pd
@@ -555,9 +560,9 @@ right_series.plot();
 ~~~
 {: .output}
 
-It looks like the scaled isochrones bound the overdense area well, but they
-also include stars with magnitudes higher than we expect for stars in GD-1, so
-we'll use another mask to limit the range of `g`.
+It looks like the scaled isochrones bound the overdense area well, but
+they also include stars with magnitudes higher than we expect for
+stars in GD-1, so we'll use another mask to limit the range of `g`.
 
 ~~~
 g_mask = (g > 18.0) & (g < 21.5)
@@ -597,11 +602,11 @@ right.plot();
 ~~~
 {: .output}
 
-Now we want to assemble the two halves into a polygon.  We can use `append` to
-make a new `Series` that contains both halves.
+Now we want to assemble the two halves into a polygon.  We can use
+`append` to make a new `Series` that contains both halves.
 
-And we'll use the slice `[::-1]` to reverse the elements of `right` so the
-result forms a loop.  [See here for an explanation of this
+And we'll use the slice `[::-1]` to reverse the elements of `right` so
+the result forms a loop.  [See here for an explanation of this
 idiom](https://stackoverflow.com/questions/5876998/reversing-a-list-using-slice-notation).
 
 ~~~
@@ -620,8 +625,8 @@ dtype: float64
 ~~~
 {: .output}
 
-The following lines add metadata by assigning names to the values and the
-index in `loop`.
+The following lines add metadata by assigning names to the values and
+the index in `loop`.
 
 ~~~
 loop.name = 'g'
@@ -658,11 +663,11 @@ Next we'll use this polygon to identify stars in the overdense region.
 
 ## Which points are in the polygon?
 
-Matplotlib provides a `Path` object that we can use to check which points fall
-in the polygon we just constructed.
+Matplotlib provides a `Path` object that we can use to check which
+points fall in the polygon we just constructed.
 
-To make a `Path`, we need a list of coordinates in the form of an array with
-two columns.
+To make a `Path`, we need a list of coordinates in the form of an
+array with two columns.
 
 Currently `loop` is a `Series` with the values of `gi` in the index:
 
@@ -700,8 +705,8 @@ loop_df.head()
 ~~~
 {: .output}
 
-The result is a `DataFrame` with one column for `gi` and one column for `g`,
-so we can pass it to `Path` like this:
+The result is a `DataFrame` with one column for `gi` and one column
+for `g`, so we can pass it to `Path` like this:
 
 ~~~
 from matplotlib.path import Path
@@ -729,11 +734,11 @@ Path(array([[ 0.58757135, 21.41174601],
 
 The result is a `Path` object that represents the polygon.
 
-`Path` provides `contains_points`, which figures out which points are inside
-the polygon.
+`Path` provides `contains_points`, which figures out which points are
+inside the polygon.
 
-To test it, we'll create a list with two points, one inside the polygon and
-one outside.
+To test it, we'll create a list with two points, one inside the
+polygon and one outside.
 
 ~~~
 points = [(0.4, 20), 
@@ -755,13 +760,14 @@ array([ True, False])
 
 The result is an array of Boolean values.
 
-We are almost ready to select stars whose photometry data falls in this
-polygon.  But first we need to do some data cleaning.
+We are almost ready to select stars whose photometry data falls in
+this polygon.  But first we need to do some data cleaning.
 
 ## Reloading the data
 
-Now we need to combine the photometry data with the list of candidate stars we
-identified in a previous notebook.  The following cell downloads it:
+Now we need to combine the photometry data with the list of candidate
+stars we identified in a previous notebook.  The following cell
+downloads it:
 
 
 
@@ -782,29 +788,29 @@ import pandas as pd
 candidate_df = pd.read_hdf(filename, 'candidate_df')
 ~~~
 {: .language-python}
-`candidate_df` is the Pandas DataFrame that contains the results from Lesson
-4, which selects stars likely to be in GD-1 based on proper motion.  It also
-includes position and proper motion transformed to the ICRS frame.
+`candidate_df` is the Pandas DataFrame that contains the results from
+Lesson 4, which selects stars likely to be in GD-1 based on proper
+motion.  It also includes position and proper motion transformed to
+the ICRS frame.
 
 ## Merging photometry data
 
-Before we select stars based on photometry data, we have to solve two
-problems:
+Before we select stars based on photometry data, we have to solve two problems:
 
 1. We only have Pan-STARRS data for some stars in `candidate_df`.
 
-2. Even for the stars where we have Pan-STARRS data in `photo_table`, some
-photometry data is missing.
+2. Even for the stars where we have Pan-STARRS data in `photo_table`,
+some photometry data is missing.
 
 We will solve these problems in two step:
 
-1. We'll merge the data from `candidate_df` and `photo_table` into a single
-Pandas `DataFrame`.
+1. We'll merge the data from `candidate_df` and `photo_table` into a
+single Pandas `DataFrame`.
 
 2. We'll use Pandas functions to deal with missing data.
 
-`candidate_df` is already a `DataFrame`, but `results` is an Astropy `Table`.
-Let's convert it to Pandas:
+`candidate_df` is already a `DataFrame`, but `results` is an Astropy
+`Table`.  Let's convert it to Pandas:
 
 ~~~
 photo_df = photo_table.to_pandas()
@@ -822,14 +828,13 @@ i_mean_psf_mag
 ~~~
 {: .output}
 
-Now we want to combine `candidate_df` and `photo_df` into a single table,
-using `source_id` to match up the rows.
+Now we want to combine `candidate_df` and `photo_df` into a single
+table, using `source_id` to match up the rows.
 
-You might recognize this task; it's the same as the JOIN operation in
-ADQL/SQL.
+You might recognize this task; it's the same as the JOIN operation in ADQL/SQL.
 
-Pandas provides a function called `merge` that does what we want.  Here's how
-we use it.
+Pandas provides a function called `merge` that does what we want.
+Here's how we use it.
 
 ~~~
 merged = pd.merge(candidate_df, 
@@ -856,19 +861,20 @@ merged.head()
 ~~~
 {: .output}
 
-The first argument is the "left" table, the second argument is the "right"
-table, and the keyword argument `on='source_id'` specifies a column to use to
-match up the rows.
+The first argument is the "left" table, the second argument is the
+"right" table, and the keyword argument `on='source_id'` specifies a
+column to use to match up the rows.
 
-The argument `how='left'` means that the result should have all rows from the
-left table, even if some of them don't match up with a row in the right table.
+The argument `how='left'` means that the result should have all rows
+from the left table, even if some of them don't match up with a row in
+the right table.
 
-If you are interested in the other options for `how`, you can [read the
-documentation of
+If you are interested in the other options for `how`, you can [read
+the documentation of
 `merge`](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.merge.html).
 
-You can also do different types of join in ADQL/SQL; [you can read about that
-here](https://www.w3schools.com/sql/sql_join.asp).
+You can also do different types of join in ADQL/SQL; [you can read
+about that here](https://www.w3schools.com/sql/sql_join.asp).
 
 The result is a `DataFrame` that contains the same number of rows as
 `candidate_df`.
@@ -907,16 +913,18 @@ pm_phi2
 ~~~
 {: .output}
 
-**Detail** You might notice that Pandas also provides a function called
-`join`; it does almost the same thing, but the interface is slightly
-different.  We think `merge` is a little easier to use, so that's what we
-chose.  It's also more consistent with JOIN in SQL, so if you learn how to use
-`pd.merge`, you are also learning how to use SQL JOIN.
+**Detail** You might notice that Pandas also provides a function
+called `join`; it does almost the same thing, but the interface is
+slightly different.  We think `merge` is a little easier to use, so
+that's what we chose.  It's also more consistent with JOIN in SQL, so
+if you learn how to use `pd.merge`, you are also learning how to use
+SQL JOIN.
 
-Also, someone might ask why we have to use Pandas to do this join; why didn't
-we do it in ADQL.  The answer is that we could have done that, but since we
-already have the data we need, we should probably do the computation locally
-rather than make another round trip to the Gaia server.
+Also, someone might ask why we have to use Pandas to do this join; why
+didn't we do it in ADQL.  The answer is that we could have done that,
+but since we already have the data we need, we should probably do the
+computation locally rather than make another round trip to the Gaia
+server.
 
 ## Missing data
 
@@ -929,8 +937,8 @@ merged['color'] = merged['g_mean_psf_mag'] - merged['i_mean_psf_mag']
 {: .language-python}
 These columns contain the special value `NaN` where we are missing data.
 
-We can use `notnull` to see which rows contain value data, that is, not null
-values.
+We can use `notnull` to see which rows contain value data, that is,
+not null values.
 
 ~~~
 merged['color'].notnull()
@@ -965,15 +973,16 @@ merged['color'].notnull().sum()
 ~~~
 {: .output}
 
-For scientific purposes, it's not obvious what we should do with candidate
-stars if we don't have photometry data.  Should we give them the benefit of
-the doubt or leave them out?
+For scientific purposes, it's not obvious what we should do with
+candidate stars if we don't have photometry data.  Should we give them
+the benefit of the doubt or leave them out?
 
-In part the answer depends on the goal: are we trying to identify more stars
-that might be in GD-1, or a smaller set of stars that have higher probability?
+In part the answer depends on the goal: are we trying to identify more
+stars that might be in GD-1, or a smaller set of stars that have
+higher probability?
 
-In the next section, we'll leave them out, but you can experiment with the
-alternative.
+In the next section, we'll leave them out, but you can experiment with
+the alternative.
 
 ## Selecting based on photometry
 
@@ -997,8 +1006,8 @@ points.head()
 ~~~
 {: .output}
 
-The result is a `DataFrame` that can be treated as a sequence of coordinates,
-so we can pass it to `contains_points`:
+The result is a `DataFrame` that can be treated as a sequence of
+coordinates, so we can pass it to `contains_points`:
 
 ~~~
 inside = path.contains_points(points)
@@ -1011,8 +1020,8 @@ array([False, False, False, ..., False, False, False])
 ~~~
 {: .output}
 
-The result is a Boolean array.  We can use `sum` to see how many stars fall in
-the polygon.
+The result is a Boolean array.  We can use `sum` to see how many stars
+fall in the polygon.
 
 ~~~
 inside.sum()
@@ -1024,15 +1033,14 @@ inside.sum()
 ~~~
 {: .output}
 
-Now we can use `inside` as a mask to select stars that fall inside the
-polygon.
+Now we can use `inside` as a mask to select stars that fall inside the polygon.
 
 ~~~
 selected2 = merged[inside]
 ~~~
 {: .language-python}
-Let's make a color-magnitude plot one more time, highlighting the selected
-stars with green `x` marks.
+Let's make a color-magnitude plot one more time, highlighting the
+selected stars with green `x` marks.
 
 ~~~
 plot_cmd(photo_table)
@@ -1048,8 +1056,8 @@ plt.plot(selected2['color'], selected2['mag'], 'g.');
 ~~~
 {: .output}
 
-It looks like the selected stars are, in fact, inside the polygon, which means
-they have photometry data consistent with GD-1.
+It looks like the selected stars are, in fact, inside the polygon,
+which means they have photometry data consistent with GD-1.
 
 Finally, we can plot the coordinates of the selected stars:
 
@@ -1075,16 +1083,17 @@ plt.axis('equal');
 
 This example includes two new Matplotlib commands:
 
-* `figure` creates the figure.  In previous examples, we didn't have to use
-this function; the figure was created automatically.  But when we call it
-explicitly, we can provide arguments like `figsize`, which sets the size of
-the figure.
+* `figure` creates the figure.  In previous examples, we didn't have
+to use this function; the figure was created automatically.  But when
+we call it explicitly, we can provide arguments like `figsize`, which
+sets the size of the figure.
 
-* `axis` with the parameter `equal` sets up the axes so a unit is the same
-size along the `x` and `y` axes.
+* `axis` with the parameter `equal` sets up the axes so a unit is the
+same size along the `x` and `y` axes.
 
-In an example like this, where `x` and `y` represent coordinates in space,
-equal axes ensures that the distance between points is represented accurately.
+In an example like this, where `x` and `y` represent coordinates in
+space, equal axes ensures that the distance between points is
+represented accurately.
 
 ## Write the data
 
@@ -1118,18 +1127,18 @@ If you are using Windows, `ls` might not work; in that case, try:
 
 [Reproducibile
 research](https://en.wikipedia.org/wiki/Reproducibility#Reproducible_research)
-is "the idea that ... the full computational environment used to produce the
-results in the paper such as the code, data, etc. can be used to reproduce the
-results and create new work based on the research."
+is "the idea that ... the full computational environment used to
+produce the results in the paper such as the code, data, etc. can be
+used to reproduce the results and create new work based on the
+research."
 
-This Jupyter notebook is an example of reproducible research because it
-contains all of the code needed to reproduce the results, including the
-database queries that download the data and and analysis.
+This Jupyter notebook is an example of reproducible research because
+it contains all of the code needed to reproduce the results, including
+the database queries that download the data and and analysis.
 
-In this lesson we used an isochrone to derive a polygon, which we used to
-select stars based on photometry.
-So it is important to record the polygon as part of the data analysis
-pipeline.
+In this lesson we used an isochrone to derive a polygon, which we used
+to select stars based on photometry.
+So it is important to record the polygon as part of the data analysis pipeline.
 
 Here's how we can save it in an HDF file.
 
@@ -1160,31 +1169,32 @@ True
 
 ## Summary
 
-In this notebook, we worked with two datasets: the list of candidate stars
-from Gaia and the photometry data from Pan-STARRS.
+In this notebook, we worked with two datasets: the list of candidate
+stars from Gaia and the photometry data from Pan-STARRS.
 
-We drew a color-magnitude diagram and used it to identify stars we think are
-likely to be in GD-1.
+We drew a color-magnitude diagram and used it to identify stars we
+think are likely to be in GD-1.
 
-Then we used a Pandas `merge` operation to combine the data into a single
-`DataFrame`.
+Then we used a Pandas `merge` operation to combine the data into a
+single `DataFrame`.
 
 ## Best practices
 
-* If you want to perform something like a database `JOIN` operation with data
-that is in a Pandas `DataFrame`, you can use the `join` or `merge` function.
-In many cases, `merge` is easier to use because the arguments are more like
-SQL.
+* If you want to perform something like a database `JOIN` operation
+with data that is in a Pandas `DataFrame`, you can use the `join` or
+`merge` function.  In many cases, `merge` is easier to use because the
+arguments are more like SQL.
 
-* Use Matplotlib options to control the size and aspect ratio of figures to
-make them easier to interpret.  In this example, we scaled the axes so the
-size of a degree is equal along both axes.
+* Use Matplotlib options to control the size and aspect ratio of
+figures to make them easier to interpret.  In this example, we scaled
+the axes so the size of a degree is equal along both axes.
 
-* Matplotlib also provides operations for working with points, polygons, and
-other geometric entities, so it's not just for making figures.
+* Matplotlib also provides operations for working with points,
+polygons, and other geometric entities, so it's not just for making
+figures.
 
-* Be sure to record every element of the data analysis pipeline that would be
-needed to replicate the results.
+* Be sure to record every element of the data analysis pipeline that
+would be needed to replicate the results.
 
 ~~~
 
