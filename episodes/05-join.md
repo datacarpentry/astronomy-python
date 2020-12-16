@@ -26,25 +26,26 @@ keypoints:
 
 This is the fifth in a series of notebooks related to astronomy data.
 
-As a continuing example, we will replicate part of the analysis in a recent
-paper, "[Off the beaten path: Gaia reveals GD-1 stars outside of the main
-stream](https://arxiv.org/abs/1805.00425)" by Adrian M. Price-Whelan and Ana
-Bonaca.
+As a continuing example, we will replicate part of the analysis in a
+recent paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
+of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian M.
+Price-Whelan and Ana Bonaca.
 
-Picking up where we left off, the next step in the analysis is to select
-candidate stars based on photometry data.  The following figure from the paper
-is a color-magnitude diagram for the stars selected based on proper motion:
+Picking up where we left off, the next step in the analysis is to
+select candidate stars based on photometry data.  The following figure
+from the paper is a color-magnitude diagram for the stars selected
+based on proper motion:
 
 <img width="300"
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-3.png">
 
 In red is a [stellar
-isochrone](https://en.wikipedia.org/wiki/Stellar_isochrone), showing where we
-expect the stars in GD-1 to fall based on the metallicity and age of their
-original globular cluster.
+isochrone](https://en.wikipedia.org/wiki/Stellar_isochrone), showing
+where we expect the stars in GD-1 to fall based on the metallicity and
+age of their original globular cluster.
 
-By selecting stars in the shaded area, we can further distinguish the main
-sequence of GD-1 from younger background stars.
+By selecting stars in the shaded area, we can further distinguish the
+main sequence of GD-1 from younger background stars.
 
 ## Outline
 
@@ -53,8 +54,8 @@ Here are the steps in this notebook:
 1. We'll reload the candidate stars we identified in the previous notebook.
 
 2. Then we'll run a query on the Gaia server that uploads the table of
-candidates and uses a `JOIN` operation to select photometry data for the
-candidate stars.
+candidates and uses a `JOIN` operation to select photometry data for
+the candidate stars.
 
 3. We'll write the results to a file for use in the next notebook.
 
@@ -87,10 +88,10 @@ import pandas as pd
 candidate_df = pd.read_hdf(filename, 'candidate_df')
 ~~~
 {: .language-python}
-`candidate_df` is the Pandas DataFrame that contains results from the query in
-the previous notebook, which selects stars likely to be in GD-1 based on
-proper motion.  It also includes position and proper motion transformed to the
-ICRS frame.
+`candidate_df` is the Pandas DataFrame that contains results from the
+query in the previous notebook, which selects stars likely to be in
+GD-1 based on proper motion.  It also includes position and proper
+motion transformed to the ICRS frame.
 
 ~~~
 import matplotlib.pyplot as plt
@@ -110,53 +111,58 @@ plt.ylabel('dec (degree GD1)');
 ~~~
 {: .output}
 
-This is the same figure we saw at the end of the previous notebook.  GD-1 is
-visible against the background stars, but we will be able to see it more
-clearly after selecting based on photometry data.
+This is the same figure we saw at the end of the previous notebook.
+GD-1 is visible against the background stars, but we will be able to
+see it more clearly after selecting based on photometry data.
 
 ## Getting photometry data
 
 The Gaia dataset contains some photometry data, including the variable
-`bp_rp`, which we used in the original query to select stars with BP - RP
-color between -0.75 and 2.
+`bp_rp`, which we used in the original query to select stars with BP -
+RP color between -0.75 and 2.
 
-Selecting stars with `bp-rp` less than 2 excludes many class M dwarf stars,
-which are low temperature, low luminosity.  A star like that at GD-1's
-distance would be hard to detect, so if it is detected, it it more likely to
-be in the foreground.
+Selecting stars with `bp-rp` less than 2 excludes many class M dwarf
+stars, which are low temperature, low luminosity.  A star like that at
+GD-1's distance would be hard to detect, so if it is detected, it it
+more likely to be in the foreground.
 
-Now, to select stars with the age and metal richness we expect in GD-1, we
-will use `g - i` color and apparent `g`-band magnitude, which are available
-from the Pan-STARRS survey.
+Now, to select stars with the age and metal richness we expect in
+GD-1, we will use `g - i` color and apparent `g`-band magnitude, which
+are available from the Pan-STARRS survey.
 
-Conveniently, the Gaia server provides data from Pan-STARRS as a table in the
-same database we have been using, so we can access it by making ADQL queries.
+Conveniently, the Gaia server provides data from Pan-STARRS as a table
+in the same database we have been using, so we can access it by making
+ADQL queries.
 
 In general, looking up a star from the Gaia catalog and finding the
-corresponding star in the Pan-STARRS catalog is not easy.  This kind of cross
-matching is not always possible, because a star might appear in one catalog
-and not the other.  And even when both stars are present, there might not be a
-clear one-to-one relationship between stars in the two catalogs.
+corresponding star in the Pan-STARRS catalog is not easy.  This kind
+of cross matching is not always possible, because a star might appear
+in one catalog and not the other.  And even when both stars are
+present, there might not be a clear one-to-one relationship between
+stars in the two catalogs.
 
-Fortunately, smart people have worked on this problem, and the Gaia database
-includes cross-matching tables that suggest a best neighbor in the Pan-STARRS
-catalog for many stars in the Gaia catalog.
+Fortunately, smart people have worked on this problem, and the Gaia
+database includes cross-matching tables that suggest a best neighbor
+in the Pan-STARRS catalog for many stars in the Gaia catalog.
 
 [This document describes the cross matching
 process](https://gea.esac.esa.int/archive/documentation/GDR2/Catalogue_consolidation/chap_cu9val_cu9val/ssec_cu9xma/sssec_cu9xma_extcat.html).
-Briefly, it uses a cone search to find possible matches in approximately the
-right position, then uses attributes like color and magnitude to choose pairs
-of observations most likely to be the same star.
+Briefly, it uses a cone search to find possible matches in
+approximately the right position, then uses attributes like color and
+magnitude to choose pairs of observations most likely to be the same
+star.
 
 ## Joining tables
 
-So the hard part of cross-matching has been done for us.  Using the results is
-a little tricky, but it gives us a chance to learn about one of the most
-important tools for working with databases: "joining" tables.
+So the hard part of cross-matching has been done for us.  Using the
+results is a little tricky, but it gives us a chance to learn about
+one of the most important tools for working with databases: "joining"
+tables.
 
-In general, a "join" is an operation where you match up records from one table
-with records from another table using as a "key" a piece of information that
-is common to both tables, usually some kind of ID code.
+In general, a "join" is an operation where you match up records from
+one table with records from another table using as a "key" a piece of
+information that is common to both tables, usually some kind of ID
+code.
 
 In this example:
 
@@ -164,22 +170,22 @@ In this example:
 
 * Stars in the Pan-STARRS dataset are identified by `obj_id`.
 
-For each candidate star we have selected so far, we have the `source_id`; the
-goal is to find the `obj_id` for the same star (we hope) in the Pan-STARRS
-catalog.
+For each candidate star we have selected so far, we have the
+`source_id`; the goal is to find the `obj_id` for the same star (we
+hope) in the Pan-STARRS catalog.
 
 To do that we will:
 
-1. Make a table that contains the `source_id` for each candidate star and
-upload the table to the Gaia server;
+1. Make a table that contains the `source_id` for each candidate star
+and upload the table to the Gaia server;
 
 2. Use the `JOIN` operator to look up each `source_id` in the
-`gaiadr2.panstarrs1_best_neighbour` table, which contains the `obj_id` of the
-best match for each star in the Gaia catalog; then
+`gaiadr2.panstarrs1_best_neighbour` table, which contains the `obj_id`
+of the best match for each star in the Gaia catalog; then
 
 3. Use the `JOIN` operator again to look up each `obj_id` in the
-`panstarrs1_original_valid` table, which contains the Pan-STARRS photometry
-data we want.
+`panstarrs1_original_valid` table, which contains the Pan-STARRS
+photometry data we want.
 
 Let's start with the first step, uploading a table.
 
@@ -190,16 +196,16 @@ For each candidate star, we want to find the corresponding row in the
 
 In order to do that, we have to:
 
-1. Write the table in a local file as an XML VOTable, which is a format
-suitable for transmitting a table over a network.
+1. Write the table in a local file as an XML VOTable, which is a
+format suitable for transmitting a table over a network.
 
 2. Write an ADQL query that refers to the uploaded table.
 
-3. Change the way we submit the job so it uploads the table before running the
-query.
+3. Change the way we submit the job so it uploads the table before
+running the query.
 
-The first step is not too difficult because Astropy provides a function called
-`writeto` that can write a `Table` in `XML`.
+The first step is not too difficult because Astropy provides a
+function called `writeto` that can write a `Table` in `XML`.
 
 [The documentation of this process is
 here](https://docs.astropy.org/en/stable/io/votable/).
@@ -219,8 +225,9 @@ astropy.table.table.Table
 ~~~
 {: .output}
 
-To write the file, we can use `Table.write` with `format='votable'`, [as
-described here](https://docs.astropy.org/en/stable/io/unified.html#vo-tables).
+To write the file, we can use `Table.write` with `format='votable'`,
+[as described
+here](https://docs.astropy.org/en/stable/io/unified.html#vo-tables).
 
 ~~~
 table_id = candidate_table[['source_id']]
@@ -228,16 +235,16 @@ table_id.write('candidate_df.xml', format='votable', overwrite=True)
 ~~~
 {: .language-python}
 Notice that we select a single column from the table, `source_id`.
-We could write the entire table to a file, but that would take longer to
-transmit over the network, and we really only need one column.
+We could write the entire table to a file, but that would take longer
+to transmit over the network, and we really only need one column.
 
-This process, taking a structure like a `Table` and translating it into a form
-that can be transmitted over a network, is called
+This process, taking a structure like a `Table` and translating it
+into a form that can be transmitted over a network, is called
 [serialization](https://en.wikipedia.org/wiki/Serialization).
 
-XML is one of the most common serialization formats.  One nice feature is that
-XML data is plain text, as opposed to binary digits, so you can read the file
-we just wrote:
+XML is one of the most common serialization formats.  One nice feature
+is that XML data is plain text, as opposed to binary digits, so you
+can read the file we just wrote:
 
 ~~~
 !head candidate_df.xml
@@ -259,19 +266,19 @@ we just wrote:
 ~~~
 {: .output}
 
-XML is a general format, so different XML files contain different kinds of
-data.  In order to read an XML file, it's not enough to know that it's XML;
-you also have to know the data format, which is called a
-[schema](https://en.wikipedia.org/wiki/XML_schema).
+XML is a general format, so different XML files contain different
+kinds of data.  In order to read an XML file, it's not enough to know
+that it's XML; you also have to know the data format, which is called
+a [schema](https://en.wikipedia.org/wiki/XML_schema).
 
-In this example, the schema is VOTable; notice that one of the first tags in
-the file specifies the schema, and even includes the URL where you can get its
-definition.
+In this example, the schema is VOTable; notice that one of the first
+tags in the file specifies the schema, and even includes the URL where
+you can get its definition.
 
 So this is an example of a self-documenting format.
 
-A drawback of XML is that it tends to be big, which is why we wrote just the
-`source_id` column rather than the whole table.
+A drawback of XML is that it tends to be big, which is why we wrote
+just the `source_id` column rather than the whole table.
 The size of the file is about 750 KB, so that's not too bad.
 
 ~~~
@@ -293,12 +300,11 @@ If you are using Windows, `ls` might not work; in that case, try:
 
 > ## Exercise
 > 
-> There's a gotcha here we want to warn you about.  Why do you think we used
-> double brackets to specify the column we wanted?  What happens if you use
-> single brackets?
+> There's a gotcha here we want to warn you about.  Why do you think we
+> used double brackets to specify the column we wanted?  What happens if
+> you use single brackets?
 > 
 > Run these cells to find out.
-
 
 ~~~
 table_id = candidate_table[['source_id']]
@@ -330,14 +336,15 @@ astropy.table.column.Column
 {: .language-python}
 ## Uploading a table
 
-The next step is to upload this table to the Gaia server and use it as part of
-a query.
+The next step is to upload this table to the Gaia server and use it as
+part of a query.
 
-[Here's the documentation that explains how to run a query with an uploaded
+[Here's the documentation that explains how to run a query with an
+uploaded
 table](https://astroquery.readthedocs.io/en/latest/gaia/gaia.html#synchronous-query-on-an-on-the-fly-uploaded-table).
 
-In the spirit of incremental development and testing, let's start with the
-simplest possible query.
+In the spirit of incremental development and testing, let's start with
+the simplest possible query.
 
 ~~~
 query = """SELECT *
@@ -345,13 +352,13 @@ FROM tap_upload.candidate_df
 """
 ~~~
 {: .language-python}
-This query downloads all rows and all columns from the uploaded table.  The
-name of the table has two parts: `tap_upload` specifies a table that was
-uploaded using TAP+ (remember that's the name of the protocol we're using to
-talk to the Gaia server).
+This query downloads all rows and all columns from the uploaded table.
+The name of the table has two parts: `tap_upload` specifies a table
+that was uploaded using TAP+ (remember that's the name of the protocol
+we're using to talk to the Gaia server).
 
-And `candidate_df` is the name of the table, which we get to choose (unlike
-`tap_upload`, which we didn't get to choose).
+And `candidate_df` is the name of the table, which we get to choose
+(unlike `tap_upload`, which we didn't get to choose).
 
 Here's how we run the query:
 
@@ -380,11 +387,11 @@ INFO: Query finished. [astroquery.utils.tap.core]
 ~~~
 {: .output}
 
-`upload_resource` specifies the name of the file we want to upload, which is
-the file we just wrote.
+`upload_resource` specifies the name of the file we want to upload,
+which is the file we just wrote.
 
-`upload_table_name` is the name we assign to this table, which is the name we
-used in the query.
+`upload_table_name` is the name we assign to this table, which is the
+name we used in the query.
 
 And here are the results:
 
@@ -410,8 +417,8 @@ results
 ~~~
 {: .output}
 
-If things go according to plan, the result should contain the same rows and
-columns as the uploaded table.
+If things go according to plan, the result should contain the same
+rows and columns as the uploaded table.
 
 ~~~
 len(candidate_table), len(results)
@@ -433,11 +440,11 @@ True
 ~~~
 {: .output}
 
-In this example, we uploaded a table and then downloaded it again, so that's
-not too useful.
+In this example, we uploaded a table and then downloaded it again, so
+that's not too useful.
 
-But now that we can upload a table, we can join it with other tables on the
-Gaia server.
+But now that we can upload a table, we can join it with other tables
+on the Gaia server.
 
 ## Joining with an uploaded table
 
@@ -455,16 +462,16 @@ Let's break that down one clause at a time:
 
 * `SELECT *` means we will download all columns from both tables.
 
-* `FROM gaiadr2.panstarrs1_best_neighbour as best` means that we'll get the
-columns from the Pan-STARRS best neighbor table, which we'll refer to using
-the short name `best`.
+* `FROM gaiadr2.panstarrs1_best_neighbour as best` means that we'll
+get the columns from the Pan-STARRS best neighbor table, which we'll
+refer to using the short name `best`.
 
-* `JOIN tap_upload.candidate_df as candidate_df` means that we'll also get
-columns from the uploaded table, which we'll refer to using the short name
-`candidate_df`.
+* `JOIN tap_upload.candidate_df as candidate_df` means that we'll also
+get columns from the uploaded table, which we'll refer to using the
+short name `candidate_df`.
 
-* `ON best.source_id = candidate_df.source_id` specifies that we will use
-`source_id ` to match up the rows from the two tables.
+* `ON best.source_id = candidate_df.source_id` specifies that we will
+use `source_id ` to match up the rows from the two tables.
 
 Here's the [documentation of the best neighbor
 table](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_crossmatches/ssec_dm_panstarrs1_best_neighbour.html).
@@ -508,8 +515,8 @@ results1
 ~~~
 {: .output}
 
-This table contains all of the columns from the best neighbor table, plus the
-single column from the uploaded table.
+This table contains all of the columns from the best neighbor table,
+plus the single column from the uploaded table.
 
 ~~~
 results1.colnames
@@ -528,11 +535,11 @@ results1.colnames
 ~~~
 {: .output}
 
-Because one of the column names appears in both tables, the second instance of
-`source_id` has been appended with the suffix `_2`.
+Because one of the column names appears in both tables, the second
+instance of `source_id` has been appended with the suffix `_2`.
 
-The length of `results1` is about 3000, which means we were not able to find
-matches for all stars in the list of candidates.
+The length of `results1` is about 3000, which means we were not able
+to find matches for all stars in the list of candidates.
 
 ~~~
 len(results1)
@@ -545,8 +552,8 @@ len(results1)
 {: .output}
 
 To get more information about the matching process, we can inspect
-`best_neighbour_multiplicity`, which indicates for each star in Gaia how many
-stars in Pan-STARRS are equally likely matches.
+`best_neighbour_multiplicity`, which indicates for each star in Gaia
+how many stars in Pan-STARRS are equally likely matches.
 
 ~~~
 results1['best_neighbour_multiplicity']
@@ -569,12 +576,13 @@ results1['best_neighbour_multiplicity']
 ~~~
 {: .output}
 
-It looks like most of the values are `1`, which is good; that means that for
-each candidate star we have identified exactly one source in Pan-STARRS that
-is likely to be the same star.
+It looks like most of the values are `1`, which is good; that means
+that for each candidate star we have identified exactly one source in
+Pan-STARRS that is likely to be the same star.
 
-To check whether there are any values other than `1`, we can convert this
-column to a Pandas `Series` and use `describe`, which we saw in in Lesson 3.
+To check whether there are any values other than `1`, we can convert
+this column to a Pandas `Series` and use `describe`, which we saw in
+in Lesson 3.
 
 ~~~
 import pandas as pd
@@ -597,11 +605,11 @@ dtype: float64
 ~~~
 {: .output}
 
-In fact, `1` is the only value in the `Series`, so every candidate star has a
-single best match.
+In fact, `1` is the only value in the `Series`, so every candidate
+star has a single best match.
 
-Similarly, `number_of_mates` indicates the number of *other* stars in Gaia
-that match with the same star in Pan-STARRS.
+Similarly, `number_of_mates` indicates the number of *other* stars in
+Gaia that match with the same star in Pan-STARRS.
 
 ~~~
 mates = pd.Series(results1['number_of_mates'])
@@ -622,18 +630,18 @@ dtype: float64
 ~~~
 {: .output}
 
-All values in this column are `0`, which means that for each match we found in
-Pan-STARRS, there are no other stars in Gaia that also match.
+All values in this column are `0`, which means that for each match we
+found in Pan-STARRS, there are no other stars in Gaia that also match.
 
-**Detail:** The table also contains `number_of_neighbors` which is the number
-of stars in Pan-STARRS that match in terms of position, before using other
-criteria to choose the most likely match.
+**Detail:** The table also contains `number_of_neighbors` which is the
+number of stars in Pan-STARRS that match in terms of position, before
+using other criteria to choose the most likely match.
 
 ## Getting the photometry data
 
-The most important column in `results1` is `original_ext_source_id` which is
-the `obj_id` we will use to look up the likely matches in Pan-STARRS to get
-photometry data.
+The most important column in `results1` is `original_ext_source_id`
+which is the `obj_id` we will use to look up the likely matches in
+Pan-STARRS to get photometry data.
 
 The process is similar to what we just did to look up the matches.  We will:
 
@@ -642,7 +650,8 @@ The process is similar to what we just did to look up the matches.  We will:
 2. Write the table to an XML VOTable file.
 
 3. Write a query that joins the uploaded table with
-`gaiadr2.panstarrs1_original_valid` and selects the photometry data we want.
+`gaiadr2.panstarrs1_original_valid` and selects the photometry data we
+want.
 
 4. Run the query using the uploaded table.
 
@@ -650,10 +659,8 @@ Since we've done everything here before, we'll do these steps as an exercise.
 
 > ## Exercise
 > 
-> Select `source_id` and `original_ext_source_id` from `results1` and write
-the
-> resulting table as a file named `external.xml`.
-
+> Select `source_id` and `original_ext_source_id` from `results1` and
+> write the resulting table as a file named `external.xml`.
 > > 
 > > ~~~
 > > 
@@ -663,6 +670,7 @@ the
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
+
 
 Use `!head` to confirm that the file exists and contains an XML VOTable.
 
@@ -689,34 +697,30 @@ Use `!head` to confirm that the file exists and contains an XML VOTable.
 > ## Exercise
 > 
 > Read [the documentation of the Pan-STARRS
->
-table](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_external_catalogues/ssec_dm_panstarrs1_original_valid.html)
-> and make note of `obj_id`, which contains the object IDs we'll use to find
-the
-> rows we want.
+> table](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_external_catalogues/ssec_dm_panstarrs1_original_valid.html)
+> and make note of `obj_id`, which contains the object IDs we'll use to
+> find the rows we want.
 > 
-> Write a query that uses each value of `original_ext_source_id` from the
-> uploaded table to find a row in `gaiadr2.panstarrs1_original_valid` with the
-> same value in `obj_id`, and select all columns from both tables.
+> Write a query that uses each value of `original_ext_source_id` from
+> the uploaded table to find a row in
+> `gaiadr2.panstarrs1_original_valid` with the same value in `obj_id`,
+> and select all columns from both tables.
 > 
 > Suggestion: Develop and test your query incrementally.  For example:
 > 
-> 1. Write a query that downloads all columns from the uploaded table.  Test
-to
-> make sure we can read the uploaded table.
+> 1. Write a query that downloads all columns from the uploaded table.
+> Test to make sure we can read the uploaded table.
 > 
 > 2. Write a query that downloads the first 10 rows from
 > `gaiadr2.panstarrs1_original_valid`.  Test to make sure we can access
 > Pan-STARRS data.
 > 
-> 3. Write a query that joins the two tables and selects all columns.  Test
-that
-> the join works as expected.
+> 3. Write a query that joins the two tables and selects all columns.
+> Test that the join works as expected.
 > 
 > 
-> As a bonus exercise, write a query that joins the two tables and selects
-just
-> the columns we need:
+> As a bonus exercise, write a query that joins the two tables and
+> selects just the columns we need:
 > 
 > * `source_id` from the uploaded table
 > 
@@ -724,9 +728,8 @@ just
 > 
 > * `i_mean_psf_mag` from `gaiadr2.panstarrs1_original_valid`
 > 
-> Hint: When you select a column from a join, you have to specify which table
-> the column is in.
-
+> Hint: When you select a column from a join, you have to specify which
+> table the column is in.
 > > 
 > > ~~~
 > > 
@@ -762,6 +765,7 @@ just
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
+
 
 Here's how we launch the job and get the results.
 
@@ -805,10 +809,8 @@ results2
 > Optional Challenge: Do both joins in one query.
 > 
 > There's an [example
->
-here](https://github.com/smoh/Getting-started-with-Gaia/blob/master/gaia-adql-snippets.md)
+> here](https://github.com/smoh/Getting-started-with-Gaia/blob/master/gaia-adql-snippets.md)
 > you could start with.
-
 > > 
 > > ~~~
 > > 
@@ -832,6 +834,7 @@ here](https://github.com/smoh/Getting-started-with-Gaia/blob/master/gaia-adql-sn
 > {: .solution}
 {: .challenge}
 
+
 ## Write the data
 
 Since we have the data in an Astropy `Table`, let's store it in a FITS file.
@@ -854,8 +857,8 @@ We can check that the file exists, and see how big it is.
 ~~~
 {: .output}
 
-At around 175 KB, it is smaller than some of the other files we've been
-working with.
+At around 175 KB, it is smaller than some of the other files we've
+been working with.
 
 If you are using Windows, `ls` might not work; in that case, try:
 
@@ -865,20 +868,22 @@ If you are using Windows, `ls` might not work; in that case, try:
 
 ## Summary
 
-In this notebook, we used database `JOIN` operations to select photometry data
-for the stars we've identified as candidates to be in GD-1.
+In this notebook, we used database `JOIN` operations to select
+photometry data for the stars we've identified as candidates to be in
+GD-1.
 
-In the next notebook, we'll use this data for a second round of selection,
-identifying stars that have photometry data consistent with GD-1.
+In the next notebook, we'll use this data for a second round of
+selection, identifying stars that have photometry data consistent with
+GD-1.
 
 ## Best practice
 
-* Use `JOIN` operations to combine data from multiple tables in a databased,
-using some kind of identifier to match up records from one table with records
-from another.
+* Use `JOIN` operations to combine data from multiple tables in a
+databased, using some kind of identifier to match up records from one
+table with records from another.
 
-* This is another example of a practice we saw in the previous notebook,
-moving the computation to the data.
+* This is another example of a practice we saw in the previous
+notebook, moving the computation to the data.
 
 ~~~
 

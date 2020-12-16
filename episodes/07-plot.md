@@ -32,26 +32,26 @@ keypoints:
 
 This is the seventh in a series of notebooks related to astronomy data.
 
-As a continuing example, we will replicate part of the analysis in a recent
-paper, "[Off the beaten path: Gaia reveals GD-1 stars outside of the main
-stream](https://arxiv.org/abs/1805.00425)" by Adrian M. Price-Whelan and Ana
-Bonaca.
+As a continuing example, we will replicate part of the analysis in a
+recent paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
+of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian M.
+Price-Whelan and Ana Bonaca.
 
-In the previous notebook we selected photometry data from Pan-STARRS and used
-it to identify stars we think are likely to be in GD-1
+In the previous notebook we selected photometry data from Pan-STARRS
+and used it to identify stars we think are likely to be in GD-1
 
-In this notebook, we'll take the results from previous lessons and use them to
-make a figure that tells a compelling scientific story.
+In this notebook, we'll take the results from previous lessons and use
+them to make a figure that tells a compelling scientific story.
 
 ## Outline
 
 Here are the steps in this notebook:
 
-1. Starting with the figure from the previous notebook, we'll add annotations
-to present the results more clearly.
+1. Starting with the figure from the previous notebook, we'll add
+annotations to present the results more clearly.
 
-2. The we'll see several ways to customize figures to make them more appealing
-and effective.
+2. The we'll see several ways to customize figures to make them more
+appealing and effective.
 
 3. Finally, we'll see how to make a figure with multiple panels or subplots.
 
@@ -65,22 +65,21 @@ After completing this lesson, you should be able to
 
 ## Making Figures That Tell a Story
 
-So far the figure we've made have been "quick and dirty".  Mostly we have used
-Matplotlib's default style, although we have adjusted a few parameters, like
-`markersize` and `alpha`, to improve legibility.
+So far the figure we've made have been "quick and dirty".  Mostly we
+have used Matplotlib's default style, although we have adjusted a few
+parameters, like `markersize` and `alpha`, to improve legibility.
 
 Now that the analysis is done, it's time to think more about:
 
 1. Making professional-looking figures that are ready for publication, and
 
-2. Making figures that communicate a scientific result clearly and
-compellingly.
+2. Making figures that communicate a scientific result clearly and compellingly.
 
 Not necessarily in that order.
 
-Let's start by reviewing Figure 1 from the original paper.  We've seen the
-individual panels, but now let's look at the whole thing, along with the
-caption:
+Let's start by reviewing Figure 1 from the original paper.  We've seen
+the individual panels, but now let's look at the whole thing, along
+with the caption:
 
 <img width="500"
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.png">
@@ -93,16 +92,13 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.pn
 > 
 > 2. What story is this figure telling?
 > 
-> 3. In the design of this figure, can you identify 1-2 choices the authors
-made
-> that you think are effective?  Think about big-picture elements, like the
-> number of panels and how they are arranged, as well as details like the
-choice
-> of typeface.
+> 3. In the design of this figure, can you identify 1-2 choices the
+> authors made that you think are effective?  Think about big-picture
+> elements, like the number of panels and how they are arranged, as well
+> as details like the choice of typeface.
 > 
-> 4. Can you identify 1-2 elements that could be improved, or that you might
-> have done differently?
-
+> 4. Can you identify 1-2 elements that could be improved, or that you
+> might have done differently?
 > > 
 > > ~~~
 > > 
@@ -139,10 +135,11 @@ choice
 > {: .solution}
 {: .challenge}
 
+
 ## Plotting GD-1
 
-Let's start with the panel in the lower left.  The following cell reloads the
-data.
+Let's start with the panel in the lower left.  The following cell
+reloads the data.
 
 ~~~
 import os
@@ -199,38 +196,32 @@ plot_second_selection(selected)
 
 ## Annotations
 
-The figure in the paper uses three other features to present the results more
-clearly and compellingly:
+The figure in the paper uses three other features to present the
+results more clearly and compellingly:
 
-* A vertical dashed line to distinguish the previously undetected region of
-GD-1,
+* A vertical dashed line to distinguish the previously undetected
+region of GD-1,
 
 * A label that identifies the new region, and
 
-* Several annotations that combine text and arrows to identify features of
-GD-1.
+* Several annotations that combine text and arrows to identify features of GD-1.
 
 > ## Exercise
 > 
 > Choose any or all of these features and add them to the figure:
 > 
 > * To draw vertical lines, see
->
-[`plt.vlines`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.vlines.html)
+> [`plt.vlines`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.vlines.html)
 > and
->
-[`plt.axvline`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.axvline.html#matplotlib.pyplot.axvline).
+> [`plt.axvline`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.axvline.html#matplotlib.pyplot.axvline).
 > 
 > * To add text, see
->
-[`plt.text`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.text.html).
+> [`plt.text`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.text.html).
 > 
 > * To add an annotation with text and an arrow, see [plt.annotate]().
 > 
 > And here is some [additional information about text and
->
-arrows](https://matplotlib.org/3.3.1/tutorials/text/annotations.html#plotting-guide-annotation).
-
+> arrows](https://matplotlib.org/3.3.1/tutorials/text/annotations.html#plotting-guide-annotation).
 > > 
 > > ~~~
 > > 
@@ -254,11 +245,12 @@ arrows](https://matplotlib.org/3.3.1/tutorials/text/annotations.html#plotting-gu
 > {: .solution}
 {: .challenge}
 
+
 ## Customization
 
-Matplotlib provides a default style that determines things like the colors of
-lines, the placement of labels and ticks on the axes, and many other
-properties.
+Matplotlib provides a default style that determines things like the
+colors of lines, the placement of labels and ticks on the axes, and
+many other properties.
 
 There are several ways to override these defaults and customize your figures:
 
@@ -267,14 +259,15 @@ There are several ways to override these defaults and customize your figures:
 
 * To customize all figures in a notebook, you use `rcParams`.
 
-* To override more than a few defaults at the same time, you can use a style
-sheet.
+* To override more than a few defaults at the same time, you can use a
+style sheet.
 
-As a simple example, notice that Matplotlib puts ticks on the outside of the
-figures by default, and only on the left and bottom sides of the axes.
+As a simple example, notice that Matplotlib puts ticks on the outside
+of the figures by default, and only on the left and bottom sides of
+the axes.
 
-To change this behavior, you can use `gca()` to get the current axes and
-`tick_params` to change the settings.
+To change this behavior, you can use `gca()` to get the current axes
+and `tick_params` to change the settings.
 
 Here's how you can put the ticks on the inside of the figure:
 
@@ -285,10 +278,8 @@ plt.gca().tick_params(direction='in')
 > ## Exercise
 > 
 > Read the documentation of
->
-[`tick_params`](https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.axes.Axes.tick_params.html)
+> [`tick_params`](https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.axes.Axes.tick_params.html)
 > and use it to put ticks on the top and right sides of the axes.
-
 > > 
 > > ~~~
 > > 
@@ -298,10 +289,11 @@ plt.gca().tick_params(direction='in')
 > {: .solution}
 {: .challenge}
 
+
 ## rcParams
 
-If you want to make a customization that applies to all figures in a notebook,
-you can use `rcParams`.
+If you want to make a customization that applies to all figures in a
+notebook, you can use `rcParams`.
 
 Here's an example that reads the current font size from `rcParams`:
 
@@ -321,25 +313,25 @@ And sets it to a new value:
 plt.rcParams['font.size'] = 14
 ~~~
 {: .language-python}
-As an exercise, plot the previous figure again, and see what font sizes have
-changed.  Look up any other element of `rcParams`, change its value, and check
-the effect on the figure.
+As an exercise, plot the previous figure again, and see what font
+sizes have changed.  Look up any other element of `rcParams`, change
+its value, and check the effect on the figure.
 
-If you find yourself making the same customizations in several notebooks, you
-can put changes to `rcParams` in a `matplotlibrc` file, [which you can read
-about
+If you find yourself making the same customizations in several
+notebooks, you can put changes to `rcParams` in a `matplotlibrc` file,
+[which you can read about
 here](https://matplotlib.org/3.3.1/tutorials/introductory/customizing.html#customizing-with-matplotlibrc-files).
 
 ## Style sheets
 
-The `matplotlibrc` file is read when you import Matplotlib, so it is not easy
-to switch from one set of options to another.
+The `matplotlibrc` file is read when you import Matplotlib, so it is
+not easy to switch from one set of options to another.
 
-The solution to this problem is style sheets, [which you can read about
+The solution to this problem is style sheets, [which you can read
+about
 here](https://matplotlib.org/3.1.1/tutorials/introductory/customizing.html).
 
-Matplotlib provides a set of predefined style sheets, or you can make your
-own.
+Matplotlib provides a set of predefined style sheets, or you can make your own.
 
 The following cell displays a list of style sheets installed on your system.
 
@@ -365,8 +357,8 @@ plt.style.available
 {: .output}
 
 Note that `seaborn-paper`, `seaborn-talk` and `seaborn-poster` are
-particularly intended to prepare versions of a figure with text sizes and
-other features that work well in papers, talks, and posters.
+particularly intended to prepare versions of a figure with text sizes
+and other features that work well in papers, talks, and posters.
 
 To use any of these style sheets, run `plt.style.use` like this:
 
@@ -378,18 +370,18 @@ plt.style.use('fivethirtyeight')
 
 ~~~
 {: .language-python}
-The style sheet you choose will affect the appearance of all figures you plot
-after calling `use`, unless you override any of the options or call `use`
-again.
+The style sheet you choose will affect the appearance of all figures
+you plot after calling `use`, unless you override any of the options
+or call `use` again.
 
-As an exercise, choose one of the styles on the list and select it by calling
-`use`.  Then go back and plot one of the figures above and see what effect it
-has.
+As an exercise, choose one of the styles on the list and select it by
+calling `use`.  Then go back and plot one of the figures above and see
+what effect it has.
 
-If you can't find a style sheet that's exactly what you want, you can make
-your own.  This repository includes a style sheet called
-`az-paper-twocol.mplstyle`, with customizations chosen by Azalee Bostroem for
-publication in astronomy journals.
+If you can't find a style sheet that's exactly what you want, you can
+make your own.  This repository includes a style sheet called
+`az-paper-twocol.mplstyle`, with customizations chosen by Azalee
+Bostroem for publication in astronomy journals.
 
 The following cell downloads the style sheet.
 
@@ -410,16 +402,15 @@ You can use it like this:
 plt.style.use('./az-paper-twocol.mplstyle')
 ```
 
-The prefix `./` tells Matplotlib to look for the file in the current
-directory.
+The prefix `./` tells Matplotlib to look for the file in the current directory.
 
 ~~~
 
 ~~~
 {: .language-python}
-As an alternative, you can install a style sheet for your own use by putting
-it in your configuration directory.  To find out where that is, you can run
-the following command:
+As an alternative, you can install a style sheet for your own use by
+putting it in your configuration directory.  To find out where that
+is, you can run the following command:
 
 ```
 import matplotlib as mpl
@@ -433,15 +424,15 @@ mpl.get_configdir()
 {: .language-python}
 ## LaTeX fonts
 
-When you include mathematical expressions in titles, labels, and annotations,
-Matplotlib uses
-[`mathtext`](https://matplotlib.org/3.1.0/tutorials/text/mathtext.html) to
-typeset them.  `mathtext` uses the same syntax as LaTeX, but it provides only
-a subset of its features.
+When you include mathematical expressions in titles, labels, and
+annotations, Matplotlib uses
+[`mathtext`](https://matplotlib.org/3.1.0/tutorials/text/mathtext.html)
+to typeset them.  `mathtext` uses the same syntax as LaTeX, but it
+provides only a subset of its features.
 
-If you need features that are not provided by `mathtext`, or you prefer the
-way LaTeX typesets mathematical expressions, you can customize Matplotlib to
-use LaTeX.
+If you need features that are not provided by `mathtext`, or you
+prefer the way LaTeX typesets mathematical expressions, you can
+customize Matplotlib to use LaTeX.
 
 In `matplotlibrc` or in a style sheet, you can add the following line:
 
@@ -467,27 +458,27 @@ If you get an error message like
 LaTeX Error: File `type1cm.sty' not found.
 ```
 
-You might have to install a package that contains the fonts LaTeX needs.  On
-some systems, the packages `texlive-latex-extra` or `cm-super` might be what
-you need.  [See here for more help with
+You might have to install a package that contains the fonts LaTeX
+needs.  On some systems, the packages `texlive-latex-extra` or
+`cm-super` might be what you need.  [See here for more help with
 this](https://stackoverflow.com/questions/11354149/python-unable-to-render-tex-in-matplotlib).
 
 In case you are curious, `cm` stands for [Computer
-Modern](https://en.wikipedia.org/wiki/Computer_Modern), the font LaTeX uses to
-typeset math.
+Modern](https://en.wikipedia.org/wiki/Computer_Modern), the font LaTeX
+uses to typeset math.
 
 ## Multiple panels
 
-So far we've been working with one figure at a time, but the figure we are
-replicating contains multiple panels, also known as "subplots".
+So far we've been working with one figure at a time, but the figure we
+are replicating contains multiple panels, also known as "subplots".
 
-Confusingly, Matplotlib provides *three* functions for making figures like
-this: `subplot`, `subplots`, and `subplot2grid`.
+Confusingly, Matplotlib provides *three* functions for making figures
+like this: `subplot`, `subplots`, and `subplot2grid`.
 
 *
 [`subplot`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.subplot.html)
-is simple and similar to MATLAB, so if you are familiar with that interface,
-you might like `subplot`
+is simple and similar to MATLAB, so if you are familiar with that
+interface, you might like `subplot`
 
 *
 [`subplots`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.subplots.html)
@@ -495,12 +486,13 @@ is more object-oriented, which some people prefer.
 
 *
 [`subplot2grid`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.subplot2grid.html)
-is most convenient if you want to control the relative sizes of the subplots.
+is most convenient if you want to control the relative sizes of the
+subplots.
 
 So we'll use `subplot2grid`.
 
-All of these functions are easier to use if we put the code that generates
-each panel in a function.
+All of these functions are easier to use if we put the code that
+generates each panel in a function.
 
 ## Upper right
 
@@ -544,8 +536,8 @@ pm2_rect = [pm2_min, pm2_max, pm2_max, pm2_min]
 To plot this rectangle, we'll use a feature we have not seen before:
 `Polygon`, which is provided by Matplotlib.
 
-To create a `Polygon`, we have to put the coordinates in an array with `x`
-values in the first column and `y` values in the second column.
+To create a `Polygon`, we have to put the coordinates in an array with
+`x` values in the first column and `y` values in the second column.
 
 ~~~
 import numpy as np
@@ -563,9 +555,9 @@ array([[-8.9, -2.2],
 ~~~
 {: .output}
 
-The following function takes a `DataFrame` as a parameter, plots the proper
-motion for each star, and adds a shaded `Polygon` to show the region we
-selected.
+The following function takes a `DataFrame` as a parameter, plots the
+proper motion for each star, and adds a shaded `Polygon` to show the
+region we selected.
 
 ~~~
 from matplotlib.patches import Polygon
@@ -587,11 +579,11 @@ def plot_proper_motion(df):
     plt.ylim(-10, 10)
 ~~~
 {: .language-python}
-Notice that `add_patch` is like `invert_yaxis`; in order to call it, we have
-to use `gca` to get the current axes.
+Notice that `add_patch` is like `invert_yaxis`; in order to call it,
+we have to use `gca` to get the current axes.
 
-Here's what the new version of the figure looks like.  We've changed the
-labels on the axes to be consistent with the paper.
+Here's what the new version of the figure looks like.  We've changed
+the labels on the axes to be consistent with the paper.
 
 ~~~
 plt.rcParams['text.usetex'] = False
@@ -635,8 +627,8 @@ filename = 'gd1_candidates.hdf5'
 candidate_df = pd.read_hdf(filename, 'candidate_df')
 ~~~
 {: .language-python}
-Here's a function that takes a `DataFrame` of candidate stars and plots their
-positions in GD-1 coordindates.
+Here's a function that takes a `DataFrame` of candidate stars and
+plots their positions in GD-1 coordindates.
 
 ~~~
 def plot_first_selection(df):
@@ -666,8 +658,9 @@ plot_first_selection(candidate_df)
 
 ## Lower right
 
-For the figure in the lower right, we need to reload the merged `DataFrame`,
-which contains data from Gaia and photometry data from Pan-STARRS.
+For the figure in the lower right, we need to reload the merged
+`DataFrame`, which contains data from Gaia and photometry data from
+Pan-STARRS.
 
 ~~~
 import pandas as pd
@@ -677,8 +670,8 @@ filename = 'gd1_merged.hdf5'
 merged = pd.read_hdf(filename, 'merged')
 ~~~
 {: .language-python}
-From the previous notebook, here's the function that plots the color-magnitude
-diagram.
+From the previous notebook, here's the function that plots the
+color-magnitude diagram.
 
 ~~~
 import matplotlib.pyplot as plt
@@ -713,8 +706,9 @@ plot_cmd(merged)
 ~~~
 {: .output}
 
-The following cell downloads an HDF file that contains the polygon we used to
-select starts in the color-magnitude diagram, if it doesn't already exist.
+The following cell downloads an HDF file that contains the polygon we
+used to select starts in the color-magnitude diagram, if it doesn't
+already exist.
 
 ~~~
 import os
@@ -781,12 +775,10 @@ array([[ 0.58757135, 21.41174601],
 
 > ## Exercise
 > 
-> Add a few lines to `plot_cmd` to show the polygon we selected as a shaded
-> area.
+> Add a few lines to `plot_cmd` to show the polygon we selected as a
+> shaded area.
 > 
-> Hint: pass `coords` as an argument to `Polygon` and plot it using
-`add_patch`.
-
+> Hint: pass `coords` as an argument to `Polygon` and plot it using `add_patch`.
 > > 
 > > ~~~
 > > 
@@ -798,22 +790,22 @@ array([[ 0.58757135, 21.41174601],
 > {: .solution}
 {: .challenge}
 
+
 ## Subplots
 
-Now we're ready to put it all together.  To make a figure with four subplots,
-we'll use `subplot2grid`, [which requires two
+Now we're ready to put it all together.  To make a figure with four
+subplots, we'll use `subplot2grid`, [which requires two
 arguments](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.subplot2grid.html):
 
-* `shape`, which is a tuple with the number of rows and columns in the grid,
-and
+* `shape`, which is a tuple with the number of rows and columns in the grid, and
 
-* `loc`, which is a tuple identifying the location in the grid we're about to
-fill.
+* `loc`, which is a tuple identifying the location in the grid we're
+about to fill.
 
 In this example, `shape` is `(2, 2)` to create two rows and two columns.
 
-For the first panel, `loc` is `(0, 0)`, which indicates row 0 and column 0,
-which is the upper-left panel.
+For the first panel, `loc` is `(0, 0)`, which indicates row 0 and
+column 0, which is the upper-left panel.
 
 Here's how we use it to draw the four panels.
 
@@ -845,28 +837,27 @@ plt.tight_layout()
 
 We use
 [`plt.tight_layout`](https://matplotlib.org/3.3.1/tutorials/intermediate/tight_layout_guide.html)
-at the end, which adjusts the sizes of the panels to make sure the titles and
-axis labels don't overlap.
+at the end, which adjusts the sizes of the panels to make sure the
+titles and axis labels don't overlap.
 
 As an exercise, see what happens if you leave out `tight_layout`.
 
 ## Adjusting proportions
 
-In the previous figure, the panels are all the same size.  To get a better
-view of GD-1, we'd like to stretch the panels on the left and compress the
-ones on the right.
+In the previous figure, the panels are all the same size.  To get a
+better view of GD-1, we'd like to stretch the panels on the left and
+compress the ones on the right.
 
-To do that, we'll use the `colspan` argument to make a panel that spans
-multiple columns in the grid.
+To do that, we'll use the `colspan` argument to make a panel that
+spans multiple columns in the grid.
 
-In the following example, `shape` is `(2, 4)`, which means 2 rows and 4
-columns.
+In the following example, `shape` is `(2, 4)`, which means 2 rows and 4 columns.
 
-The panels on the left span three columns, so they are three times wider than
-the panels on the right.
+The panels on the left span three columns, so they are three times
+wider than the panels on the right.
 
-At the same time, we use `figsize` to adjust the aspect ratio of the whole
-figure.
+At the same time, we use `figsize` to adjust the aspect ratio of the
+whole figure.
 
 ~~~
 plt.figure(figsize=(9, 4.5))
@@ -900,10 +891,8 @@ This is looking more and more like the figure in the paper.
 
 > ## Exercise
 > 
-> In this example, the ratio of the widths of the panels is 3:1.  How would
-you
-> adjust it if you wanted the ratio to be 3:2?
-
+> In this example, the ratio of the widths of the panels is 3:1.  How
+> would you adjust it if you wanted the ratio to be 3:2?
 > > 
 > > ~~~
 > > 
@@ -931,29 +920,31 @@ you
 > {: .solution}
 {: .challenge}
 
+
 ## Summary
 
-In this notebook, we reverse-engineered the figure we've been replicating,
-identifying elements that seem effective and others that could be improved.
+In this notebook, we reverse-engineered the figure we've been
+replicating, identifying elements that seem effective and others that
+could be improved.
 
-We explored features Matplotlib provides for adding annotations to figures --
-including text, lines, arrows, and polygons -- and several ways to customize
-the appearance of figures.  And we learned how to create figures that contain
-multiple panels.
+We explored features Matplotlib provides for adding annotations to
+figures -- including text, lines, arrows, and polygons -- and several
+ways to customize the appearance of figures.  And we learned how to
+create figures that contain multiple panels.
 
 ## Best practices
 
-* The most effective figures focus on telling a single story clearly and
-compellingly.
+* The most effective figures focus on telling a single story clearly
+and compellingly.
 
-* Consider using annotations to guide the readers attention to the most
-important elements of a figure.
+* Consider using annotations to guide the readers attention to the
+most important elements of a figure.
 
-* The default Matplotlib style generates good quality figures, but there are
-several ways you can override the defaults.
+* The default Matplotlib style generates good quality figures, but
+there are several ways you can override the defaults.
 
-* If you find yourself making the same customizations on several projects, you
-might want to create your own style sheet.
+* If you find yourself making the same customizations on several
+projects, you might want to create your own style sheet.
 
 ~~~
 
