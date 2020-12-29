@@ -362,43 +362,31 @@ in the polygon we just computed, `pm_vertices`.
 
 To use `pm_vertices` as part of an ADQL query, we have to convert it
 to a string.
-
-We'll use `flatten` to convert from a 2-D array to a 1-D array, and
-`str` to convert each element to a string.
+Using `flatten` and `array2string`, we can almost get the format we need.
 
 ~~~
-t = [str(x) for x in pm_vertices.flatten()]
-t
+s = np.array2string(pm_vertices.flatten(), 
+                    max_line_width=1000,
+                    separator=',')
+s
 ~~~
 {: .language-python}
 
 ~~~
-['-4.050371212154984',
- '-14.75623260987968',
- '-3.4198108491382455',
- '-14.723655456335619',
- '-3.035219883740934',
- '-14.443571352854612',
- '-2.268479190206636',
- '-13.714023598831554',
- '-2.611722027231764',
- '-13.247974712069263',
- '-2.7347140078529106',
-[Output truncated]
+'[ -4.05037121,-14.75623261, -3.41981085,-14.72365546, -3.03521988,-14.44357135, -2.26847919,-13.7140236 , -2.61172203,-13.24797471, -2.73471401,-13.09054471, -3.19923146,-12.5942653 , -3.34082546,-12.47611926, -5.67489413,-11.16083338, -5.95159272,-11.10547884, -6.42394023,-11.05981295, -7.09631023,-11.95187806, -7.30641519,-12.24559977, -7.04016696,-12.88580702, -6.00347705,-13.75912098, -4.42442296,-14.74641176]'
 ~~~
 {: .output}
 
-Now `t` is a list of strings; we can use `join` to make a single
-string with commas between the elements.
+We just have to remove the brackets.
 
 ~~~
-pm_point_list = ', '.join(t)
+pm_point_list = s.strip('[]')
 pm_point_list
 ~~~
 {: .language-python}
 
 ~~~
-'-4.050371212154984, -14.75623260987968, -3.4198108491382455, -14.723655456335619, -3.035219883740934, -14.443571352854612, -2.268479190206636, -13.714023598831554, -2.611722027231764, -13.247974712069263, -2.7347140078529106, -13.090544709622938, -3.199231461993783, -12.594265302440828, -3.34082545787549, -12.476119260818695, -5.674894125178565, -11.160833381392624, -5.95159272432137, -11.105478836426514, -6.423940229776128, -11.05981294804957, -7.096310230579248, -11.951878058650085, -7.306415190921692, -12.245599765990594, -7.040166963232815, -12.885807024935527, -6.0034770546523735, -13.759120984106968, -4.42442296194263, -14.7464117578883'
+' -4.05037121,-14.75623261, -3.41981085,-14.72365546, -3.03521988,-14.44357135, -2.26847919,-13.7140236 , -2.61172203,-13.24797471, -2.73471401,-13.09054471, -3.19923146,-12.5942653 , -3.34082546,-12.47611926, -5.67489413,-11.16083338, -5.95159272,-11.10547884, -6.42394023,-11.05981295, -7.09631023,-11.95187806, -7.30641519,-12.24559977, -7.04016696,-12.88580702, -6.00347705,-13.75912098, -4.42442296,-14.74641176'
 ~~~
 {: .output}
 
@@ -427,7 +415,10 @@ Here's how we transform it to ICRS, as we saw in the previous lesson.
 from gala.coordinates import GD1Koposov10
 from astropy.coordinates import SkyCoord
 
-corners = SkyCoord(phi1=phi1_rect, phi2=phi2_rect, frame=GD1Koposov10)
+corners = SkyCoord(phi1=phi1_rect, 
+                   phi2=phi2_rect, 
+                   frame=GD1Koposov10)
+
 corners_icrs = corners.transform_to('icrs')
 ~~~
 {: .language-python}
@@ -435,18 +426,21 @@ To use `corners_icrs` as part of an ADQL query, we have to convert it
 to a string.  Here's how we do that, as we saw in the previous lesson.
 
 ~~~
-point_base = "{point.ra.value}, {point.dec.value}"
-
-t = [point_base.format(point=point)
-     for point in corners_icrs]
-
-point_list = ', '.join(t)
+def skycoord_to_string(skycoord):
+    """Convert SkyCoord to string."""
+    t = skycoord.to_string()
+    s = ' '.join(t)
+    return s.replace(' ', ', ')
+~~~
+{: .language-python}
+~~~
+point_list = skycoord_to_string(corners_icrs)
 point_list
 ~~~
 {: .language-python}
 
 ~~~
-'135.30559858565638, 8.398623940157561, 126.50951508623503, 13.44494195652069, 163.0173655836748, 54.24242734020255, 172.9328536286811, 46.47260492416258, 135.30559858565638, 8.398623940157561'
+'135.306, 8.39862, 126.51, 13.4449, 163.017, 54.2424, 172.933, 46.4726, 135.306, 8.39862'
 ~~~
 {: .output}
 
@@ -502,8 +496,8 @@ columns = 'source_id, ra, dec, pmra, pmdec, parallax, radial_velocity'
 > > ~~~
 > > 
 > > query = query_base.format(columns=columns, 
-> >                             point_list=point_list,
-> >                             pm_point_list=pm_point_list)
+> >                           point_list=point_list,
+> >                           pm_point_list=pm_point_list)
 > > print(query)
 > > ~~~
 > > {: .language-python}
@@ -522,17 +516,17 @@ print(job)
 {: .language-python}
 
 ~~~
-Created TAP+ (v1.2.1) - Connection:
-	Host: gea.esac.esa.int
-	Use HTTPS: True
-	Port: 443
-	SSL Port: 443
-Created TAP+ (v1.2.1) - Connection:
-	Host: geadata.esac.esa.int
-	Use HTTPS: True
-	Port: 443
-	SSL Port: 443
 INFO: Query finished. [astroquery.utils.tap.core]
+<Table length=7345>
+      name       dtype    unit                              description                             n_bad
+--------------- ------- -------- ------------------------------------------------------------------ -----
+      source_id   int64          Unique source identifier (unique within a particular Data Release)     0
+             ra float64      deg                                                    Right ascension     0
+            dec float64      deg                                                        Declination     0
+           pmra float64 mas / yr                         Proper motion in right ascension direction     0
+          pmdec float64 mas / yr                             Proper motion in declination direction     0
+       parallax float64      mas                                                           Parallax     0
+radial_velocity float64   km / s                                                    Radial velocity  7294
 [Output truncated]
 ~~~
 {: .output}
@@ -546,7 +540,7 @@ len(candidate_table)
 {: .language-python}
 
 ~~~
-7346
+7345
 ~~~
 {: .output}
 
@@ -671,7 +665,7 @@ We can use `ls` to confirm that the file exists and check the size:
 {: .language-python}
 
 ~~~
--rw-rw-r-- 1 downey downey 698K Dec 29 11:50 gd1_candidates.hdf5
+-rw-rw-r-- 1 downey downey 698K Dec 29 16:46 gd1_candidates.hdf5
 
 ~~~
 {: .output}
@@ -716,7 +710,7 @@ We can check the file size like this:
 {: .language-python}
 
 ~~~
--rw-rw-r-- 1 downey downey 1.4M Dec 29 11:50 gd1_candidates.csv
+-rw-rw-r-- 1 downey downey 1.4M Dec 29 16:46 gd1_candidates.csv
 
 ~~~
 {: .output}

@@ -485,102 +485,32 @@ POLYGON(143.65, 20.98,
 """
 ```
 
-`corners_icrs` behaves like a list, so we can use a `for` loop to
-iterate through the points.
+The following function does the job:
 
 ~~~
-for point in corners_icrs:
-    print(point)
-~~~
-{: .language-python}
-
-~~~
-<SkyCoord (ICRS): (ra, dec) in deg
-    (146.27533314, 19.26190982)>
-<SkyCoord (ICRS): (ra, dec) in deg
-    (135.42163944, 25.87738723)>
-<SkyCoord (ICRS): (ra, dec) in deg
-    (141.60264825, 34.3048303)>
-<SkyCoord (ICRS): (ra, dec) in deg
-    (152.81671045, 27.13611254)>
-<SkyCoord (ICRS): (ra, dec) in deg
-    (146.27533314, 19.26190982)>
-
-~~~
-{: .output}
-
-From that, we can select the coordinates `ra` and `dec`:
-
-~~~
-for point in corners_icrs:
-    print(point.ra, point.dec)
+def skycoord_to_string(skycoord):
+    """Convert SkyCoord to string."""
+    t = skycoord.to_string()
+    s = ' '.join(t)
+    return s.replace(' ', ', ')
 ~~~
 {: .language-python}
+`SkyCoord` provides `to_string`, which returns a list of strings.
+
+We use `join` to make a single string with spaces between the coordinates.
+
+Then we use `replace` to add commas between the coordinates. 
 
 ~~~
-146d16m31.1993s 19d15m42.8754s
-135d25m17.902s 25d52m38.594s
-141d36m09.5337s 34d18m17.3891s
-152d49m00.1576s 27d08m10.0051s
-146d16m31.1993s 19d15m42.8754s
-
-~~~
-{: .output}
-
-The results are quantities with units, but if we select the `value`
-part, we get a dimensionless floating-point number.
-
-~~~
-for point in corners_icrs:
-    print(point.ra.value, point.dec.value)
-~~~
-{: .language-python}
-
-~~~
-146.27533313607782 19.261909820533692
-135.42163944306296 25.87738722767213
-141.60264825107333 34.304830296257144
-152.81671044675923 27.136112541397996
-146.27533313607782 19.261909820533692
-
-~~~
-{: .output}
-
-We can use string `format` to convert these numbers to strings.
-
-~~~
-point_base = "{point.ra.value}, {point.dec.value}"
-
-t = [point_base.format(point=point)
-     for point in corners_icrs]
-t
-~~~
-{: .language-python}
-
-~~~
-['146.27533313607782, 19.261909820533692',
- '135.42163944306296, 25.87738722767213',
- '141.60264825107333, 34.304830296257144',
- '152.81671044675923, 27.136112541397996',
- '146.27533313607782, 19.261909820533692']
-~~~
-{: .output}
-
-The result is a list of strings, which we can join into a single
-string using `join`.
-
-~~~
-point_list = ', '.join(t)
+point_list = skycoord_to_string(corners_icrs)
 point_list
 ~~~
 {: .language-python}
 
 ~~~
-'146.27533313607782, 19.261909820533692, 135.42163944306296, 25.87738722767213, 141.60264825107333, 34.304830296257144, 152.81671044675923, 27.136112541397996, 146.27533313607782, 19.261909820533692'
+'146.275, 19.2619, 135.422, 25.8774, 141.603, 34.3048, 152.817, 27.1361, 146.275, 19.2619'
 ~~~
 {: .output}
-
-Notice that we invoke `join` on a string and pass the list as an argument.
 
 Before we can assemble the query, we need `columns` again (as we saw
 in the previous notebook).
@@ -617,7 +547,7 @@ FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
   AND 1 = CONTAINS(POINT(ra, dec), 
-                   POLYGON(146.27533313607782, 19.261909820533692, 135.42163944306296, 25.87738722767213, 141.60264825107333, 34.304830296257144, 152.81671044675923, 27.136112541397996, 146.27533313607782, 19.261909820533692))
+                   POLYGON(146.275, 19.2619, 135.422, 25.8774, 141.603, 34.3048, 152.817, 27.1361, 146.275, 19.2619))
 
 
 ~~~
@@ -636,7 +566,7 @@ print(job)
 
 ~~~
 INFO: Query finished. [astroquery.utils.tap.core]
-<Table length=140340>
+<Table length=140339>
       name       dtype    unit                              description                             n_bad 
 --------------- ------- -------- ------------------------------------------------------------------ ------
       source_id   int64          Unique source identifier (unique within a particular Data Release)      0
@@ -659,7 +589,7 @@ len(results)
 {: .language-python}
 
 ~~~
-140340
+140339
 ~~~
 {: .output}
 
