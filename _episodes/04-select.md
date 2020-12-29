@@ -4,7 +4,7 @@ teaching: 3000
 exercises: 0
 questions:
 
-- "How do we transform proper motion from one frame to another?"
+- "How do we move the computation to the data?"
 
 objectives:
 
@@ -91,9 +91,8 @@ if not os.path.exists(filename):
 ~~~
 import pandas as pd
 
-df = pd.read_hdf(filename, 'df')
-centerline = pd.read_hdf(filename, 'centerline')
-selected = pd.read_hdf(filename, 'selected')
+centerline_df = pd.read_hdf(filename, 'centerline_df')
+selected_df = pd.read_hdf(filename, 'selected_df')
 ~~~
 {: .language-python}
 ## Selection by proper motion
@@ -135,10 +134,16 @@ pm2_max =  1.0
 ~~~
 {: .language-python}
 ~~~
-import astropy.units as u
-
-pm1_rect = [pm1_min, pm1_min, pm1_max, pm1_max, pm1_min] * u.mas/u.yr
-pm2_rect = [pm2_min, pm2_max, pm2_max, pm2_min, pm2_min] * u.mas/u.yr
+def make_rectangle(x1, x2, y1, y2):
+    """Return the corners of a rectangle."""
+    xs = [x1, x1, x2, x2, x1]
+    ys = [y1, y2, y2, y1, y1]
+    return xs, ys
+~~~
+{: .language-python}
+~~~
+pm1_rect, pm2_rect = make_rectangle(
+    pm1_min, pm1_max, pm2_min, pm2_max)
 ~~~
 {: .language-python}
 The following figure shows:
@@ -152,12 +157,12 @@ The following figure shows:
 ~~~
 import matplotlib.pyplot as plt
 
-pm1 = centerline['pm_phi1']
-pm2 = centerline['pm_phi2']
+pm1 = centerline_df['pm_phi1']
+pm2 = centerline_df['pm_phi2']
 plt.plot(pm1, pm2, 'ko', markersize=0.3, alpha=0.3)
 
-pm1 = selected['pm_phi1']
-pm2 = selected['pm_phi2']
+pm1 = selected_df['pm_phi1']
+pm2 = selected_df['pm_phi2']
 plt.plot(pm1, pm2, 'gx', markersize=0.3, alpha=0.3)
 
 plt.plot(pm1_rect, pm2_rect, '-')
@@ -179,12 +184,12 @@ Now we'll make the same plot using proper motions in the ICRS frame,
 which are stored in columns `pmra` and `pmdec`.
 
 ~~~
-pm1 = centerline['pmra']
-pm2 = centerline['pmdec']
+pm1 = centerline_df['pmra']
+pm2 = centerline_df['pmdec']
 plt.plot(pm1, pm2, 'ko', markersize=0.3, alpha=0.3)
 
-pm1 = selected['pmra']
-pm2 = selected['pmdec']
+pm1 = selected_df['pmra']
+pm2 = selected_df['pmdec']
 plt.plot(pm1, pm2, 'gx', markersize=1, alpha=0.3)
     
 plt.xlabel('Proper motion ra (ICRS frame)')
@@ -220,7 +225,7 @@ a NumPy array.
 ~~~
 import numpy as np
 
-points = selected[['pmra','pmdec']].to_numpy()
+points = selected_df[['pmra','pmdec']].to_numpy()
 points.shape
 ~~~
 {: .language-python}
@@ -234,7 +239,7 @@ NOTE: If you are using an older version of Pandas, you might not have
 `to_numpy()`; you can use `values` instead, like this:
 
 ```
-points = selected[['pmra','pmdec']].values
+points = selected_df[['pmra','pmdec']].values
 
 ```
 
@@ -250,7 +255,7 @@ hull
 {: .language-python}
 
 ~~~
-<scipy.spatial.qhull.ConvexHull at 0x7f0d570cd700>
+<scipy.spatial.qhull.ConvexHull at 0x7fa7c4c03a90>
 ~~~
 {: .output}
 
@@ -307,12 +312,12 @@ The following figure shows proper motion in ICRS again, along with the
 convex hull we just computed.
 
 ~~~
-pm1 = centerline['pmra']
-pm2 = centerline['pmdec']
+pm1 = centerline_df['pmra']
+pm2 = centerline_df['pmdec']
 plt.plot(pm1, pm2, 'ko', markersize=0.3, alpha=0.3)
 
-pm1 = selected['pmra']
-pm2 = selected['pmdec']
+pm1 = selected_df['pmra']
+pm2 = selected_df['pmdec']
 plt.plot(pm1, pm2, 'gx', markersize=0.3, alpha=0.3)
 
 plt.plot(pmra_poly, pmdec_poly)
@@ -403,34 +408,29 @@ other polygon, the one that specifies the region of the sky we want.
 Here are the coordinates of the rectangle we'll select, in the GD-1 frame.
 
 ~~~
-phi1_min = -70
-phi1_max = -20
-phi2_min = -5
-phi2_max = 5
+import astropy.units as u
+
+phi1_min = -70 * u.degree
+phi1_max = -20 * u.degree
+phi2_min = -5 * u.degree
+phi2_max = 5 * u.degree
 ~~~
 {: .language-python}
 ~~~
-phi1_rect = [phi1_min, phi1_min, phi1_max, phi1_max] * u.deg
-phi2_rect = [phi2_min, phi2_max, phi2_max, phi2_min] * u.deg
+phi1_rect, phi2_rect = make_rectangle(
+    phi1_min, phi1_max, phi2_min, phi2_max)
 ~~~
 {: .language-python}
 Here's how we transform it to ICRS, as we saw in the previous lesson.
 
 ~~~
-import gala.coordinates as gc
-import astropy.coordinates as coord
+from gala.coordinates import GD1Koposov10
+from astropy.coordinates import SkyCoord
 
-corners = gc.GD1Koposov10(phi1=phi1_rect, phi2=phi2_rect)
-corners_icrs = corners.transform_to(coord.ICRS)
+corners = SkyCoord(phi1=phi1_rect, phi2=phi2_rect, frame=GD1Koposov10)
+corners_icrs = corners.transform_to('icrs')
 ~~~
 {: .language-python}
-
-~~~
-WARNING: AstropyDeprecationWarning: Transforming a frame instance to a frame class (as opposed to another frame instance) will not be supported in the future.  Either explicitly instantiate the target frame, or first convert the source frame instance to a `astropy.coordinates.SkyCoord` and use its `transform_to()` method. [astropy.coordinates.baseframe]
-
-~~~
-{: .output}
-
 To use `corners_icrs` as part of an ADQL query, we have to convert it
 to a string.  Here's how we do that, as we saw in the previous lesson.
 
@@ -446,7 +446,7 @@ point_list
 {: .language-python}
 
 ~~~
-'135.30559858565638, 8.398623940157561, 126.50951508623503, 13.44494195652069, 163.0173655836748, 54.24242734020255, 172.9328536286811, 46.47260492416258'
+'135.30559858565638, 8.398623940157561, 126.50951508623503, 13.44494195652069, 163.0173655836748, 54.24242734020255, 172.9328536286811, 46.47260492416258, 135.30559858565638, 8.398623940157561'
 ~~~
 {: .output}
 
@@ -577,6 +577,8 @@ So, before we move on to the next step, let's collect the code we used
 to transform the coordinates and make a Pandas `DataFrame`:
 
 ~~~
+from gala.coordinates import reflex_correct
+
 def make_dataframe(table):
     """Transform coordinates from ICRS to GD-1 frame.
     
@@ -584,7 +586,7 @@ def make_dataframe(table):
     
     returns: Pandas DataFrame
     """
-    skycoord = coord.SkyCoord(
+    skycoord = SkyCoord(
                ra=table['ra'], 
                dec=table['dec'],
                pm_ra_cosdec=table['pmra'],
@@ -592,8 +594,8 @@ def make_dataframe(table):
                distance=8*u.kpc, 
                radial_velocity=0*u.km/u.s)
 
-    transformed = skycoord.transform_to(gc.GD1Koposov10)
-    gd1_coord = gc.reflex_correct(transformed)
+    transformed = skycoord.transform_to(GD1Koposov10)
+    gd1_coord = reflex_correct(transformed)
 
     df = table.to_pandas()
     df['phi1'] = gd1_coord.phi1
@@ -669,7 +671,7 @@ We can use `ls` to confirm that the file exists and check the size:
 {: .language-python}
 
 ~~~
--rw-rw-r-- 1 downey downey 698K Dec 10 19:18 gd1_candidates.hdf5
+-rw-rw-r-- 1 downey downey 698K Dec 29 11:50 gd1_candidates.hdf5
 
 ~~~
 {: .output}
@@ -714,7 +716,7 @@ We can check the file size like this:
 {: .language-python}
 
 ~~~
--rw-rw-r-- 1 downey downey 1.4M Dec 10 19:19 gd1_candidates.csv
+-rw-rw-r-- 1 downey downey 1.4M Dec 29 11:50 gd1_candidates.csv
 
 ~~~
 {: .output}
