@@ -332,10 +332,10 @@ transparency of the points.
 
 > ## Exercise
 > 
-> In the call to `plt.plot`, add the keyword argument `markersize=0.1`
-> to make the markers smaller.
+> In the call to `plt.plot`, use the keyword argument `markersize` to
+> make the markers smaller.
 > 
-> Then add the argument `alpha=0.1` to make the markers nearly transparent.
+> Then add the keyword argument `alpha` to make the markers partly transparent.
 > 
 > Adjust these arguments until you think the figure shows the data most clearly.
 > 
@@ -350,6 +350,12 @@ transparency of the points.
 > > 
 > > ~~~
 > > 
+> > # x = results['ra']
+> > # y = results['dec']
+> > # plt.plot(x, y, 'ko', markersize=0.1, alpha=0.1)
+> > 
+> > # plt.xlabel('ra (degree ICRS)')
+> > # plt.ylabel('dec (degree ICRS)');
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -364,19 +370,21 @@ constructed the query.
 The coordinates in `results` are in ICRS.
 
 To plot them, we will transform them back to the `GD1Koposov10` frame;
-that way, the axes of the figure are aligned with the GD-1, which will
-make it easy to select stars near the centerline of the stream.
+that way, the axes of the figure are aligned with the orbit of GD-1,
+which is useful for two reasons:
 
-To do that, we'll put the results into a `SkyCoord` object, 
-which is an "interface for celestial coordinate representation,
-manipulation, and transformation between systems", provided by
-Astropy.
+* We can identify stars that are likely to be in GD-1 by selecting
+stars near the centerline of the stream, where $\phi_2$ is close to 0.
+
+* We expect stars in GD-1 to have similar proper motion along the $\phi_1$ axis.
+
+To do the transformation, we'll put the results into a `SkyCoord` object.
 
 ~~~
-import astropy.coordinates as coord
+from astropy.coordinates import SkyCoord
 import astropy.units as u
 
-skycoord = coord.SkyCoord(
+skycoord = SkyCoord(
                ra=results['ra'], 
                dec=results['dec'],
                pm_ra_cosdec=results['pmra'],
@@ -390,28 +398,14 @@ Most of the arguments we send to `SkyCoord` come directly from `results`.
 We provide `distance` and `radial_velocity` to prepare the data for
 reflex correction, which we explain below.
 
-The result is a `SkyCoord` object ([documentation
-here](https://docs.astropy.org/en/stable/api/astropy.coordinates.SkyCoord.html#astropy.coordinates.SkyCoord)).
-
-The result is an Astropy `SkyCoord` object.
+The result is an Astropy `SkyCoord` object, which we can transform to
+the GD-1 frame.
 
 ~~~
-type(skycoord)
-~~~
-{: .language-python}
+from gala.coordinates import GD1Koposov10
 
-~~~
-astropy.coordinates.sky_coordinate.SkyCoord
-~~~
-{: .output}
-
-`SkyCoord` provides `transform_to`, so we can transform the
-coordinates to other frames.
-
-~~~
-import gala.coordinates as gc
-
-transformed = skycoord.transform_to(gc.GD1Koposov10)
+gd1_frame = GD1Koposov10()
+transformed = skycoord.transform_to(gd1_frame)
 type(transformed)
 ~~~
 {: .language-python}
@@ -428,8 +422,8 @@ for reflex due to the motion of our solar system around the Galactic
 center.
 
 When we created `skycoord`, we provided `distance` and
-`radial_velocity` as arguments, which means we ignore the measurements
-provided by Gaia and replace them with these fixed values.
+`radial_velocity` as arguments, but we did not use the measurements
+provided by Gaia.  Instead, we use fixed values for these parameters.
 
 That might seem like a strange thing to do, but here's the motivation:
 
@@ -457,8 +451,9 @@ here](https://gala-astro.readthedocs.io/en/latest/api/gala.coordinates.reflex_co
 to correct for solar reflex motion.
 
 ~~~
-gd1_coord = gc.reflex_correct(transformed)
+from gala.coordinates import reflex_correct
 
+gd1_coord = reflex_correct(transformed)
 type(gd1_coord)
 ~~~
 {: .language-python}
@@ -470,12 +465,11 @@ astropy.coordinates.sky_coordinate.SkyCoord
 
 The result is a `SkyCoord` object that contains 
 
-* The transformed coordinates as attributes named `phi1` and `phi2`,
-which represent right ascension and declination in the `GD1Koposov10`
-frame.
+* `phi1` and `phi2`, which represent the transformed coordinates in
+the `GD1Koposov10` frame.
 
-* The transformed and corrected proper motions as `pm_phi1_cosphi2`
-and `pm_phi2`.
+* `pm_phi1_cosphi2` and `pm_phi2`, which represent the transformed and
+corrected proper motions.
 
 We can select the coordinates like this:
 
@@ -554,8 +548,8 @@ It's easy to convert a `Table` to a Pandas `DataFrame`.
 ~~~
 import pandas as pd
 
-df = results.to_pandas()
-df.shape
+results_df = results.to_pandas()
+results_df.shape
 ~~~
 {: .language-python}
 
@@ -570,7 +564,7 @@ It also provides `head`, which displays the first few rows.  It is
 useful for spot-checking large results as you go along.
 
 ~~~
-df.head()
+results_df.head()
 ~~~
 {: .language-python}
 
@@ -599,14 +593,14 @@ as columns in the `DataFrame`.  `phi1` and `phi2` contain the
 transformed coordinates.
 
 ~~~
-df['phi1'] = gd1_coord.phi1
-df['phi2'] = gd1_coord.phi2
-df.shape
+results_df['phi1'] = gd1_coord.phi1
+results_df['phi2'] = gd1_coord.phi2
+results_df.shape
 ~~~
 {: .language-python}
 
 ~~~
-(140340, 12)
+(140340, 10)
 ~~~
 {: .output}
 
@@ -614,9 +608,9 @@ df.shape
 motion in the transformed frame.
 
 ~~~
-df['pm_phi1'] = gd1_coord.pm_phi1_cosphi2
-df['pm_phi2'] = gd1_coord.pm_phi2
-df.shape
+results_df['pm_phi1'] = gd1_coord.pm_phi1_cosphi2
+results_df['pm_phi2'] = gd1_coord.pm_phi2
+results_df.shape
 ~~~
 {: .language-python}
 
@@ -640,7 +634,7 @@ One of the most useful of these functions is `describe`, which
 computes summary statistics for each column.
 
 ~~~
-df.describe()
+results_df.describe()
 ~~~
 {: .language-python}
 
@@ -706,23 +700,23 @@ motion in the direction of `phi2` to be near 0.
 proper motion, except that it should form a cluster at a non-zero
 value.
 
-To locate this cluster, we'll select stars near the centerline of GD-1
-and plot their proper motion.
+To locate this cluster, we will select stars near the centerline_df of GD-1.
 
 ## Selecting the centerline
 
 As we can see in the following figure, many stars in GD-1 are less
-than 1 degree of declination from the line `phi2=0`.
+than 1 degree from the line `phi2=0`.
 
 <img
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png">
 
-If we select stars near this line, they are more likely to be in GD-1.
+So stars near this line have the highest probability of being in GD-1.
 
-We'll start by selecting the `phi2` column from the `DataFrame`:
+To select them, we will use a "Boolean mask".  We'll start by
+selecting the `phi2` column from the `DataFrame`:
 
 ~~~
-phi2 = df['phi2']
+phi2 = results_df['phi2']
 type(phi2)
 ~~~
 {: .language-python}
@@ -742,23 +736,13 @@ We can use a comparison operator, `>`, to compare the values in a
 phi2_min = -1.0 * u.deg
 phi2_max = 1.0 * u.deg
 
-mask = (df['phi2'] > phi2_min)
+mask = (phi2 > phi2_min)
 type(mask)
 ~~~
 {: .language-python}
 
 ~~~
 pandas.core.series.Series
-~~~
-{: .output}
-
-~~~
-mask.dtype
-~~~
-{: .language-python}
-
-~~~
-dtype('bool')
 ~~~
 {: .output}
 
@@ -779,13 +763,36 @@ Name: phi2, dtype: bool
 ~~~
 {: .output}
 
+The `&` operator computes "logical AND", which means the result is
+true where elements from both Boolean `Series` are true.
+
+~~~
+mask = (phi2 > phi2_min) & (phi2 < phi2_max)
+~~~
+{: .language-python}
+Python note: We need the parentheses around the conditions; otherwise
+the order of operations is incorrect.
+
+The sum of a Boolean `Series` is the number of `True` values, so we
+can use `sum` to see how many stars are in the selected region.
+
+~~~
+mask.sum()
+~~~
+{: .language-python}
+
+~~~
+25084
+~~~
+{: .output}
+
 A Boolean `Series` is sometimes called a "mask" because we can use it
 to mask out some of the rows in a `DataFrame` and select the rest,
 like this:
 
 ~~~
-subset = df[mask]
-type(subset)
+centerline_df = results_df[mask]
+type(centerline_df)
 ~~~
 {: .language-python}
 
@@ -794,53 +801,17 @@ pandas.core.frame.DataFrame
 ~~~
 {: .output}
 
-`subset` is a `DataFrame` that contains only the rows from `df` that
-correspond to `True` values in `mask`.
+`centerline_df` is a `DataFrame` that contains only the rows from
+`results_df` that correspond to `True` values in `mask`; that is, in
+contains the stars near the centerline of GD-1.
 
-The previous mask selects all stars where `phi2` exceeds `phi2_min`;
-now we'll select stars where `phi2` falls between `phi2_min` and
-`phi2_max`.
-
-~~~
-phi_mask = ((df['phi2'] > phi2_min) & 
-            (df['phi2'] < phi2_max))
-~~~
-{: .language-python}
-The `&` operator computes "logical AND", which means the result is
-true where elements from both Boolean `Series` are true.
-
-The sum of a Boolean `Series` is the number of `True` values, so we
-can use `sum` to see how many stars are in the selected region.
-
-~~~
-phi_mask.sum()
-~~~
-{: .language-python}
-
-~~~
-25084
-~~~
-{: .output}
-
-And we can use `phi1_mask` to select stars near the centerline, which
-are more likely to be in GD-1.
-
-~~~
-centerline = df[phi_mask]
-len(centerline)
-~~~
-{: .language-python}
-
-~~~
-25084
-~~~
-{: .output}
+## Plotting proper motion
 
 Here's a scatter plot of proper motion for the selected stars.
 
 ~~~
-pm1 = centerline['pm_phi1']
-pm2 = centerline['pm_phi2']
+pm1 = centerline_df['pm_phi1']
+pm2 = centerline_df['pm_phi2']
 
 plt.plot(pm1, pm2, 'ko', markersize=0.1, alpha=0.1)
     
@@ -861,8 +832,8 @@ We can use `xlim` and `ylim` to set the limits on the axes and zoom in
 on the region near (0, 0).
 
 ~~~
-pm1 = centerline['pm_phi1']
-pm2 = centerline['pm_phi2']
+pm1 = centerline_df['pm_phi1']
+pm2 = centerline_df['pm_phi2']
 
 plt.plot(pm1, pm2, 'ko', markersize=0.3, alpha=0.3)
     
@@ -917,8 +888,16 @@ To draw these bounds, we'll make two lists containing the coordinates
 of the corners of the rectangle.
 
 ~~~
-pm1_rect = [pm1_min, pm1_min, pm1_max, pm1_max, pm1_min] * u.mas/u.yr
-pm2_rect = [pm2_min, pm2_max, pm2_max, pm2_min, pm2_min] * u.mas/u.yr
+def make_rectangle(x1, x2, y1, y2):
+    """Return the corners of a rectangle."""
+    xs = [x1, x1, x2, x2, x1]
+    ys = [y1, y2, y2, y1, y1]
+    return xs, ys
+~~~
+{: .language-python}
+~~~
+pm1_rect, pm2_rect = make_rectangle(
+    pm1_min, pm1_max, pm2_min, pm2_max)
 ~~~
 {: .language-python}
 Here's what the plot looks like with the bounds we chose.
@@ -960,8 +939,11 @@ def between(series, low, high):
 The following mask select stars with proper motion in the region we chose.
 
 ~~~
-pm_mask = (between(df['pm_phi1'], pm1_min, pm1_max) & 
-           between(df['pm_phi2'], pm2_min, pm2_max))
+pm1 = results_df['pm_phi1']
+pm2 = results_df['pm_phi2']
+
+pm_mask = (between(pm1, pm1_min, pm1_max) & 
+           between(pm2, pm2_min, pm2_max))
 ~~~
 {: .language-python}
 Again, the sum of a Boolean series is the number of `True` values.
@@ -976,11 +958,11 @@ pm_mask.sum()
 ~~~
 {: .output}
 
-Now we can use this mask to select rows from `df`.
+Now we can use this mask to select rows from `results_df`.
 
 ~~~
-selected = df[pm_mask]
-len(selected)
+selected_df = results_df[pm_mask]
+len(selected_df)
 ~~~
 {: .language-python}
 
@@ -993,13 +975,13 @@ These are the stars we think are likely to be in GD-1.  Let's see what
 they look like, plotting their coordinates (not their proper motion).
 
 ~~~
-phi1 = selected['phi1']
-phi2 = selected['phi2']
+phi1 = selected_df['phi1']
+phi2 = selected_df['phi2']
 
 plt.plot(phi1, phi2, 'ko', markersize=0.5, alpha=0.5)
 
-plt.xlabel('ra (degree GD1)')
-plt.ylabel('dec (degree GD1)');
+plt.xlabel(r'$\phi_1$ (degree GD1)')
+plt.ylabel(r'$\phi_2$ (degree GD1)');
 ~~~
 {: .language-python}
 
@@ -1019,7 +1001,7 @@ To save a Pandas `DataFrame`, one option is to convert it to an
 Astropy `Table`, like this:
 
 ~~~
-selected_table = Table.from_pandas(selected)
+selected_table = Table.from_pandas(selected_df)
 type(selected_table)
 ~~~
 {: .language-python}
@@ -1060,24 +1042,25 @@ We can write a Pandas `DataFrame` to an HDF5 file like this:
 ~~~
 filename = 'gd1_dataframe.hdf5'
 
-df.to_hdf(filename, 'df', mode='w')
+results_df.to_hdf(filename, 'results_df')
 ~~~
 {: .language-python}
 Because an HDF5 file can contain more than one Dataset, we have to
 provide a name, or "key", that identifies the Dataset in the file.
 
 We could use any string as the key, but in this example I use the
-variable name `df`.
+variable name `results_df`.
 
 > ## Exercise
 > 
-> We're going to need `centerline` and `selected` later as well.  Write
-> a line or two of code to add it as a second Dataset in the HDF5 file.
+> We're going to need `centerline_df` and `selected_df` later as well.
+> Write a line or two of code to add it as a second Dataset in the HDF5
+> file.
 > > 
 > > ~~~
 > > 
-> > centerline.to_hdf(filename, 'centerline')
-> > selected.to_hdf(filename, 'selected')
+> > centerline_df.to_hdf(filename, 'centerline_df')
+> > selected_df.to_hdf(filename, 'selected_df')
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -1106,7 +1089,7 @@ We can use `ls` to confirm that the file exists and check the size:
 {: .language-python}
 
 ~~~
--rw-rw-r-- 1 downey downey 17M Nov 18 19:06 gd1_dataframe.hdf5
+-rw-rw-r-- 1 downey downey 20M Dec 29 11:48 gd1_dataframe.hdf5
 
 ~~~
 {: .output}
@@ -1120,7 +1103,7 @@ If you are using Windows, `ls` might not work; in that case, try:
 We can read the file back like this:
 
 ~~~
-read_back_df = pd.read_hdf(filename, 'df')
+read_back_df = pd.read_hdf(filename, 'results_df')
 read_back_df.shape
 ~~~
 {: .language-python}
@@ -1138,7 +1121,8 @@ here](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html).
 In this lesson, we re-loaded the Gaia data we saved from a previous query.
 
 We transformed the coordinates and proper motion from ICRS to a frame
-aligned with GD-1, and stored the results in a Pandas `DataFrame`.
+aligned with the orbit of GD-1, and stored the results in a Pandas
+`DataFrame`.
 
 Then we replicated the selection process from the Price-Whelan and Bonaca paper:
 

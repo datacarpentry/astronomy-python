@@ -14,11 +14,11 @@ objectives:
 
 keypoints:
 
+- "Matplotlib provides operations for working with points, polygons, and other geometric entities, so it's not just for making figures."
+
 - "If you want to perform something like a database `JOIN` operation with data that is in a Pandas `DataFrame`, you can use the `join` or `merge` function.  In many cases, `merge` is easier to use because the arguments are more like SQL."
 
 - "Use Matplotlib options to control the size and aspect ratio of figures to make them easier to interpret."
-
-- "Matplotlib also provides operations for working with points, polygons, and other geometric entities, so it's not just for making figures."
 
 - "Be sure to record every element of the data analysis pipeline that would be needed to replicate the results."
 
@@ -118,8 +118,9 @@ and i filters, which indicates color.
 Stars with lower values of (g-i) are brighter in g-band than in
 i-band, compared to other stars, which means they are bluer.
 
-Stars in the lower-left quadrant of this diagram are less bright and
-less metallic than the others, which means they are [likely to be
+Stars in the lower-left quadrant of this diagram are less bright than
+the others, and have lower metallicity, which means they are [likely
+to be
 older](http://spiff.rit.edu/classes/ladder/lectures/ordinary_stars/ordinary.html).
 
 Since we expect the stars in GD-1 to be older than the background
@@ -149,8 +150,8 @@ def plot_cmd(table):
     plt.ylim([14, 22])
     plt.gca().invert_yaxis()
 
-    plt.ylabel('$g_0$')
-    plt.xlabel('$(g-i)_0$')
+    plt.ylabel('$Magnitude (g)$')
+    plt.xlabel('$Color (g-i)$')
 ~~~
 {: .language-python}
 `plot_cmd` uses a new function, `invert_yaxis`, to invert the `y`
@@ -398,36 +399,15 @@ distmod
 Now we can compute the scaled magnitude and color of the isochrone.
 
 ~~~
-g = main_sequence['PS_g'] + distmod
-gi = main_sequence['PS_g'] - main_sequence['PS_i']
+mag_g = main_sequence['PS_g'] + distmod
+color_g_i = main_sequence['PS_g'] - main_sequence['PS_i']
 ~~~
 {: .language-python}
-To make this data easier to work with, we'll put it in a Pandas
-`Series` with that contains `gi` as the index and `g` as the values.
-
-~~~
-import pandas as pd
-
-iso_series = pd.Series(g, index=gi)
-iso_series.head()
-~~~
-{: .language-python}
-
-~~~
-2.195021    28.294743
-2.166076    28.189718
-2.129312    28.051761
-2.093721    27.916194
-2.058585    27.780024
-dtype: float64
-~~~
-{: .output}
-
 Now we can plot it on the color-magnitude diagram like this.
 
 ~~~
 plot_cmd(photo_table)
-iso_series.plot();
+plt.plot(color_g_i, mag_g);
 ~~~
 {: .language-python}
 
@@ -442,16 +422,42 @@ expect to find stars in GD-1.
 Let's save this result so we can reload it later without repeating the
 steps in this section.
 
+So we can save the data in an HDF5 file, we'll put it in a Pandas
+`DataFrame` first:
+
+~~~
+import pandas as pd
+
+iso_df = pd.DataFrame()
+iso_df['mag_g'] = mag_g
+iso_df['color_g_i'] = color_g_i
+
+iso_df.head()
+~~~
+{: .language-python}
+
+~~~
+       mag_g  color_g_i
+0  28.294743   2.195021
+1  28.189718   2.166076
+2  28.051761   2.129312
+3  27.916194   2.093721
+4  27.780024   2.058585
+~~~
+{: .output}
+
+And then save it.
+
 ~~~
 filename = 'gd1_isochrone.hdf5'
 
-iso_series.to_hdf(filename, 'iso_series')
+iso_df.to_hdf(filename, 'iso_df')
 ~~~
 {: .language-python}
 ## Making a polygon
 
-The following cell downloads the isochrone series we made in the
-previous section, if necessary.
+The following cell downloads the isochrone we made in the previous
+section, if necessary.
 
 ~~~
 import os
@@ -464,94 +470,29 @@ if not os.path.exists(filename):
     print(download(filepath+filename))
 ~~~
 {: .language-python}
-Now we can read the isochrone back in.
+Now we can read it back in.
 
 ~~~
-iso_series = pd.read_hdf(filename, 'iso_series')
-iso_series.head()
+iso_df = pd.read_hdf(filename, 'iso_df')
+iso_df.head()
 ~~~
 {: .language-python}
 
 ~~~
-2.195021    28.294743
-2.166076    28.189718
-2.129312    28.051761
-2.093721    27.916194
-2.058585    27.780024
-dtype: float64
+       mag_g  color_g_i
+0  28.294743   2.195021
+1  28.189718   2.166076
+2  28.051761   2.129312
+3  27.916194   2.093721
+4  27.780024   2.058585
 ~~~
 {: .output}
 
-To select the stars in the overdense region of the color-magnitude
-diagram, we want to stretch the isochrone into a polygon.
-
-We'll use the following formulas to compute the left and right sides
-of the polygons.
-
-~~~
-g = iso_series.to_numpy()
-gi = iso_series.index
-~~~
-{: .language-python}
-~~~
-left_gi = gi - 0.4 * (g/28)**5
-right_gi = gi + 0.7 * (g/28)**5
-~~~
-{: .language-python}
-To explain the terms:
-
-* We divide magnitudes by 28 to normalize them onto the range from 0 to 1.
-
-* Raising the normalized magnitudes to the 5th power [DOES WHAT?]
-
-* Then we add and subtract the result from `gi` to shift the isochrone
-left and right.  The factors 0.4 and 0.7 were chosen by eye to enclose
-the overdense region.
-
-To make the shifted isochrones easier to work with, we'll put them in
-a Pandas `Series` with that contains both `g` and the scaled values of
-`gi`.
-
-~~~
-import pandas as pd
-
-left_series = pd.Series(g, index=left_gi)
-left_series.head()
-~~~
-{: .language-python}
-
-~~~
-1.773520    28.294743
-1.752340    28.189718
-1.725601    28.051761
-1.699671    27.916194
-1.674053    27.780024
-dtype: float64
-~~~
-{: .output}
-
-~~~
-right_series = pd.Series(g, index=right_gi)
-right_series.head()
-~~~
-{: .language-python}
-
-~~~
-2.932648    28.294743
-2.890114    28.189718
-2.835806    28.051761
-2.783308    27.916194
-2.731517    27.780024
-dtype: float64
-~~~
-{: .output}
-
-Now we can plot them on the color-magnitude diagram like this.
+Here's what the isochrone looks like on the color-magnitude diagram.
 
 ~~~
 plot_cmd(photo_table)
-left_series.plot()
-right_series.plot();
+plt.plot(iso_df['color_g_i'], iso_df['mag_g']);
 ~~~
 {: .language-python}
 
@@ -560,11 +501,20 @@ right_series.plot();
 ~~~
 {: .output}
 
-It looks like the scaled isochrones bound the overdense area well, but
-they also include stars with magnitudes higher than we expect for
-stars in GD-1, so we'll use another mask to limit the range of `g`.
+In the bottom half of the figure, the isochrone passes through the
+overdense region where the stars are likely to belong to GD-1.
+
+In the top half, the isochrone passes through other regions where the
+stars have higher magnitude and metallicity than we expect for stars
+in GD-1.
+
+So we'll select the part of the isochrone that lies in the overdense region.
+
+`g_mask` is a Boolean Series that is `True` where `g` is between 18.0 and 21.5.
 
 ~~~
+g = iso_df['mag_g']
+
 g_mask = (g > 18.0) & (g < 21.5)
 g_mask.sum()
 ~~~
@@ -575,25 +525,55 @@ g_mask.sum()
 ~~~
 {: .output}
 
-~~~
-left = left_series[g_mask]
-right = right_series[g_mask]
+We can use it to select the corresponding rows in `iso_df`:
 
-len(left), len(right)
+~~~
+iso_masked = iso_df[g_mask]
+iso_masked.head()
 ~~~
 {: .language-python}
 
 ~~~
-(117, 117)
+        mag_g  color_g_i
+94  21.411746   0.692171
+95  21.322466   0.670238
+96  21.233380   0.648449
+97  21.144427   0.626924
+98  21.054549   0.605461
 ~~~
 {: .output}
 
-Here's what they look like:
+Now, to select the stars in the overdense region, we have to define a
+polygon that includes stars near the isochrone.
+
+The original paper uses the following formulas to define the left and
+right boundaries.
+
+~~~
+g = iso_masked['mag_g']
+left_color = iso_masked['color_g_i'] - 0.4 * (g/28)**5
+right_color = iso_masked['color_g_i'] + 0.8 * (g/28)**5
+~~~
+{: .language-python}
+The intention seems to be to define a polygon that gets wider as `g` increases.
+
+But we can do about as well with a simpler formula:
+
+~~~
+g = iso_masked['mag_g']
+left_color = iso_masked['color_g_i'] - 0.06
+right_color = iso_masked['color_g_i'] + 0.12
+~~~
+{: .language-python}
+Here's what these boundaries look like:
 
 ~~~
 plot_cmd(photo_table)
-left.plot()
-right.plot();
+
+plt.plot(left_color, g, label='left color')
+plt.plot(right_color, g, label='right color')
+
+plt.legend();
 ~~~
 {: .language-python}
 
@@ -601,141 +581,110 @@ right.plot();
 <Figure size 432x288 with 1 Axes>
 ~~~
 {: .output}
-
-Now we want to assemble the two halves into a polygon.  We can use
-`append` to make a new `Series` that contains both halves.
-
-And we'll use the slice `[::-1]` to reverse the elements of `right` so
-the result forms a loop.  [See here for an explanation of this
-idiom](https://stackoverflow.com/questions/5876998/reversing-a-list-using-slice-notation).
-
-~~~
-loop = left.append(right[::-1])
-loop.head()
-~~~
-{: .language-python}
-
-~~~
-0.587571    21.411746
-0.567801    21.322466
-0.548134    21.233380
-0.528693    21.144427
-0.509300    21.054549
-dtype: float64
-~~~
-{: .output}
-
-The following lines add metadata by assigning names to the values and
-the index in `loop`.
-
-~~~
-loop.name = 'g'
-loop.index.name = 'gi'
-loop.head()
-~~~
-{: .language-python}
-
-~~~
-gi
-0.587571    21.411746
-0.567801    21.322466
-0.548134    21.233380
-0.528693    21.144427
-0.509300    21.054549
-Name: g, dtype: float64
-~~~
-{: .output}
-
-And here's what it looks like
-
-~~~
-loop.plot()
-plot_cmd(photo_table)
-~~~
-{: .language-python}
-
-~~~
-<Figure size 432x288 with 1 Axes>
-~~~
-{: .output}
-
-Next we'll use this polygon to identify stars in the overdense region.
 
 ## Which points are in the polygon?
 
-Matplotlib provides a `Path` object that we can use to check which
+Matplotlib provides a `Polygon` object that we can use to check which
 points fall in the polygon we just constructed.
 
-To make a `Path`, we need a list of coordinates in the form of an
-array with two columns.
+To make a `Polygon`, we need to assemble `g`, `left_color`, and
+`right_color` into a loop, so the points in `left_color` are connected
+to the points of `right_color` in reverse order.
 
-Currently `loop` is a `Series` with the values of `gi` in the index:
+We'll use the following function, which takes two arrays and joins
+them front-to-back:
 
 ~~~
-loop.head()
+import numpy as np
+
+def front_to_back(first, second):
+    """Join two arrays front to back."""
+    return np.append(first, second[::-1])
+~~~
+{: .language-python}
+`front_to_back` uses a "slice index" to reverse the elements of `second`.
+
+As explained in the [NumPy
+documentation](https://numpy.org/doc/stable/reference/arrays.indexing.html),
+a slice index has three parts separated by colons:
+
+* `start`: The index of the element where the slice starts.
+
+* `stop`: The index of the element where the slice ends.
+
+* `step`: The step size between elements.
+
+In this example, `start` and `stop` are omitted, which means all
+elements are selected.
+
+And `step` is `-1`, which means the elements are in reverse order.
+
+We can use `front_to_back` to make a loop that includes the elements
+of `left_color` and `right_color`:
+
+~~~
+color_loop = front_to_back(left_color, right_color)
+color_loop.shape
 ~~~
 {: .language-python}
 
 ~~~
-gi
-0.587571    21.411746
-0.567801    21.322466
-0.548134    21.233380
-0.528693    21.144427
-0.509300    21.054549
-Name: g, dtype: float64
+(234,)
 ~~~
 {: .output}
 
-We can move them out of the index into a column using `reset_index`:
+And a corresponding loop with the elements of `g` in forward and reverse order.
 
 ~~~
-loop_df = loop.reset_index()
-loop_df.head()
+mag_loop = front_to_back(g, g)
+mag_loop.shape
 ~~~
 {: .language-python}
 
 ~~~
-         gi          g
-0  0.587571  21.411746
-1  0.567801  21.322466
-2  0.548134  21.233380
-3  0.528693  21.144427
-4  0.509300  21.054549
+(234,)
 ~~~
 {: .output}
 
-The result is a `DataFrame` with one column for `gi` and one column
-for `g`, so we can pass it to `Path` like this:
+Here's what the loop looks like.
 
 ~~~
-from matplotlib.path import Path
-
-path = Path(loop_df)
-path
+plot_cmd(photo_table)
+plt.plot(color_loop, mag_loop);
 ~~~
 {: .language-python}
 
 ~~~
-Path(array([[ 0.58757135, 21.41174601],
-       [ 0.56780097, 21.32246601],
-       [ 0.54813409, 21.23338001],
-       [ 0.5286928 , 21.14442701],
-       [ 0.50929987, 21.05454901],
-       [ 0.48991266, 20.96383501],
-       [ 0.47084777, 20.87386601],
-       [ 0.45222635, 20.78511001],
-       [ 0.43438902, 20.69865301],
-       [ 0.42745198, 20.66469601],
-       [ 0.42067029, 20.63135301],
-[Output truncated]
+<Figure size 432x288 with 1 Axes>
 ~~~
 {: .output}
 
-The result is a `Path` object that represents the polygon.
+To make a `Polygon`, it will be convenient to put `color_loop` and
+`mag_loop` into a `DataFrame`:
 
-`Path` provides `contains_points`, which figures out which points are
-inside the polygon.
+~~~
+loop_df = pd.DataFrame()
+loop_df['color_loop'] = color_loop
+loop_df['mag_loop'] = mag_loop
+~~~
+{: .language-python}
+Now we can pass `loop_df` to `Polygon`:
+
+~~~
+from matplotlib.patches import Polygon
+
+polygon = Polygon(loop_df)
+polygon
+~~~
+{: .language-python}
+
+~~~
+<matplotlib.patches.Polygon at 0x7fe98cd29400>
+~~~
+{: .output}
+
+The result is a `Polygon` object , which provides `contains_points`,
+which figures out which points are inside the polygon.
 
 To test it, we'll create a list with two points, one inside the
 polygon and one outside.
@@ -748,7 +697,7 @@ points = [(0.4, 20),
 Now we can make sure `contains_points` does what we expect.
 
 ~~~
-inside = path.contains_points(points)
+inside = polygon.contains_points(points)
 inside
 ~~~
 {: .language-python}
@@ -763,6 +712,30 @@ The result is an array of Boolean values.
 We are almost ready to select stars whose photometry data falls in
 this polygon.  But first we need to do some data cleaning.
 
+## Save the polygon
+
+[Reproducibile
+research](https://en.wikipedia.org/wiki/Reproducibility#Reproducible_research)
+is "the idea that ... the full computational environment used to
+produce the results in the paper such as the code, data, etc. can be
+used to reproduce the results and create new work based on the
+research."
+
+This Jupyter notebook is an example of reproducible research because
+it contains all of the code needed to reproduce the results, including
+the database queries that download the data and and analysis.
+
+In this lesson we used an isochrone to derive a polygon, which we used
+to select stars based on photometry.
+So it is important to record the polygon as part of the data analysis pipeline.
+
+Here's how we can save it in an HDF file.
+
+~~~
+filename = 'gd1_polygon.hdf5'
+loop_df.to_hdf(filename, 'loop_df')
+~~~
+{: .language-python}
 ## Reloading the data
 
 Now we need to combine the photometry data with the list of candidate
@@ -839,24 +812,23 @@ Here's how we use it.
 ~~~
 merged = pd.merge(candidate_df, 
                   photo_df, 
-                  on='source_id', 
-                  how='left')
+                  on='source_id')
 merged.head()
 ~~~
 {: .language-python}
 
 ~~~
             source_id          ra        dec      pmra      pmdec  parallax  \
-0  635559124339440000  137.586717  19.196544 -3.770522 -12.490482  0.791393   
-1  635860218726658176  138.518707  19.092339 -5.941679 -11.346409  0.307456   
-2  635674126383965568  138.842874  19.031798 -3.897001 -12.702780  0.779463   
-3  635535454774983040  137.837752  18.864007 -4.335041 -14.492309  0.314514   
-4  635497276810313600  138.044516  19.009471 -7.172931 -12.291499  0.425404   
+0  635860218726658176  138.518707  19.092339 -5.941679 -11.346409  0.307456   
+1  635674126383965568  138.842874  19.031798 -3.897001 -12.702780  0.779463   
+2  635535454774983040  137.837752  18.864007 -4.335041 -14.492309  0.314514   
+3  635497276810313600  138.044516  19.009471 -7.172931 -12.291499  0.425404   
+4  635614168640132864  139.592197  18.807956 -3.309603 -13.708905  0.583382   
 
    radial_velocity       phi1      phi2   pm_phi1   pm_phi2  g_mean_psf_mag  \
-0              NaN -59.630489 -1.216485 -7.361363 -0.592633             NaN   
-1              NaN -59.247330 -2.016078 -7.527126  1.748779         17.8978   
-2              NaN -59.133391 -2.306901 -7.560608 -0.741800         19.2873   
+0              NaN -59.247330 -2.016078 -7.527126  1.748779         17.8978   
+1              NaN -59.133391 -2.306901 -7.560608 -0.741800         19.2873   
+2              NaN -59.785300 -1.594569 -9.357536 -1.218492         16.9238   
 [Output truncated]
 ~~~
 {: .output}
@@ -865,19 +837,8 @@ The first argument is the "left" table, the second argument is the
 "right" table, and the keyword argument `on='source_id'` specifies a
 column to use to match up the rows.
 
-The argument `how='left'` means that the result should have all rows
-from the left table, even if some of them don't match up with a row in
-the right table.
-
-If you are interested in the other options for `how`, you can [read
-the documentation of
-`merge`](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.merge.html).
-
-You can also do different types of join in ADQL/SQL; [you can read
-about that here](https://www.w3schools.com/sql/sql_join.asp).
-
 The result is a `DataFrame` that contains the same number of rows as
-`candidate_df`.
+`photo_df`.
 
 ~~~
 len(candidate_df), len(photo_df), len(merged)
@@ -885,11 +846,11 @@ len(candidate_df), len(photo_df), len(merged)
 {: .language-python}
 
 ~~~
-(7346, 3724, 7346)
+(7346, 3724, 3724)
 ~~~
 {: .output}
 
-And all columns from both tables.
+And it contains all columns from both tables.
 
 ~~~
 for colname in merged.columns:
@@ -926,91 +887,36 @@ but since we already have the data we need, we should probably do the
 computation locally rather than make another round trip to the Gaia
 server.
 
-## Missing data
-
-Let's add columns to the merged table for magnitude and color.
-
-~~~
-merged['mag'] = merged['g_mean_psf_mag']
-merged['color'] = merged['g_mean_psf_mag'] - merged['i_mean_psf_mag']
-~~~
-{: .language-python}
-These columns contain the special value `NaN` where we are missing data.
-
-We can use `notnull` to see which rows contain value data, that is,
-not null values.
-
-~~~
-merged['color'].notnull()
-~~~
-{: .language-python}
-
-~~~
-0       False
-1        True
-2        True
-3        True
-4        True
-        ...  
-7341     True
-7342    False
-7343    False
-7344     True
-7345    False
-[Output truncated]
-~~~
-{: .output}
-
-And `sum` to count the number of valid values.
-
-~~~
-merged['color'].notnull().sum()
-~~~
-{: .language-python}
-
-~~~
-3724
-~~~
-{: .output}
-
-For scientific purposes, it's not obvious what we should do with
-candidate stars if we don't have photometry data.  Should we give them
-the benefit of the doubt or leave them out?
-
-In part the answer depends on the goal: are we trying to identify more
-stars that might be in GD-1, or a smaller set of stars that have
-higher probability?
-
-In the next section, we'll leave them out, but you can experiment with
-the alternative.
-
 ## Selecting based on photometry
 
 Now let's see how many of these points are inside the polygon we chose.
 
-We can use a list of column names to select `color` and `mag`.
+We'll put color and magnitude data from `merged` into a new `DataFrame`:
 
 ~~~
-points = merged[['color', 'mag']]
+points = pd.DataFrame()
+
+points['color'] = merged['g_mean_psf_mag'] - merged['i_mean_psf_mag']
+points['mag'] = merged['g_mean_psf_mag']
+
 points.head()
 ~~~
 {: .language-python}
 
 ~~~
     color      mag
-0     NaN      NaN
-1  0.3804  17.8978
-2  1.6092  19.2873
-3  0.4457  16.9238
-4  1.5902  19.9242
+0  0.3804  17.8978
+1  1.6092  19.2873
+2  0.4457  16.9238
+3  1.5902  19.9242
+4  1.4853  16.1516
 ~~~
 {: .output}
 
-The result is a `DataFrame` that can be treated as a sequence of
-coordinates, so we can pass it to `contains_points`:
+Which we can pass to `contains_points`:
 
 ~~~
-inside = path.contains_points(points)
+inside = polygon.contains_points(points)
 inside
 ~~~
 {: .language-python}
@@ -1029,7 +935,7 @@ inside.sum()
 {: .language-python}
 
 ~~~
-464
+454
 ~~~
 {: .output}
 
@@ -1037,17 +943,18 @@ Now we can use `inside` as a mask to select stars that fall inside the polygon.
 
 ~~~
 selected2 = merged[inside]
+points2 = points[inside]
 ~~~
 {: .language-python}
 Let's make a color-magnitude plot one more time, highlighting the
-selected stars with green `x` marks.
+selected stars with green markers.
 
 ~~~
 plot_cmd(photo_table)
-plt.plot(gi, g)
-loop.plot()
+plt.plot(color_g_i, mag_g)
+plt.plot(color_loop, mag_loop)
 
-plt.plot(selected2['color'], selected2['mag'], 'g.');
+plt.plot(points2['color'], points2['mag'], 'g.');
 ~~~
 {: .language-python}
 
@@ -1097,7 +1004,7 @@ represented accurately.
 
 ## Write the data
 
-Let's write the merged DataFrame to a file.
+Finally, let's write the merged DataFrame to a file.
 
 ~~~
 filename = 'gd1_merged.hdf5'
@@ -1112,7 +1019,7 @@ selected2.to_hdf(filename, 'selected2')
 {: .language-python}
 
 ~~~
--rw-rw-r-- 1 downey downey 1.1M Dec 14 14:24 gd1_merged.hdf5
+-rw-rw-r-- 1 downey downey 1.1M Dec 29 11:51 gd1_merged.hdf5
 
 ~~~
 {: .output}
@@ -1123,62 +1030,31 @@ If you are using Windows, `ls` might not work; in that case, try:
 !dir gd1_merged.hdf5
 ```
 
-## Save the polygon
-
-[Reproducibile
-research](https://en.wikipedia.org/wiki/Reproducibility#Reproducible_research)
-is "the idea that ... the full computational environment used to
-produce the results in the paper such as the code, data, etc. can be
-used to reproduce the results and create new work based on the
-research."
-
-This Jupyter notebook is an example of reproducible research because
-it contains all of the code needed to reproduce the results, including
-the database queries that download the data and and analysis.
-
-In this lesson we used an isochrone to derive a polygon, which we used
-to select stars based on photometry.
-So it is important to record the polygon as part of the data analysis pipeline.
-
-Here's how we can save it in an HDF file.
-
-~~~
-filename = 'gd1_polygon.hdf5'
-loop.to_hdf(filename, 'loop')
-~~~
-{: .language-python}
-We can read it back like this.
-
-~~~
-loop2 = pd.read_hdf(filename, 'loop')
-~~~
-{: .language-python}
-And verify that the data we read back is the same.
-
-~~~
-import numpy as np
-
-np.all(loop == loop2)
-~~~
-{: .language-python}
-
-~~~
-True
-~~~
-{: .output}
-
 ## Summary
 
-In this notebook, we worked with two datasets: the list of candidate
-stars from Gaia and the photometry data from Pan-STARRS.
+In this lesson, we worked with three datasets: 
+
+* The list of candidate stars from Gaia,
+
+* The photometry data from Pan-STARRS, and
+
+* An isochrone computed by MIST.
 
 We drew a color-magnitude diagram and used it to identify stars we
 think are likely to be in GD-1.
 
-Then we used a Pandas `merge` operation to combine the data into a
-single `DataFrame`.
+We used the isochrone to define a polygon that includes those stars.
+
+Then we used a Pandas `merge` operation to combine Gaia and Pan-STARRS
+data into a single `DataFrame`.
+
+Plotting the results, we have a clear picture of GD-1, similar to
+Figure 1 in the original paper.
 
 ## Best practices
+
+* Matplotlib provides operations for working with points, polygons,
+and other geometric entities, so it's not just for making figures.
 
 * If you want to perform something like a database `JOIN` operation
 with data that is in a Pandas `DataFrame`, you can use the `join` or
@@ -1188,10 +1064,6 @@ arguments are more like SQL.
 * Use Matplotlib options to control the size and aspect ratio of
 figures to make them easier to interpret.  In this example, we scaled
 the axes so the size of a degree is equal along both axes.
-
-* Matplotlib also provides operations for working with points,
-polygons, and other geometric entities, so it's not just for making
-figures.
 
 * Be sure to record every element of the data analysis pipeline that
 would be needed to replicate the results.

@@ -152,17 +152,10 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
-
-~~~
-gd1_merged.hdf5
-
-~~~
-{: .output}
-
 ~~~
 import pandas as pd
 
-selected = pd.read_hdf(filename, 'selected')
+selected2 = pd.read_hdf(filename, 'selected2')
 ~~~
 {: .language-python}
 ~~~
@@ -185,7 +178,7 @@ And here's what it looks like.
 
 ~~~
 plt.figure(figsize=(10,2.5))
-plot_second_selection(selected)
+plot_second_selection(selected2)
 ~~~
 {: .language-python}
 
@@ -496,7 +489,7 @@ generates each panel in a function.
 
 ## Upper right
 
-To make the panel in the upper right, we have to reload `centerline`.
+To make the panel in the upper right, we have to reload `centerline_df`.
 
 ~~~
 import os
@@ -508,17 +501,10 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
-
-~~~
-gd1_dataframe.hdf5
-
-~~~
-{: .output}
-
 ~~~
 import pandas as pd
 
-centerline = pd.read_hdf(filename, 'centerline')
+centerline_df = pd.read_hdf(filename, 'centerline_df')
 ~~~
 {: .language-python}
 And define the coordinates of the rectangle we selected.
@@ -589,7 +575,7 @@ the labels on the axes to be consistent with the paper.
 plt.rcParams['text.usetex'] = False
 plt.style.use('default')
 
-plot_proper_motion(centerline)
+plot_proper_motion(centerline_df)
 ~~~
 {: .language-python}
 
@@ -612,13 +598,6 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
-
-~~~
-gd1_candidates.hdf5
-
-~~~
-{: .output}
-
 ~~~
 import pandas as pd
 
@@ -690,8 +669,8 @@ def plot_cmd(table):
     plt.ylim([14, 22])
     plt.gca().invert_yaxis()
 
-    plt.ylabel('$g_0$')
-    plt.xlabel('$(g-i)_0$')
+    plt.ylabel('$Magnitude (g)$')
+    plt.xlabel('$Color (g-i)$')
 ~~~
 {: .language-python}
 And here's what it looks like.
@@ -720,56 +699,21 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
-
-~~~
-gd1_polygon.hdf5
-
-~~~
-{: .output}
-
 And here's how we read it back.
 
 ~~~
-loop = pd.read_hdf(filename, 'loop')
-loop
+loop_df = pd.read_hdf(filename, 'loop_df')
+loop_df.head()
 ~~~
 {: .language-python}
 
 ~~~
-gi
-0.587571    21.411746
-0.567801    21.322466
-0.548134    21.233380
-0.528693    21.144427
-0.509300    21.054549
-              ...    
-0.773743    21.054549
-0.798829    21.144427
-0.824000    21.233380
-0.849503    21.322466
-[Output truncated]
-~~~
-{: .output}
-
-~~~
-coords = loop.reset_index().to_numpy()
-coords
-~~~
-{: .language-python}
-
-~~~
-array([[ 0.58757135, 21.41174601],
-       [ 0.56780097, 21.32246601],
-       [ 0.54813409, 21.23338001],
-       [ 0.5286928 , 21.14442701],
-       [ 0.50929987, 21.05454901],
-       [ 0.48991266, 20.96383501],
-       [ 0.47084777, 20.87386601],
-       [ 0.45222635, 20.78511001],
-       [ 0.43438902, 20.69865301],
-       [ 0.42745198, 20.66469601],
-       [ 0.42067029, 20.63135301],
-[Output truncated]
+   color_loop   mag_loop
+0    0.632171  21.411746
+1    0.610238  21.322466
+2    0.588449  21.233380
+3    0.566924  21.144427
+4    0.545461  21.054549
 ~~~
 {: .output}
 
@@ -782,7 +726,7 @@ array([[ 0.58757135, 21.41174601],
 > > 
 > > ~~~
 > > 
-> > # poly = Polygon(coords, closed=True, 
+> > # poly = Polygon(loop_df, closed=True, 
 > > #                facecolor='C1', alpha=0.4)
 > > # plt.gca().add_patch(poly)
 > > ~~~
@@ -815,14 +759,14 @@ plt.subplot2grid(shape, (0, 0))
 plot_first_selection(candidate_df)
 
 plt.subplot2grid(shape, (0, 1))
-plot_proper_motion(centerline)
+plot_proper_motion(centerline_df)
 
 plt.subplot2grid(shape, (1, 0))
-plot_second_selection(selected)
+plot_second_selection(selected2)
 
 plt.subplot2grid(shape, (1, 1))
 plot_cmd(merged)
-poly = Polygon(coords, closed=True, 
+poly = Polygon(loop_df, closed=True, 
                facecolor='C1', alpha=0.4)
 plt.gca().add_patch(poly)
 
@@ -867,14 +811,14 @@ plt.subplot2grid(shape, (0, 0), colspan=3)
 plot_first_selection(candidate_df)
 
 plt.subplot2grid(shape, (0, 3))
-plot_proper_motion(centerline)
+plot_proper_motion(centerline_df)
 
 plt.subplot2grid(shape, (1, 0), colspan=3)
-plot_second_selection(selected)
+plot_second_selection(selected2)
 
 plt.subplot2grid(shape, (1, 3))
 plot_cmd(merged)
-poly = Polygon(coords, closed=True, 
+poly = Polygon(loop_df, closed=True, 
                facecolor='C1', alpha=0.4)
 plt.gca().add_patch(poly)
 
@@ -903,10 +847,10 @@ This is looking more and more like the figure in the paper.
 > > # plot_first_selection(candidate_df)
 > > 
 > > # plt.subplot2grid(shape, (0, 3), colspan=2)       # CHANGED
-> > # plot_proper_motion(centerline)
+> > # plot_proper_motion(centerline_df)
 > > 
 > > # plt.subplot2grid(shape, (1, 0), colspan=3)
-> > # plot_second_selection(selected)
+> > # plot_second_selection(selected2)
 > > 
 > > # plt.subplot2grid(shape, (1, 3), colspan=2)       # CHANGED
 > > # plot_cmd(merged)

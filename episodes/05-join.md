@@ -32,9 +32,9 @@ of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian M.
 Price-Whelan and Ana Bonaca.
 
 Picking up where we left off, the next step in the analysis is to
-select candidate stars based on photometry data.  The following figure
-from the paper is a color-magnitude diagram for the stars selected
-based on proper motion:
+select candidate stars based on photometry data.
+The following figure from the paper is a color-magnitude diagram for
+the stars selected based on proper motion:
 
 <img width="300"
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-3.png">
@@ -287,7 +287,7 @@ The size of the file is about 750 KB, so that's not too bad.
 {: .language-python}
 
 ~~~
--rw-rw-r-- 1 downey downey 396K Dec 10 11:33 candidate_df.xml
+-rw-rw-r-- 1 downey downey 396K Dec 29 11:50 candidate_df.xml
 
 ~~~
 {: .output}
@@ -318,11 +318,18 @@ If you are using Windows, `ls` might not work; in that case, try:
 > 
 > ```
 > # This one should cause an error
-> writeto(column, 'candidate_df.xml')
+> table_id.write('candidate_df.xml', 
+>                format='votable', 
+>                overwrite=True)
 > ```
 > > 
 > > ~~~
 > > 
+> > # table_id is a Table
+> > 
+> > # column is a Column
+> > 
+> > # Column does not provide `write`, so you get an AttributeError
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -416,7 +423,7 @@ If things go according to plan, the result should contain the same
 rows and columns as the uploaded table.
 
 ~~~
-len(candidate_table), len(results)
+len(table_id), len(results)
 ~~~
 {: .language-python}
 
@@ -426,12 +433,22 @@ len(candidate_table), len(results)
 {: .output}
 
 ~~~
-set(candidate_table['source_id']) == set(results['source_id'])
+table_id.colnames
 ~~~
 {: .language-python}
 
 ~~~
-True
+['source_id']
+~~~
+{: .output}
+
+~~~
+results.colnames
+~~~
+{: .language-python}
+
+~~~
+['source_id']
 ~~~
 {: .output}
 
@@ -736,7 +753,7 @@ Use `!head` to confirm that the file exists and contains an XML VOTable.
 > > 
 > > # Second test
 > > 
-> > query2 = """SELECT TOP 10 *
+> > query2 = """SELECT TOP 10
 > > FROM gaiadr2.panstarrs1_original_valid
 > > """
 > > 
@@ -819,8 +836,8 @@ results2
 > > """
 > > 
 > > # job3 = Gaia.launch_job_async(query=query3, 
-> >                        upload_resource='candidate_df.xml', 
-> >                        upload_table_name='candidate_df')
+> > #                       upload_resource='candidate_df.xml', 
+> > #                       upload_table_name='candidate_df')
 > > 
 > > # results3 = job3.get_results()
 > > # results3
@@ -847,7 +864,7 @@ We can check that the file exists, and see how big it is.
 {: .language-python}
 
 ~~~
--rw-rw-r-- 1 downey downey 96K Dec 10 11:34 gd1_photo.fits
+-rw-rw-r-- 1 downey downey 96K Dec 29 11:51 gd1_photo.fits
 
 ~~~
 {: .output}

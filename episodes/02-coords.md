@@ -52,7 +52,7 @@ Then, to select stars in the vicinity of GD-1, we'll:
 
 * Use `Quantity` objects to represent measurements with units.
 
-* Use the `Gala` library to convert coordinates from one frame to another.
+* Use Astropy to convert coordinates from one frame to another.
 
 * Use the ADQL keywords `POLYGON`, `CONTAINS`, and `POINT` to select
 stars that fall within a polygonal region.
@@ -114,8 +114,7 @@ Here's how we run it.
 from astroquery.gaia import Gaia
 
 job = Gaia.launch_job(query)
-result = job.get_results()
-result
+job
 ~~~
 {: .language-python}
 
@@ -131,6 +130,17 @@ Created TAP+ (v1.2.1) - Connection:
 	Port: 443
 	SSL Port: 443
 
+<astroquery.utils.tap.model.job.Job at 0x7f59bd93e490>
+~~~
+{: .output}
+
+~~~
+result = job.get_results()
+result
+~~~
+{: .language-python}
+
+~~~
 <Table length=10>
      source_id     
        int64       
@@ -184,24 +194,27 @@ to GD-1:
 <img
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png">
 
-Along the axis of right ascension ($\phi_1$) the figure extends from
--100 to 20 degrees.
+The axes of this figure are defined so the x-axis is aligned with the
+stars in GD-1, and the y-axis is perpendicular.
 
-Along the axis of declination ($\phi_2$) the figure extends from about
--8 to 4 degrees.
+* Along the x-axis ($\phi_1$) the figure extends from -100 to 20 degrees.
+
+* Along the y-axis ($\phi_2$) the figure extends from about -8 to 4 degrees.
 
 Ideally, we would select all stars from this rectangle, but there are
 more than 10 million of them, so
 
 * That would be difficult to work with,
 
-* As anonymous users, we are limited to 3 million rows in a single query, and
+* As anonymous Gaia users, we are limited to 3 million rows in a
+single query, and
 
 * While we are developing and testing code, it will be faster to work
 with a smaller dataset.
 
-So we'll start by selecting stars in a smaller rectangle, from -55 to
--45 degrees right ascension and -8 to 4 degrees of declination.
+So we'll start by selecting stars in a smaller rectangle near the
+center of GD-1, from -55 to -45 degrees $\phi_1$ and -8 to 4 degrees
+$\phi_2$.
 
 But first we let's see how to represent quantities with units like degrees.
 
@@ -213,7 +226,8 @@ parts, a value and a unit.
 For example, the coordinate $30^{\circ}$ has value 30 and its units are degrees.
 
 Until recently, most scientific computation was done with values only;
-units were left out of the program altogether, [often with disastrous
+units were left out of the program altogether, [often with
+catastrophic
 results](https://en.wikipedia.org/wiki/Mars_Climate_Orbiter#Cause_of_failure).
 
 Astropy provides tools for including units explicitly in computations,
@@ -223,16 +237,8 @@ To use Astropy units, we import them like this:
 
 ~~~
 import astropy.units as u
-
-u
 ~~~
 {: .language-python}
-
-~~~
-<module 'astropy.units' from '/home/downey/anaconda3/envs/AstronomicalData/lib/python3.8/site-packages/astropy/units/__init__.py'>
-~~~
-{: .output}
-
 `u` is an object that contains most common units and all SI units.
 
 You can use `dir` to list them, but you should also [read the
@@ -262,8 +268,8 @@ dir(u)
 To create a quantity, we multiply a value by a unit.
 
 ~~~
-coordinate = 30 * u.deg
-type(coordinate)
+quantity = 30 * u.degree
+type(quantity)
 ~~~
 {: .language-python}
 
@@ -277,7 +283,7 @@ The result is a `Quantity` object.
 Jupyter knows how to display `Quantities` like this:
 
 ~~~
-coordinate
+quantity
 ~~~
 {: .language-python}
 
@@ -286,65 +292,160 @@ coordinate
 ~~~
 {: .output}
 
-## Selecting a rectangle
+## Transforming coordinates
 
-Now we'll select a rectangle from -55 to -45 degrees right ascension
-and -8 to 4 degrees of declination.
+Astropy provides a `SkyCoord` object that represents sky coordinates
+relative to a specified frame.
 
-We'll define variables to contain these limits.
+The following example creates a `SkyCoord` object that represents the
+approximate coordinates of
+[Betelgeuse](http://simbad.u-strasbg.fr/simbad/sim-basic?Ident=Betelgeuse)
+(alf Ori) in the ICRS frame.
 
 ~~~
-phi1_min = -55
-phi1_max = -45
-phi2_min = -8
-phi2_max = 4
+from astropy.coordinates import SkyCoord
+
+ra = 88.8 * u.degree
+dec = 7.4 * u.degree
+coord_icrs = SkyCoord(ra=ra, dec=dec, frame='icrs')
+
+coord_icrs
+~~~
+{: .language-python}
+
+~~~
+<SkyCoord (ICRS): (ra, dec) in deg
+    (88.8, 7.4)>
+~~~
+{: .output}
+
+`SkyCoord` provides a function that transforms to other frames.
+For example, we can transform `coords_icrs` to Galactic coordinates like this:
+
+~~~
+coord_galactic = coord_icrs.transform_to('galactic')
+coord_galactic
+~~~
+{: .language-python}
+
+~~~
+<SkyCoord (Galactic): (l, b) in deg
+    (199.79693102, -8.95591653)>
+~~~
+{: .output}
+
+To transform to and from GD-1 coordinates, we'll use a frame defined
+by [Gala](https://gala-astro.readthedocs.io/en/latest/), which is an
+Astropy-affiliated library that provides tools for galactic dynamics.
+
+Gala provides `GD1Koposov10`, which is "[a Heliocentric spherical
+coordinate system defined by the orbit of the GD-1
+stream](https://gala-astro.readthedocs.io/en/latest/_modules/gala/coordinates/gd1.html)"
+
+~~~
+from gala.coordinates import GD1Koposov10
+
+gd1_frame = GD1Koposov10()
+gd1_frame
+~~~
+{: .language-python}
+
+~~~
+<GD1Koposov10 Frame>
+~~~
+{: .output}
+
+We can use it to find the coordinates of Betelgeuse in the GD-1 frame,
+like this:
+
+~~~
+coord_gd1 = coord_icrs.transform_to(gd1_frame)
+coord_gd1
+~~~
+{: .language-python}
+
+~~~
+<SkyCoord (GD1Koposov10): (phi1, phi2) in deg
+    (-94.97222038, 34.5813813)>
+~~~
+{: .output}
+
+> ## Exercise
+> 
+> Let's find the location of GD-1 in ICRS coordinates.
+> 
+> 1. Create a `SkyCoord` object at 0°, 0° in the GD-1 frame.
+> 
+> 2. Transform it to the ICRS frame.
+> 
+> Hint: Because ICRS is built into Astropy, you can specify it by name,
+> `icrs` (as we did with `galactic`).
+> > 
+> > ~~~
+> > 
+> > coord_gd1 = SkyCoord(0*u.degree, 0*u.degree, frame=gd1_frame)
+> > 
+> > # Note: because ICRS is built into Astropy, 
+> > # we can identify it by name
+> > coord_gd1.transform_to('icrs')
+> > 
+> > # More formally, we could instantiate it
+> > from astropy.coordinates import ICRS
+> > icrs_frame = ICRS()
+> > coord_gd1.transform_to(icrs_frame)
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
+
+
+## Selecting a rectangle
+
+Now we'll use these coordinate transformations to define a rectangle
+in the GD-1 frame and transform it to ICRS.
+
+The following variables define the boundaries of the rectangle in
+$\phi_1$ and $\phi_2$.
+
+~~~
+phi1_min = -55 * u.degree
+phi1_max = -45 * u.degree
+phi2_min = -8 * u.degree
+phi2_max = 4 * u.degree
 ~~~
 {: .language-python}
 To represent a rectangle, we'll use two lists of coordinates and
 multiply by their units.
 
 ~~~
-phi1_rect = [phi1_min, phi1_min, phi1_max, phi1_max] * u.deg
-phi2_rect = [phi2_min, phi2_max, phi2_max, phi2_min] * u.deg
+def make_rectangle(x1, x2, y1, y2):
+    """Return the corners of a rectangle."""
+    xs = [x1, x1, x2, x2, x1]
+    ys = [y1, y2, y2, y1, y1]
+    return xs, ys
+~~~
+{: .language-python}
+~~~
+phi1_rect, phi2_rect = make_rectangle(
+    phi1_min, phi1_max, phi2_min, phi2_max)
 ~~~
 {: .language-python}
 `phi1_rect` and `phi2_rect` represent the coordinates of the corners
-of a rectangle.
+of a rectangle in the GD-1 frame.
 
-But they are in "[a Heliocentric spherical coordinate system defined
-by the orbit of the GD1
-stream](https://gala-astro.readthedocs.io/en/latest/_modules/gala/coordinates/gd1.html)"
-
-In order to use them in a Gaia query, we have to convert them to
-[International Celestial Reference
-System](https://en.wikipedia.org/wiki/International_Celestial_Reference_System)
-(ICRS) coordinates.  We can do that by storing the coordinates in a
-`GD1Koposov10` object provided by
-[Gala](https://gala-astro.readthedocs.io/en/latest/coordinates/).
+In order to use them in a Gaia query, we have to convert them to ICRS.
 
 ~~~
 import gala.coordinates as gc
 
-corners = gc.GD1Koposov10(phi1=phi1_rect, phi2=phi2_rect)
-type(corners)
-~~~
-{: .language-python}
-
-~~~
-gala.coordinates.gd1.GD1Koposov10
-~~~
-{: .output}
-
-We can display the result like this:
-
-~~~
+corners = SkyCoord(phi1=phi1_rect, phi2=phi2_rect, frame=gd1_frame)
 corners
 ~~~
 {: .language-python}
 
 ~~~
-<GD1Koposov10 Coordinate: (phi1, phi2) in deg
-    [(-55., -8.), (-55.,  4.), (-45.,  4.), (-45., -8.)]>
+<SkyCoord (GD1Koposov10): (phi1, phi2) in deg
+    [(-55., -8.), (-55.,  4.), (-45.,  4.), (-45., -8.), (-55., -8.)]>
 ~~~
 {: .output}
 
@@ -353,27 +454,16 @@ Now we can use `transform_to` to convert to ICRS coordinates.
 ~~~
 import astropy.coordinates as coord
 
-corners_icrs = corners.transform_to(coord.ICRS)
-type(corners_icrs)
-~~~
-{: .language-python}
-
-~~~
-astropy.coordinates.builtin_frames.icrs.ICRS
-~~~
-{: .output}
-
-The result is an `ICRS` object.
-
-~~~
+corners_icrs = corners.transform_to('icrs')
 corners_icrs
 ~~~
 {: .language-python}
 
 ~~~
-<ICRS Coordinate: (ra, dec) in deg
+<SkyCoord (ICRS): (ra, dec) in deg
     [(146.27533314, 19.26190982), (135.42163944, 25.87738723),
-     (141.60264825, 34.3048303 ), (152.81671045, 27.13611254)]>
+     (141.60264825, 34.3048303 ), (152.81671045, 27.13611254),
+     (146.27533314, 19.26190982)]>
 ~~~
 {: .output}
 
@@ -405,14 +495,16 @@ for point in corners_icrs:
 {: .language-python}
 
 ~~~
-<ICRS Coordinate: (ra, dec) in deg
+<SkyCoord (ICRS): (ra, dec) in deg
     (146.27533314, 19.26190982)>
-<ICRS Coordinate: (ra, dec) in deg
+<SkyCoord (ICRS): (ra, dec) in deg
     (135.42163944, 25.87738723)>
-<ICRS Coordinate: (ra, dec) in deg
+<SkyCoord (ICRS): (ra, dec) in deg
     (141.60264825, 34.3048303)>
-<ICRS Coordinate: (ra, dec) in deg
+<SkyCoord (ICRS): (ra, dec) in deg
     (152.81671045, 27.13611254)>
+<SkyCoord (ICRS): (ra, dec) in deg
+    (146.27533314, 19.26190982)>
 
 ~~~
 {: .output}
@@ -430,6 +522,7 @@ for point in corners_icrs:
 135d25m17.902s 25d52m38.594s
 141d36m09.5337s 34d18m17.3891s
 152d49m00.1576s 27d08m10.0051s
+146d16m31.1993s 19d15m42.8754s
 
 ~~~
 {: .output}
@@ -448,6 +541,7 @@ for point in corners_icrs:
 135.42163944306296 25.87738722767213
 141.60264825107333 34.304830296257144
 152.81671044675923 27.136112541397996
+146.27533313607782 19.261909820533692
 
 ~~~
 {: .output}
@@ -467,7 +561,8 @@ t
 ['146.27533313607782, 19.261909820533692',
  '135.42163944306296, 25.87738722767213',
  '141.60264825107333, 34.304830296257144',
- '152.81671044675923, 27.136112541397996']
+ '152.81671044675923, 27.136112541397996',
+ '146.27533313607782, 19.261909820533692']
 ~~~
 {: .output}
 
@@ -481,7 +576,7 @@ point_list
 {: .language-python}
 
 ~~~
-'146.27533313607782, 19.261909820533692, 135.42163944306296, 25.87738722767213, 141.60264825107333, 34.304830296257144, 152.81671044675923, 27.136112541397996'
+'146.27533313607782, 19.261909820533692, 135.42163944306296, 25.87738722767213, 141.60264825107333, 34.304830296257144, 152.81671044675923, 27.136112541397996, 146.27533313607782, 19.261909820533692'
 ~~~
 {: .output}
 
@@ -522,7 +617,7 @@ FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
   AND 1 = CONTAINS(POINT(ra, dec), 
-                   POLYGON(146.27533313607782, 19.261909820533692, 135.42163944306296, 25.87738722767213, 141.60264825107333, 34.304830296257144, 152.81671044675923, 27.136112541397996))
+                   POLYGON(146.27533313607782, 19.261909820533692, 135.42163944306296, 25.87738722767213, 141.60264825107333, 34.304830296257144, 152.81671044675923, 27.136112541397996, 146.27533313607782, 19.261909820533692))
 
 
 ~~~
@@ -603,7 +698,7 @@ human-readable form.
 {: .language-python}
 
 ~~~
--rw-rw-r-- 1 downey downey 8.6M Nov 17 09:45 gd1_results.fits
+-rw-rw-r-- 1 downey downey 8.6M Dec 29 11:47 gd1_results.fits
 
 ~~~
 {: .output}
