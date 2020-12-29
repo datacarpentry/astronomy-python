@@ -555,7 +555,8 @@ left_color = iso_masked['color_g_i'] - 0.4 * (g/28)**5
 right_color = iso_masked['color_g_i'] + 0.8 * (g/28)**5
 ~~~
 {: .language-python}
-The intention seems to be to define a polygon that gets wider as `g` increases.
+The intention is to define a polygon that gets wider as `g` increases,
+to reflect increasing uncertainty.
 
 But we can do about as well with a simpler formula:
 
