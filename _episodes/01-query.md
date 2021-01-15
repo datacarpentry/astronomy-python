@@ -32,7 +32,14 @@ lines, but you should."
 
 {% include links.md %}
 
-# Queries
+# 1. Queries
+
+This is the first in a series of lessons about working with astronomical data.
+
+As a running example, we will replicate parts of the analysis in a
+recent paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
+of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian
+Price-Whelan and Ana Bonaca.
 
 ## Outline
 
@@ -80,7 +87,7 @@ There are two environments you can use to write and run notebooks:
 
 For these lessons, you can use either one.
 
-If you are too impatient for the tutorials, here's are the most
+If you are too impatient for the tutorials, here are the most
 important things to know:
 
 1. Notebooks are made up of code cells and text cells (and a few other
@@ -106,12 +113,13 @@ notebook seems strange, you can restart the "kernel", which clears all
 of the variables and functions you have defined, and run the cells
 again from the beginning.
 
-* If you are using Jupyter notebook, open the Kernel menu and select
+* If you are using Jupyter notebook, open the `Kernel` menu and select
 "Restart and Run All".
 
-* In Jupyter Lab...
+* In Jupyter Lab, open the `Kernel` menu and select "Restart Kernel
+and Run All Cells"
 
-* In Colab, open the Runtime menu and select "Restart and run all"
+* In Colab, open the `Runtime` menu and select "Restart and run all"
 
 Before you go on, you might want to explore the other menus and the
 toolbar to see what else you can do.
@@ -225,7 +233,7 @@ Retrieving table 'gaiadr2.gaia_source'
 Parsing table 'gaiadr2.gaia_source'...
 Done.
 
-<astroquery.utils.tap.model.taptable.TapTableMeta at 0x7f2e23f089d0>
+<astroquery.utils.tap.model.taptable.TapTableMeta at 0x7f208b57a880>
 ~~~
 {: .output}
 
@@ -292,6 +300,8 @@ article](https://www.vox.com/future-perfect/2019/6/4/18650969/married-women-mise
 > `gaiadr2.panstarrs1_original_valid`.  Use `load_table` to get the
 > metadata for this table.  How many columns are there and what are
 > their names?
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
@@ -320,8 +330,9 @@ Here's an example of an ADQL query.
 ~~~
 query1 = """SELECT 
 TOP 10
-source_id, ref_epoch, ra, dec, parallax 
-FROM gaiadr2.gaia_source"""
+source_id, ra, dec, parallax 
+FROM gaiadr2.gaia_source
+"""
 ~~~
 {: .language-python}
 **Python note:** We use a [triple-quoted
@@ -345,17 +356,21 @@ In this example, the keywords are capitalized and the column names are
 lowercase.  This is a common style, but it is not required.  ADQL and
 SQL are not case-sensitive.
 
+Also, the query is broken into multiple lines to make it more
+readable.  This is a common style, but not required.  Line breaks
+don't affect the behavior of the query.
+
 To run this query, we use the `Gaia` object, which represents our
 connection to the Gaia database, and invoke `launch_job`:
 
 ~~~
-job1 = Gaia.launch_job(query1)
-job1
+job = Gaia.launch_job(query1)
+job
 ~~~
 {: .language-python}
 
 ~~~
-<astroquery.utils.tap.model.job.Job at 0x7f2e23f2afa0>
+<astroquery.utils.tap.model.job.Job at 0x7f208b5a49a0>
 ~~~
 {: .output}
 
@@ -364,7 +379,7 @@ The result is an object that represents the job running on a Gaia server.
 If you print it, it displays metadata for the forthcoming table.
 
 ~~~
-print(job1)
+print(job)
 ~~~
 {: .language-python}
 
@@ -373,13 +388,13 @@ print(job1)
    name    dtype  unit                            description                             n_bad
 --------- ------- ---- ------------------------------------------------------------------ -----
 source_id   int64      Unique source identifier (unique within a particular Data Release)     0
-ref_epoch float64   yr                                                    Reference epoch     0
        ra float64  deg                                                    Right ascension     0
       dec float64  deg                                                        Declination     0
- parallax float64  mas                                                           Parallax     2
+ parallax float64  mas                                                           Parallax     3
 Jobid: None
 Phase: COMPLETED
 Owner: None
+Output file: sync_20210113094733.xml.gz
 [Output truncated]
 ~~~
 {: .output}
@@ -391,8 +406,8 @@ However, `Phase: COMPLETED` indicates that the job is complete, so we
 can get the results like this:
 
 ~~~
-results1 = job1.get_results()
-type(results1)
+results = job.get_results()
+type(results)
 ~~~
 {: .language-python}
 
@@ -429,16 +444,16 @@ results1
 
 ~~~
 <Table length=10>
-     source_id      ref_epoch ...         dec               parallax     
-                        yr    ...         deg                 mas        
-       int64         float64  ...       float64             float64      
-------------------- --------- ... ------------------- -------------------
-6758509757594141440    2015.5 ...  -30.34317218420783 0.48023816159705535
-6758508692437976960    2015.5 ...  -30.28972013142225  2.2625971293368154
-6758527036250849280    2015.5 ... -30.193657826181596 -0.2763960334229464
-6758564458298242944    2015.5 ... -29.765368439225238  0.5907906528352993
-6758558612842155776    2015.5 ...  -29.92113396078169  0.2858563565989917
-6758556379459921920    2015.5 ... -29.900709054816964 -1.0012355835832834
+     source_id              ra         ...        parallax       
+                           deg         ...          mas          
+       int64             float64       ...        float64        
+------------------- ------------------ ... ----------------------
+4036442223689093632  268.1632016769232 ...     1.1699115050505098
+4036432465518023424  268.4099737354832 ...    0.09728878869604544
+4036431056767171072  268.4987929943058 ...                     --
+4036427586432136576  268.1550746929837 ...    -1.6517420537894711
+4036422295031001856   268.295159195894 ...                     --
+4036435454861834880   268.402863428808 ...    0.47166978762943135
 [Output truncated]
 ~~~
 {: .output}
@@ -459,9 +474,26 @@ the Astropy `Table` by Astroquery.
 > and choose a column that looks interesting to you.  Add the column
 > name to the query and run it again.  What are the units of the column
 > you selected?  What is its data type?
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
+> > # Let's add
+> > #
+> > # radial_velocity : Radial velocity (double, Velocity[km/s] )
+> > #
+> > # Spectroscopic radial velocity in the solar barycentric 
+> > # reference frame.
+> > #
+> > # The radial velocity provided is the median value of the 
+> > # radial velocity measurements at all epochs.
+> > 
+> > query = """SELECT 
+> > TOP 10
+> > source_id, ra, dec, parallax, radial_velocity
+> > FROM gaiadr2.gaia_source
+> > """
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -477,24 +509,28 @@ to 2000 rows.  For queries that return more rows, you should run
 
 If you are not sure how many rows a query will return, you can use the
 SQL command `COUNT` to find out how many rows are in the result
-without actually returning them.  We'll see an example of this later.
+without actually returning them.  We'll see an example in the next
+lesson.
 
 The results of an asynchronous query are stored in a file on the
 server, so you can start a query and come back later to get the
 results.
-
 For anonymous users, files are kept for three days.
 
-As an example, let's try a query that's similar to `query1`, with two changes:
+As an example, let's try a query that's similar to `query1`, with these changes:
 
 * It selects the first 3000 rows, so it is bigger than we should run
 synchronously.
 
+* It selects two additional columns, `pmra` and `pmdec`, which are
+proper motions along the axes of `ra` and `dec`.
+
 * It uses a new keyword, `WHERE`.
 
 ~~~
-query2 = """SELECT TOP 3000
-source_id, ref_epoch, ra, dec, parallax
+query2 = """SELECT 
+TOP 3000
+source_id, ra, dec, pmra, pmdec, parallax
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
 """
@@ -503,57 +539,48 @@ WHERE parallax < 1
 A `WHERE` clause indicates which rows we want; in this case, the query
 selects only rows "where" `parallax` is less than 1.  This has the
 effect of selecting stars with relatively low parallax, which are
-farther away.  We'll use this clause to exclude nearby stars that are
-unlikely to be part of GD-1.
+farther away.
+We use this clause to exclude nearby stars that are unlikely to be part of GD-1.
 
 `WHERE` is one of the most common clauses in ADQL/SQL, and one of the
-most useful, because it allows us to select only the rows we need from
-the database.
+most useful, because it allows us to download only the rows we need
+from the database.
 
 We use `launch_job_async` to submit an asynchronous query.
 
 ~~~
-job2 = Gaia.launch_job_async(query2)
-print(job2)
+job = Gaia.launch_job_async(query)
+job
 ~~~
 {: .language-python}
 
 ~~~
 INFO: Query finished. [astroquery.utils.tap.core]
-<Table length=3000>
-   name    dtype  unit                            description                            
---------- ------- ---- ------------------------------------------------------------------
-source_id   int64      Unique source identifier (unique within a particular Data Release)
-ref_epoch float64   yr                                                    Reference epoch
-       ra float64  deg                                                    Right ascension
-      dec float64  deg                                                        Declination
- parallax float64  mas                                                           Parallax
-Jobid: 1609260407863O
-Phase: COMPLETED
-[Output truncated]
+
+<astroquery.utils.tap.model.job.Job at 0x7f208c75e7c0>
 ~~~
 {: .output}
 
 And here are the results.
 
 ~~~
-results2 = job2.get_results()
-results2
+results = job.get_results()
+results
 ~~~
 {: .language-python}
 
 ~~~
 <Table length=3000>
-     source_id      ref_epoch ...         dec               parallax      
-                        yr    ...         deg                 mas         
-       int64         float64  ...       float64             float64       
-------------------- --------- ... ------------------- --------------------
-6758509757594141440    2015.5 ...  -30.34317218420783  0.48023816159705535
-6758527036250849280    2015.5 ... -30.193657826181596  -0.2763960334229464
-6758564458298242944    2015.5 ... -29.765368439225238   0.5907906528352993
-6758558612842155776    2015.5 ...  -29.92113396078169   0.2858563565989917
-6758556379459921920    2015.5 ... -29.900709054816964  -1.0012355835832834
-6758506355980010624    2015.5 ...  -30.37137642167569   0.3769870991981157
+     source_id              ra         ...        parallax       
+                           deg         ...          mas          
+       int64             float64       ...        float64        
+------------------- ------------------ ... ----------------------
+4036432465518023424  268.4099737354832 ...    0.09728878869604544
+4036427586432136576  268.1550746929837 ...    -1.6517420537894711
+4036435454861834880   268.402863428808 ...    0.47166978762943135
+4036423497622557184 268.22982540766145 ... -0.0018594810744405113
+4036432706082489344 268.53765532143115 ...      0.294780085311733
+4036431984481125248  268.4176240506027 ...   -0.23707477297436713
 [Output truncated]
 ~~~
 {: .output}
@@ -570,8 +597,8 @@ Negative parallaxes have "no physical meaning," but they can be a
 > The clauses in a query have to be in the right order.  Go back and
 > change the order of the clauses in `query2` and run it again.
 > 
-> The query should fail, but notice that you don't get much useful
-> debugging information.
+> The modified query should fail, but notice that you don't get much
+> useful debugging information.
 > 
 > For this reason, developing and debugging ADQL queries can be really
 > hard.  A few suggestions that might help:
@@ -586,9 +613,19 @@ Negative parallaxes have "no physical meaning," but they can be a
 > development time.
 > 
 > * Launching test queries synchronously might make them start faster, too.
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
+> > # In this example, the WHERE clause is in the wrong place
+> > 
+> > query = """SELECT 
+> > TOP 3000
+> > WHERE parallax < 1
+> > source_id, ref_epoch, ra, dec, parallax
+> > FROM gaiadr2.gaia_source
+> > """
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -627,15 +664,15 @@ Finally, you can use `NOT` to invert the result of a comparison.
 > here](https://www.w3schools.com/sql/sql_operators.asp) and then modify
 > the previous query to select rows where `bp_rp` is between `-0.75` and
 > `2`.
-> 
-> You can [read about this variable
-> here](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html).
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
 > > # Here's a solution using > and < operators
 > > 
-> > query = """SELECT TOP 10
+> > query = """SELECT 
+> > TOP 10
 > > source_id, ref_epoch, ra, dec, parallax
 > > FROM gaiadr2.gaia_source
 > > WHERE parallax < 1 
@@ -644,7 +681,8 @@ Finally, you can use `NOT` to invert the result of a comparison.
 > > 
 > > # And here's a solution using the BETWEEN operator
 > > 
-> > query = """SELECT TOP 10
+> > query = """SELECT 
+> > TOP 10
 > > source_id, ref_epoch, ra, dec, parallax
 > > FROM gaiadr2.gaia_source
 > > WHERE parallax < 1 
@@ -655,6 +693,11 @@ Finally, you can use `NOT` to invert the result of a comparison.
 > {: .solution}
 {: .challenge}
 
+
+`bp_rp` contains BP-RP color, which is the difference between two
+other columns, `phot_bp_mean_mag` and `phot_rp_mean_mag`.
+You can [read about this variable
+here](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html).
 
 This [Hertzsprung-Russell
 diagram](https://sci.esa.int/web/gaia/-/60198-gaia-hertzsprung-russell-diagram)
@@ -670,41 +713,10 @@ luminosity.  A star like that at GD-1's distance would be hard to
 detect, so if it is detected, it it more likely to be in the
 foreground.
 
-## Cleaning up
-
-Asynchronous jobs have a `jobid`.
-
-~~~
-job1.jobid, job2.jobid
-~~~
-{: .language-python}
-
-~~~
-(None, '1609260407863O')
-~~~
-{: .output}
-
-Which you can use to remove the job from the server.
-
-~~~
-Gaia.remove_jobs([job2.jobid])
-~~~
-{: .language-python}
-
-~~~
-Removed jobs: '['1609260407863O']'.
-
-~~~
-{: .output}
-
-If you don't remove it job from the server, it will be removed
-eventually, so don't feel too bad if you don't clean up after
-yourself.
-
 ## Formatting queries
 
-So far the queries have been string "literals", meaning that the
-entire string is part of the program.
+The queries we have written so far are string "literals", meaning that
+the entire string is part of the program.
 But writing queries yourself can be slow, repetitive, and error-prone.
 
 It is often a good idea to write Python code that assembles a query
@@ -718,14 +730,15 @@ except the column names.
 Here's the list of columns we'll select.  
 
 ~~~
-columns = 'source_id, ra, dec, pmra, pmdec, parallax, radial_velocity'
+columns = 'source_id, ra, dec, pmra, pmdec, parallax'
 ~~~
 {: .language-python}
 And here's the base; it's a string that contains at least one format
 specifier in curly brackets (braces).
 
 ~~~
-query3_base = """SELECT TOP 10 
+query3_base = """SELECT 
+TOP 10 
 {columns}
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
@@ -752,7 +765,7 @@ query3
 {: .language-python}
 
 ~~~
-'SELECT TOP 10 \nsource_id, ra, dec, pmra, pmdec, parallax, radial_velocity\nFROM gaiadr2.gaia_source\nWHERE parallax < 1\n  AND bp_rp BETWEEN -0.75 AND 2\n'
+'SELECT \nTOP 10 \nsource_id, ra, dec, pmra, pmdec, parallax\nFROM gaiadr2.gaia_source\nWHERE parallax < 1\n  AND bp_rp BETWEEN -0.75 AND 2\n'
 ~~~
 {: .output}
 
@@ -764,8 +777,9 @@ print(query3)
 {: .language-python}
 
 ~~~
-SELECT TOP 10 
-source_id, ra, dec, pmra, pmdec, parallax, radial_velocity
+SELECT 
+TOP 10 
+source_id, ra, dec, pmra, pmdec, parallax
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2
@@ -779,45 +793,45 @@ Notice that the format specifier has been replaced with the value of `columns`.
 Let's run it and see if it works:
 
 ~~~
-job3 = Gaia.launch_job(query3)
-print(job3)
+job = Gaia.launch_job(query3)
+print(job)
 ~~~
 {: .language-python}
 
 ~~~
 <Table length=10>
-      name       dtype    unit                              description                             n_bad
---------------- ------- -------- ------------------------------------------------------------------ -----
-      source_id   int64          Unique source identifier (unique within a particular Data Release)     0
-             ra float64      deg                                                    Right ascension     0
-            dec float64      deg                                                        Declination     0
-           pmra float64 mas / yr                         Proper motion in right ascension direction     0
-          pmdec float64 mas / yr                             Proper motion in declination direction     0
-       parallax float64      mas                                                           Parallax     0
-radial_velocity float64   km / s                                                    Radial velocity    10
+   name    dtype    unit                              description                            
+--------- ------- -------- ------------------------------------------------------------------
+source_id   int64          Unique source identifier (unique within a particular Data Release)
+       ra float64      deg                                                    Right ascension
+      dec float64      deg                                                        Declination
+     pmra float64 mas / yr                         Proper motion in right ascension direction
+    pmdec float64 mas / yr                             Proper motion in declination direction
+ parallax float64      mas                                                           Parallax
 Jobid: None
+Phase: COMPLETED
 [Output truncated]
 ~~~
 {: .output}
 
 ~~~
-results3 = job3.get_results()
-results3
+results = job.get_results()
+results
 ~~~
 {: .language-python}
 
 ~~~
 <Table length=10>
-     source_id              ra        ...        parallax       radial_velocity
-                           deg        ...          mas               km / s    
-       int64             float64      ...        float64            float64    
-------------------- ----------------- ... --------------------- ---------------
-4660466371507774848 79.49100199261952 ...  -0.13534455558687877              --
-4660498704031984000 80.19346436358076 ...      -0.1774586376397              --
-4660458949824817024 79.68666778641992 ... -0.030149510331454386              --
-4660451974773926528 79.89972073493868 ... -0.005219591141134416              --
-4660474033731357056 78.93214036467484 ...    0.6018032937392243              --
-4660454105077874688 79.91045649235578 ...  -0.19949109843083218              --
+     source_id              ra         ...       parallax      
+                           deg         ...         mas         
+       int64             float64       ...       float64       
+------------------- ------------------ ... --------------------
+4036432495535155072 268.41729223407117 ... -0.11176468032974321
+4036441536493921920   268.163280168269 ... -0.06466314453980221
+4036442601646438400  268.1387976914471 ...  -1.1448803059362858
+4036429201337340672  268.2935748074385 ...   0.4772565168467984
+4036435209981391360  268.3235008543401 ...  -0.2260844472181426
+4036430781889616640  268.4323413972199 ... 0.021914470221676332
 [Output truncated]
 ~~~
 {: .output}
@@ -833,17 +847,20 @@ Good so far.
 > `{max_parallax}`.  Now, when you call `format`, add a keyword argument
 > that assigns a value to `max_parallax`, and confirm that the format
 > specifier gets replaced with the value you provide.
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
-> > query4_base = """SELECT TOP 10
+> > query_base = """SELECT 
+> > TOP 10
 > > {columns}
 > > FROM gaiadr2.gaia_source
 > > WHERE parallax < {max_parallax} AND 
 > > bp_rp BETWEEN -0.75 AND 2
 > > """
 > > 
-> > query4 = query4_base.format(columns=columns,
+> > query = query_base.format(columns=columns,
 > >                             max_parallax=0.5)
 > > print(query)
 > > ~~~
@@ -882,16 +899,14 @@ and add a little bit at a time.
 query that might return a lot of data.
 
 * If you know your query will return fewer than 3000 rows, you can run
-it synchronously, which might complete faster (but it doesn't seem to
-make much difference).  If it might return more than 3000 rows, you
-should run it asynchronously.
+it synchronously, which might complete faster.  If it might return
+more than 3000 rows, you should run it asynchronously.
 
 * ADQL and SQL are not case-sensitive, so you don't have to capitalize
 the keywords, but you should.
 
 * ADQL and SQL don't require you to break a query into multiple lines,
 but you should.
-
 
 Jupyter notebooks can be good for developing and testing code, but
 they have some drawbacks.  In particular, if you run the cells out of
@@ -904,3 +919,8 @@ the same variable name in more than one section.
 
 * Keep notebooks short.  Look for places where you can break your
 analysis into phases with one notebook per phase.
+
+~~~
+
+~~~
+{: .language-python}

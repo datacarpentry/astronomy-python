@@ -318,10 +318,12 @@ If you are using Windows, `ls` might not work; in that case, try:
 > 
 > ```
 > # This one should cause an error
-> table_id.write('candidate_df.xml', 
+> column.write('candidate_df.xml', 
 >                format='votable', 
 >                overwrite=True)
 > ```
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
@@ -673,6 +675,8 @@ Since we've done everything here before, we'll do these steps as an exercise.
 > 
 > Select `source_id` and `original_ext_source_id` from `results1` and
 > write the resulting table as a file named `external.xml`.
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
@@ -742,6 +746,8 @@ Use `!head` to confirm that the file exists and contains an XML VOTable.
 > 
 > Hint: When you select a column from a join, you have to specify which
 > table the column is in.
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
@@ -823,6 +829,8 @@ results2
 > There's an [example
 > here](https://github.com/smoh/Getting-started-with-Gaia/blob/master/gaia-adql-snippets.md)
 > you could start with.
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
