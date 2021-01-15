@@ -99,6 +99,8 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.pn
 > 
 > 4. Can you identify 1-2 elements that could be improved, or that you
 > might have done differently?
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
@@ -215,6 +217,8 @@ region of GD-1,
 > 
 > And here is some [additional information about text and
 > arrows](https://matplotlib.org/3.3.1/tutorials/text/annotations.html#plotting-guide-annotation).
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
@@ -273,6 +277,8 @@ plt.gca().tick_params(direction='in')
 > Read the documentation of
 > [`tick_params`](https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.axes.Axes.tick_params.html)
 > and use it to put ticks on the top and right sides of the axes.
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
@@ -723,6 +729,8 @@ loop_df.head()
 > shaded area.
 > 
 > Hint: pass `coords` as an argument to `Polygon` and plot it using `add_patch`.
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
@@ -837,6 +845,8 @@ This is looking more and more like the figure in the paper.
 > 
 > In this example, the ratio of the widths of the panels is 3:1.  How
 > would you adjust it if you wanted the ratio to be 3:2?
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 

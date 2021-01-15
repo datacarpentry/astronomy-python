@@ -27,25 +27,17 @@ keypoints:
 
 - "An Astropy `Table` and a Pandas `DataFrame` are similar in many ways and they provide many of the same functions.  They have pros and cons, but for many projects, either one would be a reasonable choice."
 
+- "To store data from a Pandas `DataFrame`, a good option is an HDF file, which can contain multiple Datasets."
+
 ---
 
 {% include links.md %}
 
-# Proper Motion
+# 3. Proper Motion
 
-This is the third in a series of notebooks related to astronomy data.
-
-As a running example, we are replicating parts of the analysis in a
-recent paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
-of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian M.
-Price-Whelan and Ana Bonaca.
-
-In the first lesson, we wrote ADQL queries and used them to select and
-download data from the Gaia server.
-
-In the second lesson, we wrote a query to select stars from the region
-of the sky where we expect GD-1 to be, and saved the results in a FITS
-file.
+In the previous lesson, we wrote a query to select stars from the
+region of the sky where we expect GD-1 to be, and saved the results in
+a FITS file.
 
 Now we'll read that data back and implement the next step in the
 analysis, identifying stars with the proper motion we expect for GD-1.
@@ -124,17 +116,15 @@ results.info
 {: .language-python}
 
 ~~~
-<Table length=140340>
-      name       dtype    unit                              description                            
---------------- ------- -------- ------------------------------------------------------------------
-      source_id   int64          Unique source identifier (unique within a particular Data Release)
-             ra float64      deg                                                    Right ascension
-            dec float64      deg                                                        Declination
-           pmra float64 mas / yr                         Proper motion in right ascension direction
-          pmdec float64 mas / yr                             Proper motion in declination direction
-       parallax float64      mas                                                           Parallax
- parallax_error float64      mas                                         Standard error of parallax
-radial_velocity float64   km / s                                                    Radial velocity
+<Table length=140339>
+   name    dtype    unit                              description                            
+--------- ------- -------- ------------------------------------------------------------------
+source_id   int64          Unique source identifier (unique within a particular Data Release)
+       ra float64      deg                                                    Right ascension
+      dec float64      deg                                                        Declination
+     pmra float64 mas / yr                         Proper motion in right ascension direction
+    pmdec float64 mas / yr                             Proper motion in declination direction
+ parallax float64      mas                                                           Parallax
 ~~~
 {: .output}
 
@@ -153,14 +143,7 @@ results.colnames
 {: .language-python}
 
 ~~~
-['source_id',
- 'ra',
- 'dec',
- 'pmra',
- 'pmdec',
- 'parallax',
- 'parallax_error',
- 'radial_velocity']
+['source_id', 'ra', 'dec', 'pmra', 'pmdec', 'parallax']
 ~~~
 {: .output}
 
@@ -172,7 +155,7 @@ results['ra']
 {: .language-python}
 
 ~~~
-<Column name='ra' dtype='float64' unit='deg' description='Right ascension' length=140340>
+<Column name='ra' dtype='float64' unit='deg' description='Right ascension' length=140339>
 142.48301935991023
 142.25452941346344
 142.64528557468074
@@ -210,11 +193,11 @@ results[0]
 
 ~~~
 <Row index=0>
-    source_id              ra                dec                pmra              pmdec             parallax        parallax_error  radial_velocity
-                          deg                deg              mas / yr           mas / yr             mas                mas             km / s    
-      int64             float64            float64            float64            float64            float64            float64          float64    
------------------- ------------------ ----------------- ------------------- ----------------- ------------------- ----------------- ---------------
-637987125186749568 142.48301935991023 21.75771616932985 -2.5168384683875766 2.941813096629439 -0.2573448962333354 0.823720794509811           1e+20
+    source_id              ra                dec                pmra              pmdec             parallax     
+                          deg                deg              mas / yr           mas / yr             mas        
+      int64             float64            float64            float64            float64            float64      
+------------------ ------------------ ----------------- ------------------- ----------------- -------------------
+637987125186749568 142.48301935991023 21.75771616932985 -2.5168384683875766 2.941813096629439 -0.2573448962333354
 ~~~
 {: .output}
 
@@ -278,8 +261,19 @@ We'll import like this.
 import matplotlib.pyplot as plt
 ~~~
 {: .language-python}
-Pyplot part of the Matplotlib library.  It is conventional to import
-it using the shortened name `plt`.
+Pyplot is part of the Matplotlib library.  It is conventional to
+import it using the shortened name `plt`.
+
+In recent versions of Jupyter, plots appear "inline"; that is, they
+are part of the notebook.  In some older versions, plots might appear
+in a new window.
+In that case, you might want to run the following Jupyter [magic
+command](https://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-matplotlib)
+in a notebook cell:
+
+```
+%matplotlib inline
+```
 
 Pyplot provides two functions that can make scatterplots,
 [plt.scatter](https://matplotlib.org/3.3.0/api/_as_gen/matplotlib.pyplot.scatter.html)
@@ -347,6 +341,8 @@ transparency of the points.
 > 2](https://www.cosmos.esa.int/web/gaia/dr2), covers 22 months of
 > observations; during this time, some parts of the sky were scanned
 > more than others.
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
@@ -376,27 +372,43 @@ which is useful for two reasons:
 * We can identify stars that are likely to be in GD-1 by selecting
 stars near the centerline of the stream, where $\phi_2$ is close to 0.
 
-* We expect stars in GD-1 to have similar proper motion along the $\phi_1$ axis.
+* We expect stars in GD-1 to have similar non-zero proper motion along
+the $\phi_1$ axis.
 
-To do the transformation, we'll put the results into a `SkyCoord` object.
+To do the transformation, we'll put the results into a `SkyCoord`
+object.  In a previous lesson we created a `SkyCoord` object like
+this:
 
 ~~~
 from astropy.coordinates import SkyCoord
-import astropy.units as u
 
-skycoord = SkyCoord(
-               ra=results['ra'], 
-               dec=results['dec'],
-               pm_ra_cosdec=results['pmra'],
-               pm_dec=results['pmdec'], 
-               distance=8*u.kpc, 
-               radial_velocity=0*u.km/u.s)
+skycoord = SkyCoord(ra=results['ra'], dec=results['dec'])
 ~~~
 {: .language-python}
-Most of the arguments we send to `SkyCoord` come directly from `results`.
+Now we're going to do something similar, but in addition to `ra` and
+`dec`, we'll also include:
 
-We provide `distance` and `radial_velocity` to prepare the data for
-reflex correction, which we explain below.
+* `pmra` and `pmdec`, which are proper motion in the ICRS frame, and
+
+* `distance` and `radial_velocity`, which we explain below.
+
+~~~
+import astropy.units as u
+
+distance = 8 * u.kpc
+radial_velocity= 0 * u.km/u.s
+
+skycoord = SkyCoord(ra=results['ra'], 
+                    dec=results['dec'],
+                    pm_ra_cosdec=results['pmra'],
+                    pm_dec=results['pmdec'], 
+                    distance=distance, 
+                    radial_velocity=radial_velocity)
+~~~
+{: .language-python}
+For the first four arguments, we use columns from `results`.
+
+For `distance` and `radial_velocity` we use constants, which we explain below.
 
 The result is an Astropy `SkyCoord` object, which we can transform to
 the GD-1 frame.
@@ -406,24 +418,17 @@ from gala.coordinates import GD1Koposov10
 
 gd1_frame = GD1Koposov10()
 transformed = skycoord.transform_to(gd1_frame)
-type(transformed)
 ~~~
 {: .language-python}
-
-~~~
-astropy.coordinates.sky_coordinate.SkyCoord
-~~~
-{: .output}
-
 The result is another `SkyCoord` object, now in the `GD1Koposov10` frame.
 
-The next step is to correct the proper motion measurements from Gaia
-for reflex due to the motion of our solar system around the Galactic
-center.
+## Reflex Correction
 
-When we created `skycoord`, we provided `distance` and
-`radial_velocity` as arguments, but we did not use the measurements
-provided by Gaia.  Instead, we use fixed values for these parameters.
+The next step is to correct the proper motion measurements for the
+effect of the motion of our solar system around the Galactic center.
+
+When we created `skycoord`, we provided constant values for `distance`
+and `radial_velocity` rather than measurements from Gaia.
 
 That might seem like a strange thing to do, but here's the motivation:
 
@@ -439,30 +444,21 @@ have only a small effect on our ability to identify stars with the
 proper motion we expect for GD-1.
 
 * The measurement of radial velocity has no effect on the correction
-for proper motion; the value we provide is arbitrary, but we have to
-provide a value to avoid errors in the reflex correction calculation.
-
-We are grateful to Adrian Price-Whelen for his help explaining this
-step in the analysis.
+for proper motion, but we have to provide a value to avoid errors in
+the reflex correction calculation.  So we provide `0` as an arbitrary
+place-keeper.
 
 With this preparation, we can use `reflex_correct` from Gala
 ([documentation
 here](https://gala-astro.readthedocs.io/en/latest/api/gala.coordinates.reflex_correct.html))
-to correct for solar reflex motion.
+to correct for the motion of the solar system.
 
 ~~~
 from gala.coordinates import reflex_correct
 
-gd1_coord = reflex_correct(transformed)
-type(gd1_coord)
+skycoord_gd1 = reflex_correct(transformed)
 ~~~
 {: .language-python}
-
-~~~
-astropy.coordinates.sky_coordinate.SkyCoord
-~~~
-{: .output}
-
 The result is a `SkyCoord` object that contains 
 
 * `phi1` and `phi2`, which represent the transformed coordinates in
@@ -471,20 +467,15 @@ the `GD1Koposov10` frame.
 * `pm_phi1_cosphi2` and `pm_phi2`, which represent the transformed and
 corrected proper motions.
 
-We can select the coordinates like this:
+We can select the coordinates and plot them like this:
 
 ~~~
-phi1 = gd1_coord.phi1
-phi2 = gd1_coord.phi2
-~~~
-{: .language-python}
-And plot them like this:
+x = skycoord_gd1.phi1
+y = skycoord_gd1.phi2
+plt.plot(x, y, 'ko', markersize=0.1, alpha=0.1)
 
-~~~
-plt.plot(phi1, phi2, 'ko', markersize=0.1, alpha=0.2)
-
-plt.xlabel('ra (degree GD1)')
-plt.ylabel('dec (degree GD1)');
+plt.xlabel('phi1 (degree GD1)')
+plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .language-python}
 
@@ -493,9 +484,9 @@ plt.ylabel('dec (degree GD1)');
 ~~~
 {: .output}
 
-Remember that we started with a rectangle in GD-1 coordinates.  When
-transformed to ICRS, it's a non-rectangular polygon.  Now that we have
-transformed back to GD-1 coordinates, it's a rectangle again.
+Remember that we started with a rectangle in the GD-1 frame.  When
+transformed to the ICRS frame, it's a non-rectangular polygon.  Now,
+transformed back to the GD-1 frame, it's a rectangle again.
 
 ## Pandas DataFrame
 
@@ -512,11 +503,11 @@ astropy.table.table.Table
 ~~~
 {: .output}
 
-And `gd1_coord` is a `SkyCoord` object that contains the transformed
-coordinates and proper motions.
+And `skycoord_gd1` is a `SkyCoord` object that contains the
+transformed coordinates and proper motions.
 
 ~~~
-type(gd1_coord)
+type(skycoord_gd1)
 ~~~
 {: .language-python}
 
@@ -532,8 +523,8 @@ types can be awkward.
 It will be more convenient to choose one object and get all of the
 data into it.  We'll use a Pandas DataFrame, for two reasons:
 
-1. It provides capabilities that are pretty much a superset of the
-other data structures, so it's the all-in-one solution.
+1. It provides capabilities that (almost) a superset of the other data
+structures, so it's the all-in-one solution.
 
 2. Pandas is a general-purpose tool that is useful in many domains,
 especially data science.  If you are going to develop expertise in one
@@ -554,7 +545,7 @@ results_df.shape
 {: .language-python}
 
 ~~~
-(140340, 8)
+(140339, 6)
 ~~~
 {: .output}
 
@@ -569,38 +560,32 @@ results_df.head()
 {: .language-python}
 
 ~~~
-            source_id          ra        dec       pmra      pmdec  parallax  \
-0  637987125186749568  142.483019  21.757716  -2.516838   2.941813 -0.257345   
-1  638285195917112960  142.254529  22.476168   2.662702 -12.165984  0.422728   
-2  638073505568978688  142.645286  22.166932  18.306747  -7.950660  0.103640   
-3  638086386175786752  142.577394  22.227920   0.987786  -2.584105 -0.857327   
-4  638049655615392384  142.589136  22.110783   0.244439  -4.941079  0.099625   
-
-   parallax_error  radial_velocity  
-0        0.823721     1.000000e+20  
-1        0.297472     1.000000e+20  
-2        0.544584     1.000000e+20  
-[Output truncated]
+            source_id          ra        dec       pmra      pmdec  parallax
+0  637987125186749568  142.483019  21.757716  -2.516838   2.941813 -0.257345
+1  638285195917112960  142.254529  22.476168   2.662702 -12.165984  0.422728
+2  638073505568978688  142.645286  22.166932  18.306747  -7.950660  0.103640
+3  638086386175786752  142.577394  22.227920   0.987786  -2.584105 -0.857327
+4  638049655615392384  142.589136  22.110783   0.244439  -4.941079  0.099625
 ~~~
 {: .output}
 
-Python detail: `shape` is an attribute, so we display its value
+**Python detail:** `shape` is an attribute, so we display its value
 without calling it as a function; `head` is a function, so we need the
 parentheses.
 
-Now we can extract the columns we want from `gd1_coord` and add them
-as columns in the `DataFrame`.  `phi1` and `phi2` contain the
+Now we can extract the columns we want from `skycoord_gd1` and add
+them as columns in the `DataFrame`.  `phi1` and `phi2` contain the
 transformed coordinates.
 
 ~~~
-results_df['phi1'] = gd1_coord.phi1
-results_df['phi2'] = gd1_coord.phi2
+results_df['phi1'] = skycoord_gd1.phi1
+results_df['phi2'] = skycoord_gd1.phi2
 results_df.shape
 ~~~
 {: .language-python}
 
 ~~~
-(140340, 10)
+(140339, 8)
 ~~~
 {: .output}
 
@@ -608,14 +593,14 @@ results_df.shape
 motion in the transformed frame.
 
 ~~~
-results_df['pm_phi1'] = gd1_coord.pm_phi1_cosphi2
-results_df['pm_phi2'] = gd1_coord.pm_phi2
+results_df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
+results_df['pm_phi2'] = skycoord_gd1.pm_phi2
 results_df.shape
 ~~~
 {: .language-python}
 
 ~~~
-(140340, 12)
+(140339, 10)
 ~~~
 {: .output}
 
@@ -658,22 +643,24 @@ max    7.974418e+17     152.777393      34.285481     104.319923
 > 
 > Review the summary statistics in this table.
 > 
-> * Do the values makes senses based on what you know about the context?
+> * Do the values make sense based on what you know about the context?
 > 
 > * Do you see any values that seem problematic, or evidence of other data issues?
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
-> > # A few issues that are likely to come up:
+> > # The most noticeable issue is that some of the
+> > # parallax values are negative, which is non-physical.
 > > 
-> > # 1. Why are some of the parallax values negative?
-> > #    Some parallax measurements are inaccurate, especially
-> > #    stars that are far away.
+> > # The reason is that parallax measurements are less accurate
+> > # for stars that are far away.
 > > 
-> > # 2. Why are some of the radial velocities 1e20?
-> > #    It seems like this value is used to indicate invalid data.
-> > #    Notice that the 25th percentile is 1e20, which indicates
-> > #    that at least 75% of these values are invalid.
+> > # Fortunately, we don't use the parallax measurements in
+> > # the analysis (one of the reasons we used constant distance
+> > # for reflex correction).
+> > 
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -683,8 +670,8 @@ max    7.974418e+17     152.777393      34.285481     104.319923
 ## Plot proper motion
 
 Now we are ready to replicate one of the panels in Figure 1 of the
-Price-Whelan and Bonaca paper, the one that shows the components of
-proper motion as a scatter plot:
+Price-Whelan and Bonaca paper, the one that shows components of proper
+motion as a scatter plot:
 
 <img width="300"
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-1.png">
@@ -700,7 +687,56 @@ motion in the direction of `phi2` to be near 0.
 proper motion, except that it should form a cluster at a non-zero
 value.
 
-To locate this cluster, we will select stars near the centerline_df of GD-1.
+By plotting proper motion in the GD-1 frame, we hope to find this cluster.
+Then we will use the bounds of the cluster to select stars that are
+more likely to be in GD-1.
+
+~~~
+x = results_df['pm_phi1']
+y = results_df['pm_phi2']
+plt.plot(x, y, 'ko', markersize=0.1, alpha=0.1)
+    
+plt.xlabel('Proper motion phi1 (mas/yr GD1 frame)')
+plt.ylabel('Proper motion phi2 (mas/yr GD1 frame)');
+~~~
+{: .language-python}
+
+~~~
+<Figure size 432x288 with 1 Axes>
+~~~
+{: .output}
+
+Most of the proper motions are near the origin, but there are a few
+extreme values.
+
+Following the example in the paper, we'll use `xlim` and `ylim` to
+zoom in on the region near the origin.
+
+~~~
+x = results_df['pm_phi1']
+y = results_df['pm_phi2']
+plt.plot(x, y, 'ko', markersize=0.1, alpha=0.1)
+    
+plt.xlabel('Proper motion phi1 (mas/yr GD1 frame)')
+plt.ylabel('Proper motion phi2 (mas/yr GD1 frame)')
+
+plt.xlim(-12, 8)
+plt.ylim(-10, 10);
+~~~
+{: .language-python}
+
+~~~
+<Figure size 432x288 with 1 Axes>
+~~~
+{: .output}
+
+There is a hint of an overdense region near (-7.5, 0), but if you
+didn't know where to look, you would miss it.
+
+To see the cluster more clearly, we need a sample that contains a
+higher proportion of stars in GD-1.
+
+We'll do that by selecting stars close to the centerline.
 
 ## Selecting the centerline
 
@@ -710,7 +746,7 @@ than 1 degree from the line `phi2=0`.
 <img
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png">
 
-So stars near this line have the highest probability of being in GD-1.
+Stars near this line have the highest probability of being in GD-1.
 
 To select them, we will use a "Boolean mask".  We'll start by
 selecting the `phi2` column from the `DataFrame`:
@@ -733,8 +769,8 @@ We can use a comparison operator, `>`, to compare the values in a
 `Series` to a constant.
 
 ~~~
-phi2_min = -1.0 * u.deg
-phi2_max = 1.0 * u.deg
+phi2_min = -1.0 * u.degree
+phi2_max = 1.0 * u.degree
 
 mask = (phi2 > phi2_min)
 type(mask)
@@ -770,8 +806,13 @@ true where elements from both Boolean `Series` are true.
 mask = (phi2 > phi2_min) & (phi2 < phi2_max)
 ~~~
 {: .language-python}
-Python note: We need the parentheses around the conditions; otherwise
-the order of operations is incorrect.
+**Python detail:** We need the parentheses around the conditions;
+otherwise the order of operations is incorrect.
+
+Also, Python's logical operators (`and`, `or`, and `not`) don't work
+with NumPy or Pandas.  Both libraries use the bitwise operators (`&`,
+`|`, and `~`) to do elementwise logical operations [explanation
+here](https://stackoverflow.com/questions/21415661/logical-operators-for-boolean-indexing-in-pandas).
 
 The sum of a Boolean `Series` is the number of `True` values, so we
 can use `sum` to see how many stars are in the selected region.
@@ -805,18 +846,56 @@ pandas.core.frame.DataFrame
 `results_df` that correspond to `True` values in `mask`; that is, in
 contains the stars near the centerline of GD-1.
 
+We can use `len` to see how many rows are in `centerline_df`:
+
+~~~
+len(centerline_df)
+~~~
+{: .language-python}
+
+~~~
+25084
+~~~
+{: .output}
+
+And what fraction of the rows we've selected.
+
+~~~
+len(centerline_df) / len(results_df)
+~~~
+{: .language-python}
+
+~~~
+0.1787386257562046
+~~~
+{: .output}
+
+There are about 25,000 stars in this region, about 18% of the total.
+
 ## Plotting proper motion
 
-Here's a scatter plot of proper motion for the selected stars.
+Since we've plotted proper motion several times, let's put that code
+in a function.
 
 ~~~
-pm1 = centerline_df['pm_phi1']
-pm2 = centerline_df['pm_phi2']
-
-plt.plot(pm1, pm2, 'ko', markersize=0.1, alpha=0.1)
+def plot_proper_motion(df):
+    """Plot proper motion.
     
-plt.xlabel('Proper motion phi1 (GD1 frame)')
-plt.ylabel('Proper motion phi2 (GD1 frame)');
+    df: DataFrame with `pm_phi1` and `pm_phi2`
+    """
+    x = df['pm_phi1']
+    y = df['pm_phi2']
+    plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
+
+    plt.xlabel('Proper motion phi1 (mas/yr GD1 frame)')
+    plt.ylabel('Proper motion phi2 (mas/yr GD1 frame)')
+
+    plt.xlim(-12, 8)
+    plt.ylim(-10, 10)
+~~~
+{: .language-python}
+~~~
+plot_proper_motion(centerline_df)
 ~~~
 {: .language-python}
 
@@ -825,32 +904,7 @@ plt.ylabel('Proper motion phi2 (GD1 frame)');
 ~~~
 {: .output}
 
-Looking at these results, we see a large cluster around (0, 0), and a
-smaller cluster near (0, -10).
-
-We can use `xlim` and `ylim` to set the limits on the axes and zoom in
-on the region near (0, 0).
-
-~~~
-pm1 = centerline_df['pm_phi1']
-pm2 = centerline_df['pm_phi2']
-
-plt.plot(pm1, pm2, 'ko', markersize=0.3, alpha=0.3)
-    
-plt.xlabel('Proper motion phi1 (GD1 frame)')
-plt.ylabel('Proper motion phi2 (GD1 frame)')
-
-plt.xlim(-12, 8)
-plt.ylim(-10, 10);
-~~~
-{: .language-python}
-
-~~~
-<Figure size 432x288 with 1 Axes>
-~~~
-{: .output}
-
-Now we can see the smaller cluster more clearly.
+Now we can see more clearly that there is a cluster near (-7.5, 0).
 
 You might notice that our figure is less dense than the one in the
 paper.  That's because we started with a set of stars from a
@@ -884,8 +938,8 @@ pm2_min = -2.2
 pm2_max =  1.0
 ~~~
 {: .language-python}
-To draw these bounds, we'll make two lists containing the coordinates
-of the corners of the rectangle.
+To draw these bounds, we'll use `make_rectangle` to make two lists
+containing the coordinates of the corners of the rectangle.
 
 ~~~
 def make_rectangle(x1, x2, y1, y2):
@@ -903,14 +957,8 @@ pm1_rect, pm2_rect = make_rectangle(
 Here's what the plot looks like with the bounds we chose.
 
 ~~~
-plt.plot(pm1, pm2, 'ko', markersize=0.3, alpha=0.3)
-plt.plot(pm1_rect, pm2_rect, '-')
-    
-plt.xlabel('Proper motion phi1 (GD1 frame)')
-plt.ylabel('Proper motion phi2 (GD1 frame)')
-
-plt.xlim(-12, 8)
-plt.ylim(-10, 10);
+plot_proper_motion(centerline_df)
+plt.plot(pm1_rect, pm2_rect, '-');
 ~~~
 {: .language-python}
 
@@ -919,24 +967,20 @@ plt.ylim(-10, 10);
 ~~~
 {: .output}
 
-To select rows that fall within these bounds, we'll use the following
-function, which uses Pandas operators to make a mask that selects rows
-where `series` falls between `low` and `high`.
+Now that we've identified the bounds of the cluster in proper motion,
+we'll use it to select rows from `results_df`.
+
+We'll use the following function, which uses Pandas operators to make
+a mask that selects rows where `series` falls between `low` and
+`high`.
 
 ~~~
 def between(series, low, high):
-    """Make a Boolean Series.
-    
-    series: Pandas Series
-    low: lower bound
-    high: upper bound
-    
-    returns: Boolean Series
-    """
+    """Check whether values are between `low` and `high`."""
     return (series > low) & (series < high)
 ~~~
 {: .language-python}
-The following mask select stars with proper motion in the region we chose.
+The following mask selects stars with proper motion in the region we chose.
 
 ~~~
 pm1 = results_df['pm_phi1']
@@ -975,13 +1019,12 @@ These are the stars we think are likely to be in GD-1.  Let's see what
 they look like, plotting their coordinates (not their proper motion).
 
 ~~~
-phi1 = selected_df['phi1']
-phi2 = selected_df['phi2']
+x = selected_df['phi1']
+y = selected_df['phi2']
+plt.plot(x, y, 'ko', markersize=1, alpha=1)
 
-plt.plot(phi1, phi2, 'ko', markersize=0.5, alpha=0.5)
-
-plt.xlabel(r'$\phi_1$ (degree GD1)')
-plt.ylabel(r'$\phi_2$ (degree GD1)');
+plt.xlabel('phi1 (degree GD1)')
+plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .language-python}
 
@@ -1040,56 +1083,47 @@ file with Pandas, you can read it back with many other software tools
 We can write a Pandas `DataFrame` to an HDF5 file like this:
 
 ~~~
-filename = 'gd1_dataframe.hdf5'
+filename = 'gd1_data.hdf'
 
-results_df.to_hdf(filename, 'results_df')
+selected_df.to_hdf(filename, 'selected_df', mode='w')
 ~~~
 {: .language-python}
 Because an HDF5 file can contain more than one Dataset, we have to
 provide a name, or "key", that identifies the Dataset in the file.
 
-We could use any string as the key, but in this example I use the
-variable name `results_df`.
+We could use any string as the key, but it will be convenient to give
+the Dataset in the file the same name as the `DataFrame`.
+
+The argument `mode='w'` means that if the file already exists, we
+should overwrite it.
 
 > ## Exercise
 > 
-> We're going to need `centerline_df` and `selected_df` later as well.
-> Write a line or two of code to add it as a second Dataset in the HDF5
-> file.
+> We're going to need `centerline_df` later as well.  Write a line of
+> code to add it as a second Dataset in the HDF5 file.
+> 
+> Hint: Since the file already exists, you should *not* use `mode='w'`.
+>
+> > ## Solution
 > > 
 > > ~~~
 > > 
 > > centerline_df.to_hdf(filename, 'centerline_df')
-> > selected_df.to_hdf(filename, 'selected_df')
 > > ~~~
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
 
 
-**Detail:** Reading and writing HDF5 tables requires a library called
-`PyTables` that is not always installed with Pandas.  You can install
-it with pip like this:
-
-```
-pip install tables
-```
-
-If you install it using Conda, the name of the package is `pytables`.
-
-```
-conda install pytables
-```
-
 We can use `ls` to confirm that the file exists and check the size:
 
 ~~~
-!ls -lh gd1_dataframe.hdf5
+!ls -lh gd1_data.hdf
 ~~~
 {: .language-python}
 
 ~~~
--rw-rw-r-- 1 downey downey 20M Dec 29 11:48 gd1_dataframe.hdf5
+-rw-rw-r-- 1 downey downey 2.7M Jan  9 17:25 gd1_data.hdf
 
 ~~~
 {: .output}
@@ -1097,24 +1131,32 @@ We can use `ls` to confirm that the file exists and check the size:
 If you are using Windows, `ls` might not work; in that case, try:
 
 ```
-!dir gd1_dataframe.hdf5
+!dir gd1_data.hdf
 ```
 
 We can read the file back like this:
 
+If you forget what the names of the Datasets in the file are, you can
+read them back like this:
+
 ~~~
-read_back_df = pd.read_hdf(filename, 'results_df')
-read_back_df.shape
+with pd.HDFStore(filename) as hdf:
+    print(hdf.keys())
 ~~~
 {: .language-python}
 
 ~~~
-(140340, 12)
+['/centerline_df', '/selected_df']
+
 ~~~
 {: .output}
 
-Pandas can write a variety of other formats, [which you can read about
-here](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html).
+The keys are the names of the Datasets.  Notice that they start with
+`/`, which indicates that they are at the top level of the Dataset
+hierarchy, and not in a named "group".
+
+In future lessons we will add a few more Datasets to this file, but
+not so many that we need to organize them into groups.
 
 ## Summary
 
@@ -1151,7 +1193,5 @@ misrepresent the data badly.
 and they provide many of the same functions.  They have pros and cons,
 but for many projects, either one would be a reasonable choice.
 
-~~~
-
-~~~
-{: .language-python}
+* To store data from a Pandas `DataFrame`, a good option is an HDF
+file, which can contain multiple Datasets.
