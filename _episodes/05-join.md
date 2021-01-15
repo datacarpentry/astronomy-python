@@ -69,6 +69,8 @@ After completing this lesson, you should be able to
 
 The following cell downloads the data from the previous notebook.
 
+
+
 ~~~
 import os
 from wget import download
@@ -80,7 +82,10 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
+
 And we can read it back.
+
+
 
 ~~~
 import pandas as pd
@@ -88,10 +93,13 @@ import pandas as pd
 candidate_df = pd.read_hdf(filename, 'candidate_df')
 ~~~
 {: .language-python}
+
 `candidate_df` is the Pandas DataFrame that contains results from the
 query in the previous notebook, which selects stars likely to be in
 GD-1 based on proper motion.  It also includes position and proper
 motion transformed to the ICRS frame.
+
+
 
 ~~~
 import matplotlib.pyplot as plt
@@ -110,6 +118,13 @@ plt.ylabel('dec (degree GD1)');
 <Figure size 432x288 with 1 Axes>
 ~~~
 {: .output}
+
+
+
+    
+![png](05-join_files/05-join_10_0.png)
+    
+
 
 This is the same figure we saw at the end of the previous notebook.
 GD-1 is visible against the background stars, but we will be able to
@@ -212,6 +227,8 @@ here](https://docs.astropy.org/en/stable/io/votable/).
 
 First we have to convert our Pandas `DataFrame` to an Astropy `Table`.
 
+
+
 ~~~
 from astropy.table import Table
 
@@ -225,15 +242,26 @@ astropy.table.table.Table
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 To write the file, we can use `Table.write` with `format='votable'`,
 [as described
 here](https://docs.astropy.org/en/stable/io/unified.html#vo-tables).
+
+
 
 ~~~
 table_id = candidate_table[['source_id']]
 table_id.write('candidate_df.xml', format='votable', overwrite=True)
 ~~~
 {: .language-python}
+
 Notice that we select a single column from the table, `source_id`.
 We could write the entire table to a file, but that would take longer
 to transmit over the network, and we really only need one column.
@@ -245,6 +273,8 @@ into a form that can be transmitted over a network, is called
 XML is one of the most common serialization formats.  One nice feature
 is that XML data is plain text, as opposed to binary digits, so you
 can read the file we just wrote:
+
+
 
 ~~~
 !head candidate_df.xml
@@ -266,6 +296,9 @@ can read the file we just wrote:
 ~~~
 {: .output}
 
+
+    
+
 XML is a general format, so different XML files contain different
 kinds of data.  In order to read an XML file, it's not enough to know
 that it's XML; you also have to know the data format, which is called
@@ -281,6 +314,8 @@ A drawback of XML is that it tends to be big, which is why we wrote
 just the `source_id` column rather than the whole table.
 The size of the file is about 750 KB, so that's not too bad.
 
+
+
 ~~~
 !ls -lh candidate_df.xml
 ~~~
@@ -291,6 +326,9 @@ The size of the file is about 750 KB, so that's not too bad.
 
 ~~~
 {: .output}
+
+
+    
 
 If you are using Windows, `ls` might not work; in that case, try:
 
@@ -322,6 +360,8 @@ If you are using Windows, `ls` might not work; in that case, try:
 >                format='votable', 
 >                overwrite=True)
 > ```
+
+
 >
 > > ## Solution
 > > 
@@ -338,6 +378,7 @@ If you are using Windows, `ls` might not work; in that case, try:
 {: .challenge}
 
 
+
 ## Uploading a table
 
 The next step is to upload this table to the Gaia server and use it as
@@ -350,12 +391,15 @@ table](https://astroquery.readthedocs.io/en/latest/gaia/gaia.html#synchronous-qu
 In the spirit of incremental development and testing, let's start with
 the simplest possible query.
 
+
+
 ~~~
 query = """SELECT *
 FROM tap_upload.candidate_df
 """
 ~~~
 {: .language-python}
+
 This query downloads all rows and all columns from the uploaded table.
 The name of the table has two parts: `tap_upload` specifies a table
 that was uploaded using TAP+ (remember that's the name of the protocol
@@ -365,6 +409,8 @@ And `candidate_df` is the name of the table, which we get to choose
 (unlike `tap_upload`, which we didn't get to choose).
 
 Here's how we run the query:
+
+
 
 ~~~
 from astroquery.gaia import Gaia
@@ -391,6 +437,9 @@ INFO: Query finished. [astroquery.utils.tap.core]
 ~~~
 {: .output}
 
+
+    
+
 `upload_resource` specifies the name of the file we want to upload,
 which is the file we just wrote.
 
@@ -398,6 +447,8 @@ which is the file we just wrote.
 name we used in the query.
 
 And here are the results:
+
+
 
 ~~~
 results = job.get_results()
@@ -421,8 +472,43 @@ results
 ~~~
 {: .output}
 
+
+
+
+
+<i>Table length=7346</i>
+<table id="table139832308444608" class="table-striped table-bordered table-condensed">
+<thead><tr><th>source_id</th></tr></thead>
+<thead><tr><th>int64</th></tr></thead>
+<tr><td>635559124339440000</td></tr>
+<tr><td>635860218726658176</td></tr>
+<tr><td>635674126383965568</td></tr>
+<tr><td>635535454774983040</td></tr>
+<tr><td>635497276810313600</td></tr>
+<tr><td>635614168640132864</td></tr>
+<tr><td>635821843194387840</td></tr>
+<tr><td>635551706931167104</td></tr>
+<tr><td>635518889086133376</td></tr>
+<tr><td>635580294233854464</td></tr>
+<tr><td>...</td></tr>
+<tr><td>612282738058264960</td></tr>
+<tr><td>612485911486166656</td></tr>
+<tr><td>612386332668697600</td></tr>
+<tr><td>612296172717818624</td></tr>
+<tr><td>612250375480101760</td></tr>
+<tr><td>612394926899159168</td></tr>
+<tr><td>612288854091187712</td></tr>
+<tr><td>612428870024913152</td></tr>
+<tr><td>612256418500423168</td></tr>
+<tr><td>612429144902815104</td></tr>
+</table>
+
+
+
 If things go according to plan, the result should contain the same
 rows and columns as the uploaded table.
+
+
 
 ~~~
 len(table_id), len(results)
@@ -434,6 +520,16 @@ len(table_id), len(results)
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
+
+
 ~~~
 table_id.colnames
 ~~~
@@ -443,6 +539,16 @@ table_id.colnames
 ['source_id']
 ~~~
 {: .output}
+
+
+
+
+
+    
+
+
+
+
 
 ~~~
 results.colnames
@@ -454,6 +560,14 @@ results.colnames
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 In this example, we uploaded a table and then downloaded it again, so
 that's not too useful.
 
@@ -464,6 +578,8 @@ on the Gaia server.
 
 Here's the first example of a query that contains a `JOIN` clause.
 
+
+
 ~~~
 query1 = """SELECT *
 FROM gaiadr2.panstarrs1_best_neighbour as best
@@ -472,6 +588,7 @@ JOIN tap_upload.candidate_df as candidate_df
 """
 ~~~
 {: .language-python}
+
 Let's break that down one clause at a time:
 
 * `SELECT *` means we will download all columns from both tables.
@@ -492,6 +609,8 @@ table](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_dat
 
 Let's run the query:
 
+
+
 ~~~
 job1 = Gaia.launch_job_async(query=query1, 
                        upload_resource='candidate_df.xml', 
@@ -505,7 +624,12 @@ INFO: Query finished. [astroquery.utils.tap.core]
 ~~~
 {: .output}
 
+
+    
+
 And get the results.
+
+
 
 ~~~
 results1 = job1.get_results()
@@ -529,8 +653,43 @@ results1
 ~~~
 {: .output}
 
+
+
+
+
+<i>Table length=3724</i>
+<table id="table139832308265696" class="table-striped table-bordered table-condensed">
+<thead><tr><th>source_id</th><th>original_ext_source_id</th><th>angular_distance</th><th>number_of_neighbours</th><th>number_of_mates</th><th>best_neighbour_multiplicity</th><th>gaia_astrometric_params</th><th>source_id_2</th></tr></thead>
+<thead><tr><th></th><th></th><th>arcsec</th><th></th><th></th><th></th><th></th><th></th></tr></thead>
+<thead><tr><th>int64</th><th>int64</th><th>float64</th><th>int32</th><th>int16</th><th>int16</th><th>int16</th><th>int64</th></tr></thead>
+<tr><td>635860218726658176</td><td>130911385187671349</td><td>0.053667035895467084</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635860218726658176</td></tr>
+<tr><td>635674126383965568</td><td>130831388428488720</td><td>0.038810268141577516</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635674126383965568</td></tr>
+<tr><td>635535454774983040</td><td>130631378377657369</td><td>0.034323028828991076</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635535454774983040</td></tr>
+<tr><td>635497276810313600</td><td>130811380445631930</td><td>0.04720255413250006</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635497276810313600</td></tr>
+<tr><td>635614168640132864</td><td>130571395922140135</td><td>0.020304189709964143</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635614168640132864</td></tr>
+<tr><td>635598607974369792</td><td>130341392091279513</td><td>0.036524626853403054</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635598607974369792</td></tr>
+<tr><td>635737661835496576</td><td>131001399333502136</td><td>0.036626827820716606</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635737661835496576</td></tr>
+<tr><td>635850945892748672</td><td>132011398654934147</td><td>0.021178742393378396</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635850945892748672</td></tr>
+<tr><td>635600532119713664</td><td>130421392285893623</td><td>0.04518820915043015</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635600532119713664</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>612241781249124608</td><td>129751343755995561</td><td>0.04235715830001815</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612241781249124608</td></tr>
+<tr><td>612332147361443072</td><td>130141341458538777</td><td>0.02265249859012977</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612332147361443072</td></tr>
+<tr><td>612426744016802432</td><td>130521346852465656</td><td>0.03247653009961843</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612426744016802432</td></tr>
+<tr><td>612331739340341760</td><td>130111341217793839</td><td>0.036064240818025735</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612331739340341760</td></tr>
+<tr><td>612282738058264960</td><td>129741340445933519</td><td>0.025293237353496898</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612282738058264960</td></tr>
+<tr><td>612386332668697600</td><td>130351354570219774</td><td>0.02010316001403086</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612386332668697600</td></tr>
+<tr><td>612296172717818624</td><td>129691338006168780</td><td>0.051264212025836205</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612296172717818624</td></tr>
+<tr><td>612250375480101760</td><td>129741346475897464</td><td>0.031783740347530905</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612250375480101760</td></tr>
+<tr><td>612394926899159168</td><td>130581355199751795</td><td>0.04019174830546698</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612394926899159168</td></tr>
+<tr><td>612256418500423168</td><td>129931349075297310</td><td>0.009242789669513156</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612256418500423168</td></tr>
+</table>
+
+
+
 This table contains all of the columns from the best neighbor table,
 plus the single column from the uploaded table.
+
+
 
 ~~~
 results1.colnames
@@ -549,11 +708,21 @@ results1.colnames
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 Because one of the column names appears in both tables, the second
 instance of `source_id` has been appended with the suffix `_2`.
 
 The length of `results1` is about 3000, which means we were not able
 to find matches for all stars in the list of candidates.
+
+
 
 ~~~
 len(results1)
@@ -565,9 +734,19 @@ len(results1)
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 To get more information about the matching process, we can inspect
 `best_neighbour_multiplicity`, which indicates for each star in Gaia
 how many stars in Pan-STARRS are equally likely matches.
+
+
 
 ~~~
 results1['best_neighbour_multiplicity']
@@ -590,6 +769,41 @@ results1['best_neighbour_multiplicity']
 ~~~
 {: .output}
 
+
+
+
+
+&lt;MaskedColumn name=&apos;best_neighbour_multiplicity&apos; dtype=&apos;int16&apos; description=&apos;Number of neighbours with same probability as best neighbour&apos; length=3724&gt;
+<table>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>...</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+<tr><td>1</td></tr>
+</table>
+
+
+
 It looks like most of the values are `1`, which is good; that means
 that for each candidate star we have identified exactly one source in
 Pan-STARRS that is likely to be the same star.
@@ -597,6 +811,8 @@ Pan-STARRS that is likely to be the same star.
 To check whether there are any values other than `1`, we can convert
 this column to a Pandas `Series` and use `describe`, which we saw in
 in Lesson 3.
+
+
 
 ~~~
 import pandas as pd
@@ -619,11 +835,21 @@ dtype: float64
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 In fact, `1` is the only value in the `Series`, so every candidate
 star has a single best match.
 
 Similarly, `number_of_mates` indicates the number of *other* stars in
 Gaia that match with the same star in Pan-STARRS.
+
+
 
 ~~~
 mates = pd.Series(results1['number_of_mates'])
@@ -643,6 +869,14 @@ max         0.0
 dtype: float64
 ~~~
 {: .output}
+
+
+
+
+
+    
+
+
 
 All values in this column are `0`, which means that for each match we
 found in Pan-STARRS, there are no other stars in Gaia that also match.
@@ -675,6 +909,8 @@ Since we've done everything here before, we'll do these steps as an exercise.
 > 
 > Select `source_id` and `original_ext_source_id` from `results1` and
 > write the resulting table as a file named `external.xml`.
+
+
 >
 > > ## Solution
 > > 
@@ -688,7 +924,10 @@ Since we've done everything here before, we'll do these steps as an exercise.
 {: .challenge}
 
 
+
 Use `!head` to confirm that the file exists and contains an XML VOTable.
+
+
 
 ~~~
 !head external.xml
@@ -709,6 +948,9 @@ Use `!head` to confirm that the file exists and contains an XML VOTable.
 
 ~~~
 {: .output}
+
+
+    
 
 > ## Exercise
 > 
@@ -746,6 +988,8 @@ Use `!head` to confirm that the file exists and contains an XML VOTable.
 > 
 > Hint: When you select a column from a join, you have to specify which
 > table the column is in.
+
+
 >
 > > ## Solution
 > > 
@@ -785,7 +1029,10 @@ Use `!head` to confirm that the file exists and contains an XML VOTable.
 {: .challenge}
 
 
+
 Here's how we launch the job and get the results.
+
+
 
 ~~~
 job2 = Gaia.launch_job_async(query=query2, 
@@ -799,6 +1046,11 @@ INFO: Query finished. [astroquery.utils.tap.core]
 
 ~~~
 {: .output}
+
+
+    
+
+
 
 ~~~
 results2 = job2.get_results()
@@ -822,6 +1074,39 @@ results2
 ~~~
 {: .output}
 
+
+
+
+
+<i>Table length=3724</i>
+<table id="table139832332951360" class="table-striped table-bordered table-condensed">
+<thead><tr><th>source_id</th><th>g_mean_psf_mag</th><th>i_mean_psf_mag</th></tr></thead>
+<thead><tr><th></th><th></th><th>mag</th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>635860218726658176</td><td>17.8978004455566</td><td>17.5174007415771</td></tr>
+<tr><td>635674126383965568</td><td>19.2873001098633</td><td>17.6781005859375</td></tr>
+<tr><td>635535454774983040</td><td>16.9237995147705</td><td>16.478099822998</td></tr>
+<tr><td>635497276810313600</td><td>19.9242000579834</td><td>18.3339996337891</td></tr>
+<tr><td>635614168640132864</td><td>16.1515998840332</td><td>14.6662998199463</td></tr>
+<tr><td>635598607974369792</td><td>16.5223999023438</td><td>16.1375007629395</td></tr>
+<tr><td>635737661835496576</td><td>14.5032997131348</td><td>13.9849004745483</td></tr>
+<tr><td>635850945892748672</td><td>16.5174999237061</td><td>16.0450000762939</td></tr>
+<tr><td>635600532119713664</td><td>20.4505996704102</td><td>19.5177001953125</td></tr>
+<tr><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>612241781249124608</td><td>20.2343997955322</td><td>18.6518001556396</td></tr>
+<tr><td>612332147361443072</td><td>21.3848991394043</td><td>20.3076000213623</td></tr>
+<tr><td>612426744016802432</td><td>17.8281002044678</td><td>17.4281005859375</td></tr>
+<tr><td>612331739340341760</td><td>21.8656997680664</td><td>19.5223007202148</td></tr>
+<tr><td>612282738058264960</td><td>22.5151996612549</td><td>19.9743995666504</td></tr>
+<tr><td>612386332668697600</td><td>19.3792991638184</td><td>17.9923000335693</td></tr>
+<tr><td>612296172717818624</td><td>17.4944000244141</td><td>16.926700592041</td></tr>
+<tr><td>612250375480101760</td><td>15.3330001831055</td><td>14.6280002593994</td></tr>
+<tr><td>612394926899159168</td><td>16.4414005279541</td><td>15.8212003707886</td></tr>
+<tr><td>612256418500423168</td><td>20.8715991973877</td><td>19.9612007141113</td></tr>
+</table>
+
+
+
 > ## Exercise
 > 
 > Optional Challenge: Do both joins in one query.
@@ -829,6 +1114,8 @@ results2
 > There's an [example
 > here](https://github.com/smoh/Getting-started-with-Gaia/blob/master/gaia-adql-snippets.md)
 > you could start with.
+
+
 >
 > > ## Solution
 > > 
@@ -855,16 +1142,22 @@ results2
 {: .challenge}
 
 
+
 ## Write the data
 
 Since we have the data in an Astropy `Table`, let's store it in a FITS file.
+
+
 
 ~~~
 filename = 'gd1_photo.fits'
 results2.write(filename, overwrite=True)
 ~~~
 {: .language-python}
+
 We can check that the file exists, and see how big it is.
+
+
 
 ~~~
 !ls -lh gd1_photo.fits
@@ -876,6 +1169,9 @@ We can check that the file exists, and see how big it is.
 
 ~~~
 {: .output}
+
+
+    
 
 At around 175 KB, it is smaller than some of the other files we've
 been working with.
@@ -904,6 +1200,8 @@ table with records from another.
 
 * This is another example of a practice we saw in the previous
 notebook, moving the computation to the data.
+
+
 
 ~~~
 

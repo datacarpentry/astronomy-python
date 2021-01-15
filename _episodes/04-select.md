@@ -66,6 +66,8 @@ After completing this lesson, you should be able to
 The following cells download the data from the previous lesson, if
 necessary, and load it into a Pandas `DataFrame`.
 
+
+
 ~~~
 import os
 from wget import download
@@ -77,6 +79,9 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
+
+
+
 ~~~
 import pandas as pd
 
@@ -84,6 +89,7 @@ centerline_df = pd.read_hdf(filename, 'centerline_df')
 selected_df = pd.read_hdf(filename, 'selected_df')
 ~~~
 {: .language-python}
+
 ## Selection by proper motion
 
 Let's review how we got to this point.
@@ -115,6 +121,8 @@ have to work with proper motions in ICRS.
 As a reminder, here's the rectangle we selected based on proper motion
 in the `GD1Koposov10` frame.
 
+
+
 ~~~
 pm1_min = -8.9
 pm1_max = -6.9
@@ -122,6 +130,9 @@ pm2_min = -2.2
 pm2_max =  1.0
 ~~~
 {: .language-python}
+
+
+
 ~~~
 def make_rectangle(x1, x2, y1, y2):
     """Return the corners of a rectangle."""
@@ -130,13 +141,19 @@ def make_rectangle(x1, x2, y1, y2):
     return xs, ys
 ~~~
 {: .language-python}
+
+
+
 ~~~
 pm1_rect, pm2_rect = make_rectangle(
     pm1_min, pm1_max, pm2_min, pm2_max)
 ~~~
 {: .language-python}
+
 Since we'll need to plot proper motion several times, we'll use the
 following function.
+
+
 
 ~~~
 import matplotlib.pyplot as plt
@@ -157,6 +174,7 @@ def plot_proper_motion(df):
     plt.ylim(-10, 10)
 ~~~
 {: .language-python}
+
 The following figure shows:
 
 * Proper motion for the stars we selected along the center line of GD-1,
@@ -164,6 +182,8 @@ The following figure shows:
 * The rectangle we selected, and
 
 * The stars inside the rectangle highlighted in green.
+
+
 
 ~~~
 plot_proper_motion(centerline_df)
@@ -181,8 +201,17 @@ plt.plot(x, y, 'gx', markersize=0.3, alpha=0.3);
 ~~~
 {: .output}
 
+
+
+    
+![png](04-select_files/04-select_15_0.png)
+    
+
+
 Now we'll make the same plot using proper motions in the ICRS frame,
 which are stored in columns `pmra` and `pmdec`.
+
+
 
 ~~~
 x = centerline_df['pmra']
@@ -206,6 +235,13 @@ plt.ylim([-20, 5]);
 ~~~
 {: .output}
 
+
+
+    
+![png](04-select_files/04-select_17_0.png)
+    
+
+
 The proper motions of the selected stars are more spread out in this
 frame, which is why it was preferable to do the selection in the GD-1
 frame.
@@ -223,6 +259,8 @@ which is the smallest convex polygon that contains all of the points.
 To use it, we'll select columns `pmra` and `pmdec` and convert them to
 a NumPy array.
 
+
+
 ~~~
 import numpy as np
 
@@ -236,6 +274,14 @@ points.shape
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 NOTE: If you are using an older version of Pandas, you might not have
 `to_numpy()`; you can use `values` instead, like this:
 
@@ -246,6 +292,8 @@ points = selected_df[['pmra','pmdec']].values
 
 We'll pass the points to `ConvexHull`, which returns an object that
 contains the results.
+
+
 
 ~~~
 from scipy.spatial import ConvexHull
@@ -260,8 +308,18 @@ hull
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 `hull.vertices` contains the indices of the points that fall on the
 perimeter of the hull.
+
+
 
 ~~~
 hull.vertices
@@ -274,8 +332,18 @@ array([ 692,  873,  141,  303,   42,  622,   45,   83,  127,  182, 1006,
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 We can use them as an index into the original array to select the
 corresponding rows.
+
+
 
 ~~~
 pm_vertices = points[hull.vertices]
@@ -299,18 +367,31 @@ array([[ -4.05037121, -14.75623261],
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 To plot the resulting polygon, we have to pull out the x and y coordinates.
+
+
 
 ~~~
 pmra_poly, pmdec_poly = np.transpose(pm_vertices)
 ~~~
 {: .language-python}
+
 This use of `transpose` is a bit of a NumPy trick.  Because
 `pm_vertices` has two columns, its transpose has two rows, which are
 assigned to the two variables `pmra_poly` and `pmdec_poly`.
 
 The following figure shows proper motion in ICRS again, along with the
 convex hull we just computed.
+
+
 
 ~~~
 x = centerline_df['pmra']
@@ -336,12 +417,21 @@ plt.ylim([-20, 5]);
 ~~~
 {: .output}
 
+
+
+    
+![png](04-select_files/04-select_31_0.png)
+    
+
+
 So `pm_vertices` represents the polygon we want to select.
 The next step is to use it as part of an ADQL query.
 
 ## Assembling the query
 
 In Lesson 2 we used the following query to select stars in a polygonal region.
+
+
 
 ~~~
 query5_base = """SELECT
@@ -354,6 +444,7 @@ WHERE parallax < 1
 """
 ~~~
 {: .language-python}
+
 In this lesson we'll make two changes:
 
 1. We'll select stars with coordinates in a larger region.
@@ -362,6 +453,8 @@ In this lesson we'll make two changes:
 the polygon we just computed, `pm_vertices`.
 
 Here are the coordinates of the larger rectangle in the GD-1 frame.
+
+
 
 ~~~
 import astropy.units as u
@@ -372,15 +465,21 @@ phi2_min = -5 * u.degree
 phi2_max = 5 * u.degree
 ~~~
 {: .language-python}
+
 We selected these bounds by trial and error, defining the largest
 region we can process in a single query.
+
+
 
 ~~~
 phi1_rect, phi2_rect = make_rectangle(
     phi1_min, phi1_max, phi2_min, phi2_max)
 ~~~
 {: .language-python}
+
 Here's how we transform it to ICRS, as we saw in Lesson 2.
+
+
 
 ~~~
 from gala.coordinates import GD1Koposov10
@@ -394,9 +493,12 @@ corners = SkyCoord(phi1=phi1_rect,
 corners_icrs = corners.transform_to('icrs')
 ~~~
 {: .language-python}
+
 To use `corners_icrs` as part of an ADQL query, we have to convert it
 to a string.
 Here's the function from Lesson 2 we used to do that.
+
+
 
 ~~~
 def skycoord_to_string(skycoord):
@@ -406,6 +508,9 @@ def skycoord_to_string(skycoord):
     return s.replace(' ', ', ')
 ~~~
 {: .language-python}
+
+
+
 ~~~
 point_list = skycoord_to_string(corners_icrs)
 point_list
@@ -417,13 +522,26 @@ point_list
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 Here again are the columns we want to select.
+
+
 
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec, parallax'
 ~~~
 {: .language-python}
+
 Now we have everything we need to assemble the query.
+
+
 
 
 ~~~
@@ -446,6 +564,9 @@ WHERE parallax < 1
 ~~~
 {: .output}
 
+
+    
+
 But don't try to run that query.
 Because it selects a larger region, there are too many stars to handle
 in a single query.
@@ -460,6 +581,8 @@ To use `pm_vertices` as part of an ADQL query, we have to convert it
 to a string.
 Using `flatten` and `array2string`, we can almost get the format we need.
 
+
+
 ~~~
 s = np.array2string(pm_vertices.flatten(), 
                     max_line_width=1000,
@@ -473,7 +596,17 @@ s
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 We just have to remove the brackets.
+
+
 
 ~~~
 pm_point_list = s.strip('[]')
@@ -486,11 +619,21 @@ pm_point_list
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 > ## Exercise
 > 
 > Define `query6_base`, starting with `query5_base` and adding a new
 > clause to select stars whose coordinates of proper motion, `pmra` and
 > `pmdec`, fall within the polygon defined by `pm_point_list`.
+
+
 >
 > > ## Solution
 > > 
@@ -512,10 +655,13 @@ pm_point_list
 {: .challenge}
 
 
+
 > ## Exercise
 > 
 > Use `format` to format `query6_base` and define `query6`, filling in
 > the values of `columns`, `point_list`, and `pm_point_list`.
+
+
 >
 > > ## Solution
 > > 
@@ -531,7 +677,22 @@ pm_point_list
 {: .challenge}
 
 
+
+    SELECT 
+    source_id, ra, dec, pmra, pmdec, parallax
+    FROM gaiadr2.gaia_source
+    WHERE parallax < 1
+      AND bp_rp BETWEEN -0.75 AND 2 
+      AND 1 = CONTAINS(POINT(ra, dec), 
+                       POLYGON(135.306, 8.39862, 126.51, 13.4449, 163.017, 54.2424, 172.933, 46.4726, 135.306, 8.39862))
+      AND 1 = CONTAINS(POINT(pmra, pmdec),
+                       POLYGON( -4.05037121,-14.75623261, -3.41981085,-14.72365546, -3.03521988,-14.44357135, -2.26847919,-13.7140236 , -2.61172203,-13.24797471, -2.73471401,-13.09054471, -3.19923146,-12.5942653 , -3.34082546,-12.47611926, -5.67489413,-11.16083338, -5.95159272,-11.10547884, -6.42394023,-11.05981295, -7.09631023,-11.95187806, -7.30641519,-12.24559977, -7.04016696,-12.88580702, -6.00347705,-13.75912098, -4.42442296,-14.74641176))
+    
+
+
 Now we can run the query like this:
+
+
 
 ~~~
 from astroquery.gaia import Gaia
@@ -557,7 +718,12 @@ Jobid: 1610562623566O
 ~~~
 {: .output}
 
+
+    
+
 And get the results.
+
+
 
 ~~~
 candidate_table = job.get_results()
@@ -570,12 +736,22 @@ len(candidate_table)
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 We call the results `candidate_table` because it contains stars that
 are good candidates for GD-1.
 
 ## Plotting one more time
 
 Let's see what the results look like.
+
+
 
 ~~~
 x = candidate_table['ra']
@@ -592,6 +768,13 @@ plt.ylabel('dec (degree ICRS)');
 ~~~
 {: .output}
 
+
+
+    
+![png](04-select_files/04-select_64_0.png)
+    
+
+
 Here we can see why it was useful to transform these coordinates.  In
 ICRS, it is more difficult to identity the stars near the centerline
 of GD-1.
@@ -600,6 +783,8 @@ So let's transform the results back to the GD-1 frame.
 
 Here's the code we used to transform the coordinates and make a Pandas
 `DataFrame`, wrapped in a function.
+
+
 
 ~~~
 from gala.coordinates import reflex_correct
@@ -631,13 +816,19 @@ def make_dataframe(table):
     return df
 ~~~
 {: .language-python}
+
 Here's how we use it:
+
+
 
 ~~~
 candidate_df = make_dataframe(candidate_table)
 ~~~
 {: .language-python}
+
 And let's see the results.
+
+
 
 ~~~
 x = candidate_df['phi1']
@@ -653,6 +844,13 @@ plt.ylabel('phi2 (degree GD1)');
 <Figure size 432x288 with 1 Axes>
 ~~~
 {: .output}
+
+
+
+    
+![png](04-select_files/04-select_70_0.png)
+    
+
 
 We're starting to see GD-1 more clearly.
 
@@ -683,13 +881,18 @@ without running this query again.
 
 The HDF file should already exist, so we'll add `candidate_df` to it.
 
+
+
 ~~~
 filename = 'gd1_data.hdf'
 
 candidate_df.to_hdf(filename, 'candidate_df')
 ~~~
 {: .language-python}
+
 We can use `ls` to confirm that the file exists and check the size:
+
+
 
 ~~~
 !ls -lh gd1_data.hdf
@@ -701,6 +904,9 @@ We can use `ls` to confirm that the file exists and check the size:
 
 ~~~
 {: .output}
+
+
+    
 
 If you are using Windows, `ls` might not work; in that case, try:
 
@@ -730,11 +936,16 @@ Also, CSV files tend to be big, and slow to read and write.
 
 With those caveats, here's how to write one:
 
+
+
 ~~~
 candidate_df.to_csv('gd1_data.csv')
 ~~~
 {: .language-python}
+
 We can check the file size like this:
+
+
 
 ~~~
 !ls -lh gd1_data.csv
@@ -747,7 +958,12 @@ We can check the file size like this:
 ~~~
 {: .output}
 
+
+    
+
 We can see the first few lines like this:
+
+
 
 ~~~
 !head -3 gd1_data.csv
@@ -761,6 +977,9 @@ We can see the first few lines like this:
 
 ~~~
 {: .output}
+
+
+    
 
 On Windows you can use 
 
@@ -780,11 +999,16 @@ The CSV file contains the names of the columns, but not the data types.
 
 We can read the CSV file back like this:
 
+
+
 ~~~
 read_back_csv = pd.read_csv('gd1_data.csv')
 ~~~
 {: .language-python}
+
 Let's compare the first few rows of `candidate_df` and `read_back_csv`
+
+
 
 ~~~
 candidate_df.head(3)
@@ -804,6 +1028,88 @@ candidate_df.head(3)
 ~~~
 {: .output}
 
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>source_id</th>
+      <th>ra</th>
+      <th>dec</th>
+      <th>pmra</th>
+      <th>pmdec</th>
+      <th>parallax</th>
+      <th>phi1</th>
+      <th>phi2</th>
+      <th>pm_phi1</th>
+      <th>pm_phi2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>635559124339440000</td>
+      <td>137.586717</td>
+      <td>19.196544</td>
+      <td>-3.770522</td>
+      <td>-12.490482</td>
+      <td>0.791393</td>
+      <td>-59.630489</td>
+      <td>-1.216485</td>
+      <td>-7.361363</td>
+      <td>-0.592633</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>635860218726658176</td>
+      <td>138.518707</td>
+      <td>19.092339</td>
+      <td>-5.941679</td>
+      <td>-11.346409</td>
+      <td>0.307456</td>
+      <td>-59.247330</td>
+      <td>-2.016078</td>
+      <td>-7.527126</td>
+      <td>1.748779</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>635674126383965568</td>
+      <td>138.842874</td>
+      <td>19.031798</td>
+      <td>-3.897001</td>
+      <td>-12.702780</td>
+      <td>0.779463</td>
+      <td>-59.133391</td>
+      <td>-2.306901</td>
+      <td>-7.560608</td>
+      <td>-0.741800</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+
 ~~~
 read_back_csv.head(3)
 ~~~
@@ -821,6 +1127,90 @@ read_back_csv.head(3)
 2  0.779463 -59.133391 -2.306901 -7.560608 -0.741800  
 ~~~
 {: .output}
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>source_id</th>
+      <th>ra</th>
+      <th>dec</th>
+      <th>pmra</th>
+      <th>pmdec</th>
+      <th>parallax</th>
+      <th>phi1</th>
+      <th>phi2</th>
+      <th>pm_phi1</th>
+      <th>pm_phi2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>635559124339440000</td>
+      <td>137.586717</td>
+      <td>19.196544</td>
+      <td>-3.770522</td>
+      <td>-12.490482</td>
+      <td>0.791393</td>
+      <td>-59.630489</td>
+      <td>-1.216485</td>
+      <td>-7.361363</td>
+      <td>-0.592633</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>635860218726658176</td>
+      <td>138.518707</td>
+      <td>19.092339</td>
+      <td>-5.941679</td>
+      <td>-11.346409</td>
+      <td>0.307456</td>
+      <td>-59.247330</td>
+      <td>-2.016078</td>
+      <td>-7.527126</td>
+      <td>1.748779</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>635674126383965568</td>
+      <td>138.842874</td>
+      <td>19.031798</td>
+      <td>-3.897001</td>
+      <td>-12.702780</td>
+      <td>0.779463</td>
+      <td>-59.133391</td>
+      <td>-2.306901</td>
+      <td>-7.560608</td>
+      <td>-0.741800</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 Notice that the index in `candidate_df` has become an unnamed column
 in `read_back_csv`.  The Pandas functions for writing and reading CSV
@@ -858,6 +1248,8 @@ read the file back.
 * On the other hand, CSV is a "least common denominator" format; that
 is, it can be read by practically any application that works with
 data.
+
+
 
 ~~~
 

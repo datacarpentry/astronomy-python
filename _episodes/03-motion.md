@@ -87,6 +87,8 @@ file called `gd1_results.fits` that contains the data we downloaded.
 If not, you can run the following cell, which downloads the data from
 our repository.
 
+
+
 ~~~
 import os
 from wget import download
@@ -98,7 +100,10 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
+
 Now here's how we can read the data from the file back into an Astropy `Table`:
+
+
 
 ~~~
 from astropy.table import Table
@@ -106,9 +111,12 @@ from astropy.table import Table
 results = Table.read(filename)
 ~~~
 {: .language-python}
+
 The result is an Astropy `Table`.
 
 We can use `info` to refresh our memory of the contents.
+
+
 
 ~~~
 results.info
@@ -128,6 +136,14 @@ source_id   int64          Unique source identifier (unique within a particular 
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 ## Selecting rows and columns
 
 In this section we'll see operations for selecting columns and rows
@@ -136,6 +152,8 @@ operations in the [Astropy
 documentation](https://docs.astropy.org/en/stable/table/access_table.html).
 
 We can get the names of the columns like this:
+
+
 
 ~~~
 results.colnames
@@ -147,7 +165,17 @@ results.colnames
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 And select an individual column like this:
+
+
 
 ~~~
 results['ra']
@@ -170,8 +198,45 @@ results['ra']
 ~~~
 {: .output}
 
+
+
+
+
+&lt;Column name=&apos;ra&apos; dtype=&apos;float64&apos; unit=&apos;deg&apos; description=&apos;Right ascension&apos; length=140339&gt;
+<table>
+<tr><td>142.48301935991023</td></tr>
+<tr><td>142.25452941346344</td></tr>
+<tr><td>142.64528557468074</td></tr>
+<tr><td>142.57739430926034</td></tr>
+<tr><td>142.58913564478618</td></tr>
+<tr><td>141.81762228999614</td></tr>
+<tr><td>143.18339801317677</td></tr>
+<tr><td>142.9347319464589</td></tr>
+<tr><td>142.26769745823267</td></tr>
+<tr><td>142.89551292869012</td></tr>
+<tr><td>142.2780935768316</td></tr>
+<tr><td>142.06138786534987</td></tr>
+<tr><td>...</td></tr>
+<tr><td>143.05456487172972</td></tr>
+<tr><td>144.0436496516182</td></tr>
+<tr><td>144.06566578919313</td></tr>
+<tr><td>144.13177563215973</td></tr>
+<tr><td>143.77696341662764</td></tr>
+<tr><td>142.945956347594</td></tr>
+<tr><td>142.97282480557786</td></tr>
+<tr><td>143.4166017695258</td></tr>
+<tr><td>143.64484588686904</td></tr>
+<tr><td>143.41554585481808</td></tr>
+<tr><td>143.6908739159247</td></tr>
+<tr><td>143.7702681295401</td></tr>
+</table>
+
+
+
 The result is a `Column` object that contains the data, and also the
 data type, units, and name of the column.
+
+
 
 ~~~
 type(results['ra'])
@@ -183,8 +248,18 @@ astropy.table.column.Column
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 The rows in the `Table` are numbered from 0 to `n-1`, where `n` is the
 number of rows.  We can select the first row like this:
+
+
 
 ~~~
 results[0]
@@ -201,7 +276,23 @@ results[0]
 ~~~
 {: .output}
 
+
+
+
+
+<i>Row index=0</i>
+<table id="table140013965422016">
+<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th><th>parallax</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th><th>mas</th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>637987125186749568</td><td>142.48301935991023</td><td>21.75771616932985</td><td>-2.5168384683875766</td><td>2.941813096629439</td><td>-0.2573448962333354</td></tr>
+</table>
+
+
+
 As you might have guessed, the result is a `Row` object.
+
+
 
 ~~~
 type(results[0])
@@ -213,6 +304,14 @@ astropy.table.row.Row
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 Notice that the bracket operator selects both columns and rows.  You
 might wonder how it knows which to select.
 
@@ -221,6 +320,8 @@ expression is an integer, it selects a row.
 
 If you apply the bracket operator twice, you can select a column and
 then an element from the column.
+
+
 
 ~~~
 results['ra'][0]
@@ -232,7 +333,17 @@ results['ra'][0]
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 Or you can select a row and then an element from the row.
+
+
 
 ~~~
 results[0]['ra']
@@ -243,6 +354,14 @@ results[0]['ra']
 142.48301935991023
 ~~~
 {: .output}
+
+
+
+
+
+    
+
+
 
 You get the same result either way.
 
@@ -257,10 +376,13 @@ you know MATLAB, some of it will be familiar.
 
 We'll import like this.
 
+
+
 ~~~
 import matplotlib.pyplot as plt
 ~~~
 {: .language-python}
+
 Pyplot is part of the Matplotlib library.  It is conventional to
 import it using the shortened name `plt`.
 
@@ -295,6 +417,8 @@ same size and color, we'll use `plot`.
 Here's a scatter plot with right ascension on the x-axis and
 declination on the y-axis, both ICRS coordinates in degrees.
 
+
+
 ~~~
 x = results['ra']
 y = results['dec']
@@ -309,6 +433,13 @@ plt.ylabel('dec (degree ICRS)');
 <Figure size 432x288 with 1 Axes>
 ~~~
 {: .output}
+
+
+
+    
+![png](03-motion_files/03-motion_30_0.png)
+    
+
 
 The arguments to `plt.plot` are `x`, `y`, and a string that specifies
 the style.  In this case, the letters `ko` indicate that we want a
@@ -341,6 +472,8 @@ transparency of the points.
 > 2](https://www.cosmos.esa.int/web/gaia/dr2), covers 22 months of
 > observations; during this time, some parts of the sky were scanned
 > more than others.
+
+
 >
 > > ## Solution
 > > 
@@ -356,6 +489,7 @@ transparency of the points.
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
+
 
 
 ## Transform back
@@ -379,18 +513,23 @@ To do the transformation, we'll put the results into a `SkyCoord`
 object.  In a previous lesson we created a `SkyCoord` object like
 this:
 
+
+
 ~~~
 from astropy.coordinates import SkyCoord
 
 skycoord = SkyCoord(ra=results['ra'], dec=results['dec'])
 ~~~
 {: .language-python}
+
 Now we're going to do something similar, but in addition to `ra` and
 `dec`, we'll also include:
 
 * `pmra` and `pmdec`, which are proper motion in the ICRS frame, and
 
 * `distance` and `radial_velocity`, which we explain below.
+
+
 
 ~~~
 import astropy.units as u
@@ -406,12 +545,15 @@ skycoord = SkyCoord(ra=results['ra'],
                     radial_velocity=radial_velocity)
 ~~~
 {: .language-python}
+
 For the first four arguments, we use columns from `results`.
 
 For `distance` and `radial_velocity` we use constants, which we explain below.
 
 The result is an Astropy `SkyCoord` object, which we can transform to
 the GD-1 frame.
+
+
 
 ~~~
 from gala.coordinates import GD1Koposov10
@@ -420,6 +562,7 @@ gd1_frame = GD1Koposov10()
 transformed = skycoord.transform_to(gd1_frame)
 ~~~
 {: .language-python}
+
 The result is another `SkyCoord` object, now in the `GD1Koposov10` frame.
 
 ## Reflex Correction
@@ -453,12 +596,15 @@ With this preparation, we can use `reflex_correct` from Gala
 here](https://gala-astro.readthedocs.io/en/latest/api/gala.coordinates.reflex_correct.html))
 to correct for the motion of the solar system.
 
+
+
 ~~~
 from gala.coordinates import reflex_correct
 
 skycoord_gd1 = reflex_correct(transformed)
 ~~~
 {: .language-python}
+
 The result is a `SkyCoord` object that contains 
 
 * `phi1` and `phi2`, which represent the transformed coordinates in
@@ -468,6 +614,8 @@ the `GD1Koposov10` frame.
 corrected proper motions.
 
 We can select the coordinates and plot them like this:
+
+
 
 ~~~
 x = skycoord_gd1.phi1
@@ -484,6 +632,13 @@ plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .output}
 
+
+
+    
+![png](03-motion_files/03-motion_45_0.png)
+    
+
+
 Remember that we started with a rectangle in the GD-1 frame.  When
 transformed to the ICRS frame, it's a non-rectangular polygon.  Now,
 transformed back to the GD-1 frame, it's a rectangle again.
@@ -492,6 +647,8 @@ transformed back to the GD-1 frame, it's a rectangle again.
 
 At this point we have two objects containing different subsets of the
 data.  `results` is the Astropy `Table` we downloaded from Gaia.
+
+
 
 ~~~
 type(results)
@@ -503,8 +660,18 @@ astropy.table.table.Table
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 And `skycoord_gd1` is a `SkyCoord` object that contains the
 transformed coordinates and proper motions.
+
+
 
 ~~~
 type(skycoord_gd1)
@@ -515,6 +682,14 @@ type(skycoord_gd1)
 astropy.coordinates.sky_coordinate.SkyCoord
 ~~~
 {: .output}
+
+
+
+
+
+    
+
+
 
 On one hand, this division of labor makes sense because each object
 provides different capabilities.  But working with multiple object
@@ -536,6 +711,8 @@ units for the columns.
 
 It's easy to convert a `Table` to a Pandas `DataFrame`.
 
+
+
 ~~~
 import pandas as pd
 
@@ -549,10 +726,20 @@ results_df.shape
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 `DataFrame` provides `shape`, which shows the number of rows and columns.
 
 It also provides `head`, which displays the first few rows.  It is
 useful for spot-checking large results as you go along.
+
+
 
 ~~~
 results_df.head()
@@ -569,6 +756,88 @@ results_df.head()
 ~~~
 {: .output}
 
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>source_id</th>
+      <th>ra</th>
+      <th>dec</th>
+      <th>pmra</th>
+      <th>pmdec</th>
+      <th>parallax</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>637987125186749568</td>
+      <td>142.483019</td>
+      <td>21.757716</td>
+      <td>-2.516838</td>
+      <td>2.941813</td>
+      <td>-0.257345</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>638285195917112960</td>
+      <td>142.254529</td>
+      <td>22.476168</td>
+      <td>2.662702</td>
+      <td>-12.165984</td>
+      <td>0.422728</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>638073505568978688</td>
+      <td>142.645286</td>
+      <td>22.166932</td>
+      <td>18.306747</td>
+      <td>-7.950660</td>
+      <td>0.103640</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>638086386175786752</td>
+      <td>142.577394</td>
+      <td>22.227920</td>
+      <td>0.987786</td>
+      <td>-2.584105</td>
+      <td>-0.857327</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>638049655615392384</td>
+      <td>142.589136</td>
+      <td>22.110783</td>
+      <td>0.244439</td>
+      <td>-4.941079</td>
+      <td>0.099625</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 **Python detail:** `shape` is an attribute, so we display its value
 without calling it as a function; `head` is a function, so we need the
 parentheses.
@@ -576,6 +845,8 @@ parentheses.
 Now we can extract the columns we want from `skycoord_gd1` and add
 them as columns in the `DataFrame`.  `phi1` and `phi2` contain the
 transformed coordinates.
+
+
 
 ~~~
 results_df['phi1'] = skycoord_gd1.phi1
@@ -589,8 +860,18 @@ results_df.shape
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 `pm_phi1_cosphi2` and `pm_phi2` contain the components of proper
 motion in the transformed frame.
+
+
 
 ~~~
 results_df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
@@ -603,6 +884,14 @@ results_df.shape
 (140339, 10)
 ~~~
 {: .output}
+
+
+
+
+
+    
+
+
 
 **Detail:** If you notice that `SkyCoord` has an attribute called
 `proper_motion`, you might wonder why we are not using it.
@@ -617,6 +906,8 @@ exploring the data and checking for problems.
 
 One of the most useful of these functions is `describe`, which
 computes summary statistics for each column.
+
+
 
 ~~~
 results_df.describe()
@@ -639,6 +930,169 @@ max    7.974418e+17     152.777393      34.285481     104.319923
 ~~~
 {: .output}
 
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>source_id</th>
+      <th>ra</th>
+      <th>dec</th>
+      <th>pmra</th>
+      <th>pmdec</th>
+      <th>parallax</th>
+      <th>parallax_error</th>
+      <th>radial_velocity</th>
+      <th>phi1</th>
+      <th>phi2</th>
+      <th>pm_phi1</th>
+      <th>pm_phi2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>1.403400e+05</td>
+      <td>140340.000000</td>
+      <td>140340.000000</td>
+      <td>140340.000000</td>
+      <td>140340.000000</td>
+      <td>140340.000000</td>
+      <td>140340.000000</td>
+      <td>1.403400e+05</td>
+      <td>140340.000000</td>
+      <td>140340.000000</td>
+      <td>140340.000000</td>
+      <td>140340.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>6.792378e+17</td>
+      <td>143.822971</td>
+      <td>26.780161</td>
+      <td>-2.484410</td>
+      <td>-6.100784</td>
+      <td>0.179474</td>
+      <td>0.518068</td>
+      <td>9.931167e+19</td>
+      <td>-50.091337</td>
+      <td>-1.803264</td>
+      <td>-0.868980</td>
+      <td>1.409215</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>3.792015e+16</td>
+      <td>3.697824</td>
+      <td>3.052639</td>
+      <td>5.913923</td>
+      <td>7.202013</td>
+      <td>0.759622</td>
+      <td>0.505558</td>
+      <td>8.267982e+18</td>
+      <td>2.892321</td>
+      <td>3.444439</td>
+      <td>6.657700</td>
+      <td>6.518573</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>6.214900e+17</td>
+      <td>135.425699</td>
+      <td>19.286617</td>
+      <td>-106.755260</td>
+      <td>-138.065163</td>
+      <td>-15.287602</td>
+      <td>0.020824</td>
+      <td>-1.792684e+02</td>
+      <td>-54.999989</td>
+      <td>-8.029159</td>
+      <td>-115.275637</td>
+      <td>-161.150142</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>6.443515e+17</td>
+      <td>140.967807</td>
+      <td>24.592348</td>
+      <td>-5.038746</td>
+      <td>-8.341641</td>
+      <td>-0.035983</td>
+      <td>0.141108</td>
+      <td>1.000000e+20</td>
+      <td>-52.603097</td>
+      <td>-4.750410</td>
+      <td>-2.948851</td>
+      <td>-1.107074</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>6.888056e+17</td>
+      <td>143.734183</td>
+      <td>26.746169</td>
+      <td>-1.834971</td>
+      <td>-4.689570</td>
+      <td>0.362705</td>
+      <td>0.336103</td>
+      <td>1.000000e+20</td>
+      <td>-50.147567</td>
+      <td>-1.671497</td>
+      <td>0.585038</td>
+      <td>1.987196</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>6.976578e+17</td>
+      <td>146.607180</td>
+      <td>28.990490</td>
+      <td>0.452995</td>
+      <td>-1.937833</td>
+      <td>0.657636</td>
+      <td>0.751171</td>
+      <td>1.000000e+20</td>
+      <td>-47.593466</td>
+      <td>1.160632</td>
+      <td>3.001761</td>
+      <td>4.628859</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>7.974418e+17</td>
+      <td>152.777393</td>
+      <td>34.285481</td>
+      <td>104.319923</td>
+      <td>20.981070</td>
+      <td>0.999957</td>
+      <td>4.171221</td>
+      <td>1.000000e+20</td>
+      <td>-45.000086</td>
+      <td>4.014794</td>
+      <td>39.802471</td>
+      <td>79.275199</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 > ## Exercise
 > 
 > Review the summary statistics in this table.
@@ -646,6 +1100,8 @@ max    7.974418e+17     152.777393      34.285481     104.319923
 > * Do the values make sense based on what you know about the context?
 > 
 > * Do you see any values that seem problematic, or evidence of other data issues?
+
+
 >
 > > ## Solution
 > > 
@@ -665,6 +1121,7 @@ max    7.974418e+17     152.777393      34.285481     104.319923
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
+
 
 
 ## Plot proper motion
@@ -691,6 +1148,8 @@ By plotting proper motion in the GD-1 frame, we hope to find this cluster.
 Then we will use the bounds of the cluster to select stars that are
 more likely to be in GD-1.
 
+
+
 ~~~
 x = results_df['pm_phi1']
 y = results_df['pm_phi2']
@@ -706,11 +1165,20 @@ plt.ylabel('Proper motion phi2 (mas/yr GD1 frame)');
 ~~~
 {: .output}
 
+
+
+    
+![png](03-motion_files/03-motion_68_0.png)
+    
+
+
 Most of the proper motions are near the origin, but there are a few
 extreme values.
 
 Following the example in the paper, we'll use `xlim` and `ylim` to
 zoom in on the region near the origin.
+
+
 
 ~~~
 x = results_df['pm_phi1']
@@ -729,6 +1197,13 @@ plt.ylim(-10, 10);
 <Figure size 432x288 with 1 Axes>
 ~~~
 {: .output}
+
+
+
+    
+![png](03-motion_files/03-motion_70_0.png)
+    
+
 
 There is a hint of an overdense region near (-7.5, 0), but if you
 didn't know where to look, you would miss it.
@@ -751,6 +1226,8 @@ Stars near this line have the highest probability of being in GD-1.
 To select them, we will use a "Boolean mask".  We'll start by
 selecting the `phi2` column from the `DataFrame`:
 
+
+
 ~~~
 phi2 = results_df['phi2']
 type(phi2)
@@ -762,11 +1239,21 @@ pandas.core.series.Series
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 The result is a `Series`, which is the structure Pandas uses to
 represent columns.
 
 We can use a comparison operator, `>`, to compare the values in a
 `Series` to a constant.
+
+
 
 ~~~
 phi2_min = -1.0 * u.degree
@@ -782,7 +1269,17 @@ pandas.core.series.Series
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 The result is a `Series` of Boolean values, that is, `True` and `False`. 
+
+
 
 ~~~
 mask.head()
@@ -799,13 +1296,24 @@ Name: phi2, dtype: bool
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 The `&` operator computes "logical AND", which means the result is
 true where elements from both Boolean `Series` are true.
+
+
 
 ~~~
 mask = (phi2 > phi2_min) & (phi2 < phi2_max)
 ~~~
 {: .language-python}
+
 **Python detail:** We need the parentheses around the conditions;
 otherwise the order of operations is incorrect.
 
@@ -817,6 +1325,8 @@ here](https://stackoverflow.com/questions/21415661/logical-operators-for-boolean
 The sum of a Boolean `Series` is the number of `True` values, so we
 can use `sum` to see how many stars are in the selected region.
 
+
+
 ~~~
 mask.sum()
 ~~~
@@ -827,9 +1337,19 @@ mask.sum()
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 A Boolean `Series` is sometimes called a "mask" because we can use it
 to mask out some of the rows in a `DataFrame` and select the rest,
 like this:
+
+
 
 ~~~
 centerline_df = results_df[mask]
@@ -842,11 +1362,21 @@ pandas.core.frame.DataFrame
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 `centerline_df` is a `DataFrame` that contains only the rows from
 `results_df` that correspond to `True` values in `mask`; that is, in
 contains the stars near the centerline of GD-1.
 
 We can use `len` to see how many rows are in `centerline_df`:
+
+
 
 ~~~
 len(centerline_df)
@@ -858,7 +1388,17 @@ len(centerline_df)
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 And what fraction of the rows we've selected.
+
+
 
 ~~~
 len(centerline_df) / len(results_df)
@@ -870,12 +1410,22 @@ len(centerline_df) / len(results_df)
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 There are about 25,000 stars in this region, about 18% of the total.
 
 ## Plotting proper motion
 
 Since we've plotted proper motion several times, let's put that code
 in a function.
+
+
 
 ~~~
 def plot_proper_motion(df):
@@ -894,6 +1444,9 @@ def plot_proper_motion(df):
     plt.ylim(-10, 10)
 ~~~
 {: .language-python}
+
+
+
 ~~~
 plot_proper_motion(centerline_df)
 ~~~
@@ -903,6 +1456,13 @@ plot_proper_motion(centerline_df)
 <Figure size 432x288 with 1 Axes>
 ~~~
 {: .output}
+
+
+
+    
+![png](03-motion_files/03-motion_92_0.png)
+    
+
 
 Now we can see more clearly that there is a cluster near (-7.5, 0).
 
@@ -931,6 +1491,8 @@ how to select a polygonal region as well.
 
 Here are bounds on proper motion we chose by eye:
 
+
+
 ~~~
 pm1_min = -8.9
 pm1_max = -6.9
@@ -938,8 +1500,11 @@ pm2_min = -2.2
 pm2_max =  1.0
 ~~~
 {: .language-python}
+
 To draw these bounds, we'll use `make_rectangle` to make two lists
 containing the coordinates of the corners of the rectangle.
+
+
 
 ~~~
 def make_rectangle(x1, x2, y1, y2):
@@ -949,12 +1514,18 @@ def make_rectangle(x1, x2, y1, y2):
     return xs, ys
 ~~~
 {: .language-python}
+
+
+
 ~~~
 pm1_rect, pm2_rect = make_rectangle(
     pm1_min, pm1_max, pm2_min, pm2_max)
 ~~~
 {: .language-python}
+
 Here's what the plot looks like with the bounds we chose.
+
+
 
 ~~~
 plot_proper_motion(centerline_df)
@@ -967,6 +1538,13 @@ plt.plot(pm1_rect, pm2_rect, '-');
 ~~~
 {: .output}
 
+
+
+    
+![png](03-motion_files/03-motion_100_0.png)
+    
+
+
 Now that we've identified the bounds of the cluster in proper motion,
 we'll use it to select rows from `results_df`.
 
@@ -974,13 +1552,18 @@ We'll use the following function, which uses Pandas operators to make
 a mask that selects rows where `series` falls between `low` and
 `high`.
 
+
+
 ~~~
 def between(series, low, high):
     """Check whether values are between `low` and `high`."""
     return (series > low) & (series < high)
 ~~~
 {: .language-python}
+
 The following mask selects stars with proper motion in the region we chose.
+
+
 
 ~~~
 pm1 = results_df['pm_phi1']
@@ -990,7 +1573,10 @@ pm_mask = (between(pm1, pm1_min, pm1_max) &
            between(pm2, pm2_min, pm2_max))
 ~~~
 {: .language-python}
+
 Again, the sum of a Boolean series is the number of `True` values.
+
+
 
 ~~~
 pm_mask.sum()
@@ -1002,7 +1588,17 @@ pm_mask.sum()
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 Now we can use this mask to select rows from `results_df`.
+
+
 
 ~~~
 selected_df = results_df[pm_mask]
@@ -1015,8 +1611,18 @@ len(selected_df)
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 These are the stars we think are likely to be in GD-1.  Let's see what
 they look like, plotting their coordinates (not their proper motion).
+
+
 
 ~~~
 x = selected_df['phi1']
@@ -1033,6 +1639,13 @@ plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .output}
 
+
+
+    
+![png](03-motion_files/03-motion_110_0.png)
+    
+
+
 Now that's starting to look like a tidal stream!
 
 ## Saving the DataFrame
@@ -1042,6 +1655,8 @@ results; this is a good time to save the data.
 
 To save a Pandas `DataFrame`, one option is to convert it to an
 Astropy `Table`, like this:
+
+
 
 ~~~
 selected_table = Table.from_pandas(selected_df)
@@ -1053,6 +1668,14 @@ type(selected_table)
 astropy.table.table.Table
 ~~~
 {: .output}
+
+
+
+
+
+    
+
+
 
 Then we could write the `Table` to a FITS file, as we did in the
 previous lesson.
@@ -1082,12 +1705,15 @@ file with Pandas, you can read it back with many other software tools
 
 We can write a Pandas `DataFrame` to an HDF5 file like this:
 
+
+
 ~~~
 filename = 'gd1_data.hdf'
 
 selected_df.to_hdf(filename, 'selected_df', mode='w')
 ~~~
 {: .language-python}
+
 Because an HDF5 file can contain more than one Dataset, we have to
 provide a name, or "key", that identifies the Dataset in the file.
 
@@ -1103,6 +1729,8 @@ should overwrite it.
 > code to add it as a second Dataset in the HDF5 file.
 > 
 > Hint: Since the file already exists, you should *not* use `mode='w'`.
+
+
 >
 > > ## Solution
 > > 
@@ -1115,7 +1743,10 @@ should overwrite it.
 {: .challenge}
 
 
+
 We can use `ls` to confirm that the file exists and check the size:
+
+
 
 ~~~
 !ls -lh gd1_data.hdf
@@ -1128,6 +1759,9 @@ We can use `ls` to confirm that the file exists and check the size:
 ~~~
 {: .output}
 
+
+    
+
 If you are using Windows, `ls` might not work; in that case, try:
 
 ```
@@ -1138,6 +1772,8 @@ We can read the file back like this:
 
 If you forget what the names of the Datasets in the file are, you can
 read them back like this:
+
+
 
 ~~~
 with pd.HDFStore(filename) as hdf:
@@ -1150,6 +1786,9 @@ with pd.HDFStore(filename) as hdf:
 
 ~~~
 {: .output}
+
+
+    
 
 The keys are the names of the Datasets.  Notice that they start with
 `/`, which indicates that they are at the top level of the Dataset
