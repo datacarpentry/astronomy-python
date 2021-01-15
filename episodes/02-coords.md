@@ -79,14 +79,19 @@ which makes it possible to detect errors before they cause disasters.
 
 To use Astropy units, we import them like this:
 
+
+
 ~~~
 import astropy.units as u
 ~~~
 {: .language-python}
+
 `u` is an object that contains most common units and all SI units.
 
 You can use `dir` to list them, but you should also [read the
 documentation](https://docs.astropy.org/en/stable/units/).
+
+
 
 ~~~
 dir(u)
@@ -109,7 +114,17 @@ dir(u)
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 To create a quantity, we multiply a value by a unit.
+
+
 
 ~~~
 angle = 10 * u.degree
@@ -122,8 +137,18 @@ astropy.units.quantity.Quantity
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 The result is a `Quantity` object.
 Jupyter knows how to display `Quantities` like this:
+
+
 
 ~~~
 angle
@@ -135,8 +160,18 @@ angle
 ~~~
 {: .output}
 
+
+
+
+
+$10 \; \mathrm{{}^{\circ}}$
+
+
+
 Quantities provide a method called `to` that converts to other units.
 For example, we can compute the number of arcminutes in `angle`:
+
+
 
 ~~~
 angle_arcmin = angle.to(u.arcmin)
@@ -149,7 +184,17 @@ angle_arcmin
 ~~~
 {: .output}
 
+
+
+
+
+$600 \; \mathrm{{}^{\prime}}$
+
+
+
 If you add quantities, Astropy converts them to compatible units, if possible:
+
+
 
 ~~~
 angle + 30 * u.arcmin
@@ -160,6 +205,14 @@ angle + 30 * u.arcmin
 <Quantity 10.5 deg>
 ~~~
 {: .output}
+
+
+
+
+
+$10.5 \; \mathrm{{}^{\circ}}$
+
+
 
 If the units are not compatible, you get an error.
 For example:
@@ -178,6 +231,8 @@ causes a `UnitConversionError`.
 > 
 > Then convert it to degrees.
 
+
+
 ~~~
 ## Solution
 
@@ -195,6 +250,16 @@ radius.to(u.degree)
 ~~~
 {: .output}
 
+
+    
+
+
+
+
+$0.083333333 \; \mathrm{{}^{\circ}}$
+
+
+
 ## Selecting a Region
 
 One of the most common ways to restrict a query is to select stars in
@@ -204,6 +269,8 @@ For example, here's a query from the [Gaia archive
 documentation](https://gea.esac.esa.int/archive-help/adql/examples/index.html)
 that selects objects in a circular region centered at (88.8, 7.4) with
 a search radius of 5 arcmin (0.08333 deg).
+
+
 
 ~~~
 query_cone = """SELECT 
@@ -216,6 +283,7 @@ WHERE 1=CONTAINS(
 """
 ~~~
 {: .language-python}
+
 This query uses three keywords that are specific to ADQL (not SQL):
 
 * `POINT`: a location in [ICRS
@@ -234,6 +302,8 @@ Here is the [documentation of
 A query like this is called a cone search because it selects stars in a cone.
 
 Here's how we run it.
+
+
 
 ~~~
 from astroquery.gaia import Gaia
@@ -259,6 +329,18 @@ Created TAP+ (v1.2.1) - Connection:
 ~~~
 {: .output}
 
+
+    
+
+
+
+
+    
+
+
+
+
+
 ~~~
 results = job.get_results()
 results
@@ -281,6 +363,28 @@ results
 ~~~
 {: .output}
 
+
+
+
+
+<i>Table length=10</i>
+<table id="table140668769974208" class="table-striped table-bordered table-condensed">
+<thead><tr><th>source_id</th></tr></thead>
+<thead><tr><th>int64</th></tr></thead>
+<tr><td>3322773965056065536</td></tr>
+<tr><td>3322773758899157120</td></tr>
+<tr><td>3322774068134271104</td></tr>
+<tr><td>3322773930696320512</td></tr>
+<tr><td>3322774377374425728</td></tr>
+<tr><td>3322773724537891456</td></tr>
+<tr><td>3322773724537891328</td></tr>
+<tr><td>3322773930696321792</td></tr>
+<tr><td>3322773724537890944</td></tr>
+<tr><td>3322773930696322176</td></tr>
+</table>
+
+
+
 > ## Exercise
 > 
 > When you are debugging queries like this, you can use `TOP` to limit
@@ -293,6 +397,8 @@ results
 > In the previous query, replace `TOP 10 source_id` with
 > `COUNT(source_id)` and run the query again.  How many stars has Gaia
 > identified in the cone we searched?
+
+
 >
 > > ## Solution
 > > 
@@ -313,6 +419,19 @@ results
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
+
+
+
+
+
+
+<i>Table length=1</i>
+<table id="table140668536967072" class="table-striped table-bordered table-condensed">
+<thead><tr><th>count</th></tr></thead>
+<thead><tr><th>int64</th></tr></thead>
+<tr><td>594</td></tr>
+</table>
+
 
 
 ## Getting GD-1 Data
@@ -362,6 +481,8 @@ approximate coordinates of
 "International Celestial Reference System", adopted in 1997 by the
 International Astronomical Union.
 
+
+
 ~~~
 from astropy.coordinates import SkyCoord
 
@@ -379,8 +500,18 @@ coord_icrs
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 `SkyCoord` provides a function that transforms to other frames.
 For example, we can transform `coords_icrs` to Galactic coordinates like this:
+
+
 
 ~~~
 coord_galactic = coord_icrs.transform_to('galactic')
@@ -394,6 +525,14 @@ coord_galactic
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 Notice that in Galactic frame, the coordinates are called `l` and `b`,
 not `ra` and `dec`.
 
@@ -405,6 +544,8 @@ Gala provides
 [`GD1Koposov10`](https://gala-astro.readthedocs.io/en/latest/_modules/gala/coordinates/gd1.html),
 which is "a Heliocentric spherical coordinate system defined by the
 orbit of the GD-1 stream".
+
+
 
 ~~~
 from gala.coordinates import GD1Koposov10
@@ -419,8 +560,18 @@ gd1_frame
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 We can use it to find the coordinates of Betelgeuse in the GD-1 frame,
 like this:
+
+
 
 ~~~
 coord_gd1 = coord_icrs.transform_to(gd1_frame)
@@ -433,6 +584,14 @@ coord_gd1
     (-94.97222038, 34.5813813)>
 ~~~
 {: .output}
+
+
+
+
+
+    
+
+
 
 Notice that the coordinates are called `phi1` and `phi2`.
 These are the coordinates shown in the figure from the paper, above.
@@ -447,6 +606,8 @@ These are the coordinates shown in the figure from the paper, above.
 > 
 > Hint: Because ICRS is built into Astropy, you can specify it by name,
 > `icrs` (as we did with `galactic`).
+
+
 >
 > > ## Solution
 > > 
@@ -474,6 +635,15 @@ These are the coordinates shown in the figure from the paper, above.
 {: .challenge}
 
 
+
+
+
+
+    <SkyCoord (ICRS): (ra, dec) in deg
+        (200., 59.4504341)>
+
+
+
 Notice that the origin of the GD-1 frame maps to `ra=200`, exactly, in
 ICRS.  That's by design.
 
@@ -485,6 +655,8 @@ in the GD-1 frame and transform it to ICRS.
 The following variables define the boundaries of the rectangle in
 $\phi_1$ and $\phi_2$.
 
+
+
 ~~~
 phi1_min = -55 * u.degree
 phi1_max = -45 * u.degree
@@ -492,8 +664,11 @@ phi2_min = -8 * u.degree
 phi2_max = 4 * u.degree
 ~~~
 {: .language-python}
+
 To create a rectangle, we'll use the following function, which takes
 the lower and upper bounds as parameters.
+
+
 
 ~~~
 def make_rectangle(x1, x2, y1, y2):
@@ -503,19 +678,25 @@ def make_rectangle(x1, x2, y1, y2):
     return xs, ys
 ~~~
 {: .language-python}
+
 The return value is a tuple containing a list of coordinates in `phi1`
 followed by a list of coordinates in `phi2`.
+
+
 
 ~~~
 phi1_rect, phi2_rect = make_rectangle(
     phi1_min, phi1_max, phi2_min, phi2_max)
 ~~~
 {: .language-python}
+
 `phi1_rect` and `phi2_rect` contains the coordinates of the corners of
 a rectangle in the GD-1 frame.
 
 In order to use them in a Gaia query, we have to convert them to ICRS.
 First we'll put them into a `SkyCoord` object.
+
+
 
 ~~~
 corners = SkyCoord(phi1=phi1_rect, phi2=phi2_rect, frame=gd1_frame)
@@ -529,7 +710,17 @@ corners
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 Now we can use `transform_to` to convert to ICRS coordinates.
+
+
 
 ~~~
 corners_icrs = corners.transform_to('icrs')
@@ -544,6 +735,14 @@ corners_icrs
      (146.27533314, 19.26190982)]>
 ~~~
 {: .output}
+
+
+
+
+
+    
+
+
 
 Notice that a rectangle in one coordinate system is not necessarily a
 rectangle in another.  In this example, the result is a polygon.
@@ -565,6 +764,8 @@ POLYGON(143.65, 20.98,
 
 `SkyCoord` provides `to_string`, which produces a list of strings.
 
+
+
 ~~~
 t = corners_icrs.to_string()
 t
@@ -580,8 +781,18 @@ t
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 We can use the Python string function `join` to join `t` into a single
 string (with spaces between the pairs):
+
+
 
 ~~~
 s = ' '.join(t)
@@ -594,7 +805,17 @@ s
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 That's almost what we need, but we have to replace the spaces with commas.
+
+
 
 ~~~
 s.replace(' ', ', ')
@@ -606,7 +827,17 @@ s.replace(' ', ', ')
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 The following function combines these steps.
+
+
 
 ~~~
 def skycoord_to_string(skycoord):
@@ -616,7 +847,10 @@ def skycoord_to_string(skycoord):
     return s.replace(' ', ', ')
 ~~~
 {: .language-python}
+
 Here's how we use it.
+
+
 
 ~~~
 point_list = skycoord_to_string(corners_icrs)
@@ -629,16 +863,29 @@ point_list
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 ## Assembling the query
 
 Now we're ready to assemble the query. 
 We need `columns` again (as we saw in the previous lesson).
 
+
+
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec, parallax'
 ~~~
 {: .language-python}
+
 And here's the query base we used in the previous lesson:
+
+
 
 ~~~
 query3_base = """SELECT 
@@ -650,7 +897,10 @@ WHERE parallax < 1
 """
 ~~~
 {: .language-python}
+
 Now we'll add a `WHERE` clause to select stars in the polygon we defined.
+
+
 
 ~~~
 query4_base = """SELECT
@@ -664,9 +914,12 @@ WHERE parallax < 1
 """
 ~~~
 {: .language-python}
+
 The query base contains format specifiers for `columns` and `point_list`.
 
 We'll use `format` to fill in these values.
+
+
 
 ~~~
 query4 = query4_base.format(columns=columns, 
@@ -689,7 +942,12 @@ WHERE parallax < 1
 ~~~
 {: .output}
 
+
+    
+
 As always, we should take a minute to proof-read the query before we launch it.
+
+
 
 ~~~
 job = Gaia.launch_job_async(query4)
@@ -713,7 +971,12 @@ Jobid: 1610552468498O
 ~~~
 {: .output}
 
+
+    
+
 Here are the results.
+
+
 
 ~~~
 results = job.get_results()
@@ -737,9 +1000,34 @@ results
 ~~~
 {: .output}
 
+
+
+
+
+<i>Table length=10</i>
+<table id="table140668327439376" class="table-striped table-bordered table-condensed">
+<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th><th>parallax</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th><th>mas</th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>637987125186749568</td><td>142.48301935991023</td><td>21.75771616932985</td><td>-2.5168384683875766</td><td>2.941813096629439</td><td>-0.2573448962333354</td></tr>
+<tr><td>638285195917112960</td><td>142.25452941346344</td><td>22.476168171141378</td><td>2.6627020143457996</td><td>-12.165984395577347</td><td>0.4227283465319491</td></tr>
+<tr><td>638073505568978688</td><td>142.64528557468074</td><td>22.16693224953078</td><td>18.30674739454163</td><td>-7.950659620550862</td><td>0.10363972229362585</td></tr>
+<tr><td>638086386175786752</td><td>142.57739430926034</td><td>22.22791951401365</td><td>0.9877856720147953</td><td>-2.584105480335548</td><td>-0.8573270355079308</td></tr>
+<tr><td>638049655615392384</td><td>142.58913564478618</td><td>22.110783166677418</td><td>0.24443878227817095</td><td>-4.941079187010136</td><td>0.099624729200593</td></tr>
+<tr><td>638267565075964032</td><td>141.81762228999614</td><td>22.375696125322275</td><td>-3.413174589660796</td><td>1.8838892877285924</td><td>-0.07271215219283075</td></tr>
+<tr><td>638028902333511168</td><td>143.18339801317677</td><td>22.2512465812369</td><td>7.848511762712128</td><td>-21.391145547787154</td><td>0.28736226011479443</td></tr>
+<tr><td>638085767700610432</td><td>142.9347319464589</td><td>22.46244080823965</td><td>-3.6585960944321476</td><td>-12.486419770278376</td><td>-0.9896728393047383</td></tr>
+<tr><td>638299863230178304</td><td>142.26769745823267</td><td>22.640183776884836</td><td>-1.8168370892218297</td><td>1.0537342990941316</td><td>0.16396383783029062</td></tr>
+<tr><td>637973067758974208</td><td>142.89551292869012</td><td>21.612824100339875</td><td>-8.645166256559063</td><td>-44.41164172204947</td><td>0.7647361167279948</td></tr>
+</table>
+
+
+
 Finally, we can remove `TOP 10` run the query again.
 
 The result is bigger than our previous queries, so it will take a little longer.
+
+
 
 ~~~
 query5_base = """SELECT
@@ -752,6 +1040,9 @@ WHERE parallax < 1
 """
 ~~~
 {: .language-python}
+
+
+
 ~~~
 query5 = query5_base.format(columns=columns, 
                           point_list=point_list)
@@ -771,6 +1062,11 @@ WHERE parallax < 1
 
 ~~~
 {: .output}
+
+
+    
+
+
 
 ~~~
 job = Gaia.launch_job_async(query5)
@@ -794,6 +1090,11 @@ Jobid: 1610552483857O
 ~~~
 {: .output}
 
+
+    
+
+
+
 ~~~
 results = job.get_results()
 len(results)
@@ -804,6 +1105,14 @@ len(results)
 140339
 ~~~
 {: .output}
+
+
+
+
+
+    
+
+
 
 There are more than 100,000 stars in this polygon, but that's a
 manageable size to work with.
@@ -818,11 +1127,14 @@ pick up where we left off without running the previous query again.
 
 Astropy `Table` objects provide `write`, which writes the table to disk.
 
+
+
 ~~~
 filename = 'gd1_results.fits'
 results.write(filename, overwrite=True)
 ~~~
 {: .language-python}
+
 Because the filename ends with `fits`, the table is written in the
 [FITS format](https://en.wikipedia.org/wiki/FITS), which preserves the
 metadata associated with the table.
@@ -834,6 +1146,8 @@ To see how big the file is, we can use `ls` with the `-lh` option,
 which prints information about the file including its size in
 human-readable form.
 
+
+
 ~~~
 !ls -lh gd1_results.fits
 ~~~
@@ -844,6 +1158,9 @@ human-readable form.
 
 ~~~
 {: .output}
+
+
+    
 
 If you are using Windows, `ls` might not work; in that case, try:
 

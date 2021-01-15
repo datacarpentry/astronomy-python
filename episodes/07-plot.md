@@ -99,6 +99,8 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.pn
 > 
 > 4. Can you identify 1-2 elements that could be improved, or that you
 > might have done differently?
+
+
 >
 > > ## Solution
 > > 
@@ -138,10 +140,13 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.pn
 {: .challenge}
 
 
+
 ## Plotting GD-1
 
 Let's start with the panel in the lower left.  The following cell
 reloads the data.
+
+
 
 ~~~
 import os
@@ -154,12 +159,18 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
+
+
+
 ~~~
 import pandas as pd
 
 selected2 = pd.read_hdf(filename, 'selected2')
 ~~~
 {: .language-python}
+
+
+
 ~~~
 import matplotlib.pyplot as plt
 
@@ -176,7 +187,10 @@ def plot_second_selection(df):
     plt.axis('equal')
 ~~~
 {: .language-python}
+
 And here's what it looks like.
+
+
 
 ~~~
 plt.figure(figsize=(10,2.5))
@@ -188,6 +202,13 @@ plot_second_selection(selected2)
 <Figure size 720x180 with 1 Axes>
 ~~~
 {: .output}
+
+
+
+    
+![png](07-plot_files/07-plot_14_0.png)
+    
+
 
 ## Annotations
 
@@ -217,6 +238,8 @@ region of GD-1,
 > 
 > And here is some [additional information about text and
 > arrows](https://matplotlib.org/3.3.1/tutorials/text/annotations.html#plotting-guide-annotation).
+
+
 >
 > > ## Solution
 > > 
@@ -241,6 +264,7 @@ region of GD-1,
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
+
 
 
 ## Customization
@@ -277,6 +301,8 @@ plt.gca().tick_params(direction='in')
 > Read the documentation of
 > [`tick_params`](https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.axes.Axes.tick_params.html)
 > and use it to put ticks on the top and right sides of the axes.
+
+
 >
 > > ## Solution
 > > 
@@ -289,12 +315,15 @@ plt.gca().tick_params(direction='in')
 {: .challenge}
 
 
+
 ## rcParams
 
 If you want to make a customization that applies to all figures in a
 notebook, you can use `rcParams`.
 
 Here's an example that reads the current font size from `rcParams`:
+
+
 
 ~~~
 plt.rcParams['font.size']
@@ -306,12 +335,23 @@ plt.rcParams['font.size']
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 And sets it to a new value:
+
+
 
 ~~~
 plt.rcParams['font.size'] = 14
 ~~~
 {: .language-python}
+
 As an exercise, plot the previous figure again, and see what font
 sizes have changed.  Look up any other element of `rcParams`, change
 its value, and check the effect on the figure.
@@ -334,6 +374,8 @@ Matplotlib provides a set of predefined style sheets, or you can make your own.
 
 The following cell displays a list of style sheets installed on your system.
 
+
+
 ~~~
 plt.style.available
 ~~~
@@ -355,6 +397,14 @@ plt.style.available
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 Note that `seaborn-paper`, `seaborn-talk` and `seaborn-poster` are
 particularly intended to prepare versions of a figure with text sizes
 and other features that work well in papers, talks, and posters.
@@ -365,10 +415,13 @@ To use any of these style sheets, run `plt.style.use` like this:
 plt.style.use('fivethirtyeight')
 ```
 
+
+
 ~~~
 
 ~~~
 {: .language-python}
+
 The style sheet you choose will affect the appearance of all figures
 you plot after calling `use`, unless you override any of the options
 or call `use` again.
@@ -384,6 +437,8 @@ Bostroem for publication in astronomy journals.
 
 The following cell downloads the style sheet.
 
+
+
 ~~~
 import os
 from wget import download
@@ -395,6 +450,7 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
+
 You can use it like this:
 
 ```
@@ -403,10 +459,13 @@ plt.style.use('./az-paper-twocol.mplstyle')
 
 The prefix `./` tells Matplotlib to look for the file in the current directory.
 
+
+
 ~~~
 
 ~~~
 {: .language-python}
+
 As an alternative, you can install a style sheet for your own use by
 putting it in your configuration directory.  To find out where that
 is, you can run the following command:
@@ -417,10 +476,13 @@ import matplotlib as mpl
 mpl.get_configdir()
 ```
 
+
+
 ~~~
 
 ~~~
 {: .language-python}
+
 ## LaTeX fonts
 
 When you include mathematical expressions in titles, labels, and
@@ -445,10 +507,13 @@ Or in a notebook you can run the following code.
 plt.rcParams['text.usetex'] = True
 ```
 
+
+
 ~~~
 plt.rcParams['text.usetex'] = True
 ~~~
 {: .language-python}
+
 If you go back and draw the figure again, you should see the difference.
 
 If you get an error message like
@@ -497,6 +562,8 @@ generates each panel in a function.
 
 To make the panel in the upper right, we have to reload `centerline_df`.
 
+
+
 ~~~
 import os
 
@@ -507,13 +574,19 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
+
+
+
 ~~~
 import pandas as pd
 
 centerline_df = pd.read_hdf(filename, 'centerline_df')
 ~~~
 {: .language-python}
+
 And define the coordinates of the rectangle we selected.
+
+
 
 ~~~
 pm1_min = -8.9
@@ -525,11 +598,14 @@ pm1_rect = [pm1_min, pm1_min, pm1_max, pm1_max]
 pm2_rect = [pm2_min, pm2_max, pm2_max, pm2_min]
 ~~~
 {: .language-python}
+
 To plot this rectangle, we'll use a feature we have not seen before:
 `Polygon`, which is provided by Matplotlib.
 
 To create a `Polygon`, we have to put the coordinates in an array with
 `x` values in the first column and `y` values in the second column.
+
+
 
 ~~~
 import numpy as np
@@ -547,9 +623,19 @@ array([[-8.9, -2.2],
 ~~~
 {: .output}
 
+
+
+
+
+    
+
+
+
 The following function takes a `DataFrame` as a parameter, plots the
 proper motion for each star, and adds a shaded `Polygon` to show the
 region we selected.
+
+
 
 ~~~
 from matplotlib.patches import Polygon
@@ -571,11 +657,14 @@ def plot_proper_motion(df):
     plt.ylim(-10, 10)
 ~~~
 {: .language-python}
+
 Notice that `add_patch` is like `invert_yaxis`; in order to call it,
 we have to use `gca` to get the current axes.
 
 Here's what the new version of the figure looks like.  We've changed
 the labels on the axes to be consistent with the paper.
+
+
 
 ~~~
 plt.rcParams['text.usetex'] = False
@@ -590,9 +679,18 @@ plot_proper_motion(centerline_df)
 ~~~
 {: .output}
 
+
+
+    
+![png](07-plot_files/07-plot_54_0.png)
+    
+
+
 ## Upper left
 
 Now let's work on the panel in the upper left. We have to reload `candidates`.
+
+
 
 ~~~
 import os
@@ -604,6 +702,9 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
+
+
+
 ~~~
 import pandas as pd
 
@@ -612,8 +713,11 @@ filename = 'gd1_candidates.hdf5'
 candidate_df = pd.read_hdf(filename, 'candidate_df')
 ~~~
 {: .language-python}
+
 Here's a function that takes a `DataFrame` of candidate stars and
 plots their positions in GD-1 coordindates.
+
+
 
 ~~~
 def plot_first_selection(df):
@@ -629,7 +733,10 @@ def plot_first_selection(df):
     plt.axis('equal')
 ~~~
 {: .language-python}
+
 And here's what it looks like.
+
+
 
 ~~~
 plot_first_selection(candidate_df)
@@ -641,11 +748,20 @@ plot_first_selection(candidate_df)
 ~~~
 {: .output}
 
+
+
+    
+![png](07-plot_files/07-plot_61_0.png)
+    
+
+
 ## Lower right
 
 For the figure in the lower right, we need to reload the merged
 `DataFrame`, which contains data from Gaia and photometry data from
 Pan-STARRS.
+
+
 
 ~~~
 import pandas as pd
@@ -655,8 +771,11 @@ filename = 'gd1_merged.hdf5'
 merged = pd.read_hdf(filename, 'merged')
 ~~~
 {: .language-python}
+
 From the previous notebook, here's the function that plots the
 color-magnitude diagram.
+
+
 
 ~~~
 import matplotlib.pyplot as plt
@@ -679,7 +798,10 @@ def plot_cmd(table):
     plt.xlabel('$Color (g-i)$')
 ~~~
 {: .language-python}
+
 And here's what it looks like.
+
+
 
 ~~~
 plot_cmd(merged)
@@ -691,9 +813,18 @@ plot_cmd(merged)
 ~~~
 {: .output}
 
+
+
+    
+![png](07-plot_files/07-plot_67_0.png)
+    
+
+
 The following cell downloads an HDF file that contains the polygon we
 used to select starts in the color-magnitude diagram, if it doesn't
 already exist.
+
+
 
 ~~~
 import os
@@ -705,7 +836,10 @@ if not os.path.exists(filename):
     print(download(path+filename))
 ~~~
 {: .language-python}
+
 And here's how we read it back.
+
+
 
 ~~~
 loop_df = pd.read_hdf(filename, 'loop_df')
@@ -723,12 +857,72 @@ loop_df.head()
 ~~~
 {: .output}
 
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>color_loop</th>
+      <th>mag_loop</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.632171</td>
+      <td>21.411746</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.610238</td>
+      <td>21.322466</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.588449</td>
+      <td>21.233380</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.566924</td>
+      <td>21.144427</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.545461</td>
+      <td>21.054549</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 > ## Exercise
 > 
 > Add a few lines to `plot_cmd` to show the polygon we selected as a
 > shaded area.
 > 
 > Hint: pass `coords` as an argument to `Polygon` and plot it using `add_patch`.
+
+
 >
 > > ## Solution
 > > 
@@ -741,6 +935,7 @@ loop_df.head()
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
+
 
 
 ## Subplots
@@ -760,6 +955,8 @@ For the first panel, `loc` is `(0, 0)`, which indicates row 0 and
 column 0, which is the upper-left panel.
 
 Here's how we use it to draw the four panels.
+
+
 
 ~~~
 shape = (2, 2)
@@ -787,6 +984,13 @@ plt.tight_layout()
 ~~~
 {: .output}
 
+
+
+    
+![png](07-plot_files/07-plot_75_0.png)
+    
+
+
 We use
 [`plt.tight_layout`](https://matplotlib.org/3.3.1/tutorials/intermediate/tight_layout_guide.html)
 at the end, which adjusts the sizes of the panels to make sure the
@@ -810,6 +1014,8 @@ wider than the panels on the right.
 
 At the same time, we use `figsize` to adjust the aspect ratio of the
 whole figure.
+
+
 
 ~~~
 plt.figure(figsize=(9, 4.5))
@@ -839,12 +1045,21 @@ plt.tight_layout()
 ~~~
 {: .output}
 
+
+
+    
+![png](07-plot_files/07-plot_78_0.png)
+    
+
+
 This is looking more and more like the figure in the paper.
 
 > ## Exercise
 > 
 > In this example, the ratio of the widths of the panels is 3:1.  How
 > would you adjust it if you wanted the ratio to be 3:2?
+
+
 >
 > > ## Solution
 > > 
@@ -875,6 +1090,7 @@ This is looking more and more like the figure in the paper.
 {: .challenge}
 
 
+
 ## Summary
 
 In this notebook, we reverse-engineered the figure we've been
@@ -899,6 +1115,8 @@ there are several ways you can override the defaults.
 
 * If you find yourself making the same customizations on several
 projects, you might want to create your own style sheet.
+
+
 
 ~~~
 
