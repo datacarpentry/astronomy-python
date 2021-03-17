@@ -4,23 +4,21 @@ teaching: 3000
 exercises: 0
 questions:
 
-- "How do we use Matplotlib to select a polygon and Pandas to merge data from multiple tables?"
+- "How do we use Matplotlib to define a polygon and select points that fall inside it?"
 
 objectives:
 
-- "Use Matplotlib to specify a polygon and determine which points fall inside it."
+- "Use isochrone data to specify a polygon and determine which points fall inside it."
 
-- "Use Pandas to merge data from multiple `DataFrames`, much like a database `JOIN` operation."
+- "Use Matplotlib features to customize the appearance of figures."
 
 keypoints:
 
 - "Matplotlib provides operations for working with points, polygons, and other geometric entities, so it's not just for making figures."
 
-- "If you want to perform something like a database `JOIN` operation with data that is in a Pandas `DataFrame`, you can use the `join` or `merge` function.  In many cases, `merge` is easier to use because the arguments are more like SQL."
-
 - "Use Matplotlib options to control the size and aspect ratio of figures to make them easier to interpret."
 
-- "Be sure to record every element of the data analysis pipeline that would be needed to replicate the results."
+- "Record every element of the data analysis pipeline that would be needed to replicate the results."
 
 ---
 

@@ -16,9 +16,9 @@ objectives:
 
 keypoints:
 
-- "The most effective figures focus on telling a single story clearly and compellingly."
+- "The most effective figures focus on telling a single story clearly."
 
-- "Consider using annotations to guide the readers attention to the most important elements of a figure."
+- "Consider using annotations to guide the reader's attention to the most important elements of a figure."
 
 - "The default Matplotlib style generates good quality figures, but there are several ways you can override the defaults."
 
@@ -1053,7 +1053,7 @@ create figures that contain multiple panels.
 * The most effective figures focus on telling a single story clearly
 and compellingly.
 
-* Consider using annotations to guide the readers attention to the
+* Consider using annotations to guide the reader's attention to the
 most important elements of a figure.
 
 * The default Matplotlib style generates good quality figures, but
