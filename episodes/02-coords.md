@@ -227,34 +227,21 @@ causes a `UnitConversionError`.
 > Create a quantity that represents 5
 > [arcminutes](https://en.wikipedia.org/wiki/Minute_and_second_of_arc)
 > and assign it to a variable called `radius`.
-> $1
-
-~~~
-## Solution
-
-radius = 5 * u.arcmin
-print(radius)
-
-radius.to(u.degree)
-~~~
-{: .language-python}
-
-~~~
-5.0 arcmin
-
-<Quantity 0.08333333 deg>
-~~~
-{: .output}
-
-
-    
-
-
-
-
-$0.083333333 \; \mathrm{{}^{\circ}}$
-
-
+> 
+> Then convert it to degrees.
+>
+> > ## Solution
+> > 
+> > ~~~
+> > 
+> > radius = 5 * u.arcmin
+> > print(radius)
+> > 
+> > radius.to(u.degree)
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
 
 ## Selecting a Region
 
@@ -389,7 +376,8 @@ results
 > that would be selected, but it does not return them.
 > 
 > In the previous query, replace `TOP 10 source_id` with
-> `COUNT(source_id)` and run the query again.  How many stars has Gaia$1
+> `COUNT(source_id)` and run the query again.  How many stars has Gaia
+> identified in the cone we searched?
 >
 > > ## Solution
 > > 
@@ -581,7 +569,8 @@ These are the coordinates shown in the figure from the paper, above.
 > 
 > 2. Transform it to the ICRS frame.
 > 
-> Hint: Because ICRS is built into Astropy, you can specify it by name,$1
+> Hint: Because ICRS is built into Astropy, you can specify it by name,
+> `icrs` (as we did with `galactic`).
 >
 > > ## Solution
 > > 
