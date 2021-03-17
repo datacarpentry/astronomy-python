@@ -105,8 +105,8 @@ likely to get errors.
 4. You can modify existing cells, but then you have to run them again
 to see the effect.
 
-5. You can add new cells, but again, you might have to be careful
-about the order you run them in.
+5. You can add new cells, but again, you have to be careful about the
+order you run them in.
 
 6. If you have added or modified cells and the behavior of the
 notebook seems strange, you can restart the "kernel", which clears all
@@ -159,7 +159,7 @@ Created TAP+ (v1.2.1) - Connection:
 
     
 
-Running this import statement has the effect of creating a
+This import statement creates a
 [TAP+](http://www.ivoa.net/documents/TAP/) connection; TAP stands for
 "Table Access Protocol", which is a network protocol for sending
 queries to the database and getting back the results.
@@ -195,6 +195,8 @@ INFO: Done. [astroquery.utils.tap.core]
 
     
 
+The following `for` loop prints the names of the tables.
+
 
 
 ~~~
@@ -206,6 +208,7 @@ for table in tables:
 ~~~
 external.apassdr9
 external.gaiadr2_geometric_distance
+external.gaiaedr3_distance
 external.galex_ais
 external.ravedr5_com
 external.ravedr5_dr5
@@ -214,7 +217,6 @@ external.ravedr5_on
 external.sdssdr13_photoprimary
 external.skymapperdr1_master
 external.skymapperdr2_master
-external.tmass_xsc
 [Output truncated]
 ~~~
 {: .output}
@@ -250,7 +252,7 @@ Retrieving table 'gaiadr2.gaia_source'
 Parsing table 'gaiadr2.gaia_source'...
 Done.
 
-<astroquery.utils.tap.model.taptable.TapTableMeta at 0x7f208b57a880>
+<astroquery.utils.tap.model.taptable.TapTableMeta at 0x7f50edd2aeb0>
 ~~~
 {: .output}
 
@@ -322,7 +324,7 @@ parallax_error
 
     
 
-You can probably guess what many of these columns are by looking at
+You can probably infer what many of these columns are by looking at
 the names, but you should resist the temptation to guess.
 To find out what the columns mean, [read the
 documentation](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html).
@@ -456,7 +458,7 @@ article](https://www.vox.com/future-perfect/2019/6/4/18650969/married-women-mise
 
 ## Writing queries
 
-By now you might be wondering how we download the actual data.  With
+By now you might be wondering how we download these tables.  With
 tables this big, you generally don't.  Instead, you use queries to
 select only the data you want.
 
@@ -513,7 +515,7 @@ job
 {: .language-python}
 
 ~~~
-<astroquery.utils.tap.model.job.Job at 0x7f208b5a49a0>
+<astroquery.utils.tap.model.job.Job at 0x7f50edd2adc0>
 ~~~
 {: .output}
 
@@ -527,7 +529,7 @@ job
 
 The result is an object that represents the job running on a Gaia server.
 
-If you print it, it displays metadata for the forthcoming table.
+If you print it, it displays metadata for the forthcoming results.
 
 
 
@@ -543,11 +545,11 @@ print(job)
 source_id   int64      Unique source identifier (unique within a particular Data Release)     0
        ra float64  deg                                                    Right ascension     0
       dec float64  deg                                                        Declination     0
- parallax float64  mas                                                           Parallax     3
+ parallax float64  mas                                                           Parallax     2
 Jobid: None
 Phase: COMPLETED
 Owner: None
-Output file: sync_20210113094733.xml.gz
+Output file: sync_20210315090602.xml.gz
 [Output truncated]
 ~~~
 {: .output}
@@ -582,15 +584,16 @@ astropy.table.table.Table
 
 
 
+The `type` function indicates that the result is an [Astropy
+Table](https://docs.astropy.org/en/stable/table/).
+
 **Optional detail:**  Why is `table` repeated three times?  The first
 is the name of the module, the second is the name of the submodule,
 and the third is the name of the class.  Most of the time we only care
 about the last one.  It's like the Linnean name for gorilla, which is
 *Gorilla gorilla gorilla*.
 
-The result is an [Astropy
-Table](https://docs.astropy.org/en/stable/table/), which is similar to
-a table in an SQL database except:
+An Astropy `Table` is similar to a table in an SQL database except:
 
 * SQL databases are stored on disk drives, so they are persistent;
 that is, they "survive" even if you turn off the computer.  An Astropy
@@ -606,22 +609,22 @@ Jupyter knows how to display the contents of a `Table`.
 
 
 ~~~
-results1
+results
 ~~~
 {: .language-python}
 
 ~~~
 <Table length=10>
-     source_id              ra         ...        parallax       
-                           deg         ...          mas          
-       int64             float64       ...        float64        
-------------------- ------------------ ... ----------------------
-4036442223689093632  268.1632016769232 ...     1.1699115050505098
-4036432465518023424  268.4099737354832 ...    0.09728878869604544
-4036431056767171072  268.4987929943058 ...                     --
-4036427586432136576  268.1550746929837 ...    -1.6517420537894711
-4036422295031001856   268.295159195894 ...                     --
-4036435454861834880   268.402863428808 ...    0.47166978762943135
+     source_id              ra                 dec               parallax      
+                           deg                 deg                 mas         
+       int64             float64             float64             float64       
+------------------- ------------------ ------------------- --------------------
+5887983246081387776   227.978818386372  -53.64996962450103   1.0493172163332998
+5887971250213117952 228.32280834041364  -53.66270726203726  0.29455652682279093
+5887991866047288704  228.1582047014091 -53.454724911639794  -0.5789179941669236
+5887968673232040832 228.07420888099884   -53.8064612895961  0.41030970779603076
+5887979844465854720 228.42547805195946  -53.48882284470035 -0.23379683441525864
+5887978607515442688 228.23831627636855  -53.56328249482688  -0.9252161956789068
 [Output truncated]
 ~~~
 {: .output}
@@ -631,20 +634,20 @@ results1
 
 
 <i>Table length=10</i>
-<table id="table139777753632192" class="table-striped table-bordered table-condensed">
+<table id="table139985564118224" class="table-striped table-bordered table-condensed">
 <thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>parallax</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>mas</th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>4036442223689093632</td><td>268.1632016769232</td><td>-39.45184716473943</td><td>1.1699115050505098</td></tr>
-<tr><td>4036432465518023424</td><td>268.4099737354832</td><td>-39.48255132974542</td><td>0.09728878869604544</td></tr>
-<tr><td>4036431056767171072</td><td>268.4987929943058</td><td>-39.546378864610695</td><td>--</td></tr>
-<tr><td>4036427586432136576</td><td>268.1550746929837</td><td>-39.640672063878434</td><td>-1.6517420537894711</td></tr>
-<tr><td>4036422295031001856</td><td>268.295159195894</td><td>-39.75110784405333</td><td>--</td></tr>
-<tr><td>4036435454861834880</td><td>268.402863428808</td><td>-39.4490745170462</td><td>0.47166978762943135</td></tr>
-<tr><td>4036423497622557184</td><td>268.22982540766145</td><td>-39.695491626875175</td><td>-0.0018594810744405113</td></tr>
-<tr><td>4036432706082489344</td><td>268.53765532143115</td><td>-39.49836075294007</td><td>0.294780085311733</td></tr>
-<tr><td>4036431984481125248</td><td>268.4176240506027</td><td>-39.52535476978414</td><td>-0.23707477297436713</td></tr>
-<tr><td>4036439784146944768</td><td>268.118736733789</td><td>-39.55860223906007</td><td>--</td></tr>
+<tr><td>5887983246081387776</td><td>227.978818386372</td><td>-53.64996962450103</td><td>1.0493172163332998</td></tr>
+<tr><td>5887971250213117952</td><td>228.32280834041364</td><td>-53.66270726203726</td><td>0.29455652682279093</td></tr>
+<tr><td>5887991866047288704</td><td>228.1582047014091</td><td>-53.454724911639794</td><td>-0.5789179941669236</td></tr>
+<tr><td>5887968673232040832</td><td>228.07420888099884</td><td>-53.8064612895961</td><td>0.41030970779603076</td></tr>
+<tr><td>5887979844465854720</td><td>228.42547805195946</td><td>-53.48882284470035</td><td>-0.23379683441525864</td></tr>
+<tr><td>5887978607515442688</td><td>228.23831627636855</td><td>-53.56328249482688</td><td>-0.9252161956789068</td></tr>
+<tr><td>5887978298278520704</td><td>228.26015640396173</td><td>-53.607284412896476</td><td>--</td></tr>
+<tr><td>5887995581231772928</td><td>228.12871598211902</td><td>-53.373625663608316</td><td>-0.3325818206439385</td></tr>
+<tr><td>5887982043490374016</td><td>227.985260087594</td><td>-53.683444499055575</td><td>0.02878111976456593</td></tr>
+<tr><td>5887982971205433856</td><td>227.89884570686218</td><td>-53.67430215342567</td><td>--</td></tr>
 </table>
 
 
@@ -652,19 +655,20 @@ results1
 Each column has a name, units, and a data type.
 
 For example, the units of `ra` and `dec` are degrees, and their data
-type is `float64`, which is a 64-bit floating-point number, used to
-store measurements with a fraction part.
+type is `float64`, which is a 64-bit [floating-point
+number](https://en.wikipedia.org/wiki/Floating-point_arithmetic), used
+to store measurements with a fraction part.
 
 This information comes from the Gaia database, and has been stored in
 the Astropy `Table` by Astroquery.
 
 > ## Exercise
 > 
-> Read [the documentation of this
-> table](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html)
-> and choose a column that looks interesting to you.  Add the column
-> name to the query and run it again.  What are the units of the column
-> you selected?  What is its data type?
+> Read [the
+> documentation](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html)
+> of this table and choose a column that looks interesting to you.  Add
+> the column name to the query and run it again.  What are the units of
+> the column you selected?  What is its data type?
 
 
 >
@@ -737,7 +741,8 @@ A `WHERE` clause indicates which rows we want; in this case, the query
 selects only rows "where" `parallax` is less than 1.  This has the
 effect of selecting stars with relatively low parallax, which are
 farther away.
-We use this clause to exclude nearby stars that are unlikely to be part of GD-1.
+We'll use this clause to exclude nearby stars that are unlikely to be
+part of GD-1.
 
 `WHERE` is one of the most common clauses in ADQL/SQL, and one of the
 most useful, because it allows us to download only the rows we need
@@ -756,7 +761,7 @@ job
 ~~~
 INFO: Query finished. [astroquery.utils.tap.core]
 
-<astroquery.utils.tap.model.job.Job at 0x7f208c75e7c0>
+<astroquery.utils.tap.model.job.Job at 0x7f50edd40f40>
 ~~~
 {: .output}
 
@@ -781,17 +786,17 @@ results
 {: .language-python}
 
 ~~~
-<Table length=3000>
-     source_id              ra         ...        parallax       
-                           deg         ...          mas          
-       int64             float64       ...        float64        
-------------------- ------------------ ... ----------------------
-4036432465518023424  268.4099737354832 ...    0.09728878869604544
-4036427586432136576  268.1550746929837 ...    -1.6517420537894711
-4036435454861834880   268.402863428808 ...    0.47166978762943135
-4036423497622557184 268.22982540766145 ... -0.0018594810744405113
-4036432706082489344 268.53765532143115 ...      0.294780085311733
-4036431984481125248  268.4176240506027 ...   -0.23707477297436713
+<Table length=10>
+     source_id              ra         ...       parallax       radial_velocity
+                           deg         ...         mas               km / s    
+       int64             float64       ...       float64            float64    
+------------------- ------------------ ... -------------------- ---------------
+5895270396817359872 213.08433715252883 ...    2.041947005434917              --
+5895272561481374080  213.2606587905109 ...  0.15693467895110133              --
+5895247410183786368 213.38479712976664 ... -0.19017525742552605              --
+5895249226912448000 213.41587389088238 ...                   --              --
+5895261875598904576  213.5508930114549 ... -0.29471722363529257              --
+5895258302187834624 213.87631129557286 ...   0.6468437015289753              --
 [Output truncated]
 ~~~
 {: .output}
@@ -800,31 +805,21 @@ results
 
 
 
-<i>Table length=3000</i>
-<table id="table139777750656528" class="table-striped table-bordered table-condensed">
-<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th><th>parallax</th></tr></thead>
-<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th><th>mas</th></tr></thead>
-<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>4036432465518023424</td><td>268.4099737354832</td><td>-39.48255132974542</td><td>-6.18591186141027</td><td>-9.901482693050884</td><td>0.09728878869604544</td></tr>
-<tr><td>4036427586432136576</td><td>268.1550746929837</td><td>-39.640672063878434</td><td>2.902531307436574</td><td>-2.6372995461983555</td><td>-1.6517420537894711</td></tr>
-<tr><td>4036435454861834880</td><td>268.402863428808</td><td>-39.4490745170462</td><td>-2.9204452670058174</td><td>-0.6600330794265028</td><td>0.47166978762943135</td></tr>
-<tr><td>4036423497622557184</td><td>268.22982540766145</td><td>-39.695491626875175</td><td>-3.3502947606249847</td><td>-3.9994189219114302</td><td>-0.0018594810744405113</td></tr>
-<tr><td>4036432706082489344</td><td>268.53765532143115</td><td>-39.49836075294007</td><td>2.2117535185619137</td><td>0.26989064159601095</td><td>0.294780085311733</td></tr>
-<tr><td>4036431984481125248</td><td>268.4176240506027</td><td>-39.52535476978414</td><td>-4.657776446841011</td><td>-1.5298512820469425</td><td>-0.23707477297436713</td></tr>
-<tr><td>4036433942986772864</td><td>268.4446322062673</td><td>-39.45434881922685</td><td>-1.268163073772277</td><td>-3.143326774839096</td><td>0.4383827477396896</td></tr>
-<tr><td>4036434767622765568</td><td>268.3397669855326</td><td>-39.533206030665674</td><td>-2.570383074581705</td><td>-7.8309562837625695</td><td>0.9802160615520338</td></tr>
-<tr><td>4036426658716007680</td><td>268.2325720330626</td><td>-39.636792360242836</td><td>-3.483222377252905</td><td>-11.518985840909323</td><td>0.3402866531323366</td></tr>
-<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-<tr><td>4036429643676361088</td><td>268.1940481392251</td><td>-39.53484810691843</td><td>-0.5399180238167743</td><td>-0.43950577474250674</td><td>0.09673690064167999</td></tr>
-<tr><td>4036434389663288448</td><td>268.51391606591034</td><td>-39.40538040808745</td><td>-2.6667782256956745</td><td>-3.3321195693502235</td><td>0.614141340458613</td></tr>
-<tr><td>4036423291461004800</td><td>268.2446471322681</td><td>-39.698336039409675</td><td>-3.525450125069836</td><td>-4.404888528602299</td><td>0.6173594385857027</td></tr>
-<tr><td>4036440196464371328</td><td>268.1093614056419</td><td>-39.511003642540814</td><td>-4.149726381202896</td><td>-2.4847916296292567</td><td>0.477742037030516</td></tr>
-<tr><td>4036428720300382720</td><td>268.29821418217523</td><td>-39.57587285989207</td><td>-5.998673555253831</td><td>-9.23082959079349</td><td>-0.47420031990483885</td></tr>
-<tr><td>4036442601646439168</td><td>268.14514023769215</td><td>-39.44636747310117</td><td>-0.6481888801608459</td><td>-4.502398437965107</td><td>0.4456397029007401</td></tr>
-<tr><td>4036433393230070016</td><td>268.54224417983687</td><td>-39.45140942552161</td><td>1.3749953846556249</td><td>-9.205922550553257</td><td>0.22018046862051377</td></tr>
-<tr><td>4036429407495950464</td><td>268.22710083295215</td><td>-39.54661989184268</td><td>-3.802526532062553</td><td>-3.227275729455894</td><td>-0.14612958706070997</td></tr>
-<tr><td>4036439200034820608</td><td>268.05859875239844</td><td>-39.61886564077019</td><td>-2.1172181651309834</td><td>-3.7754096391993404</td><td>-0.5167970688281044</td></tr>
-<tr><td>4036441772690773632</td><td>268.16153516094687</td><td>-39.48158028904507</td><td>-4.015920758803185</td><td>-3.4190173584838024</td><td>0.45270857335252485</td></tr>
+<i>Table length=10</i>
+<table id="table139986226873968" class="table-striped table-bordered table-condensed">
+<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>parallax</th><th>radial_velocity</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th>mas</th><th>km / s</th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>5895270396817359872</td><td>213.08433715252883</td><td>-56.64104701005694</td><td>2.041947005434917</td><td>--</td></tr>
+<tr><td>5895272561481374080</td><td>213.2606587905109</td><td>-56.55044401535715</td><td>0.15693467895110133</td><td>--</td></tr>
+<tr><td>5895247410183786368</td><td>213.38479712976664</td><td>-56.97008551185148</td><td>-0.19017525742552605</td><td>--</td></tr>
+<tr><td>5895249226912448000</td><td>213.41587389088238</td><td>-56.849596577635786</td><td>--</td><td>--</td></tr>
+<tr><td>5895261875598904576</td><td>213.5508930114549</td><td>-56.61037780154348</td><td>-0.29471722363529257</td><td>--</td></tr>
+<tr><td>5895258302187834624</td><td>213.87631129557286</td><td>-56.678537259039906</td><td>0.6468437015289753</td><td>--</td></tr>
+<tr><td>5895247444506644992</td><td>213.33215109206796</td><td>-56.975347759380995</td><td>0.390215490234287</td><td>--</td></tr>
+<tr><td>5895259470417635968</td><td>213.78815034206346</td><td>-56.64585047451594</td><td>0.953377710788918</td><td>--</td></tr>
+<tr><td>5895264899260932352</td><td>213.21521027193236</td><td>-56.78420864489118</td><td>--</td><td>--</td></tr>
+<tr><td>5895265925746051584</td><td>213.17082359534547</td><td>-56.74540885107754</td><td>0.2986918215101751</td><td>--</td></tr>
 </table>
 
 
@@ -832,15 +827,14 @@ results
 You might notice that some values of `parallax` are negative.  As
 [this FAQ
 explains](https://www.cosmos.esa.int/web/gaia/archive-tips#negative%20parallax),
-"Negative parallaxes are caused by errors in the observations."
-Negative parallaxes have "no physical meaning," but they can be a
-"useful diagnostic on the quality of the astrometric solution."
+"Negative parallaxes are caused by errors in the observations."  They
+have "no physical meaning," but they can be a "useful diagnostic on
+the quality of the astrometric solution."
 
 > ## Exercise
 > 
 > The clauses in a query have to be in the right order.  Go back and
 > change the order of the clauses in `query2` and run it again.
-> 
 > The modified query should fail, but notice that you don't get much
 > useful debugging information.
 > 
@@ -969,8 +963,8 @@ The queries we have written so far are string "literals", meaning that
 the entire string is part of the program.
 But writing queries yourself can be slow, repetitive, and error-prone.
 
-It is often a good idea to write Python code that assembles a query
-for you.  One useful tool for that is the [string `format`
+It is often better to write Python code that assembles a query for
+you.  One useful tool for that is the [string `format`
 method](https://www.w3schools.com/python/ref_string_format.asp).
 
 As an example, we'll divide the previous query into two parts; a list
@@ -1015,6 +1009,10 @@ query3 = query3_base.format(columns=columns)
 ~~~
 {: .language-python}
 
+In this example, the variable that contains the column names and the
+variable in the format specifier have the same name.
+That's not required, but it is a common style.
+
 The result is a string with line breaks.  If you display it, the line
 breaks appear as `\n`.
 
@@ -1026,7 +1024,7 @@ query3
 {: .language-python}
 
 ~~~
-'SELECT \nTOP 10 \nsource_id, ra, dec, pmra, pmdec, parallax\nFROM gaiadr2.gaia_source\nWHERE parallax < 1\n  AND bp_rp BETWEEN -0.75 AND 2\n'
+'SELECT \nTOP 10 \nsource_id, ra, dec, pmra, pmdec\nFROM gaiadr2.gaia_source\nWHERE parallax < 1\n  AND bp_rp BETWEEN -0.75 AND 2\n'
 ~~~
 {: .output}
 
@@ -1050,7 +1048,7 @@ print(query3)
 ~~~
 SELECT 
 TOP 10 
-source_id, ra, dec, pmra, pmdec, parallax
+source_id, ra, dec, pmra, pmdec
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2
@@ -1083,9 +1081,9 @@ source_id   int64          Unique source identifier (unique within a particular 
       dec float64      deg                                                        Declination
      pmra float64 mas / yr                         Proper motion in right ascension direction
     pmdec float64 mas / yr                             Proper motion in declination direction
- parallax float64      mas                                                           Parallax
 Jobid: None
 Phase: COMPLETED
+Owner: None
 [Output truncated]
 ~~~
 {: .output}
@@ -1103,16 +1101,16 @@ results
 
 ~~~
 <Table length=10>
-     source_id              ra         ...       parallax      
-                           deg         ...         mas         
+     source_id              ra         ...        pmdec        
+                           deg         ...       mas / yr      
        int64             float64       ...       float64       
 ------------------- ------------------ ... --------------------
-4036432495535155072 268.41729223407117 ... -0.11176468032974321
-4036441536493921920   268.163280168269 ... -0.06466314453980221
-4036442601646438400  268.1387976914471 ...  -1.1448803059362858
-4036429201337340672  268.2935748074385 ...   0.4772565168467984
-4036435209981391360  268.3235008543401 ...  -0.2260844472181426
-4036430781889616640  268.4323413972199 ... 0.021914470221676332
+5895272561481374080  213.2606587905109 ...   1.2299266281737415
+5895261875598904576  213.5508930114549 ...   -4.672602679543312
+5895247444506644992 213.33215109206796 ...   -3.538080792097856
+5895259470417635968 213.78815034206346 ...  -0.8163762113468646
+5895265925746051584 213.17082359534547 ...  -4.8585444120179595
+5895260913525974528 213.66936020541976 ...  -1.5566420086447643
 [Output truncated]
 ~~~
 {: .output}
@@ -1122,20 +1120,20 @@ results
 
 
 <i>Table length=10</i>
-<table id="table139777753221728" class="table-striped table-bordered table-condensed">
-<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th><th>parallax</th></tr></thead>
-<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th><th>mas</th></tr></thead>
-<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>4036432495535155072</td><td>268.41729223407117</td><td>-39.46918929346299</td><td>-1.4657595289399132</td><td>-5.748127423097124</td><td>-0.11176468032974321</td></tr>
-<tr><td>4036441536493921920</td><td>268.163280168269</td><td>-39.49035741409665</td><td>-2.133016188076998</td><td>-0.117511099698601</td><td>-0.06466314453980221</td></tr>
-<tr><td>4036442601646438400</td><td>268.1387976914471</td><td>-39.451546875392324</td><td>-0.9017024454865927</td><td>-6.79073640236943</td><td>-1.1448803059362858</td></tr>
-<tr><td>4036429201337340672</td><td>268.2935748074385</td><td>-39.511082764583186</td><td>0.23803118725105005</td><td>-2.619620943565854</td><td>0.4772565168467984</td></tr>
-<tr><td>4036435209981391360</td><td>268.3235008543401</td><td>-39.47076322705205</td><td>-5.269315172794177</td><td>-6.311972787283363</td><td>-0.2260844472181426</td></tr>
-<tr><td>4036430781889616640</td><td>268.4323413972199</td><td>-39.568388828520796</td><td>0.2101300515915823</td><td>0.5020913360695279</td><td>0.021914470221676332</td></tr>
-<tr><td>4036434595821886080</td><td>268.51291280069273</td><td>-39.39090803101428</td><td>-2.0281461390898623</td><td>-1.09405424552038</td><td>0.42083898443584056</td></tr>
-<tr><td>4036426933645905664</td><td>268.2033082657327</td><td>-39.62426797607084</td><td>0.40080910282280036</td><td>-4.320453719127832</td><td>0.6494251580592608</td></tr>
-<tr><td>4036425108189475968</td><td>268.26633179055267</td><td>-39.648450617498646</td><td>-2.0326696514976903</td><td>-5.868948034915663</td><td>0.23435564036004816</td></tr>
-<tr><td>4036440368305153280</td><td>268.0417228205479</td><td>-39.55154954991695</td><td>-7.807636960289898</td><td>-7.1469993883954475</td><td>-0.06901432561194154</td></tr>
+<table id="table139985564118512" class="table-striped table-bordered table-condensed">
+<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>5895272561481374080</td><td>213.2606587905109</td><td>-56.55044401535715</td><td>0.3894438898301715</td><td>1.2299266281737415</td></tr>
+<tr><td>5895261875598904576</td><td>213.5508930114549</td><td>-56.61037780154348</td><td>0.16203641364393007</td><td>-4.672602679543312</td></tr>
+<tr><td>5895247444506644992</td><td>213.33215109206796</td><td>-56.975347759380995</td><td>-7.474003156859284</td><td>-3.538080792097856</td></tr>
+<tr><td>5895259470417635968</td><td>213.78815034206346</td><td>-56.64585047451594</td><td>-5.287202255231853</td><td>-0.8163762113468646</td></tr>
+<tr><td>5895265925746051584</td><td>213.17082359534547</td><td>-56.74540885107754</td><td>-7.880749306158471</td><td>-4.8585444120179595</td></tr>
+<tr><td>5895260913525974528</td><td>213.66936020541976</td><td>-56.66655190442016</td><td>-4.7820929042428215</td><td>-1.5566420086447643</td></tr>
+<tr><td>5895264212062283008</td><td>213.7755742121852</td><td>-56.51570859067397</td><td>-6.657690998559842</td><td>-1.7616494482071872</td></tr>
+<tr><td>5895253457497979136</td><td>213.30929960610283</td><td>-56.78849448744587</td><td>-5.242106718924749</td><td>-0.18655636353898095</td></tr>
+<tr><td>4143614130253524096</td><td>269.1749117455479</td><td>-18.53415139972117</td><td>2.6164274510804826</td><td>1.3244248889980894</td></tr>
+<tr><td>4065443904433108992</td><td>273.26868565443743</td><td>-24.421651815402857</td><td>-1.663096652191022</td><td>-2.6514745376067683</td></tr>
 </table>
 
 
@@ -1167,7 +1165,7 @@ Good so far.
 > > """
 > > 
 > > query = query_base.format(columns=columns,
-> >                             max_parallax=0.5)
+> >                           max_parallax=0.5)
 > > print(query)
 > > ~~~
 > > {: .language-python}
@@ -1178,7 +1176,7 @@ Good so far.
 
     SELECT 
     TOP 10
-    source_id, ra, dec, pmra, pmdec, parallax
+    source_id, ra, dec, pmra, pmdec
     FROM gaiadr2.gaia_source
     WHERE parallax < 0.5 AND 
     bp_rp BETWEEN -0.75 AND 2
@@ -1214,9 +1212,9 @@ and add a little bit at a time.
 * Use ADQL features like `TOP` and `COUNT` to test before you run a
 query that might return a lot of data.
 
-* If you know your query will return fewer than 3000 rows, you can run
+* If you know your query will return fewer than 2000 rows, you can run
 it synchronously, which might complete faster.  If it might return
-more than 3000 rows, you should run it asynchronously.
+more than 2000 rows, you should run it asynchronously.
 
 * ADQL and SQL are not case-sensitive, so you don't have to capitalize
 the keywords, but you should.
@@ -1228,7 +1226,7 @@ Jupyter notebooks can be good for developing and testing code, but
 they have some drawbacks.  In particular, if you run the cells out of
 order, you might find that variables don't have the values you expect.
 
-There are a few things you can do to mitigate these problems:
+To mitigate these problems:
 
 * Make each section of the notebook self-contained.  Try not to use
 the same variable name in more than one section.

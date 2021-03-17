@@ -28,7 +28,7 @@ keypoints:
 
 {% include links.md %}
 
-# Visualization
+# 7. Visualization
 
 This is the seventh in a series of notebooks related to astronomy data.
 
@@ -152,7 +152,7 @@ reloads the data.
 import os
 from wget import download
 
-filename = 'gd1_merged.hdf5'
+filename = 'gd1_data.hdf'
 path = 'https://github.com/AllenDowney/AstronomicalData/raw/main/data/'
 
 if not os.path.exists(filename):
@@ -165,7 +165,7 @@ if not os.path.exists(filename):
 ~~~
 import pandas as pd
 
-selected2 = pd.read_hdf(filename, 'selected2')
+winner_df = pd.read_hdf(filename, 'winner_df')
 ~~~
 {: .language-python}
 
@@ -194,7 +194,7 @@ And here's what it looks like.
 
 ~~~
 plt.figure(figsize=(10,2.5))
-plot_second_selection(selected2)
+plot_second_selection(winner_df)
 ~~~
 {: .language-python}
 
@@ -206,7 +206,7 @@ plot_second_selection(selected2)
 
 
     
-![png](07-plot_files/07-plot_14_0.png)
+![png](07-plot_files/07-plot_12_0.png)
     
 
 
@@ -531,6 +531,16 @@ In case you are curious, `cm` stands for [Computer
 Modern](https://en.wikipedia.org/wiki/Computer_Modern), the font LaTeX
 uses to typeset math.
 
+Before we go on, let's put things back where we found them.
+
+
+
+~~~
+plt.rcParams['text.usetex'] = False
+plt.style.use('default')
+~~~
+{: .language-python}
+
 ## Multiple panels
 
 So far we've been working with one figure at a time, but the figure we
@@ -565,21 +575,7 @@ To make the panel in the upper right, we have to reload `centerline_df`.
 
 
 ~~~
-import os
-
-filename = 'gd1_dataframe.hdf5'
-path = 'https://github.com/AllenDowney/AstronomicalData/raw/main/data/'
-
-if not os.path.exists(filename):
-    print(download(path+filename))
-~~~
-{: .language-python}
-
-
-
-~~~
-import pandas as pd
-
+filename = 'gd1_data.hdf'
 centerline_df = pd.read_hdf(filename, 'centerline_df')
 ~~~
 {: .language-python}
@@ -667,9 +663,6 @@ the labels on the axes to be consistent with the paper.
 
 
 ~~~
-plt.rcParams['text.usetex'] = False
-plt.style.use('default')
-
 plot_proper_motion(centerline_df)
 ~~~
 {: .language-python}
@@ -682,7 +675,7 @@ plot_proper_motion(centerline_df)
 
 
     
-![png](07-plot_files/07-plot_54_0.png)
+![png](07-plot_files/07-plot_52_0.png)
     
 
 
@@ -693,23 +686,7 @@ Now let's work on the panel in the upper left. We have to reload `candidates`.
 
 
 ~~~
-import os
-
-filename = 'gd1_candidates.hdf5'
-path = 'https://github.com/AllenDowney/AstronomicalData/raw/main/data/'
-
-if not os.path.exists(filename):
-    print(download(path+filename))
-~~~
-{: .language-python}
-
-
-
-~~~
-import pandas as pd
-
-filename = 'gd1_candidates.hdf5'
-
+filename = 'gd1_data.hdf'
 candidate_df = pd.read_hdf(filename, 'candidate_df')
 ~~~
 {: .language-python}
@@ -751,29 +728,14 @@ plot_first_selection(candidate_df)
 
 
     
-![png](07-plot_files/07-plot_61_0.png)
+![png](07-plot_files/07-plot_58_0.png)
     
 
 
 ## Lower right
 
-For the figure in the lower right, we need to reload the merged
-`DataFrame`, which contains data from Gaia and photometry data from
-Pan-STARRS.
-
-
-
-~~~
-import pandas as pd
-
-filename = 'gd1_merged.hdf5'
-
-merged = pd.read_hdf(filename, 'merged')
-~~~
-{: .language-python}
-
-From the previous notebook, here's the function that plots the
-color-magnitude diagram.
+For the figure in the lower right, we'll use this function to plots
+the color-magnitude diagram.
 
 
 
@@ -799,12 +761,12 @@ def plot_cmd(table):
 ~~~
 {: .language-python}
 
-And here's what it looks like.
+Here's what it looks like.
 
 
 
 ~~~
-plot_cmd(merged)
+plot_cmd(candidate_df)
 ~~~
 {: .language-python}
 
@@ -816,32 +778,16 @@ plot_cmd(merged)
 
 
     
-![png](07-plot_files/07-plot_67_0.png)
+![png](07-plot_files/07-plot_62_0.png)
     
 
-
-The following cell downloads an HDF file that contains the polygon we
-used to select starts in the color-magnitude diagram, if it doesn't
-already exist.
-
-
-
-~~~
-import os
-
-filename = 'gd1_polygon.hdf5'
-path = 'https://github.com/AllenDowney/AstronomicalData/raw/main/data/'
-
-if not os.path.exists(filename):
-    print(download(path+filename))
-~~~
-{: .language-python}
 
 And here's how we read it back.
 
 
 
 ~~~
+filename = 'gd1_data.hdf'
 loop_df = pd.read_hdf(filename, 'loop_df')
 loop_df.head()
 ~~~
@@ -967,10 +913,10 @@ plt.subplot2grid(shape, (0, 1))
 plot_proper_motion(centerline_df)
 
 plt.subplot2grid(shape, (1, 0))
-plot_second_selection(selected2)
+plot_second_selection(winner_df)
 
 plt.subplot2grid(shape, (1, 1))
-plot_cmd(merged)
+plot_cmd(candidate_df)
 poly = Polygon(loop_df, closed=True, 
                facecolor='C1', alpha=0.4)
 plt.gca().add_patch(poly)
@@ -987,7 +933,7 @@ plt.tight_layout()
 
 
     
-![png](07-plot_files/07-plot_75_0.png)
+![png](07-plot_files/07-plot_68_0.png)
     
 
 
@@ -1028,10 +974,10 @@ plt.subplot2grid(shape, (0, 3))
 plot_proper_motion(centerline_df)
 
 plt.subplot2grid(shape, (1, 0), colspan=3)
-plot_second_selection(selected2)
+plot_second_selection(winner_df)
 
 plt.subplot2grid(shape, (1, 3))
-plot_cmd(merged)
+plot_cmd(candidate_df)
 poly = Polygon(loop_df, closed=True, 
                facecolor='C1', alpha=0.4)
 plt.gca().add_patch(poly)
@@ -1048,7 +994,7 @@ plt.tight_layout()
 
 
     
-![png](07-plot_files/07-plot_78_0.png)
+![png](07-plot_files/07-plot_71_0.png)
     
 
 
@@ -1075,10 +1021,10 @@ This is looking more and more like the figure in the paper.
 > > # plot_proper_motion(centerline_df)
 > > 
 > > # plt.subplot2grid(shape, (1, 0), colspan=3)
-> > # plot_second_selection(selected2)
+> > # plot_second_selection(winner_df)
 > > 
 > > # plt.subplot2grid(shape, (1, 3), colspan=2)       # CHANGED
-> > # plot_cmd(merged)
+> > # plot_cmd(candidate_df)
 > > # poly = Polygon(coords, closed=True, 
 > > #                facecolor='C1', alpha=0.4)
 > > # plt.gca().add_patch(poly)
