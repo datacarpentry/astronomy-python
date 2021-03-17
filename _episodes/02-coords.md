@@ -187,7 +187,7 @@ angle_arcmin
 
 
 
-$600 \; \mathrm{{}^{\prime}}$
+$600 \; \mathrm{^{\prime}}$
 
 
 
