@@ -163,7 +163,7 @@ angle
 
 
 
-$10 \; \mathrm{{}^{\circ}}$
+$10 \; \mathrm{^{\circ}}$
 
 
 
@@ -209,7 +209,7 @@ angle + 30 * u.arcmin
 
 
 
-$10.5 \; \mathrm{{}^{\circ}}$
+$10.5 \; \mathrm{^{\circ}}$
 
 
 
