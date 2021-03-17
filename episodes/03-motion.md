@@ -89,6 +89,7 @@ file](https://github.com/AllenDowney/AstronomicalData/raw/main/data/gd1_results.
 or run the following cell.
 
 
+```python
 
 ~~~
 from os.path import basename, exists
@@ -104,10 +105,12 @@ download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
          'data/gd1_results.fits')
 ~~~
 {: .language-python}
+```
 
 Now here's how we can read the data from the file back into an Astropy `Table`:
 
 
+```python
 
 ~~~
 from astropy.table import Table
@@ -116,12 +119,14 @@ filename = 'gd1_results.fits'
 results = Table.read(filename)
 ~~~
 {: .language-python}
+```
 
 The result is an Astropy `Table`.
 
 We can use `info` to refresh our memory of the contents.
 
 
+```python
 
 ~~~
 results.info
@@ -140,6 +145,7 @@ source_id   int64          Unique source identifier (unique within a particular 
 ~~~
 {: .output}
 
+```
 
 
 
@@ -158,6 +164,7 @@ documentation](https://docs.astropy.org/en/stable/table/access_table.html).
 We can get the names of the columns like this:
 
 
+```python
 
 ~~~
 results.colnames
@@ -169,6 +176,7 @@ results.colnames
 ~~~
 {: .output}
 
+```
 
 
 
@@ -180,6 +188,7 @@ results.colnames
 And select an individual column like this:
 
 
+```python
 
 ~~~
 results['ra']
@@ -202,6 +211,7 @@ results['ra']
 ~~~
 {: .output}
 
+```
 
 
 
@@ -241,6 +251,7 @@ The result is a `Column` object that contains the data, and also the
 data type, units, and name of the column.
 
 
+```python
 
 ~~~
 type(results['ra'])
@@ -252,6 +263,7 @@ astropy.table.column.Column
 ~~~
 {: .output}
 
+```
 
 
 
@@ -264,6 +276,7 @@ The rows in the `Table` are numbered from 0 to `n-1`, where `n` is the
 number of rows.  We can select the first row like this:
 
 
+```python
 
 ~~~
 results[0]
@@ -280,6 +293,7 @@ results[0]
 ~~~
 {: .output}
 
+```
 
 
 
@@ -297,6 +311,7 @@ results[0]
 As you might have guessed, the result is a `Row` object.
 
 
+```python
 
 ~~~
 type(results[0])
@@ -308,6 +323,7 @@ astropy.table.row.Row
 ~~~
 {: .output}
 
+```
 
 
 
@@ -325,6 +341,7 @@ If you apply the bracket operator twice, you can select a column and
 then an element from the column.
 
 
+```python
 
 ~~~
 results['ra'][0]
@@ -336,6 +353,7 @@ results['ra'][0]
 ~~~
 {: .output}
 
+```
 
 
 
@@ -347,6 +365,7 @@ results['ra'][0]
 Or you can select a row and then an element from the row.
 
 
+```python
 
 ~~~
 results[0]['ra']
@@ -358,6 +377,7 @@ results[0]['ra']
 ~~~
 {: .output}
 
+```
 
 
 
@@ -379,11 +399,13 @@ you know MATLAB, some of it will be familiar.
 We'll import like this.
 
 
+```python
 
 ~~~
 import matplotlib.pyplot as plt
 ~~~
 {: .language-python}
+```
 
 Pyplot is part of the Matplotlib library.  It is conventional to
 import it using the shortened name `plt`.
@@ -420,6 +442,7 @@ Here's a scatter plot with right ascension on the x-axis and
 declination on the y-axis, both ICRS coordinates in degrees.
 
 
+```python
 
 ~~~
 x = results['ra']
@@ -436,6 +459,7 @@ plt.ylabel('dec (degree ICRS)');
 ~~~
 {: .output}
 
+```
 
 
     
@@ -479,6 +503,7 @@ transparency of the points.
 > more than others.
 
 
+```python
 >
 > > ## Solution
 > > 
@@ -494,8 +519,7 @@ transparency of the points.
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-
-
+```
 
 ## Transform back
 
@@ -520,6 +544,7 @@ object.  In a previous lesson we created a `SkyCoord` object like
 this:
 
 
+```python
 
 ~~~
 from astropy.coordinates import SkyCoord
@@ -527,6 +552,7 @@ from astropy.coordinates import SkyCoord
 skycoord = SkyCoord(ra=results['ra'], dec=results['dec'])
 ~~~
 {: .language-python}
+```
 
 Now we're going to do something similar, but in addition to `ra` and
 `dec`, we'll also include:
@@ -536,6 +562,7 @@ Now we're going to do something similar, but in addition to `ra` and
 * `distance` and `radial_velocity`, which we explain below.
 
 
+```python
 
 ~~~
 import astropy.units as u
@@ -551,6 +578,7 @@ skycoord = SkyCoord(ra=results['ra'],
                     radial_velocity=radial_velocity)
 ~~~
 {: .language-python}
+```
 
 For the first four arguments, we use columns from `results`.
 
@@ -560,6 +588,7 @@ The result is an Astropy `SkyCoord` object, which we can transform to
 the GD-1 frame.
 
 
+```python
 
 ~~~
 from gala.coordinates import GD1Koposov10
@@ -568,6 +597,7 @@ gd1_frame = GD1Koposov10()
 transformed = skycoord.transform_to(gd1_frame)
 ~~~
 {: .language-python}
+```
 
 The result is another `SkyCoord` object, now in the `GD1Koposov10` frame.
 
@@ -603,6 +633,7 @@ here](https://gala-astro.readthedocs.io/en/latest/api/gala.coordinates.reflex_co
 to correct for the motion of the solar system.
 
 
+```python
 
 ~~~
 from gala.coordinates import reflex_correct
@@ -610,6 +641,7 @@ from gala.coordinates import reflex_correct
 skycoord_gd1 = reflex_correct(transformed)
 ~~~
 {: .language-python}
+```
 
 The result is a `SkyCoord` object that contains 
 
@@ -622,6 +654,7 @@ corrected proper motions.
 We can select the coordinates and plot them like this:
 
 
+```python
 
 ~~~
 x = skycoord_gd1.phi1
@@ -638,6 +671,7 @@ plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .output}
 
+```
 
 
     
@@ -655,6 +689,7 @@ At this point we have two objects containing different subsets of the
 data.  `results` is the Astropy `Table` we downloaded from Gaia.
 
 
+```python
 
 ~~~
 type(results)
@@ -666,6 +701,7 @@ astropy.table.table.Table
 ~~~
 {: .output}
 
+```
 
 
 
@@ -678,6 +714,7 @@ And `skycoord_gd1` is a `SkyCoord` object that contains the
 transformed coordinates and proper motions.
 
 
+```python
 
 ~~~
 type(skycoord_gd1)
@@ -689,6 +726,7 @@ astropy.coordinates.sky_coordinate.SkyCoord
 ~~~
 {: .output}
 
+```
 
 
 
@@ -718,6 +756,7 @@ units for the columns.
 It's easy to convert a `Table` to a Pandas `DataFrame`.
 
 
+```python
 
 ~~~
 import pandas as pd
@@ -725,10 +764,12 @@ import pandas as pd
 results_df = results.to_pandas()
 ~~~
 {: .language-python}
+```
 
 `DataFrame` provides `shape`, which shows the number of rows and columns.
 
 
+```python
 
 ~~~
 results_df.shape
@@ -740,6 +781,7 @@ results_df.shape
 ~~~
 {: .output}
 
+```
 
 
 
@@ -752,6 +794,7 @@ It also provides `head`, which displays the first few rows.  `head` is
 useful for spot-checking large results as you go along.
 
 
+```python
 
 ~~~
 results_df.head()
@@ -768,6 +811,7 @@ results_df.head()
 ~~~
 {: .output}
 
+```
 
 
 
@@ -853,6 +897,7 @@ them as columns in the `DataFrame`.  `phi1` and `phi2` contain the
 transformed coordinates.
 
 
+```python
 
 ~~~
 results_df['phi1'] = skycoord_gd1.phi1
@@ -866,6 +911,7 @@ results_df.shape
 ~~~
 {: .output}
 
+```
 
 
 
@@ -878,6 +924,7 @@ results_df.shape
 motion in the transformed frame.
 
 
+```python
 
 ~~~
 results_df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
@@ -891,6 +938,7 @@ results_df.shape
 ~~~
 {: .output}
 
+```
 
 
 
@@ -913,6 +961,7 @@ One of the most useful of these functions is `describe`, which
 computes summary statistics for each column.
 
 
+```python
 
 ~~~
 results_df.describe()
@@ -935,6 +984,7 @@ max    7.974418e+17     152.777393      34.285481     104.319923
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1080,6 +1130,7 @@ max    7.974418e+17     152.777393      34.285481     104.319923
 > * Do you see any values that seem problematic, or evidence of other data issues?
 
 
+```python
 >
 > > ## Solution
 > > 
@@ -1099,8 +1150,7 @@ max    7.974418e+17     152.777393      34.285481     104.319923
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-
-
+```
 
 ## Plot proper motion
 
@@ -1130,6 +1180,7 @@ The following figure is a scatter plot of proper motion, in the GD-1
 frame, for the stars in `results_df`.
 
 
+```python
 
 ~~~
 x = results_df['pm_phi1']
@@ -1146,6 +1197,7 @@ plt.ylabel('Proper motion phi2 (mas/yr GD1 frame)');
 ~~~
 {: .output}
 
+```
 
 
     
@@ -1159,6 +1211,7 @@ Following the example in the paper, we'll use `xlim` and `ylim` to
 zoom in on the region near the origin.
 
 
+```python
 
 ~~~
 x = results_df['pm_phi1']
@@ -1178,6 +1231,7 @@ plt.ylim(-10, 10);
 ~~~
 {: .output}
 
+```
 
 
     
@@ -1206,6 +1260,7 @@ To select them, we will use a "Boolean mask".  We'll start by
 selecting the `phi2` column from the `DataFrame`:
 
 
+```python
 
 ~~~
 phi2 = results_df['phi2']
@@ -1218,6 +1273,7 @@ pandas.core.series.Series
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1233,6 +1289,7 @@ We can use a comparison operator, `>`, to compare the values in a
 `Series` to a constant.
 
 
+```python
 
 ~~~
 phi2_min = -1.0 * u.degree
@@ -1248,6 +1305,7 @@ pandas.core.series.Series
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1259,6 +1317,7 @@ pandas.core.series.Series
 The result is a `Series` of Boolean values, that is, `True` and `False`. 
 
 
+```python
 
 ~~~
 mask.head()
@@ -1275,6 +1334,7 @@ Name: phi2, dtype: bool
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1288,11 +1348,13 @@ use the `&` operator, which computes "logical AND".
 The result is true where elements from both Boolean `Series` are true.
 
 
+```python
 
 ~~~
 mask = (phi2 > phi2_min) & (phi2 < phi2_max)
 ~~~
 {: .language-python}
+```
 
 **Python detail:** Python's logical operators (`and`, `or`, and `not`)
 don't work with NumPy or Pandas.  Both libraries use the bitwise
@@ -1307,6 +1369,7 @@ The sum of a Boolean `Series` is the number of `True` values, so we
 can use `sum` to see how many stars are in the selected region.
 
 
+```python
 
 ~~~
 mask.sum()
@@ -1318,6 +1381,7 @@ mask.sum()
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1331,6 +1395,7 @@ to mask out some of the rows in a `DataFrame` and select the rest,
 like this:
 
 
+```python
 
 ~~~
 centerline_df = results_df[mask]
@@ -1343,6 +1408,7 @@ pandas.core.frame.DataFrame
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1358,6 +1424,7 @@ So it contains the stars near the centerline of GD-1.
 We can use `len` to see how many rows are in `centerline_df`:
 
 
+```python
 
 ~~~
 len(centerline_df)
@@ -1369,6 +1436,7 @@ len(centerline_df)
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1380,6 +1448,7 @@ len(centerline_df)
 And what fraction of the rows we've selected.
 
 
+```python
 
 ~~~
 len(centerline_df) / len(results_df)
@@ -1391,6 +1460,7 @@ len(centerline_df) / len(results_df)
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1407,6 +1477,7 @@ Since we've plotted proper motion several times, let's put that code
 in a function.
 
 
+```python
 
 ~~~
 def plot_proper_motion(df):
@@ -1425,10 +1496,12 @@ def plot_proper_motion(df):
     plt.ylim(-10, 10)
 ~~~
 {: .language-python}
+```
 
 And we can call it like this:
 
 
+```python
 
 ~~~
 plot_proper_motion(centerline_df)
@@ -1440,6 +1513,7 @@ plot_proper_motion(centerline_df)
 ~~~
 {: .output}
 
+```
 
 
     
@@ -1475,6 +1549,7 @@ how to select a polygonal region as well.
 Here are bounds on proper motion we chose by eye:
 
 
+```python
 
 ~~~
 pm1_min = -8.9
@@ -1483,11 +1558,13 @@ pm2_min = -2.2
 pm2_max =  1.0
 ~~~
 {: .language-python}
+```
 
 To draw these bounds, we'll use `make_rectangle` to make two lists
 containing the coordinates of the corners of the rectangle.
 
 
+```python
 
 ~~~
 def make_rectangle(x1, x2, y1, y2):
@@ -1497,18 +1574,22 @@ def make_rectangle(x1, x2, y1, y2):
     return xs, ys
 ~~~
 {: .language-python}
+```
 
 
+```python
 
 ~~~
 pm1_rect, pm2_rect = make_rectangle(
     pm1_min, pm1_max, pm2_min, pm2_max)
 ~~~
 {: .language-python}
+```
 
 Here's what the plot looks like with the bounds we chose.
 
 
+```python
 
 ~~~
 plot_proper_motion(centerline_df)
@@ -1521,6 +1602,7 @@ plt.plot(pm1_rect, pm2_rect, '-');
 ~~~
 {: .output}
 
+```
 
 
     
@@ -1536,6 +1618,7 @@ a mask that selects rows where `series` falls between `low` and
 `high`.
 
 
+```python
 
 ~~~
 def between(series, low, high):
@@ -1543,10 +1626,12 @@ def between(series, low, high):
     return (series > low) & (series < high)
 ~~~
 {: .language-python}
+```
 
 The following mask selects stars with proper motion in the region we chose.
 
 
+```python
 
 ~~~
 pm1 = results_df['pm_phi1']
@@ -1556,10 +1641,12 @@ pm_mask = (between(pm1, pm1_min, pm1_max) &
            between(pm2, pm2_min, pm2_max))
 ~~~
 {: .language-python}
+```
 
 Again, the sum of a Boolean series is the number of `True` values.
 
 
+```python
 
 ~~~
 pm_mask.sum()
@@ -1571,6 +1658,7 @@ pm_mask.sum()
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1582,6 +1670,7 @@ pm_mask.sum()
 Now we can use this mask to select rows from `results_df`.
 
 
+```python
 
 ~~~
 selected_df = results_df[pm_mask]
@@ -1594,6 +1683,7 @@ len(selected_df)
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1606,6 +1696,7 @@ These are the stars we think are likely to be in GD-1.  Let's see what
 they look like, plotting their coordinates (not their proper motion).
 
 
+```python
 
 ~~~
 x = selected_df['phi1']
@@ -1622,6 +1713,7 @@ plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .output}
 
+```
 
 
     
@@ -1640,6 +1732,7 @@ To save a Pandas `DataFrame`, one option is to convert it to an
 Astropy `Table`, like this:
 
 
+```python
 
 ~~~
 selected_table = Table.from_pandas(selected_df)
@@ -1652,6 +1745,7 @@ astropy.table.table.Table
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1689,6 +1783,7 @@ file with Pandas, you can read it back with many other software tools
 We can write a Pandas `DataFrame` to an HDF5 file like this:
 
 
+```python
 
 ~~~
 filename = 'gd1_data.hdf'
@@ -1696,6 +1791,7 @@ filename = 'gd1_data.hdf'
 selected_df.to_hdf(filename, 'selected_df', mode='w')
 ~~~
 {: .language-python}
+```
 
 Because an HDF5 file can contain more than one Dataset, we have to
 provide a name, or "key", that identifies the Dataset in the file.
@@ -1714,6 +1810,7 @@ should overwrite it.
 > Hint: Since the file already exists, you should *not* use `mode='w'`.
 
 
+```python
 >
 > > ## Solution
 > > 
@@ -1724,12 +1821,12 @@ should overwrite it.
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-
-
+```
 
 We can use `getsize` to confirm that the file exists and check the size:
 
 
+```python
 
 ~~~
 from os.path import getsize
@@ -1744,6 +1841,7 @@ getsize(filename) / MB
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1756,6 +1854,7 @@ If you forget what the names of the Datasets in the file are, you can
 read them back like this:
 
 
+```python
 
 ~~~
 with pd.HDFStore(filename) as hdf:
@@ -1769,6 +1868,7 @@ with pd.HDFStore(filename) as hdf:
 ~~~
 {: .output}
 
+```
 
     
 
@@ -1823,8 +1923,10 @@ but for many projects, either one would be a reasonable choice.
 file, which can contain multiple Datasets.
 
 
+```python
 
 ~~~
 
 ~~~
 {: .language-python}
+```

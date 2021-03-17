@@ -19,13 +19,13 @@ keypoints:
 
 - "Use ADQL features like `TOP` and `COUNT` to test before you run a query that might return a lot of data."
 
-- "If you know your query will return fewer than 3000 rows, you can
+- "If you know your query will return fewer than 3000 rows, you can 
 run it synchronously, which might complete faster (but it doesn't seem to make much difference).  If it might return more than 3000 rows, you should run it asynchronously."
 
-- "ADQL and SQL are not case-sensitive, so you don't have to
+- "ADQL and SQL are not case-sensitive, so you don't have to 
 capitalize the keywords, but you should."
 
-- "ADQL and SQL don't require you to break a query into multiple
+- "ADQL and SQL don't require you to break a query into multiple 
 lines, but you should."
 
 ---
@@ -79,7 +79,7 @@ with [the tutorial on from Jupyter.org called "Try Classic
 Notebook"](https://jupyter.org/try), or [this tutorial from
 DataQuest](https://www.dataquest.io/blog/jupyter-notebook-tutorial/).
 
-There are two environments you can use to write and run notebooks:
+There are two environments you can use to write and run notebooks: 
 
 * "Jupyter Notebook" is the original, and
 
@@ -135,6 +135,7 @@ database](https://astroquery.readthedocs.io/en/latest/gaia/gaia.html).
 We can connect to the Gaia database like this:
 
 
+```python
 
 ~~~
 from astroquery.gaia import Gaia
@@ -156,8 +157,9 @@ Created TAP+ (v1.2.1) - Connection:
 ~~~
 {: .output}
 
+```
 
-
+    
 
 This import statement creates a
 [TAP+](http://www.ivoa.net/documents/TAP/) connection; TAP stands for
@@ -178,6 +180,7 @@ Gaia database.  With the option `only_names=True`, it loads
 information about the tables, called "metadata", not the data itself.
 
 
+```python
 
 ~~~
 tables = Gaia.load_tables(only_names=True)
@@ -192,12 +195,14 @@ INFO: Done. [astroquery.utils.tap.core]
 ~~~
 {: .output}
 
+```
 
-
+    
 
 The following `for` loop prints the names of the tables.
 
 
+```python
 
 ~~~
 for table in tables:
@@ -221,8 +226,9 @@ external.skymapperdr2_master
 ~~~
 {: .output}
 
+```
 
-
+    
 
 So that's a lot of tables.  The ones we'll use are:
 
@@ -240,6 +246,7 @@ single table.  The name of this function is misleading, because it
 only downloads metadata, not the contents of the table.
 
 
+```python
 
 ~~~
 meta = Gaia.load_table('gaiadr2.gaia_source')
@@ -256,13 +263,14 @@ Done.
 ~~~
 {: .output}
 
+```
+
+    
 
 
 
 
-
-
-
+    
 
 
 
@@ -272,6 +280,7 @@ it does not display the contents.
 To see the metadata, we have to print the object.
 
 
+```python
 
 ~~~
 print(meta)
@@ -290,14 +299,16 @@ Num. columns: 96
 ~~~
 {: .output}
 
+```
 
-
+    
 
 ## Columns
 
 The following loop prints the names of the columns in the table.
 
 
+```python
 
 ~~~
 for column in meta.columns:
@@ -321,8 +332,9 @@ parallax_error
 ~~~
 {: .output}
 
+```
 
-
+    
 
 You can probably infer what many of these columns are by looking at
 the names, but you should resist the temptation to guess.
@@ -334,125 +346,29 @@ documentation, [you might like this
 article](https://www.vox.com/future-perfect/2019/6/4/18650969/married-women-miserable-fake-paul-dolan-happiness).
 
 > ## Exercise
->
+> 
 > One of the other tables we'll use is
 > `gaiadr2.panstarrs1_original_valid`.  Use `load_table` to get the
 > metadata for this table.  How many columns are there and what are
 > their names?
+
+
+```python
 >
 > > ## Solution
-> >
+> > 
 > > ~~~
-> >
+> > 
 > > meta2 = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
 > > print(meta2)
-> >
+> > 
 > > for column in meta2.columns:
 > >     print(column.name)
 > > ~~~
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-
-
-
-    Retrieving table 'gaiadr2.panstarrs1_original_valid'
-    Parsing table 'gaiadr2.panstarrs1_original_valid'...
-    Done.
-    TAP Table name: gaiadr2.gaiadr2.panstarrs1_original_valid
-    Description: The Panoramic Survey Telescope and Rapid Response System (Pan-STARRS) is
-    a system for wide-field astronomical imaging developed and operated by
-    the Institute for Astronomy at the University of Hawaii. Pan-STARRS1
-    (PS1) is the first part of Pan-STARRS to be completed and is the basis
-    for Data Release 1 (DR1). The PS1 survey used a 1.8 meter telescope and
-    its 1.4 Gigapixel camera to image the sky in five broadband filters (g,
-    r, i, z, y).
-
-    The current table contains a filtered subsample of the 10 723 304 629
-    entries listed in the original ObjectThin table.
-    We used only ObjectThin and MeanObject tables to extract
-    panstarrs1OriginalValid table, this means that objects detected only in
-    stack images are not included here. The main reason for us to avoid the
-    use of objects detected in stack images is that their astrometry is not
-    as good as the mean objects astrometry: “The stack positions (raStack,
-    decStack) have considerably larger systematic astrometric errors than
-    the mean epoch positions (raMean, decMean).” The astrometry for the
-    MeanObject positions uses Gaia DR1 as a reference catalog, while the
-    stack positions use 2MASS as a reference catalog.
-
-    In details, we filtered out all objects where:
-
-    -   nDetections = 1
-
-    -   no good quality data in Pan-STARRS, objInfoFlag 33554432 not set
-
-    -   mean astrometry could not be measured, objInfoFlag 524288 set
-
-    -   stack position used for mean astrometry, objInfoFlag 1048576 set
-
-    -   error on all magnitudes equal to 0 or to -999;
-
-    -   all magnitudes set to -999;
-
-    -   error on RA or DEC greater than 1 arcsec.
-
-    The number of objects in panstarrs1OriginalValid is 2 264 263 282.
-
-    The panstarrs1OriginalValid table contains only a subset of the columns
-    available in the combined ObjectThin and MeanObject tables. A
-    description of the original ObjectThin and MeanObjects tables can be
-    found at:
-    https://outerspace.stsci.edu/display/PANSTARRS/PS1+Database+object+and+detection+tables
-
-    Download:
-    http://mastweb.stsci.edu/ps1casjobs/home.aspx
-    Documentation:
-    https://outerspace.stsci.edu/display/PANSTARRS
-    http://pswww.ifa.hawaii.edu/pswww/
-    References:
-    The Pan-STARRS1 Surveys, Chambers, K.C., et al. 2016, arXiv:1612.05560
-    Pan-STARRS Data Processing System, Magnier, E. A., et al. 2016,
-    arXiv:1612.05240
-    Pan-STARRS Pixel Processing: Detrending, Warping, Stacking, Waters, C.
-    Z., et al. 2016, arXiv:1612.05245
-    Pan-STARRS Pixel Analysis: Source Detection and Characterization,
-    Magnier, E. A., et al. 2016, arXiv:1612.05244
-    Pan-STARRS Photometric and Astrometric Calibration, Magnier, E. A., et
-    al. 2016, arXiv:1612.05242
-    The Pan-STARRS1 Database and Data Products, Flewelling, H. A., et al.
-    2016, arXiv:1612.05243
-
-    Catalogue curator:
-    SSDC - ASI Space Science Data Center
-    https://www.ssdc.asi.it/
-    Num. columns: 26
-    obj_name
-    obj_id
-    ra
-    dec
-    ra_error
-    dec_error
-    epoch_mean
-    g_mean_psf_mag
-    g_mean_psf_mag_error
-    g_flags
-    r_mean_psf_mag
-    r_mean_psf_mag_error
-    r_flags
-    i_mean_psf_mag
-    i_mean_psf_mag_error
-    i_flags
-    z_mean_psf_mag
-    z_mean_psf_mag_error
-    z_flags
-    y_mean_psf_mag
-    y_mean_psf_mag_error
-    y_flags
-    n_detections
-    zone_id
-    obj_info_flag
-    quality_flag
-
+```
 
 ## Writing queries
 
@@ -466,15 +382,17 @@ database, the query language is a dialect of SQL called ADQL.
 Here's an example of an ADQL query.
 
 
+```python
 
 ~~~
-query1 = """SELECT
+query1 = """SELECT 
 TOP 10
-source_id, ra, dec, parallax
+source_id, ra, dec, parallax 
 FROM gaiadr2.gaia_source
 """
 ~~~
 {: .language-python}
+```
 
 **Python note:** We use a [triple-quoted
 string](https://docs.python.org/3/tutorial/introduction.html#strings)
@@ -505,6 +423,7 @@ To run this query, we use the `Gaia` object, which represents our
 connection to the Gaia database, and invoke `launch_job`:
 
 
+```python
 
 ~~~
 job = Gaia.launch_job(query1)
@@ -517,11 +436,12 @@ job
 ~~~
 {: .output}
 
+```
 
 
 
 
-
+    
 
 
 
@@ -530,6 +450,7 @@ The result is an object that represents the job running on a Gaia server.
 If you print it, it displays metadata for the forthcoming results.
 
 
+```python
 
 ~~~
 print(job)
@@ -552,8 +473,9 @@ Output file: sync_20210315090602.xml.gz
 ~~~
 {: .output}
 
+```
 
-
+    
 
 Don't worry about `Results: None`.  That does not actually mean there
 are no results.
@@ -562,6 +484,7 @@ However, `Phase: COMPLETED` indicates that the job is complete, so we
 can get the results like this:
 
 
+```python
 
 ~~~
 results = job.get_results()
@@ -574,11 +497,12 @@ astropy.table.table.Table
 ~~~
 {: .output}
 
+```
 
 
 
 
-
+    
 
 
 
@@ -605,6 +529,7 @@ rows.  But these operations use Python syntax, not SQL.
 Jupyter knows how to display the contents of a `Table`.
 
 
+```python
 
 ~~~
 results
@@ -627,6 +552,7 @@ results
 ~~~
 {: .output}
 
+```
 
 
 
@@ -661,7 +587,7 @@ This information comes from the Gaia database, and has been stored in
 the Astropy `Table` by Astroquery.
 
 > ## Exercise
->
+> 
 > Read [the
 > documentation](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html)
 > of this table and choose a column that looks interesting to you.  Add
@@ -669,22 +595,23 @@ the Astropy `Table` by Astroquery.
 > the column you selected?  What is its data type?
 
 
+```python
 >
 > > ## Solution
-> >
+> > 
 > > ~~~
-> >
+> > 
 > > # Let's add
 > > #
 > > # radial_velocity : Radial velocity (double, Velocity[km/s] )
 > > #
-> > # Spectroscopic radial velocity in the solar barycentric
+> > # Spectroscopic radial velocity in the solar barycentric 
 > > # reference frame.
 > > #
-> > # The radial velocity provided is the median value of the
+> > # The radial velocity provided is the median value of the 
 > > # radial velocity measurements at all epochs.
-> >
-> > query = """SELECT
+> > 
+> > query = """SELECT 
 > > TOP 10
 > > source_id, ra, dec, parallax, radial_velocity
 > > FROM gaiadr2.gaia_source
@@ -693,8 +620,7 @@ the Astropy `Table` by Astroquery.
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-
-
+```
 
 ## Asynchronous queries
 
@@ -724,9 +650,10 @@ proper motions along the axes of `ra` and `dec`.
 * It uses a new keyword, `WHERE`.
 
 
+```python
 
 ~~~
-query2 = """SELECT
+query2 = """SELECT 
 TOP 3000
 source_id, ra, dec, pmra, pmdec, parallax
 FROM gaiadr2.gaia_source
@@ -734,6 +661,7 @@ WHERE parallax < 1
 """
 ~~~
 {: .language-python}
+```
 
 A `WHERE` clause indicates which rows we want; in this case, the query
 selects only rows "where" `parallax` is less than 1.  This has the
@@ -749,6 +677,7 @@ from the database.
 We use `launch_job_async` to submit an asynchronous query.
 
 
+```python
 
 ~~~
 job = Gaia.launch_job_async(query)
@@ -763,19 +692,21 @@ INFO: Query finished. [astroquery.utils.tap.core]
 ~~~
 {: .output}
 
+```
+
+    
 
 
 
 
-
-
-
+    
 
 
 
 And here are the results.
 
 
+```python
 
 ~~~
 results = job.get_results()
@@ -799,6 +730,7 @@ results
 ~~~
 {: .output}
 
+```
 
 
 
@@ -830,35 +762,36 @@ have "no physical meaning," but they can be a "useful diagnostic on
 the quality of the astrometric solution."
 
 > ## Exercise
->
+> 
 > The clauses in a query have to be in the right order.  Go back and
 > change the order of the clauses in `query2` and run it again.
 > The modified query should fail, but notice that you don't get much
 > useful debugging information.
->
+> 
 > For this reason, developing and debugging ADQL queries can be really
 > hard.  A few suggestions that might help:
->
+> 
 > * Whenever possible, start with a working query, either an example you
 > find online or a query you have used in the past.
->
+> 
 > * Make small changes and test each change before you continue.
->
+> 
 > * While you are debugging, use `TOP` to limit the number of rows in
 > the result.  That will make each test run faster, which reduces your
 > development time.
->
+> 
 > * Launching test queries synchronously might make them start faster, too.
 
 
+```python
 >
 > > ## Solution
-> >
+> > 
 > > ~~~
-> >
+> > 
 > > # In this example, the WHERE clause is in the wrong place
-> >
-> > query = """SELECT
+> > 
+> > query = """SELECT 
 > > TOP 3000
 > > WHERE parallax < 1
 > > source_id, ref_epoch, ra, dec, parallax
@@ -868,8 +801,7 @@ the quality of the astrometric solution."
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-
-
+```
 
 ## Operators
 
@@ -895,46 +827,46 @@ You can combine comparisons using the logical operators:
 * AND: true if both comparisons are true
 * OR: true if either or both comparisons are true
 
-Finally, you can use `NOT` to invert the result of a comparison.
+Finally, you can use `NOT` to invert the result of a comparison. 
 
 > ## Exercise
->
+> 
 > [Read about SQL operators
 > here](https://www.w3schools.com/sql/sql_operators.asp) and then modify
 > the previous query to select rows where `bp_rp` is between `-0.75` and
 > `2`.
 
 
+```python
 >
 > > ## Solution
-> >
+> > 
 > > ~~~
-> >
+> > 
 > > # Here's a solution using > and < operators
-> >
-> > query = """SELECT
+> > 
+> > query = """SELECT 
 > > TOP 10
 > > source_id, ref_epoch, ra, dec, parallax
 > > FROM gaiadr2.gaia_source
-> > WHERE parallax < 1
+> > WHERE parallax < 1 
 > >   AND bp_rp > -0.75 AND bp_rp < 2
 > > """
-> >
+> > 
 > > # And here's a solution using the BETWEEN operator
-> >
-> > query = """SELECT
+> > 
+> > query = """SELECT 
 > > TOP 10
 > > source_id, ref_epoch, ra, dec, parallax
 > > FROM gaiadr2.gaia_source
-> > WHERE parallax < 1
+> > WHERE parallax < 1 
 > >   AND bp_rp BETWEEN -0.75 AND 2
 > > """
 > > ~~~
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-
-
+```
 
 `bp_rp` contains BP-RP color, which is the difference between two
 other columns, `phot_bp_mean_mag` and `phot_rp_mean_mag`.
@@ -972,20 +904,23 @@ except the column names.
 Here's the list of columns we'll select.  
 
 
+```python
 
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec, parallax'
 ~~~
 {: .language-python}
+```
 
 And here's the base; it's a string that contains at least one format
 specifier in curly brackets (braces).
 
 
+```python
 
 ~~~
-query3_base = """SELECT
-TOP 10
+query3_base = """SELECT 
+TOP 10 
 {columns}
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
@@ -993,6 +928,7 @@ WHERE parallax < 1
 """
 ~~~
 {: .language-python}
+```
 
 This base query contains one format specifier, `{columns}`, which is a
 placeholder for the list of column names we will provide.
@@ -1001,11 +937,13 @@ To assemble the query, we invoke `format` on the base string and
 provide a keyword argument that assigns a value to `columns`.
 
 
+```python
 
 ~~~
 query3 = query3_base.format(columns=columns)
 ~~~
 {: .language-python}
+```
 
 In this example, the variable that contains the column names and the
 variable in the format specifier have the same name.
@@ -1015,6 +953,7 @@ The result is a string with line breaks.  If you display it, the line
 breaks appear as `\n`.
 
 
+```python
 
 ~~~
 query3
@@ -1026,17 +965,19 @@ query3
 ~~~
 {: .output}
 
+```
 
 
 
 
-
+    
 
 
 
 But if you print it, the line breaks appear as... line breaks.
 
 
+```python
 
 ~~~
 print(query3)
@@ -1044,8 +985,8 @@ print(query3)
 {: .language-python}
 
 ~~~
-SELECT
-TOP 10
+SELECT 
+TOP 10 
 source_id, ra, dec, pmra, pmdec
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
@@ -1055,14 +996,16 @@ WHERE parallax < 1
 ~~~
 {: .output}
 
+```
 
-
+    
 
 Notice that the format specifier has been replaced with the value of `columns`.
 
 Let's run it and see if it works:
 
 
+```python
 
 ~~~
 job = Gaia.launch_job(query3)
@@ -1086,10 +1029,12 @@ Owner: None
 ~~~
 {: .output}
 
+```
+
+    
 
 
-
-
+```python
 
 ~~~
 results = job.get_results()
@@ -1113,6 +1058,7 @@ results
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1139,29 +1085,30 @@ results
 Good so far.
 
 > ## Exercise
->
+> 
 > This query always selects sources with `parallax` less than 1.  But
 > suppose you want to take that upper bound as an input.
->
+> 
 > Modify `query3_base` to replace `1` with a format specifier like
 > `{max_parallax}`.  Now, when you call `format`, add a keyword argument
 > that assigns a value to `max_parallax`, and confirm that the format
 > specifier gets replaced with the value you provide.
 
 
+```python
 >
 > > ## Solution
-> >
+> > 
 > > ~~~
-> >
-> > query_base = """SELECT
+> > 
+> > query_base = """SELECT 
 > > TOP 10
 > > {columns}
 > > FROM gaiadr2.gaia_source
-> > WHERE parallax < {max_parallax} AND
+> > WHERE parallax < {max_parallax} AND 
 > > bp_rp BETWEEN -0.75 AND 2
 > > """
-> >
+> > 
 > > query = query_base.format(columns=columns,
 > >                           max_parallax=0.5)
 > > print(query)
@@ -1169,17 +1116,7 @@ Good so far.
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-
-
-
-    SELECT
-    TOP 10
-    source_id, ra, dec, pmra, pmdec
-    FROM gaiadr2.gaia_source
-    WHERE parallax < 0.5 AND
-    bp_rp BETWEEN -0.75 AND 2
-
-
+```
 
 ## Summary
 
@@ -1233,8 +1170,10 @@ the same variable name in more than one section.
 analysis into phases with one notebook per phase.
 
 
+```python
 
 ~~~
 
 ~~~
 {: .language-python}
+```

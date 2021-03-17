@@ -76,6 +76,7 @@ The following cell downloads the photometry data we created in the
 previous notebook.
 
 
+```python
 
 ~~~
 import os
@@ -88,8 +89,10 @@ if not os.path.exists(filename):
     print(download(filepath+filename))
 ~~~
 {: .language-python}
+```
 
 
+```python
 
 ~~~
 import pandas as pd
@@ -97,6 +100,7 @@ import pandas as pd
 candidate_df = pd.read_hdf(filename, 'candidate_df')
 ~~~
 {: .language-python}
+```
 
 ## Plotting photometry data
 
@@ -133,6 +137,7 @@ it has columns named `g_mean_psf_mag` and `i_mean_psf_mag`.
 
 
 
+```python
 
 ~~~
 import matplotlib.pyplot as plt
@@ -155,6 +160,7 @@ def plot_cmd(table):
     plt.xlabel('$Color (g-i)$')
 ~~~
 {: .language-python}
+```
 
 `plot_cmd` uses a new function, `invert_yaxis`, to invert the `y`
 axis, which is conventional when plotting magnitudes, since lower
@@ -184,6 +190,7 @@ it's not made available at the top level of the interface.
 Here's what the results look like.
 
 
+```python
 
 ~~~
 plot_cmd(candidate_df)
@@ -195,6 +202,7 @@ plot_cmd(candidate_df)
 ~~~
 {: .output}
 
+```
 
 
     
@@ -238,6 +246,7 @@ computed an isochrone with the following parameters:
 The following cell downloads the results:
 
 
+```python
 
 ~~~
 import os
@@ -250,11 +259,13 @@ if not os.path.exists(filename):
     print(download(filepath+filename))
 ~~~
 {: .language-python}
+```
 
 To read this file we'll download a Python module [from this
 repository](https://github.com/jieunchoi/MIST_codes).
 
 
+```python
 
 ~~~
 import os
@@ -267,10 +278,12 @@ if not os.path.exists(filename):
     print(download(filepath+filename))
 ~~~
 {: .language-python}
+```
 
 Now we can read the file:
 
 
+```python
 
 ~~~
 import read_mist_models
@@ -286,12 +299,14 @@ Reading in: MIST_iso_5fd2532653c27.iso.cmd
 ~~~
 {: .output}
 
+```
 
     
 
 The result is an `ISOCMD` object.
 
 
+```python
 
 ~~~
 type(iso)
@@ -303,6 +318,7 @@ read_mist_models.ISOCMD
 ~~~
 {: .output}
 
+```
 
 
 
@@ -314,6 +330,7 @@ read_mist_models.ISOCMD
 It contains a list of arrays, one for each isochrone.
 
 
+```python
 
 ~~~
 type(iso.isocmds)
@@ -325,6 +342,7 @@ list
 ~~~
 {: .output}
 
+```
 
 
 
@@ -336,6 +354,7 @@ list
 We only got one isochrone.
 
 
+```python
 
 ~~~
 len(iso.isocmds)
@@ -347,6 +366,7 @@ len(iso.isocmds)
 ~~~
 {: .output}
 
+```
 
 
 
@@ -358,15 +378,18 @@ len(iso.isocmds)
 So we can select it like this:
 
 
+```python
 
 ~~~
 iso_array = iso.isocmds[0]
 ~~~
 {: .language-python}
+```
 
 It's a NumPy array:
 
 
+```python
 
 ~~~
 type(iso_array)
@@ -378,6 +401,7 @@ numpy.ndarray
 ~~~
 {: .output}
 
+```
 
 
 
@@ -389,6 +413,7 @@ numpy.ndarray
 But it's an unusual NumPy array, because it contains names for the columns.
 
 
+```python
 
 ~~~
 iso_array.dtype
@@ -400,6 +425,7 @@ dtype([('EEP', '<i4'), ('isochrone_age_yr', '<f8'), ('initial_mass', '<f8'), ('s
 ~~~
 {: .output}
 
+```
 
 
 
@@ -411,6 +437,7 @@ dtype([('EEP', '<i4'), ('isochrone_age_yr', '<f8'), ('initial_mass', '<f8'), ('s
 Which means we can select columns using the bracket operator:
 
 
+```python
 
 ~~~
 iso_array['phase']
@@ -422,6 +449,7 @@ array([0., 0., 0., ..., 6., 6., 6.])
 ~~~
 {: .output}
 
+```
 
 
 
@@ -434,6 +462,7 @@ We can use `phase` to select the part of the isochrone for stars in
 the main sequence and red giant phases.
 
 
+```python
 
 ~~~
 phase_mask = (iso_array['phase'] >= 0) & (iso_array['phase'] < 3)
@@ -446,6 +475,7 @@ phase_mask.sum()
 ~~~
 {: .output}
 
+```
 
 
 
@@ -455,6 +485,7 @@ phase_mask.sum()
 
 
 
+```python
 
 ~~~
 main_sequence = iso_array[phase_mask]
@@ -467,6 +498,7 @@ len(main_sequence)
 ~~~
 {: .output}
 
+```
 
 
 
@@ -487,6 +519,7 @@ isochrone based on the estimated distance of GD-1.
 We can use the `Distance` object from Astropy to compute the distance modulus.
 
 
+```python
 
 ~~~
 import astropy.coordinates as coord
@@ -503,6 +536,7 @@ distmod
 ~~~
 {: .output}
 
+```
 
 
 
@@ -514,16 +548,19 @@ distmod
 Now we can compute the scaled magnitude and color of the isochrone.
 
 
+```python
 
 ~~~
 mag_g = main_sequence['PS_g'] + distmod
 color_g_i = main_sequence['PS_g'] - main_sequence['PS_i']
 ~~~
 {: .language-python}
+```
 
 Now we can plot it on the color-magnitude diagram like this.
 
 
+```python
 
 ~~~
 plot_cmd(candidate_df)
@@ -536,6 +573,7 @@ plt.plot(color_g_i, mag_g);
 ~~~
 {: .output}
 
+```
 
 
     
@@ -553,6 +591,7 @@ So we can save the data in an HDF5 file, we'll put it in a Pandas
 `DataFrame` first:
 
 
+```python
 
 ~~~
 import pandas as pd
@@ -575,6 +614,7 @@ iso_df.head()
 ~~~
 {: .output}
 
+```
 
 
 
@@ -636,12 +676,14 @@ iso_df.head()
 And then save it.
 
 
+```python
 
 ~~~
 filename = 'gd1_isochrone.hdf5'
 iso_df.to_hdf(filename, 'iso_df')
 ~~~
 {: .language-python}
+```
 
 ## Making a polygon
 
@@ -649,6 +691,7 @@ The following cell downloads the isochrone we made in the previous
 section, if necessary.
 
 
+```python
 
 ~~~
 import os
@@ -661,10 +704,12 @@ if not os.path.exists(filename):
     print(download(filepath+filename))
 ~~~
 {: .language-python}
+```
 
 Now we can read it back in.
 
 
+```python
 
 ~~~
 iso_df = pd.read_hdf(filename, 'iso_df')
@@ -682,6 +727,7 @@ iso_df.head()
 ~~~
 {: .output}
 
+```
 
 
 
@@ -743,6 +789,7 @@ iso_df.head()
 Here's what the isochrone looks like on the color-magnitude diagram.
 
 
+```python
 
 ~~~
 plot_cmd(candidate_df)
@@ -755,6 +802,7 @@ plt.plot(iso_df['color_g_i'], iso_df['mag_g']);
 ~~~
 {: .output}
 
+```
 
 
     
@@ -774,6 +822,7 @@ So we'll select the part of the isochrone that lies in the overdense region.
 `g_mask` is a Boolean Series that is `True` where `g` is between 18.0 and 21.5.
 
 
+```python
 
 ~~~
 g = iso_df['mag_g']
@@ -788,6 +837,7 @@ g_mask.sum()
 ~~~
 {: .output}
 
+```
 
 
 
@@ -799,6 +849,7 @@ g_mask.sum()
 We can use it to select the corresponding rows in `iso_df`:
 
 
+```python
 
 ~~~
 iso_masked = iso_df[g_mask]
@@ -816,6 +867,7 @@ iso_masked.head()
 ~~~
 {: .output}
 
+```
 
 
 
@@ -881,6 +933,7 @@ The original paper uses the following formulas to define the left and
 right boundaries.
 
 
+```python
 
 ~~~
 g = iso_masked['mag_g']
@@ -888,6 +941,7 @@ left_color = iso_masked['color_g_i'] - 0.4 * (g/28)**5
 right_color = iso_masked['color_g_i'] + 0.8 * (g/28)**5
 ~~~
 {: .language-python}
+```
 
 The intention is to define a polygon that gets wider as `g` increases,
 to reflect increasing uncertainty.
@@ -895,6 +949,7 @@ to reflect increasing uncertainty.
 But we can do about as well with a simpler formula:
 
 
+```python
 
 ~~~
 g = iso_masked['mag_g']
@@ -902,10 +957,12 @@ left_color = iso_masked['color_g_i'] - 0.06
 right_color = iso_masked['color_g_i'] + 0.12
 ~~~
 {: .language-python}
+```
 
 Here's what these boundaries look like:
 
 
+```python
 
 ~~~
 plot_cmd(candidate_df)
@@ -922,6 +979,7 @@ plt.legend();
 ~~~
 {: .output}
 
+```
 
 
     
@@ -942,6 +1000,7 @@ We'll use the following function, which takes two arrays and joins
 them front-to-back:
 
 
+```python
 
 ~~~
 import numpy as np
@@ -951,6 +1010,7 @@ def front_to_back(first, second):
     return np.append(first, second[::-1])
 ~~~
 {: .language-python}
+```
 
 `front_to_back` uses a "slice index" to reverse the elements of `second`.
 
@@ -973,6 +1033,7 @@ We can use `front_to_back` to make a loop that includes the elements
 of `left_color` and `right_color`:
 
 
+```python
 
 ~~~
 color_loop = front_to_back(left_color, right_color)
@@ -985,6 +1046,7 @@ color_loop.shape
 ~~~
 {: .output}
 
+```
 
 
 
@@ -996,6 +1058,7 @@ color_loop.shape
 And a corresponding loop with the elements of `g` in forward and reverse order.
 
 
+```python
 
 ~~~
 mag_loop = front_to_back(g, g)
@@ -1008,6 +1071,7 @@ mag_loop.shape
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1019,6 +1083,7 @@ mag_loop.shape
 Here's what the loop looks like.
 
 
+```python
 
 ~~~
 plot_cmd(candidate_df)
@@ -1031,6 +1096,7 @@ plt.plot(color_loop, mag_loop);
 ~~~
 {: .output}
 
+```
 
 
     
@@ -1042,6 +1108,7 @@ To make a `Polygon`, it will be convenient to put `color_loop` and
 `mag_loop` into a `DataFrame`:
 
 
+```python
 
 ~~~
 loop_df = pd.DataFrame()
@@ -1061,6 +1128,7 @@ loop_df.head()
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1122,6 +1190,7 @@ loop_df.head()
 Now we can pass `loop_df` to `Polygon`:
 
 
+```python
 
 ~~~
 from matplotlib.patches import Polygon
@@ -1136,6 +1205,7 @@ polygon
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1151,16 +1221,19 @@ To test it, we'll create a list with two points, one inside the
 polygon and one outside.
 
 
+```python
 
 ~~~
 points = [(0.4, 20), 
           (0.4, 16)]
 ~~~
 {: .language-python}
+```
 
 Now we can make sure `contains_points` does what we expect.
 
 
+```python
 
 ~~~
 inside = polygon.contains_points(points)
@@ -1173,6 +1246,7 @@ array([ True, False])
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1206,12 +1280,14 @@ So it is important to record the polygon as part of the data analysis pipeline.
 Here's how we can save it in an HDF file.
 
 
+```python
 
 ~~~
 filename = 'gd1_data.hdf'
 loop_df.to_hdf(filename, 'loop_df')
 ~~~
 {: .language-python}
+```
 
 ## Selecting based on photometry
 
@@ -1219,6 +1295,7 @@ Now let's see how many of the candidate stars are inside the polygon we chose.
 We'll put color and magnitude data from `candidate_df` into a new `DataFrame`:
 
 
+```python
 
 ~~~
 points = pd.DataFrame()
@@ -1240,6 +1317,7 @@ points.head()
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1301,6 +1379,7 @@ points.head()
 Which we can pass to `contains_points`:
 
 
+```python
 
 ~~~
 inside = polygon.contains_points(points)
@@ -1313,6 +1392,7 @@ array([False, False, False, ..., False, False, False])
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1325,6 +1405,7 @@ The result is a Boolean array.  We can use `sum` to see how many stars
 fall in the polygon.
 
 
+```python
 
 ~~~
 inside.sum()
@@ -1336,6 +1417,7 @@ inside.sum()
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1347,16 +1429,19 @@ inside.sum()
 Now we can use `inside` as a mask to select stars that fall inside the polygon.
 
 
+```python
 
 ~~~
 winner_df = candidate_df[inside]
 ~~~
 {: .language-python}
+```
 
 Let's make a color-magnitude plot one more time, highlighting the
 selected stars with green markers.
 
 
+```python
 
 ~~~
 plot_cmd(candidate_df)
@@ -1374,6 +1459,7 @@ plt.plot(x, y, 'go', markersize=0.5, alpha=0.5);
 ~~~
 {: .output}
 
+```
 
 
     
@@ -1387,6 +1473,7 @@ which means they have photometry data consistent with GD-1.
 Finally, we can plot the coordinates of the selected stars:
 
 
+```python
 
 ~~~
 plt.figure(figsize=(10,2.5))
@@ -1407,6 +1494,7 @@ plt.axis('equal');
 ~~~
 {: .output}
 
+```
 
 
     
@@ -1433,14 +1521,17 @@ represented accurately.
 Finally, let's write the selected stars to a file.
 
 
+```python
 
 ~~~
 filename = 'gd1_data.hdf'
 winner_df.to_hdf(filename, 'winner_df')
 ~~~
 {: .language-python}
+```
 
 
+```python
 
 ~~~
 from os.path import getsize
@@ -1455,6 +1546,7 @@ getsize(filename) / MB
 ~~~
 {: .output}
 
+```
 
 
 
@@ -1484,8 +1576,10 @@ the axes so the size of a degree is equal along both axes.
 needed to replicate the results.
 
 
+```python
 
 ~~~
 
 ~~~
 {: .language-python}
+```
