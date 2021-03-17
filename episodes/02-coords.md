@@ -79,13 +79,11 @@ which makes it possible to detect errors before they cause disasters.
 To use Astropy units, we import them like this:
 
 
-```python
 
 ~~~
 import astropy.units as u
 ~~~
 {: .language-python}
-```
 
 `u` is an object that contains most common units and all SI units.
 
@@ -93,7 +91,6 @@ You can use `dir` to list them, but you should also [read the
 documentation](https://docs.astropy.org/en/stable/units/).
 
 
-```python
 
 ~~~
 dir(u)
@@ -116,7 +113,6 @@ dir(u)
 ~~~
 {: .output}
 
-```
 
 
 
@@ -128,7 +124,6 @@ dir(u)
 To create a quantity, we multiply a value by a unit.
 
 
-```python
 
 ~~~
 angle = 10 * u.degree
@@ -141,7 +136,6 @@ astropy.units.quantity.Quantity
 ~~~
 {: .output}
 
-```
 
 
 
@@ -154,7 +148,6 @@ The result is a `Quantity` object.
 Jupyter knows how to display `Quantities` like this:
 
 
-```python
 
 ~~~
 angle
@@ -166,7 +159,6 @@ angle
 ~~~
 {: .output}
 
-```
 
 
 
@@ -179,7 +171,6 @@ Quantities provide a method called `to` that converts to other units.
 For example, we can compute the number of arcminutes in `angle`:
 
 
-```python
 
 ~~~
 angle_arcmin = angle.to(u.arcmin)
@@ -192,7 +183,6 @@ angle_arcmin
 ~~~
 {: .output}
 
-```
 
 
 
@@ -204,7 +194,6 @@ $600 \; \mathrm{{}^{\prime}}$
 If you add quantities, Astropy converts them to compatible units, if possible:
 
 
-```python
 
 ~~~
 angle + 30 * u.arcmin
@@ -216,7 +205,6 @@ angle + 30 * u.arcmin
 ~~~
 {: .output}
 
-```
 
 
 
@@ -239,11 +227,7 @@ causes a `UnitConversionError`.
 > Create a quantity that represents 5
 > [arcminutes](https://en.wikipedia.org/wiki/Minute_and_second_of_arc)
 > and assign it to a variable called `radius`.
-> 
-> Then convert it to degrees.
-
-
-```python
+> $1
 
 ~~~
 ## Solution
@@ -262,7 +246,6 @@ radius.to(u.degree)
 ~~~
 {: .output}
 
-```
 
     
 
@@ -283,7 +266,6 @@ that selects objects in a circular region centered at (88.8, 7.4) with
 a search radius of 5 arcmin (0.08333 deg).
 
 
-```python
 
 ~~~
 query_cone = """SELECT 
@@ -296,7 +278,6 @@ WHERE 1=CONTAINS(
 """
 ~~~
 {: .language-python}
-```
 
 This query uses three keywords that are specific to ADQL (not SQL):
 
@@ -317,7 +298,6 @@ A query like this is called a cone search because it selects stars in a cone.
 Here's how we run it.
 
 
-```python
 
 ~~~
 from astroquery.gaia import Gaia
@@ -343,7 +323,6 @@ Created TAP+ (v1.2.1) - Connection:
 ~~~
 {: .output}
 
-```
 
     
 
@@ -355,7 +334,6 @@ Created TAP+ (v1.2.1) - Connection:
 
 
 
-```python
 
 ~~~
 results = job.get_results()
@@ -379,7 +357,6 @@ results
 ~~~
 {: .output}
 
-```
 
 
 
@@ -412,11 +389,7 @@ results
 > that would be selected, but it does not return them.
 > 
 > In the previous query, replace `TOP 10 source_id` with
-> `COUNT(source_id)` and run the query again.  How many stars has Gaia
-> identified in the cone we searched?
-
-
-```python
+> `COUNT(source_id)` and run the query again.  How many stars has Gaia$1
 >
 > > ## Solution
 > > 
@@ -437,7 +410,6 @@ results
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-```
 
 ## Getting GD-1 Data
 
@@ -487,7 +459,6 @@ approximate coordinates of
 International Astronomical Union.
 
 
-```python
 
 ~~~
 from astropy.coordinates import SkyCoord
@@ -506,7 +477,6 @@ coord_icrs
 ~~~
 {: .output}
 
-```
 
 
 
@@ -519,7 +489,6 @@ coord_icrs
 For example, we can transform `coords_icrs` to Galactic coordinates like this:
 
 
-```python
 
 ~~~
 coord_galactic = coord_icrs.transform_to('galactic')
@@ -533,7 +502,6 @@ coord_galactic
 ~~~
 {: .output}
 
-```
 
 
 
@@ -555,7 +523,6 @@ which is "a Heliocentric spherical coordinate system defined by the
 orbit of the GD-1 stream".
 
 
-```python
 
 ~~~
 from gala.coordinates import GD1Koposov10
@@ -570,7 +537,6 @@ gd1_frame
 ~~~
 {: .output}
 
-```
 
 
 
@@ -583,7 +549,6 @@ We can use it to find the coordinates of Betelgeuse in the GD-1 frame,
 like this:
 
 
-```python
 
 ~~~
 coord_gd1 = coord_icrs.transform_to(gd1_frame)
@@ -597,7 +562,6 @@ coord_gd1
 ~~~
 {: .output}
 
-```
 
 
 
@@ -617,11 +581,7 @@ These are the coordinates shown in the figure from the paper, above.
 > 
 > 2. Transform it to the ICRS frame.
 > 
-> Hint: Because ICRS is built into Astropy, you can specify it by name,
-> `icrs` (as we did with `galactic`).
-
-
-```python
+> Hint: Because ICRS is built into Astropy, you can specify it by name,$1
 >
 > > ## Solution
 > > 
@@ -647,7 +607,6 @@ These are the coordinates shown in the figure from the paper, above.
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-```
 
 Notice that the origin of the GD-1 frame maps to `ra=200`, exactly, in
 ICRS.  That's by design.
@@ -661,7 +620,6 @@ The following variables define the boundaries of the rectangle in
 $\phi_1$ and $\phi_2$.
 
 
-```python
 
 ~~~
 phi1_min = -55 * u.degree
@@ -670,13 +628,11 @@ phi2_min = -8 * u.degree
 phi2_max = 4 * u.degree
 ~~~
 {: .language-python}
-```
 
 To create a rectangle, we'll use the following function, which takes
 the lower and upper bounds as parameters.
 
 
-```python
 
 ~~~
 def make_rectangle(x1, x2, y1, y2):
@@ -686,20 +642,17 @@ def make_rectangle(x1, x2, y1, y2):
     return xs, ys
 ~~~
 {: .language-python}
-```
 
 The return value is a tuple containing a list of coordinates in `phi1`
 followed by a list of coordinates in `phi2`.
 
 
-```python
 
 ~~~
 phi1_rect, phi2_rect = make_rectangle(
     phi1_min, phi1_max, phi2_min, phi2_max)
 ~~~
 {: .language-python}
-```
 
 `phi1_rect` and `phi2_rect` contains the coordinates of the corners of
 a rectangle in the GD-1 frame.
@@ -708,7 +661,6 @@ In order to use them in a Gaia query, we have to convert them to ICRS.
 First we'll put them into a `SkyCoord` object.
 
 
-```python
 
 ~~~
 corners = SkyCoord(phi1=phi1_rect, phi2=phi2_rect, frame=gd1_frame)
@@ -722,7 +674,6 @@ corners
 ~~~
 {: .output}
 
-```
 
 
 
@@ -734,7 +685,6 @@ corners
 Now we can use `transform_to` to convert to ICRS coordinates.
 
 
-```python
 
 ~~~
 corners_icrs = corners.transform_to('icrs')
@@ -750,7 +700,6 @@ corners_icrs
 ~~~
 {: .output}
 
-```
 
 
 
@@ -781,7 +730,6 @@ POLYGON(143.65, 20.98,
 `SkyCoord` provides `to_string`, which produces a list of strings.
 
 
-```python
 
 ~~~
 t = corners_icrs.to_string()
@@ -798,7 +746,6 @@ t
 ~~~
 {: .output}
 
-```
 
 
 
@@ -811,7 +758,6 @@ We can use the Python string function `join` to join `t` into a single
 string (with spaces between the pairs):
 
 
-```python
 
 ~~~
 s = ' '.join(t)
@@ -824,7 +770,6 @@ s
 ~~~
 {: .output}
 
-```
 
 
 
@@ -836,7 +781,6 @@ s
 That's almost what we need, but we have to replace the spaces with commas.
 
 
-```python
 
 ~~~
 s.replace(' ', ', ')
@@ -848,7 +792,6 @@ s.replace(' ', ', ')
 ~~~
 {: .output}
 
-```
 
 
 
@@ -860,7 +803,6 @@ s.replace(' ', ', ')
 The following function combines these steps.
 
 
-```python
 
 ~~~
 def skycoord_to_string(skycoord):
@@ -870,12 +812,10 @@ def skycoord_to_string(skycoord):
     return s.replace(' ', ', ')
 ~~~
 {: .language-python}
-```
 
 Here's how we use it.
 
 
-```python
 
 ~~~
 point_list = skycoord_to_string(corners_icrs)
@@ -888,7 +828,6 @@ point_list
 ~~~
 {: .output}
 
-```
 
 
 
@@ -903,18 +842,15 @@ Now we're ready to assemble the query.
 We need `columns` again (as we saw in the previous lesson).
 
 
-```python
 
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec, parallax'
 ~~~
 {: .language-python}
-```
 
 And here's the query base we used in the previous lesson:
 
 
-```python
 
 ~~~
 query3_base = """SELECT 
@@ -926,12 +862,10 @@ WHERE parallax < 1
 """
 ~~~
 {: .language-python}
-```
 
 Now we'll add a `WHERE` clause to select stars in the polygon we defined.
 
 
-```python
 
 ~~~
 query4_base = """SELECT
@@ -945,14 +879,12 @@ WHERE parallax < 1
 """
 ~~~
 {: .language-python}
-```
 
 The query base contains format specifiers for `columns` and `point_list`.
 
 We'll use `format` to fill in these values.
 
 
-```python
 
 ~~~
 query4 = query4_base.format(columns=columns, 
@@ -975,14 +907,12 @@ WHERE parallax < 1
 ~~~
 {: .output}
 
-```
 
     
 
 As always, we should take a minute to proof-read the query before we launch it.
 
 
-```python
 
 ~~~
 job = Gaia.launch_job_async(query4)
@@ -1006,14 +936,12 @@ Phase: COMPLETED
 ~~~
 {: .output}
 
-```
 
     
 
 Here are the results.
 
 
-```python
 
 ~~~
 results = job.get_results()
@@ -1037,7 +965,6 @@ results
 ~~~
 {: .output}
 
-```
 
 
 
@@ -1066,7 +993,6 @@ Finally, we can remove `TOP 10` run the query again.
 The result is bigger than our previous queries, so it will take a little longer.
 
 
-```python
 
 ~~~
 query5_base = """SELECT
@@ -1079,10 +1005,8 @@ WHERE parallax < 1
 """
 ~~~
 {: .language-python}
-```
 
 
-```python
 
 ~~~
 query5 = query5_base.format(columns=columns, 
@@ -1104,12 +1028,10 @@ WHERE parallax < 1
 ~~~
 {: .output}
 
-```
 
     
 
 
-```python
 
 ~~~
 job = Gaia.launch_job_async(query5)
@@ -1133,12 +1055,10 @@ Phase: COMPLETED
 ~~~
 {: .output}
 
-```
 
     
 
 
-```python
 
 ~~~
 results = job.get_results()
@@ -1151,7 +1071,6 @@ len(results)
 ~~~
 {: .output}
 
-```
 
 
 
@@ -1174,14 +1093,12 @@ pick up where we left off without running the previous query again.
 Astropy `Table` objects provide `write`, which writes the table to disk.
 
 
-```python
 
 ~~~
 filename = 'gd1_results.fits'
 results.write(filename, overwrite=True)
 ~~~
 {: .language-python}
-```
 
 Because the filename ends with `fits`, the table is written in the
 [FITS format](https://en.wikipedia.org/wiki/FITS), which preserves the
@@ -1193,7 +1110,6 @@ overwritten.
 We can use `getsize` to confirm that the file exists and check the size:
 
 
-```python
 
 ~~~
 from os.path import getsize
@@ -1208,7 +1124,6 @@ getsize(filename) / MB
 ~~~
 {: .output}
 
-```
 
 
 

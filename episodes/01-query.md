@@ -135,7 +135,6 @@ database](https://astroquery.readthedocs.io/en/latest/gaia/gaia.html).
 We can connect to the Gaia database like this:
 
 
-```python
 
 ~~~
 from astroquery.gaia import Gaia
@@ -157,7 +156,6 @@ Created TAP+ (v1.2.1) - Connection:
 ~~~
 {: .output}
 
-```
 
     
 
@@ -180,7 +178,6 @@ Gaia database.  With the option `only_names=True`, it loads
 information about the tables, called "metadata", not the data itself.
 
 
-```python
 
 ~~~
 tables = Gaia.load_tables(only_names=True)
@@ -195,14 +192,12 @@ INFO: Done. [astroquery.utils.tap.core]
 ~~~
 {: .output}
 
-```
 
     
 
 The following `for` loop prints the names of the tables.
 
 
-```python
 
 ~~~
 for table in tables:
@@ -226,7 +221,6 @@ external.skymapperdr2_master
 ~~~
 {: .output}
 
-```
 
     
 
@@ -246,7 +240,6 @@ single table.  The name of this function is misleading, because it
 only downloads metadata, not the contents of the table.
 
 
-```python
 
 ~~~
 meta = Gaia.load_table('gaiadr2.gaia_source')
@@ -263,7 +256,6 @@ Done.
 ~~~
 {: .output}
 
-```
 
     
 
@@ -280,7 +272,6 @@ it does not display the contents.
 To see the metadata, we have to print the object.
 
 
-```python
 
 ~~~
 print(meta)
@@ -299,7 +290,6 @@ Num. columns: 96
 ~~~
 {: .output}
 
-```
 
     
 
@@ -308,7 +298,6 @@ Num. columns: 96
 The following loop prints the names of the columns in the table.
 
 
-```python
 
 ~~~
 for column in meta.columns:
@@ -332,7 +321,6 @@ parallax_error
 ~~~
 {: .output}
 
-```
 
     
 
@@ -349,11 +337,7 @@ article](https://www.vox.com/future-perfect/2019/6/4/18650969/married-women-mise
 > 
 > One of the other tables we'll use is
 > `gaiadr2.panstarrs1_original_valid`.  Use `load_table` to get the
-> metadata for this table.  How many columns are there and what are
-> their names?
-
-
-```python
+> metadata for this table.  How many columns are there and what are$1
 >
 > > ## Solution
 > > 
@@ -368,7 +352,6 @@ article](https://www.vox.com/future-perfect/2019/6/4/18650969/married-women-mise
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-```
 
 ## Writing queries
 
@@ -382,7 +365,6 @@ database, the query language is a dialect of SQL called ADQL.
 Here's an example of an ADQL query.
 
 
-```python
 
 ~~~
 query1 = """SELECT 
@@ -392,7 +374,6 @@ FROM gaiadr2.gaia_source
 """
 ~~~
 {: .language-python}
-```
 
 **Python note:** We use a [triple-quoted
 string](https://docs.python.org/3/tutorial/introduction.html#strings)
@@ -423,7 +404,6 @@ To run this query, we use the `Gaia` object, which represents our
 connection to the Gaia database, and invoke `launch_job`:
 
 
-```python
 
 ~~~
 job = Gaia.launch_job(query1)
@@ -436,7 +416,6 @@ job
 ~~~
 {: .output}
 
-```
 
 
 
@@ -450,7 +429,6 @@ The result is an object that represents the job running on a Gaia server.
 If you print it, it displays metadata for the forthcoming results.
 
 
-```python
 
 ~~~
 print(job)
@@ -473,7 +451,6 @@ Output file: sync_20210315090602.xml.gz
 ~~~
 {: .output}
 
-```
 
     
 
@@ -484,7 +461,6 @@ However, `Phase: COMPLETED` indicates that the job is complete, so we
 can get the results like this:
 
 
-```python
 
 ~~~
 results = job.get_results()
@@ -497,7 +473,6 @@ astropy.table.table.Table
 ~~~
 {: .output}
 
-```
 
 
 
@@ -529,7 +504,6 @@ rows.  But these operations use Python syntax, not SQL.
 Jupyter knows how to display the contents of a `Table`.
 
 
-```python
 
 ~~~
 results
@@ -552,7 +526,6 @@ results
 ~~~
 {: .output}
 
-```
 
 
 
@@ -591,11 +564,7 @@ the Astropy `Table` by Astroquery.
 > Read [the
 > documentation](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html)
 > of this table and choose a column that looks interesting to you.  Add
-> the column name to the query and run it again.  What are the units of
-> the column you selected?  What is its data type?
-
-
-```python
+> the column name to the query and run it again.  What are the units of$1
 >
 > > ## Solution
 > > 
@@ -620,7 +589,6 @@ the Astropy `Table` by Astroquery.
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-```
 
 ## Asynchronous queries
 
@@ -650,7 +618,6 @@ proper motions along the axes of `ra` and `dec`.
 * It uses a new keyword, `WHERE`.
 
 
-```python
 
 ~~~
 query2 = """SELECT 
@@ -661,7 +628,6 @@ WHERE parallax < 1
 """
 ~~~
 {: .language-python}
-```
 
 A `WHERE` clause indicates which rows we want; in this case, the query
 selects only rows "where" `parallax` is less than 1.  This has the
@@ -677,7 +643,6 @@ from the database.
 We use `launch_job_async` to submit an asynchronous query.
 
 
-```python
 
 ~~~
 job = Gaia.launch_job_async(query)
@@ -692,7 +657,6 @@ INFO: Query finished. [astroquery.utils.tap.core]
 ~~~
 {: .output}
 
-```
 
     
 
@@ -706,7 +670,6 @@ INFO: Query finished. [astroquery.utils.tap.core]
 And here are the results.
 
 
-```python
 
 ~~~
 results = job.get_results()
@@ -730,7 +693,6 @@ results
 ~~~
 {: .output}
 
-```
 
 
 
@@ -779,11 +741,7 @@ the quality of the astrometric solution."
 > * While you are debugging, use `TOP` to limit the number of rows in
 > the result.  That will make each test run faster, which reduces your
 > development time.
-> 
-> * Launching test queries synchronously might make them start faster, too.
-
-
-```python
+> $1
 >
 > > ## Solution
 > > 
@@ -801,7 +759,6 @@ the quality of the astrometric solution."
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-```
 
 ## Operators
 
@@ -833,11 +790,7 @@ Finally, you can use `NOT` to invert the result of a comparison.
 > 
 > [Read about SQL operators
 > here](https://www.w3schools.com/sql/sql_operators.asp) and then modify
-> the previous query to select rows where `bp_rp` is between `-0.75` and
-> `2`.
-
-
-```python
+> the previous query to select rows where `bp_rp` is between `-0.75` and$1
 >
 > > ## Solution
 > > 
@@ -866,7 +819,6 @@ Finally, you can use `NOT` to invert the result of a comparison.
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-```
 
 `bp_rp` contains BP-RP color, which is the difference between two
 other columns, `phot_bp_mean_mag` and `phot_rp_mean_mag`.
@@ -904,19 +856,16 @@ except the column names.
 Here's the list of columns we'll select.  
 
 
-```python
 
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec, parallax'
 ~~~
 {: .language-python}
-```
 
 And here's the base; it's a string that contains at least one format
 specifier in curly brackets (braces).
 
 
-```python
 
 ~~~
 query3_base = """SELECT 
@@ -928,7 +877,6 @@ WHERE parallax < 1
 """
 ~~~
 {: .language-python}
-```
 
 This base query contains one format specifier, `{columns}`, which is a
 placeholder for the list of column names we will provide.
@@ -937,13 +885,11 @@ To assemble the query, we invoke `format` on the base string and
 provide a keyword argument that assigns a value to `columns`.
 
 
-```python
 
 ~~~
 query3 = query3_base.format(columns=columns)
 ~~~
 {: .language-python}
-```
 
 In this example, the variable that contains the column names and the
 variable in the format specifier have the same name.
@@ -953,7 +899,6 @@ The result is a string with line breaks.  If you display it, the line
 breaks appear as `\n`.
 
 
-```python
 
 ~~~
 query3
@@ -965,7 +910,6 @@ query3
 ~~~
 {: .output}
 
-```
 
 
 
@@ -977,7 +921,6 @@ query3
 But if you print it, the line breaks appear as... line breaks.
 
 
-```python
 
 ~~~
 print(query3)
@@ -996,7 +939,6 @@ WHERE parallax < 1
 ~~~
 {: .output}
 
-```
 
     
 
@@ -1005,7 +947,6 @@ Notice that the format specifier has been replaced with the value of `columns`.
 Let's run it and see if it works:
 
 
-```python
 
 ~~~
 job = Gaia.launch_job(query3)
@@ -1029,12 +970,10 @@ Owner: None
 ~~~
 {: .output}
 
-```
 
     
 
 
-```python
 
 ~~~
 results = job.get_results()
@@ -1058,7 +997,6 @@ results
 ~~~
 {: .output}
 
-```
 
 
 
@@ -1091,11 +1029,7 @@ Good so far.
 > 
 > Modify `query3_base` to replace `1` with a format specifier like
 > `{max_parallax}`.  Now, when you call `format`, add a keyword argument
-> that assigns a value to `max_parallax`, and confirm that the format
-> specifier gets replaced with the value you provide.
-
-
-```python
+> that assigns a value to `max_parallax`, and confirm that the format$1
 >
 > > ## Solution
 > > 
@@ -1116,7 +1050,6 @@ Good so far.
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-```
 
 ## Summary
 
@@ -1170,10 +1103,8 @@ the same variable name in more than one section.
 analysis into phases with one notebook per phase.
 
 
-```python
 
 ~~~
 
 ~~~
 {: .language-python}
-```

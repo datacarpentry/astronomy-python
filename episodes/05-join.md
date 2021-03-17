@@ -133,7 +133,6 @@ Before we get to the `JOIN` operation, let's explore these tables.
 Here's the metadata for `panstarrs1_best_neighbour`.
 
 
-```python
 
 ~~~
 from astroquery.gaia import Gaia
@@ -158,12 +157,10 @@ Retrieving table 'gaiadr2.panstarrs1_best_neighbour'
 ~~~
 {: .output}
 
-```
 
     
 
 
-```python
 
 ~~~
 print(meta)
@@ -181,14 +178,12 @@ Num. columns: 7
 ~~~
 {: .output}
 
-```
 
     
 
 And here are the columns.
 
 
-```python
 
 ~~~
 for column in meta.columns:
@@ -208,7 +203,6 @@ gaia_astrometric_params
 ~~~
 {: .output}
 
-```
 
     
 
@@ -236,7 +230,6 @@ source in Gaia and the corresponding source in Pan-STARRS.
 Here's a query that selects these columns and returns the first 5 rows.
 
 
-```python
 
 ~~~
 query = """SELECT 
@@ -246,10 +239,8 @@ FROM gaiadr2.panstarrs1_best_neighbour
 """
 ~~~
 {: .language-python}
-```
 
 
-```python
 
 ~~~
 job = Gaia.launch_job_async(query=query)
@@ -262,12 +253,10 @@ INFO: Query finished. [astroquery.utils.tap.core]
 ~~~
 {: .output}
 
-```
 
     
 
 
-```python
 
 ~~~
 results = job.get_results()
@@ -288,7 +277,6 @@ results
 ~~~
 {: .output}
 
-```
 
 
 
@@ -311,7 +299,6 @@ results
 Here's the metadata for the table that contains the Pan-STARRS data.
 
 
-```python
 
 ~~~
 meta = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
@@ -326,12 +313,10 @@ Done.
 ~~~
 {: .output}
 
-```
 
     
 
 
-```python
 
 ~~~
 print(meta)
@@ -354,14 +339,12 @@ entries listed in the original ObjectThin table.
 ~~~
 {: .output}
 
-```
 
     
 
 And here are the columns.
 
 
-```python
 
 ~~~
 for column in meta.columns:
@@ -385,7 +368,6 @@ r_mean_psf_mag
 ~~~
 {: .output}
 
-```
 
     
 
@@ -403,7 +385,6 @@ the best neighbor table.
 Here's a query that selects these variables and returns the first 5 rows.
 
 
-```python
 
 ~~~
 query = """SELECT 
@@ -413,10 +394,8 @@ FROM gaiadr2.panstarrs1_original_valid
 """
 ~~~
 {: .language-python}
-```
 
 
-```python
 
 ~~~
 job = Gaia.launch_job_async(query=query)
@@ -429,12 +408,10 @@ INFO: Query finished. [astroquery.utils.tap.core]
 ~~~
 {: .output}
 
-```
 
     
 
 
-```python
 
 ~~~
 results = job.get_results()
@@ -456,7 +433,6 @@ results
 ~~~
 {: .output}
 
-```
 
 
 
@@ -502,7 +478,6 @@ Now let's get to the details of performing a `JOIN` operation.
 As a starting place, let's go all the way back to the cone search from Lesson 2.
 
 
-```python
 
 ~~~
 query_cone = """SELECT 
@@ -515,12 +490,10 @@ WHERE 1=CONTAINS(
 """
 ~~~
 {: .language-python}
-```
 
 And let's run it, to make sure we have a working query to build on.
 
 
-```python
 
 ~~~
 from astroquery.gaia import Gaia
@@ -535,12 +508,10 @@ INFO: Query finished. [astroquery.utils.tap.core]
 ~~~
 {: .output}
 
-```
 
     
 
 
-```python
 
 ~~~
 results = job.get_results()
@@ -564,7 +535,6 @@ results
 ~~~
 {: .output}
 
-```
 
 
 
@@ -591,7 +561,6 @@ Now we can start adding features.
 First, let's replace `source_id` with a format specifier, `columns`: 
 
 
-```python
 
 ~~~
 query_base = """SELECT 
@@ -603,12 +572,10 @@ WHERE 1=CONTAINS(
 """
 ~~~
 {: .language-python}
-```
 
 Here are the columns we want from the Gaia table, again. 
 
 
-```python
 
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec'
@@ -630,14 +597,12 @@ WHERE 1=CONTAINS(
 ~~~
 {: .output}
 
-```
 
     
 
 And let's run the query again.
 
 
-```python
 
 ~~~
 job = Gaia.launch_job_async(query=query)
@@ -650,12 +615,10 @@ INFO: Query finished. [astroquery.utils.tap.core]
 ~~~
 {: .output}
 
-```
 
     
 
 
-```python
 
 ~~~
 results = job.get_results()
@@ -679,7 +642,6 @@ results
 ~~~
 {: .output}
 
-```
 
 
 
@@ -731,7 +693,6 @@ column from the Gaia table with the `source_id` column from the best
 neighbor table.
 
 
-```python
 
 ~~~
 query_base = """SELECT 
@@ -745,7 +706,6 @@ WHERE 1=CONTAINS(
 """
 ~~~
 {: .language-python}
-```
 
 **SQL detail:** In this example, the `ON` column has the same name in
 both tables, so we could replace the `ON` clause with a simpler
@@ -763,7 +723,6 @@ Here's the complete query, including the columns we want from the Gaia
 and best neighbor tables.
 
 
-```python
 
 ~~~
 column_list = ['gaia.source_id',
@@ -795,12 +754,10 @@ WHERE 1=CONTAINS(
 ~~~
 {: .output}
 
-```
 
     
 
 
-```python
 
 ~~~
 job = Gaia.launch_job_async(query=query)
@@ -813,12 +770,10 @@ INFO: Query finished. [astroquery.utils.tap.core]
 ~~~
 {: .output}
 
-```
 
     
 
 
-```python
 
 ~~~
 results = job.get_results()
@@ -842,7 +797,6 @@ results
 ~~~
 {: .output}
 
-```
 
 
 
@@ -901,7 +855,6 @@ Add `g_mean_psf_mag` and `i_mean_psf_mag` to the column list, and run the query.
 The result should contain 490 rows and 9 columns.
 
 
-```python
 >
 > > ## Solution
 > > 
@@ -941,7 +894,6 @@ The result should contain 490 rows and 9 columns.
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-```
 
 ## Selecting by coordinates and proper motion
 
@@ -952,7 +904,6 @@ proper motion.
 Here's `query6_base` from the previous lesson.
 
 
-```python
 
 ~~~
 query6_base = """SELECT 
@@ -967,12 +918,10 @@ WHERE parallax < 1
 """
 ~~~
 {: .language-python}
-```
 
 Let's reload the Pandas `Series` that contains `point_list` and `pm_point_list`.
 
 
-```python
 
 ~~~
 import pandas as pd
@@ -990,7 +939,6 @@ dtype: object
 ~~~
 {: .output}
 
-```
 
 
 
@@ -1002,7 +950,6 @@ dtype: object
 Now we can assemble the query.
 
 
-```python
 
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec'
@@ -1030,14 +977,12 @@ WHERE parallax < 1
 ~~~
 {: .output}
 
-```
 
     
 
 Again, let's run it to make sure we are starting with a working query.
 
 
-```python
 
 ~~~
 job = Gaia.launch_job_async(query=query6)
@@ -1050,12 +995,10 @@ INFO: Query finished. [astroquery.utils.tap.core]
 ~~~
 {: .output}
 
-```
 
     
 
 
-```python
 
 ~~~
 results = job.get_results()
@@ -1079,7 +1022,6 @@ results
 ~~~
 {: .output}
 
-```
 
 
 
@@ -1123,11 +1065,7 @@ results
 > 
 > Hint: Make sure you use qualified column names everywhere!
 > 
-> Run your query and download the results.  The table you get should
-> have 3725 rows and 9 columns.
-
-
-```python
+> Run your query and download the results.  The table you get should$1
 >
 > > ## Solution
 > > 
@@ -1164,7 +1102,6 @@ results
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-```
 
 ## Checking the match
 
@@ -1173,7 +1110,6 @@ To get more information about the matching process, we can inspect
 how many stars in Pan-STARRS are equally likely matches.
 
 
-```python
 
 ~~~
 results['best_neighbour_multiplicity']
@@ -1196,7 +1132,6 @@ results['best_neighbour_multiplicity']
 ~~~
 {: .output}
 
-```
 
 
 
@@ -1241,7 +1176,6 @@ this column to a Pandas `Series` and use `describe`, which we saw in
 in Lesson 3.
 
 
-```python
 
 ~~~
 import pandas as pd
@@ -1264,7 +1198,6 @@ dtype: float64
 ~~~
 {: .output}
 
-```
 
 
 
@@ -1280,7 +1213,6 @@ Similarly, `number_of_mates` indicates the number of *other* stars in
 Gaia that match with the same star in Pan-STARRS.
 
 
-```python
 
 ~~~
 mates = pd.Series(results['number_of_mates'])
@@ -1301,7 +1233,6 @@ dtype: float64
 ~~~
 {: .output}
 
-```
 
 
 
@@ -1324,7 +1255,6 @@ Here's the function we've used to transform the results from ICRS to
 GD-1 coordinates.
 
 
-```python
 
 ~~~
 import astropy.units as u
@@ -1359,23 +1289,19 @@ def make_dataframe(table):
     return df
 ~~~
 {: .language-python}
-```
 
 Now can transform the result from the last query.
 
 
-```python
 
 ~~~
 candidate_df = make_dataframe(results)
 ~~~
 {: .language-python}
-```
 
 And see how it looks.
 
 
-```python
 
 ~~~
 import matplotlib.pyplot as plt
@@ -1394,7 +1320,6 @@ plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .output}
 
-```
 
 
     
@@ -1413,7 +1338,6 @@ without running this query again.
 The HDF file should already exist, so we'll add `candidate_df` to it.
 
 
-```python
 
 ~~~
 filename = 'gd1_data.hdf'
@@ -1421,12 +1345,10 @@ filename = 'gd1_data.hdf'
 candidate_df.to_hdf(filename, 'candidate_df')
 ~~~
 {: .language-python}
-```
 
 We can use `getsize` to confirm that the file exists and check the size:
 
 
-```python
 
 ~~~
 from os.path import getsize
@@ -1441,7 +1363,6 @@ getsize(filename) / MB
 ~~~
 {: .output}
 
-```
 
 
 
@@ -1484,18 +1405,15 @@ Also, CSV files tend to be big, and slow to read and write.
 With those caveats, here's how to write one:
 
 
-```python
 
 ~~~
 candidate_df.to_csv('gd1_data.csv')
 ~~~
 {: .language-python}
-```
 
 We can check the file size like this:
 
 
-```python
 
 ~~~
 getsize('gd1_data.csv') / MB
@@ -1507,7 +1425,6 @@ getsize('gd1_data.csv') / MB
 ~~~
 {: .output}
 
-```
 
 
 
@@ -1519,7 +1436,6 @@ getsize('gd1_data.csv') / MB
 We can see the first few lines like this:
 
 
-```python
 
 ~~~
 def head(filename, n=3):
@@ -1529,10 +1445,8 @@ def head(filename, n=3):
             print(next(fp))
 ~~~
 {: .language-python}
-```
 
 
-```python
 
 ~~~
 head('gd1_data.csv')
@@ -1550,7 +1464,6 @@ head('gd1_data.csv')
 ~~~
 {: .output}
 
-```
 
     
 
@@ -1559,18 +1472,15 @@ The CSV file contains the names of the columns, but not the data types.
 We can read the CSV file back like this:
 
 
-```python
 
 ~~~
 read_back_csv = pd.read_csv('gd1_data.csv')
 ~~~
 {: .language-python}
-```
 
 Let's compare the first few rows of `candidate_df` and `read_back_csv`
 
 
-```python
 
 ~~~
 candidate_df.head(3)
@@ -1593,7 +1503,6 @@ candidate_df.head(3)
 ~~~
 {: .output}
 
-```
 
 
 
@@ -1687,7 +1596,6 @@ candidate_df.head(3)
 
 
 
-```python
 
 ~~~
 read_back_csv.head(3)
@@ -1710,7 +1618,6 @@ read_back_csv.head(3)
 ~~~
 {: .output}
 
-```
 
 
 
@@ -1831,10 +1738,8 @@ is, it can be read by practically any application that works with
 data.
 
 
-```python
 
 ~~~
 
 ~~~
 {: .language-python}
-```
