@@ -67,6 +67,7 @@ The following cells download the data from the previous lesson, if
 necessary, and load it into a Pandas `DataFrame`.
 
 
+```python
 
 ~~~
 from os.path import basename, exists
@@ -82,8 +83,10 @@ download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
          'data/gd1_data.hdf')
 ~~~
 {: .language-python}
+```
 
 
+```python
 
 ~~~
 import pandas as pd
@@ -93,6 +96,7 @@ centerline_df = pd.read_hdf(filename, 'centerline_df')
 selected_df = pd.read_hdf(filename, 'selected_df')
 ~~~
 {: .language-python}
+```
 
 ## Selection by proper motion
 
@@ -126,6 +130,7 @@ As a reminder, here's the rectangle we selected based on proper motion
 in the `GD1Koposov10` frame.
 
 
+```python
 
 ~~~
 pm1_min = -8.9
@@ -134,8 +139,10 @@ pm2_min = -2.2
 pm2_max =  1.0
 ~~~
 {: .language-python}
+```
 
 
+```python
 
 ~~~
 def make_rectangle(x1, x2, y1, y2):
@@ -145,19 +152,23 @@ def make_rectangle(x1, x2, y1, y2):
     return xs, ys
 ~~~
 {: .language-python}
+```
 
 
+```python
 
 ~~~
 pm1_rect, pm2_rect = make_rectangle(
     pm1_min, pm1_max, pm2_min, pm2_max)
 ~~~
 {: .language-python}
+```
 
 Since we'll need to plot proper motion several times, we'll use the
 following function.
 
 
+```python
 
 ~~~
 import matplotlib.pyplot as plt
@@ -178,6 +189,7 @@ def plot_proper_motion(df):
     plt.ylim(-10, 10)
 ~~~
 {: .language-python}
+```
 
 The following figure shows:
 
@@ -188,6 +200,7 @@ The following figure shows:
 * The stars inside the rectangle highlighted in green.
 
 
+```python
 
 ~~~
 plot_proper_motion(centerline_df)
@@ -205,6 +218,7 @@ plt.plot(x, y, 'gx', markersize=0.3, alpha=0.3);
 ~~~
 {: .output}
 
+```
 
 
     
@@ -216,6 +230,7 @@ Now we'll make the same plot using proper motions in the ICRS frame,
 which are stored in columns `pmra` and `pmdec`.
 
 
+```python
 
 ~~~
 x = centerline_df['pmra']
@@ -239,6 +254,7 @@ plt.ylim([-20, 5]);
 ~~~
 {: .output}
 
+```
 
 
     
@@ -264,6 +280,7 @@ To use it, we'll select columns `pmra` and `pmdec` and convert them to
 a NumPy array.
 
 
+```python
 
 ~~~
 import numpy as np
@@ -278,6 +295,7 @@ points.shape
 ~~~
 {: .output}
 
+```
 
 
 
@@ -298,6 +316,7 @@ We'll pass the points to `ConvexHull`, which returns an object that
 contains the results.
 
 
+```python
 
 ~~~
 from scipy.spatial import ConvexHull
@@ -312,6 +331,7 @@ hull
 ~~~
 {: .output}
 
+```
 
 
 
@@ -324,6 +344,7 @@ hull
 perimeter of the hull.
 
 
+```python
 
 ~~~
 hull.vertices
@@ -336,6 +357,7 @@ array([ 692,  873,  141,  303,   42,  622,   45,   83,  127,  182, 1006,
 ~~~
 {: .output}
 
+```
 
 
 
@@ -348,6 +370,7 @@ We can use them as an index into the original array to select the
 corresponding rows.
 
 
+```python
 
 ~~~
 pm_vertices = points[hull.vertices]
@@ -371,6 +394,7 @@ array([[ -4.05037121, -14.75623261],
 ~~~
 {: .output}
 
+```
 
 
 
@@ -382,11 +406,13 @@ array([[ -4.05037121, -14.75623261],
 To plot the resulting polygon, we have to pull out the x and y coordinates.
 
 
+```python
 
 ~~~
 pmra_poly, pmdec_poly = np.transpose(pm_vertices)
 ~~~
 {: .language-python}
+```
 
 This use of `transpose` is a useful NumPy idiom.  Because
 `pm_vertices` has two columns, its [matrix
@@ -397,6 +423,7 @@ The following figure shows proper motion in ICRS again, along with the
 convex hull we just computed.
 
 
+```python
 
 ~~~
 x = centerline_df['pmra']
@@ -422,6 +449,7 @@ plt.ylim([-20, 5]);
 ~~~
 {: .output}
 
+```
 
 
     
@@ -437,6 +465,7 @@ The next step is to use it as part of an ADQL query.
 In Lesson 2 we used the following query to select stars in a polygonal region.
 
 
+```python
 
 ~~~
 query5_base = """SELECT
@@ -449,6 +478,7 @@ WHERE parallax < 1
 """
 ~~~
 {: .language-python}
+```
 
 In this lesson we'll make two changes:
 
@@ -460,6 +490,7 @@ the polygon we just computed, `pm_vertices`.
 Here are the coordinates of the larger rectangle in the GD-1 frame.
 
 
+```python
 
 ~~~
 import astropy.units as u
@@ -470,21 +501,25 @@ phi2_min = -5 * u.degree
 phi2_max = 5 * u.degree
 ~~~
 {: .language-python}
+```
 
 We selected these bounds by trial and error, defining the largest
 region we can process in a single query.
 
 
+```python
 
 ~~~
 phi1_rect, phi2_rect = make_rectangle(
     phi1_min, phi1_max, phi2_min, phi2_max)
 ~~~
 {: .language-python}
+```
 
 Here's how we transform it to ICRS, as we saw in Lesson 2.
 
 
+```python
 
 ~~~
 from gala.coordinates import GD1Koposov10
@@ -498,12 +533,14 @@ corners = SkyCoord(phi1=phi1_rect,
 corners_icrs = corners.transform_to('icrs')
 ~~~
 {: .language-python}
+```
 
 To use `corners_icrs` as part of an ADQL query, we have to convert it
 to a string.
 Here's the function from Lesson 2 we used to do that.
 
 
+```python
 
 ~~~
 def skycoord_to_string(skycoord):
@@ -513,8 +550,10 @@ def skycoord_to_string(skycoord):
     return s.replace(' ', ', ')
 ~~~
 {: .language-python}
+```
 
 
+```python
 
 ~~~
 point_list = skycoord_to_string(corners_icrs)
@@ -527,6 +566,7 @@ point_list
 ~~~
 {: .output}
 
+```
 
 
 
@@ -538,16 +578,19 @@ point_list
 Here are the columns we want to select.
 
 
+```python
 
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec'
 ~~~
 {: .language-python}
+```
 
 Now we have everything we need to assemble the query.
 
 
 
+```python
 
 ~~~
 query5 = query5_base.format(columns=columns, 
@@ -569,6 +612,7 @@ WHERE parallax < 1
 ~~~
 {: .output}
 
+```
 
     
 
@@ -587,6 +631,7 @@ to a string.
 Using `flatten` and `array2string`, we can almost get the format we need.
 
 
+```python
 
 ~~~
 s = np.array2string(pm_vertices.flatten(), 
@@ -601,6 +646,7 @@ s
 ~~~
 {: .output}
 
+```
 
 
 
@@ -612,6 +658,7 @@ s
 We just have to remove the brackets.
 
 
+```python
 
 ~~~
 pm_point_list = s.strip('[]')
@@ -624,6 +671,7 @@ pm_point_list
 ~~~
 {: .output}
 
+```
 
 
 
@@ -639,6 +687,7 @@ pm_point_list
 > `pmdec`, fall within the polygon defined by `pm_point_list`.
 
 
+```python
 >
 > > ## Solution
 > > 
@@ -658,8 +707,7 @@ pm_point_list
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-
-
+```
 
 > ## Exercise
 > 
@@ -667,6 +715,7 @@ pm_point_list
 > the values of `columns`, `point_list`, and `pm_point_list`.
 
 
+```python
 >
 > > ## Solution
 > > 
@@ -680,24 +729,12 @@ pm_point_list
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-
-
-
-    SELECT 
-    source_id, ra, dec, pmra, pmdec
-    FROM gaiadr2.gaia_source
-    WHERE parallax < 1
-      AND bp_rp BETWEEN -0.75 AND 2 
-      AND 1 = CONTAINS(POINT(ra, dec), 
-                       POLYGON(135.306, 8.39862, 126.51, 13.4449, 163.017, 54.2424, 172.933, 46.4726, 135.306, 8.39862))
-      AND 1 = CONTAINS(POINT(pmra, pmdec),
-                       POLYGON( -4.05037121,-14.75623261, -3.41981085,-14.72365546, -3.03521988,-14.44357135, -2.26847919,-13.7140236 , -2.61172203,-13.24797471, -2.73471401,-13.09054471, -3.19923146,-12.5942653 , -3.34082546,-12.47611926, -5.67489413,-11.16083338, -5.95159272,-11.10547884, -6.42394023,-11.05981295, -7.09631023,-11.95187806, -7.30641519,-12.24559977, -7.04016696,-12.88580702, -6.00347705,-13.75912098, -4.42442296,-14.74641176))
-    
-
+```
 
 Now we can run the query like this:
 
 
+```python
 
 ~~~
 from astroquery.gaia import Gaia
@@ -723,12 +760,14 @@ INFO: Query finished. [astroquery.utils.tap.core]
 ~~~
 {: .output}
 
+```
 
     
 
 And get the results.
 
 
+```python
 
 ~~~
 candidate_table = job.get_results()
@@ -741,6 +780,7 @@ len(candidate_table)
 ~~~
 {: .output}
 
+```
 
 
 
@@ -762,6 +802,7 @@ We can do the same thing with a Pandas `Series`.
 To make one, we'll start with a dictionary:
 
 
+```python
 
 ~~~
 d = dict(point_list=point_list, pm_point_list=pm_point_list)
@@ -775,6 +816,7 @@ d
 ~~~
 {: .output}
 
+```
 
 
 
@@ -786,6 +828,7 @@ d
 And use it to initialize a `Series.`
 
 
+```python
 
 ~~~
 point_series = pd.Series(d)
@@ -800,6 +843,7 @@ dtype: object
 ~~~
 {: .output}
 
+```
 
 
 
@@ -811,18 +855,21 @@ dtype: object
 Now we can save it in the usual way.
 
 
+```python
 
 ~~~
 filename = 'gd1_data.hdf'
 point_series.to_hdf(filename, 'point_series')
 ~~~
 {: .language-python}
+```
 
 ## Plotting one more time
 
 Let's see what the results look like.
 
 
+```python
 
 ~~~
 x = candidate_table['ra']
@@ -839,6 +886,7 @@ plt.ylabel('dec (degree ICRS)');
 ~~~
 {: .output}
 
+```
 
 
     
@@ -855,6 +903,7 @@ Here's the code we used to transform the coordinates and make a Pandas
 `DataFrame`, wrapped in a function.
 
 
+```python
 
 ~~~
 from gala.coordinates import reflex_correct
@@ -886,19 +935,23 @@ def make_dataframe(table):
     return df
 ~~~
 {: .language-python}
+```
 
 Here's how we use it:
 
 
+```python
 
 ~~~
 candidate_df = make_dataframe(candidate_table)
 ~~~
 {: .language-python}
+```
 
 And let's see the results.
 
 
+```python
 
 ~~~
 x = candidate_df['phi1']
@@ -915,6 +968,7 @@ plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .output}
 
+```
 
 
     
@@ -968,8 +1022,10 @@ the data.
 
 
 
+```python
 
 ~~~
 
 ~~~
 {: .language-python}
+```
