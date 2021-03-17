@@ -635,7 +635,8 @@ pm_point_list
 > ## Exercise
 > 
 > Define `query6_base`, starting with `query5_base` and adding a new
-> clause to select stars whose coordinates of proper motion, `pmra` and$1
+> clause to select stars whose coordinates of proper motion, `pmra` and
+> `pmdec`, fall within the polygon defined by `pm_point_list`.
 >
 > > ## Solution
 > > 
@@ -658,7 +659,8 @@ pm_point_list
 
 > ## Exercise
 > 
-> Use `format` to format `query6_base` and define `query6`, filling in$1
+> Use `format` to format `query6_base` and define `query6`, filling in
+> the values of `columns`, `point_list`, and `pm_point_list`.
 >
 > > ## Solution
 > > 

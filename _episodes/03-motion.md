@@ -475,7 +475,8 @@ transparency of the points.
 > here](https://www.cosmos.esa.int/web/gaia/scanning-law).  The dataset
 > we are using, [Gaia Data Release
 > 2](https://www.cosmos.esa.int/web/gaia/dr2), covers 22 months of
-> observations; during this time, some parts of the sky were scanned$1
+> observations; during this time, some parts of the sky were scanned
+> more than others.
 >
 > > ## Solution
 > > 
@@ -1071,7 +1072,8 @@ max    7.974418e+17     152.777393      34.285481     104.319923
 > Review the summary statistics in this table.
 > 
 > * Do the values make sense based on what you know about the context?
-> $1
+> 
+> * Do you see any values that seem problematic, or evidence of other data issues?
 >
 > > ## Solution
 > > 
@@ -1700,7 +1702,8 @@ should overwrite it.
 > 
 > We're going to need `centerline_df` later as well.  Write a line of
 > code to add it as a second Dataset in the HDF5 file.
-> $1
+> 
+> Hint: Since the file already exists, you should *not* use `mode='w'`.
 >
 > > ## Solution
 > > 

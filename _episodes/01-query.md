@@ -337,7 +337,8 @@ article](https://www.vox.com/future-perfect/2019/6/4/18650969/married-women-mise
 > 
 > One of the other tables we'll use is
 > `gaiadr2.panstarrs1_original_valid`.  Use `load_table` to get the
-> metadata for this table.  How many columns are there and what are$1
+> metadata for this table.  How many columns are there and what are
+> their names?
 >
 > > ## Solution
 > > 
@@ -564,7 +565,8 @@ the Astropy `Table` by Astroquery.
 > Read [the
 > documentation](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html)
 > of this table and choose a column that looks interesting to you.  Add
-> the column name to the query and run it again.  What are the units of$1
+> the column name to the query and run it again.  What are the units of
+> the column you selected?  What is its data type?
 >
 > > ## Solution
 > > 
@@ -741,7 +743,8 @@ the quality of the astrometric solution."
 > * While you are debugging, use `TOP` to limit the number of rows in
 > the result.  That will make each test run faster, which reduces your
 > development time.
-> $1
+> 
+> * Launching test queries synchronously might make them start faster, too.
 >
 > > ## Solution
 > > 
@@ -790,7 +793,8 @@ Finally, you can use `NOT` to invert the result of a comparison.
 > 
 > [Read about SQL operators
 > here](https://www.w3schools.com/sql/sql_operators.asp) and then modify
-> the previous query to select rows where `bp_rp` is between `-0.75` and$1
+> the previous query to select rows where `bp_rp` is between `-0.75` and
+> `2`.
 >
 > > ## Solution
 > > 
@@ -1029,7 +1033,8 @@ Good so far.
 > 
 > Modify `query3_base` to replace `1` with a format specifier like
 > `{max_parallax}`.  Now, when you call `format`, add a keyword argument
-> that assigns a value to `max_parallax`, and confirm that the format$1
+> that assigns a value to `max_parallax`, and confirm that the format
+> specifier gets replaced with the value you provide.
 >
 > > ## Solution
 > > 
