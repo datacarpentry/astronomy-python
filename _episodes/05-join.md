@@ -8,13 +8,11 @@ questions:
 
 objectives:
 
-- "Upload a table to the Gaia server."
-
 - "Write ADQL queries involving `JOIN` operations."
 
 keypoints:
 
-- "Use `JOIN` operations to combine data from multiple tables in a databased, using some kind of identifier to match up records from one table with records from another."
+- "Use `JOIN` operations to combine data from multiple tables in a database, using some kind of identifier to match up records from one table with records from another."
 
 - "This is another example of a practice we saw in the previous notebook, moving the computation to the data."
 
@@ -22,7 +20,7 @@ keypoints:
 
 {% include links.md %}
 
-# Joining Tables
+# 5. Joining Tables
 
 This is the fifth in a series of notebooks related to astronomy data.
 
@@ -65,91 +63,23 @@ After completing this lesson, you should be able to
 
 * Write ADQL queries involving `JOIN` operations.
 
-## Reloading the data
-
-The following cell downloads the data from the previous notebook.
-
-
-
-~~~
-import os
-from wget import download
-
-filename = 'gd1_candidates.hdf5'
-path = 'https://github.com/AllenDowney/AstronomicalData/raw/main/data/'
-
-if not os.path.exists(filename):
-    print(download(path+filename))
-~~~
-{: .language-python}
-
-And we can read it back.
-
-
-
-~~~
-import pandas as pd
-
-candidate_df = pd.read_hdf(filename, 'candidate_df')
-~~~
-{: .language-python}
-
-`candidate_df` is the Pandas DataFrame that contains results from the
-query in the previous notebook, which selects stars likely to be in
-GD-1 based on proper motion.  It also includes position and proper
-motion transformed to the ICRS frame.
-
-
-
-~~~
-import matplotlib.pyplot as plt
-
-x = candidate_df['phi1']
-y = candidate_df['phi2']
-
-plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
-
-plt.xlabel('ra (degree GD1)')
-plt.ylabel('dec (degree GD1)');
-~~~
-{: .language-python}
-
-~~~
-<Figure size 432x288 with 1 Axes>
-~~~
-{: .output}
-
-
-
-    
-![png](05-join_files/05-join_10_0.png)
-    
-
-
-This is the same figure we saw at the end of the previous notebook.
-GD-1 is visible against the background stars, but we will be able to
-see it more clearly after selecting based on photometry data.
-
 ## Getting photometry data
 
 The Gaia dataset contains some photometry data, including the variable
-`bp_rp`, which we used in the original query to select stars with BP -
-RP color between -0.75 and 2.
-
-Selecting stars with `bp-rp` less than 2 excludes many class M dwarf
-stars, which are low temperature, low luminosity.  A star like that at
-GD-1's distance would be hard to detect, so if it is detected, it it
-more likely to be in the foreground.
+`bp_rp`, which contains BP-RP color (the difference in mean flux
+between the BP and RP bands).
+We use this variable to select stars with `bp_rp` between -0.75 and 2,
+which excludes many class M dwarf stars.
 
 Now, to select stars with the age and metal richness we expect in
-GD-1, we will use `g - i` color and apparent `g`-band magnitude, which
+GD-1, we will use `g-i` color and apparent `g`-band magnitude, which
 are available from the Pan-STARRS survey.
 
 Conveniently, the Gaia server provides data from Pan-STARRS as a table
 in the same database we have been using, so we can access it by making
 ADQL queries.
 
-In general, looking up a star from the Gaia catalog and finding the
+In general, choosing a star from the Gaia catalog and finding the
 corresponding star in the Pan-STARRS catalog is not easy.  This kind
 of cross matching is not always possible, because a star might appear
 in one catalog and not the other.  And even when both stars are
@@ -167,7 +97,7 @@ approximately the right position, then uses attributes like color and
 magnitude to choose pairs of observations most likely to be the same
 star.
 
-## Joining tables
+## The best neighbor table
 
 So the hard part of cross-matching has been done for us.  Using the
 results is a little tricky, but it gives us a chance to learn about
@@ -191,233 +121,23 @@ hope) in the Pan-STARRS catalog.
 
 To do that we will:
 
-1. Make a table that contains the `source_id` for each candidate star
-and upload the table to the Gaia server;
+1. Use the `JOIN` operator to look up each `source_id` in the
+`panstarrs1_best_neighbour` table, which contains the `obj_id` of the
+best match for each star in the Gaia catalog; then
 
-2. Use the `JOIN` operator to look up each `source_id` in the
-`gaiadr2.panstarrs1_best_neighbour` table, which contains the `obj_id`
-of the best match for each star in the Gaia catalog; then
-
-3. Use the `JOIN` operator again to look up each `obj_id` in the
+2. Use the `JOIN` operator again to look up each `obj_id` in the
 `panstarrs1_original_valid` table, which contains the Pan-STARRS
 photometry data we want.
 
-Let's start with the first step, uploading a table.
-
-## Preparing a table for uploading
-
-For each candidate star, we want to find the corresponding row in the
-`gaiadr2.panstarrs1_best_neighbour` table.
-
-In order to do that, we have to:
-
-1. Write the table in a local file as an XML VOTable, which is a
-format suitable for transmitting a table over a network.
-
-2. Write an ADQL query that refers to the uploaded table.
-
-3. Change the way we submit the job so it uploads the table before
-running the query.
-
-The first step is not too difficult because Astropy provides a
-function called `writeto` that can write a `Table` in `XML`.
-
-[The documentation of this process is
-here](https://docs.astropy.org/en/stable/io/votable/).
-
-First we have to convert our Pandas `DataFrame` to an Astropy `Table`.
-
-
-
-~~~
-from astropy.table import Table
-
-candidate_table = Table.from_pandas(candidate_df)
-type(candidate_table)
-~~~
-{: .language-python}
-
-~~~
-astropy.table.table.Table
-~~~
-{: .output}
-
-
-
-
-
-    
-
-
-
-To write the file, we can use `Table.write` with `format='votable'`,
-[as described
-here](https://docs.astropy.org/en/stable/io/unified.html#vo-tables).
-
-
-
-~~~
-table_id = candidate_table[['source_id']]
-table_id.write('candidate_df.xml', format='votable', overwrite=True)
-~~~
-{: .language-python}
-
-Notice that we select a single column from the table, `source_id`.
-We could write the entire table to a file, but that would take longer
-to transmit over the network, and we really only need one column.
-
-This process, taking a structure like a `Table` and translating it
-into a form that can be transmitted over a network, is called
-[serialization](https://en.wikipedia.org/wiki/Serialization).
-
-XML is one of the most common serialization formats.  One nice feature
-is that XML data is plain text, as opposed to binary digits, so you
-can read the file we just wrote:
-
-
-
-~~~
-!head candidate_df.xml
-~~~
-{: .language-python}
-
-~~~
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Produced with astropy.io.votable version 4.2
-     http://www.astropy.org/ -->
-<VOTABLE version="1.4" xmlns="http://www.ivoa.net/xml/VOTable/v1.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.ivoa.net/xml/VOTable/v1.4">
- <RESOURCE type="results">
-  <TABLE>
-   <FIELD ID="source_id" datatype="long" name="source_id"/>
-   <DATA>
-    <TABLEDATA>
-     <TR>
-
-~~~
-{: .output}
-
-
-    
-
-XML is a general format, so different XML files contain different
-kinds of data.  In order to read an XML file, it's not enough to know
-that it's XML; you also have to know the data format, which is called
-a [schema](https://en.wikipedia.org/wiki/XML_schema).
-
-In this example, the schema is VOTable; notice that one of the first
-tags in the file specifies the schema, and even includes the URL where
-you can get its definition.
-
-So this is an example of a self-documenting format.
-
-A drawback of XML is that it tends to be big, which is why we wrote
-just the `source_id` column rather than the whole table.
-The size of the file is about 750 KB, so that's not too bad.
-
-
-
-~~~
-!ls -lh candidate_df.xml
-~~~
-{: .language-python}
-
-~~~
--rw-rw-r-- 1 downey downey 396K Dec 29 11:50 candidate_df.xml
-
-~~~
-{: .output}
-
-
-    
-
-If you are using Windows, `ls` might not work; in that case, try:
-
-```
-!dir candidate_df.xml
-```
-
-> ## Exercise
-> 
-> There's a gotcha here we want to warn you about.  Why do you think we
-> used double brackets to specify the column we wanted?  What happens if
-> you use single brackets?
-> 
-> Run these code snippets to find out.
-> 
-> ```
-> table_id = candidate_table[['source_id']]
-> print(type(table_id))
-> ```
-> 
-> ```
-> column = candidate_table['source_id']
-> print(type(column))
-> ```
-> 
-> ```
-> # This one should cause an error
-> column.write('candidate_df.xml', 
->                format='votable', 
->                overwrite=True)
-> ```
-
-
->
-> > ## Solution
-> > 
-> > ~~~
-> > 
-> > # table_id is a Table
-> > 
-> > # column is a Column
-> > 
-> > # Column does not provide `write`, so you get an AttributeError
-> > ~~~
-> > {: .language-python}
-> {: .solution}
-{: .challenge}
-
-
-
-## Uploading a table
-
-The next step is to upload this table to the Gaia server and use it as
-part of a query.
-
-[Here's the documentation that explains how to run a query with an
-uploaded
-table](https://astroquery.readthedocs.io/en/latest/gaia/gaia.html#synchronous-query-on-an-on-the-fly-uploaded-table).
-
-In the spirit of incremental development and testing, let's start with
-the simplest possible query.
-
-
-
-~~~
-query = """SELECT *
-FROM tap_upload.candidate_df
-"""
-~~~
-{: .language-python}
-
-This query downloads all rows and all columns from the uploaded table.
-The name of the table has two parts: `tap_upload` specifies a table
-that was uploaded using TAP+ (remember that's the name of the protocol
-we're using to talk to the Gaia server).
-
-And `candidate_df` is the name of the table, which we get to choose
-(unlike `tap_upload`, which we didn't get to choose).
-
-Here's how we run the query:
+Before we get to the `JOIN` operation, let's explore these tables.
+Here's the metadata for `panstarrs1_best_neighbour`.
 
 
 
 ~~~
 from astroquery.gaia import Gaia
 
-job = Gaia.launch_job_async(query=query, 
-                            upload_resource='candidate_df.xml', 
-                            upload_table_name='candidate_df')
+meta = Gaia.load_table('gaiadr2.panstarrs1_best_neighbour')
 ~~~
 {: .language-python}
 
@@ -432,7 +152,7 @@ Created TAP+ (v1.2.1) - Connection:
 	Use HTTPS: True
 	Port: 443
 	SSL Port: 443
-INFO: Query finished. [astroquery.utils.tap.core]
+Retrieving table 'gaiadr2.panstarrs1_best_neighbour'
 [Output truncated]
 ~~~
 {: .output}
@@ -440,13 +160,101 @@ INFO: Query finished. [astroquery.utils.tap.core]
 
     
 
-`upload_resource` specifies the name of the file we want to upload,
-which is the file we just wrote.
 
-`upload_table_name` is the name we assign to this table, which is the
-name we used in the query.
 
-And here are the results:
+~~~
+print(meta)
+~~~
+{: .language-python}
+
+~~~
+TAP Table name: gaiadr2.gaiadr2.panstarrs1_best_neighbour
+Description: Pan-STARRS1 BestNeighbour table lists each matched Gaia object with its
+best neighbour in the external catalogue.
+There are 1 327 157 objects in the filtered version of Pan-STARRS1 used
+to compute this cross-match that have too early epochMean.
+Num. columns: 7
+
+~~~
+{: .output}
+
+
+    
+
+And here are the columns.
+
+
+
+~~~
+for column in meta.columns:
+    print(column.name)
+~~~
+{: .language-python}
+
+~~~
+source_id
+original_ext_source_id
+angular_distance
+number_of_neighbours
+number_of_mates
+best_neighbour_multiplicity
+gaia_astrometric_params
+
+~~~
+{: .output}
+
+
+    
+
+Here's the [documentation for these
+variables](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_crossmatches/ssec_dm_panstarrs1_best_neighbour.html)
+.
+
+The ones we'll use are:
+
+* `source_id`, which we will match up with `source_id` in the Gaia table.
+
+* `number_of_neighbours`, which indicates how many sources in
+Pan-STARRS are matched with this source in Gaia.
+
+* `number_of_mates`, which indicates the number of *other* sources in
+Gaia that are matched with the same source in Pan-STARRS.
+
+* `original_ext_source_id`, which we will match up with `obj_id` in
+the Pan-STARRS table.
+
+Ideally, `number_of_neighbours` should be 1 and `number_of_mates`
+should be 0; in that case, there is a one-to-one match between the
+source in Gaia and the corresponding source in Pan-STARRS.
+
+Here's a query that selects these columns and returns the first 5 rows.
+
+
+
+~~~
+query = """SELECT 
+TOP 5
+source_id, number_of_neighbours, number_of_mates, original_ext_source_id
+FROM gaiadr2.panstarrs1_best_neighbour
+"""
+~~~
+{: .language-python}
+
+
+
+~~~
+job = Gaia.launch_job_async(query=query)
+~~~
+{: .language-python}
+
+~~~
+INFO: Query finished. [astroquery.utils.tap.core]
+
+~~~
+{: .output}
+
+
+    
 
 
 
@@ -457,164 +265,140 @@ results
 {: .language-python}
 
 ~~~
-<Table length=7346>
-    source_id     
-      int64       
-------------------
-635559124339440000
-635860218726658176
-635674126383965568
-635535454774983040
-635497276810313600
-635614168640132864
-635821843194387840
+<Table length=5>
+     source_id      number_of_neighbours number_of_mates original_ext_source_id
+       int64               int32              int16              int64         
+------------------- -------------------- --------------- ----------------------
+6745938972433480704                    1               0      69742925668851205
+6030466788955954048                    1               0      69742509325691172
+6756488099308169600                    1               0      69742879438541228
+6700154994715046016                    1               0      69743055581721207
+6757061941303252736                    1               0      69742856540241198
+~~~
+{: .output}
+
+
+
+
+
+<i>Table length=5</i>
+<table id="table140104392580448" class="table-striped table-bordered table-condensed">
+<thead><tr><th>source_id</th><th>number_of_neighbours</th><th>number_of_mates</th><th>original_ext_source_id</th></tr></thead>
+<thead><tr><th>int64</th><th>int32</th><th>int16</th><th>int64</th></tr></thead>
+<tr><td>6745938972433480704</td><td>1</td><td>0</td><td>69742925668851205</td></tr>
+<tr><td>6030466788955954048</td><td>1</td><td>0</td><td>69742509325691172</td></tr>
+<tr><td>6756488099308169600</td><td>1</td><td>0</td><td>69742879438541228</td></tr>
+<tr><td>6700154994715046016</td><td>1</td><td>0</td><td>69743055581721207</td></tr>
+<tr><td>6757061941303252736</td><td>1</td><td>0</td><td>69742856540241198</td></tr>
+</table>
+
+
+
+## The Pan-STARRS table
+
+Here's the metadata for the table that contains the Pan-STARRS data.
+
+
+
+~~~
+meta = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
+~~~
+{: .language-python}
+
+~~~
+Retrieving table 'gaiadr2.panstarrs1_original_valid'
+Parsing table 'gaiadr2.panstarrs1_original_valid'...
+Done.
+
+~~~
+{: .output}
+
+
+    
+
+
+
+~~~
+print(meta)
+~~~
+{: .language-python}
+
+~~~
+TAP Table name: gaiadr2.gaiadr2.panstarrs1_original_valid
+Description: The Panoramic Survey Telescope and Rapid Response System (Pan-STARRS) is
+a system for wide-field astronomical imaging developed and operated by
+the Institute for Astronomy at the University of Hawaii. Pan-STARRS1
+(PS1) is the first part of Pan-STARRS to be completed and is the basis
+for Data Release 1 (DR1). The PS1 survey used a 1.8 meter telescope and
+its 1.4 Gigapixel camera to image the sky in five broadband filters (g,
+r, i, z, y).
+
+The current table contains a filtered subsample of the 10 723 304 629
+entries listed in the original ObjectThin table.
 [Output truncated]
 ~~~
 {: .output}
 
 
+    
 
-
-
-<i>Table length=7346</i>
-<table id="table139832308444608" class="table-striped table-bordered table-condensed">
-<thead><tr><th>source_id</th></tr></thead>
-<thead><tr><th>int64</th></tr></thead>
-<tr><td>635559124339440000</td></tr>
-<tr><td>635860218726658176</td></tr>
-<tr><td>635674126383965568</td></tr>
-<tr><td>635535454774983040</td></tr>
-<tr><td>635497276810313600</td></tr>
-<tr><td>635614168640132864</td></tr>
-<tr><td>635821843194387840</td></tr>
-<tr><td>635551706931167104</td></tr>
-<tr><td>635518889086133376</td></tr>
-<tr><td>635580294233854464</td></tr>
-<tr><td>...</td></tr>
-<tr><td>612282738058264960</td></tr>
-<tr><td>612485911486166656</td></tr>
-<tr><td>612386332668697600</td></tr>
-<tr><td>612296172717818624</td></tr>
-<tr><td>612250375480101760</td></tr>
-<tr><td>612394926899159168</td></tr>
-<tr><td>612288854091187712</td></tr>
-<tr><td>612428870024913152</td></tr>
-<tr><td>612256418500423168</td></tr>
-<tr><td>612429144902815104</td></tr>
-</table>
-
-
-
-If things go according to plan, the result should contain the same
-rows and columns as the uploaded table.
+And here are the columns.
 
 
 
 ~~~
-len(table_id), len(results)
+for column in meta.columns:
+    print(column.name)
 ~~~
 {: .language-python}
 
 ~~~
-(7346, 7346)
+obj_name
+obj_id
+ra
+dec
+ra_error
+dec_error
+epoch_mean
+g_mean_psf_mag
+g_mean_psf_mag_error
+g_flags
+r_mean_psf_mag
+[Output truncated]
 ~~~
 {: .output}
 
 
-
-
-
     
 
+Here's the [documentation for these variables]() .
 
+The ones we'll use are:
 
+* `obj_id`, which we will match up with `original_ext_source_id` in
+the best neighbor table.
 
+* `g_mean_psf_mag`, which contains mean magnitude from the `i` filter.
 
-~~~
-table_id.colnames
-~~~
-{: .language-python}
+* `i_mean_psf_mag`, which contains mean magnitude from the `i` filter.
 
-~~~
-['source_id']
-~~~
-{: .output}
-
-
-
-
-
-    
-
-
+Here's a query that selects these variables and returns the first 5 rows.
 
 
 
 ~~~
-results.colnames
-~~~
-{: .language-python}
-
-~~~
-['source_id']
-~~~
-{: .output}
-
-
-
-
-
-    
-
-
-
-In this example, we uploaded a table and then downloaded it again, so
-that's not too useful.
-
-But now that we can upload a table, we can join it with other tables
-on the Gaia server.
-
-## Joining with an uploaded table
-
-Here's the first example of a query that contains a `JOIN` clause.
-
-
-
-~~~
-query1 = """SELECT *
-FROM gaiadr2.panstarrs1_best_neighbour as best
-JOIN tap_upload.candidate_df as candidate_df
-  ON best.source_id = candidate_df.source_id
+query = """SELECT 
+TOP 5
+obj_id, g_mean_psf_mag, i_mean_psf_mag 
+FROM gaiadr2.panstarrs1_original_valid
 """
 ~~~
 {: .language-python}
 
-Let's break that down one clause at a time:
-
-* `SELECT *` means we will download all columns from both tables.
-
-* `FROM gaiadr2.panstarrs1_best_neighbour as best` means that we'll
-get the columns from the Pan-STARRS best neighbor table, which we'll
-refer to using the short name `best`.
-
-* `JOIN tap_upload.candidate_df as candidate_df` means that we'll also
-get columns from the uploaded table, which we'll refer to using the
-short name `candidate_df`.
-
-* `ON best.source_id = candidate_df.source_id` specifies that we will
-use `source_id ` to match up the rows from the two tables.
-
-Here's the [documentation of the best neighbor
-table](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_crossmatches/ssec_dm_panstarrs1_best_neighbour.html).
-
-Let's run the query:
-
 
 
 ~~~
-job1 = Gaia.launch_job_async(query=query1, 
-                       upload_resource='candidate_df.xml', 
-                       upload_table_name='candidate_df')
+job = Gaia.launch_job_async(query=query)
 ~~~
 {: .language-python}
 
@@ -627,28 +411,126 @@ INFO: Query finished. [astroquery.utils.tap.core]
 
     
 
-And get the results.
-
 
 
 ~~~
-results1 = job1.get_results()
-results1
+results = job.get_results()
+results
 ~~~
 {: .language-python}
 
 ~~~
-<Table length=3724>
-    source_id      original_ext_source_id ...    source_id_2    
-                                          ...                   
-      int64                int64          ...       int64       
------------------- ---------------------- ... ------------------
-635860218726658176     130911385187671349 ... 635860218726658176
-635674126383965568     130831388428488720 ... 635674126383965568
-635535454774983040     130631378377657369 ... 635535454774983040
-635497276810313600     130811380445631930 ... 635497276810313600
-635614168640132864     130571395922140135 ... 635614168640132864
-635598607974369792     130341392091279513 ... 635598607974369792
+<Table length=5>
+      obj_id      g_mean_psf_mag  i_mean_psf_mag 
+                                       mag       
+      int64          float64         float64     
+----------------- -------------- ----------------
+67130655389101425             -- 20.3516006469727
+67553305590067819             --  19.779899597168
+67551423248967849             -- 19.8889007568359
+67132026238911331             -- 20.9062995910645
+67553513677687787             -- 21.2831001281738
+~~~
+{: .output}
+
+
+
+
+
+<i>Table length=5</i>
+<table id="table140104844641184" class="table-striped table-bordered table-condensed">
+<thead><tr><th>obj_id</th><th>g_mean_psf_mag</th><th>i_mean_psf_mag</th></tr></thead>
+<thead><tr><th></th><th></th><th>mag</th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>67130655389101425</td><td>--</td><td>20.3516006469727</td></tr>
+<tr><td>67553305590067819</td><td>--</td><td>19.779899597168</td></tr>
+<tr><td>67551423248967849</td><td>--</td><td>19.8889007568359</td></tr>
+<tr><td>67132026238911331</td><td>--</td><td>20.9062995910645</td></tr>
+<tr><td>67553513677687787</td><td>--</td><td>21.2831001281738</td></tr>
+</table>
+
+
+
+The following figure shows how these tables are related.
+
+* The orange circles and arrows represent the first `JOIN` operation,
+which takes each `source_id` in the Gaia table and finds the same
+value of `source_id` in the best neighbor table.
+
+* The blue circles and arrows represent the second `JOIN` operation,
+which takes each `original_ext_source_id` in the Gaia table and finds
+the same value of `obj_id` in the best neighbor table.
+
+There's no guarantee that the corresponding rows of these tables are
+in the same order, so the `JOIN` operation involves some searching.
+However, ADQL/SQL databases are implemented in a way that makes this
+kind of source efficient.
+If you are curious, you can [read more about
+it](https://chartio.com/learn/databases/how-does-indexing-work/).
+
+<img
+src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/join.png">
+
+
+## Joining tables
+
+Now let's get to the details of performing a `JOIN` operation.
+As a starting place, let's go all the way back to the cone search from Lesson 2.
+
+
+
+~~~
+query_cone = """SELECT 
+TOP 10 
+source_id
+FROM gaiadr2.gaia_source
+WHERE 1=CONTAINS(
+  POINT(ra, dec),
+  CIRCLE(88.8, 7.4, 0.08333333))
+"""
+~~~
+{: .language-python}
+
+And let's run it, to make sure we have a working query to build on.
+
+
+
+~~~
+from astroquery.gaia import Gaia
+
+job = Gaia.launch_job_async(query=query_cone)
+~~~
+{: .language-python}
+
+~~~
+INFO: Query finished. [astroquery.utils.tap.core]
+
+~~~
+{: .output}
+
+
+    
+
+
+
+~~~
+results = job.get_results()
+results
+~~~
+{: .language-python}
+
+~~~
+<Table length=10>
+     source_id     
+       int64       
+-------------------
+3322773965056065536
+3322773758899157120
+3322774068134271104
+3322773930696320512
+3322774377374425728
+3322773724537891456
+3322773724537891328
 [Output truncated]
 ~~~
 {: .output}
@@ -657,54 +539,403 @@ results1
 
 
 
-<i>Table length=3724</i>
-<table id="table139832308265696" class="table-striped table-bordered table-condensed">
-<thead><tr><th>source_id</th><th>original_ext_source_id</th><th>angular_distance</th><th>number_of_neighbours</th><th>number_of_mates</th><th>best_neighbour_multiplicity</th><th>gaia_astrometric_params</th><th>source_id_2</th></tr></thead>
-<thead><tr><th></th><th></th><th>arcsec</th><th></th><th></th><th></th><th></th><th></th></tr></thead>
-<thead><tr><th>int64</th><th>int64</th><th>float64</th><th>int32</th><th>int16</th><th>int16</th><th>int16</th><th>int64</th></tr></thead>
-<tr><td>635860218726658176</td><td>130911385187671349</td><td>0.053667035895467084</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635860218726658176</td></tr>
-<tr><td>635674126383965568</td><td>130831388428488720</td><td>0.038810268141577516</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635674126383965568</td></tr>
-<tr><td>635535454774983040</td><td>130631378377657369</td><td>0.034323028828991076</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635535454774983040</td></tr>
-<tr><td>635497276810313600</td><td>130811380445631930</td><td>0.04720255413250006</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635497276810313600</td></tr>
-<tr><td>635614168640132864</td><td>130571395922140135</td><td>0.020304189709964143</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635614168640132864</td></tr>
-<tr><td>635598607974369792</td><td>130341392091279513</td><td>0.036524626853403054</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635598607974369792</td></tr>
-<tr><td>635737661835496576</td><td>131001399333502136</td><td>0.036626827820716606</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635737661835496576</td></tr>
-<tr><td>635850945892748672</td><td>132011398654934147</td><td>0.021178742393378396</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635850945892748672</td></tr>
-<tr><td>635600532119713664</td><td>130421392285893623</td><td>0.04518820915043015</td><td>1</td><td>0</td><td>1</td><td>5</td><td>635600532119713664</td></tr>
-<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-<tr><td>612241781249124608</td><td>129751343755995561</td><td>0.04235715830001815</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612241781249124608</td></tr>
-<tr><td>612332147361443072</td><td>130141341458538777</td><td>0.02265249859012977</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612332147361443072</td></tr>
-<tr><td>612426744016802432</td><td>130521346852465656</td><td>0.03247653009961843</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612426744016802432</td></tr>
-<tr><td>612331739340341760</td><td>130111341217793839</td><td>0.036064240818025735</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612331739340341760</td></tr>
-<tr><td>612282738058264960</td><td>129741340445933519</td><td>0.025293237353496898</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612282738058264960</td></tr>
-<tr><td>612386332668697600</td><td>130351354570219774</td><td>0.02010316001403086</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612386332668697600</td></tr>
-<tr><td>612296172717818624</td><td>129691338006168780</td><td>0.051264212025836205</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612296172717818624</td></tr>
-<tr><td>612250375480101760</td><td>129741346475897464</td><td>0.031783740347530905</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612250375480101760</td></tr>
-<tr><td>612394926899159168</td><td>130581355199751795</td><td>0.04019174830546698</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612394926899159168</td></tr>
-<tr><td>612256418500423168</td><td>129931349075297310</td><td>0.009242789669513156</td><td>1</td><td>0</td><td>1</td><td>5</td><td>612256418500423168</td></tr>
+<i>Table length=10</i>
+<table id="table140104380877264" class="table-striped table-bordered table-condensed">
+<thead><tr><th>source_id</th></tr></thead>
+<thead><tr><th>int64</th></tr></thead>
+<tr><td>3322773965056065536</td></tr>
+<tr><td>3322773758899157120</td></tr>
+<tr><td>3322774068134271104</td></tr>
+<tr><td>3322773930696320512</td></tr>
+<tr><td>3322774377374425728</td></tr>
+<tr><td>3322773724537891456</td></tr>
+<tr><td>3322773724537891328</td></tr>
+<tr><td>3322773930696321792</td></tr>
+<tr><td>3322773724537890944</td></tr>
+<tr><td>3322773930696322176</td></tr>
 </table>
 
 
 
-This table contains all of the columns from the best neighbor table,
-plus the single column from the uploaded table.
+Now we can start adding features.
+First, let's replace `source_id` with a format specifier, `columns`: 
 
 
 
 ~~~
-results1.colnames
+query_base = """SELECT 
+{columns}
+FROM gaiadr2.gaia_source
+WHERE 1=CONTAINS(
+  POINT(ra, dec),
+  CIRCLE(88.8, 7.4, 0.08333333))
+"""
+~~~
+{: .language-python}
+
+Here are the columns we want from the Gaia table, again. 
+
+
+
+~~~
+columns = 'source_id, ra, dec, pmra, pmdec'
+
+query = query_base.format(columns=columns)
+print(query)
 ~~~
 {: .language-python}
 
 ~~~
-['source_id',
- 'original_ext_source_id',
- 'angular_distance',
- 'number_of_neighbours',
- 'number_of_mates',
- 'best_neighbour_multiplicity',
- 'gaia_astrometric_params',
- 'source_id_2']
+SELECT 
+source_id, ra, dec, pmra, pmdec
+FROM gaiadr2.gaia_source
+WHERE 1=CONTAINS(
+  POINT(ra, dec),
+  CIRCLE(88.8, 7.4, 0.08333333))
+
+
+~~~
+{: .output}
+
+
+    
+
+And let's run the query again.
+
+
+
+~~~
+job = Gaia.launch_job_async(query=query)
+~~~
+{: .language-python}
+
+~~~
+INFO: Query finished. [astroquery.utils.tap.core]
+
+~~~
+{: .output}
+
+
+    
+
+
+
+~~~
+results = job.get_results()
+results
+~~~
+{: .language-python}
+
+~~~
+<Table length=594>
+     source_id              ra        ...        pmdec       
+                           deg        ...       mas / yr     
+       int64             float64      ...       float64      
+------------------- ----------------- ... -------------------
+3322773965056065536 88.78178020183375 ... -2.5057036964736907
+3322773758899157120 88.83227057144585 ...                  --
+3322774068134271104  88.8206092188033 ... -1.5260889445858044
+3322773930696320512 88.80843339290348 ... -0.9292104395445717
+3322774377374425728 88.86806108182265 ... -3.8676624830902435
+3322773724537891456 88.81308602813434 ... -33.078133430952086
+[Output truncated]
+~~~
+{: .output}
+
+
+
+
+
+<i>Table length=594</i>
+<table id="table140104380909264" class="table-striped table-bordered table-condensed">
+<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>3322773965056065536</td><td>88.78178020183375</td><td>7.334936530583141</td><td>0.2980633722108194</td><td>-2.5057036964736907</td></tr>
+<tr><td>3322773758899157120</td><td>88.83227057144585</td><td>7.325577341429926</td><td>--</td><td>--</td></tr>
+<tr><td>3322774068134271104</td><td>88.8206092188033</td><td>7.353158142762173</td><td>-1.1065462654445488</td><td>-1.5260889445858044</td></tr>
+<tr><td>3322773930696320512</td><td>88.80843339290348</td><td>7.334853162299928</td><td>2.6074384482375215</td><td>-0.9292104395445717</td></tr>
+<tr><td>3322774377374425728</td><td>88.86806108182265</td><td>7.371287731275939</td><td>3.9555477866915383</td><td>-3.8676624830902435</td></tr>
+<tr><td>3322773724537891456</td><td>88.81308602813434</td><td>7.32488574492059</td><td>51.34995462741039</td><td>-33.078133430952086</td></tr>
+<tr><td>3322773724537891328</td><td>88.81570329208743</td><td>7.3223019772324855</td><td>1.9389988498951845</td><td>0.3110526931576576</td></tr>
+<tr><td>3322773930696321792</td><td>88.8050736770331</td><td>7.332371472206583</td><td>2.264014834476311</td><td>1.0772755505138008</td></tr>
+<tr><td>3322773724537890944</td><td>88.81241651540533</td><td>7.327864052479726</td><td>-0.36003627434304625</td><td>-6.393939291541333</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>3322962118983356032</td><td>88.76109637722949</td><td>7.380564308268047</td><td>--</td><td>--</td></tr>
+<tr><td>3322963527732585984</td><td>88.78813701704823</td><td>7.456696889759524</td><td>1.1363354614104264</td><td>-2.46251296961979</td></tr>
+<tr><td>3322961775385969024</td><td>88.79723215862369</td><td>7.359756552906535</td><td>2.121021366548921</td><td>-6.605711792572964</td></tr>
+<tr><td>3322962084625312512</td><td>88.78286756313868</td><td>7.384598632215225</td><td>-0.09350717810996487</td><td>1.3495903680571226</td></tr>
+<tr><td>3322962939322692608</td><td>88.73289357818679</td><td>7.407688975612043</td><td>-0.11002934783569704</td><td>1.002126813991455</td></tr>
+<tr><td>3322963768250760576</td><td>88.7592444035961</td><td>7.469624531882018</td><td>--</td><td>--</td></tr>
+<tr><td>3322963459013111808</td><td>88.80348931842845</td><td>7.438699901204871</td><td>0.800833828337078</td><td>-3.3780655466364626</td></tr>
+<tr><td>3322963355935626368</td><td>88.75528507586058</td><td>7.427795463027667</td><td>--</td><td>--</td></tr>
+<tr><td>3322963287216149888</td><td>88.7658164932195</td><td>7.415726370886557</td><td>2.3743092647634034</td><td>-0.5046963243400879</td></tr>
+<tr><td>3322962015904143872</td><td>88.74740822271643</td><td>7.387057037713974</td><td>-0.7201178533250112</td><td>0.5565841272341593</td></tr>
+</table>
+
+
+
+## Adding the best neighbor table
+
+Now we're ready for the first join.
+The join operation requires two clauses:
+
+* `JOIN` specifies the name of the table we want to join with, and
+
+* `ON` specifies how we'll match up rows between the tables.
+
+In this example, we join with `gaiadr2.panstarrs1_best_neighbour AS
+best`, which means we can refer to the best neighbor table with the
+abbreviated name `best`.
+
+And the `ON` clause indicates that we'll match up the `source_id`
+column from the Gaia table with the `source_id` column from the best
+neighbor table.
+
+
+
+~~~
+query_base = """SELECT 
+{columns}
+FROM gaiadr2.gaia_source AS gaia
+JOIN gaiadr2.panstarrs1_best_neighbour AS best
+  ON gaia.source_id = best.source_id
+WHERE 1=CONTAINS(
+  POINT(gaia.ra, gaia.dec),
+  CIRCLE(88.8, 7.4, 0.08333333))
+"""
+~~~
+{: .language-python}
+
+**SQL detail:** In this example, the `ON` column has the same name in
+both tables, so we could replace the `ON` clause with a simpler
+[`USING`
+clause](https://docs.oracle.com/javadb/10.8.3.0/ref/rrefsqljusing.html):
+
+```
+USING(source_id)
+```
+
+Now that there's more than one table involved, we can't use simple
+column names any more; we have to use **qualified column names**.
+In other words, we have to specify which table each column is in.
+Here's the complete query, including the columns we want from the Gaia
+and best neighbor tables.
+
+
+
+~~~
+column_list = ['gaia.source_id',
+               'gaia.ra',
+               'gaia.dec',
+               'gaia.pmra',
+               'gaia.pmdec',
+               'best.best_neighbour_multiplicity',
+               'best.number_of_mates',
+              ]
+columns = ', '.join(column_list)
+
+query = query_base.format(columns=columns)
+print(query)
+~~~
+{: .language-python}
+
+~~~
+SELECT 
+gaia.source_id, gaia.ra, gaia.dec, gaia.pmra, gaia.pmdec, best.best_neighbour_multiplicity, best.number_of_mates
+FROM gaiadr2.gaia_source AS gaia
+JOIN gaiadr2.panstarrs1_best_neighbour AS best
+  ON gaia.source_id = best.source_id
+WHERE 1=CONTAINS(
+  POINT(gaia.ra, gaia.dec),
+  CIRCLE(88.8, 7.4, 0.08333333))
+
+
+~~~
+{: .output}
+
+
+    
+
+
+
+~~~
+job = Gaia.launch_job_async(query=query)
+~~~
+{: .language-python}
+
+~~~
+INFO: Query finished. [astroquery.utils.tap.core]
+
+~~~
+{: .output}
+
+
+    
+
+
+
+~~~
+results = job.get_results()
+results
+~~~
+{: .language-python}
+
+~~~
+<Table length=490>
+     source_id              ra        ... number_of_mates
+                           deg        ...                
+       int64             float64      ...      int16     
+------------------- ----------------- ... ---------------
+3322773965056065536 88.78178020183375 ...               0
+3322774068134271104  88.8206092188033 ...               0
+3322773930696320512 88.80843339290348 ...               0
+3322774377374425728 88.86806108182265 ...               0
+3322773724537891456 88.81308602813434 ...               0
+3322773724537891328 88.81570329208743 ...               0
+[Output truncated]
+~~~
+{: .output}
+
+
+
+
+
+<i>Table length=490</i>
+<table id="table140104380908352" class="table-striped table-bordered table-condensed">
+<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th><th>best_neighbour_multiplicity</th><th>number_of_mates</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th><th></th><th></th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>int16</th><th>int16</th></tr></thead>
+<tr><td>3322773965056065536</td><td>88.78178020183375</td><td>7.334936530583141</td><td>0.2980633722108194</td><td>-2.5057036964736907</td><td>1</td><td>0</td></tr>
+<tr><td>3322774068134271104</td><td>88.8206092188033</td><td>7.353158142762173</td><td>-1.1065462654445488</td><td>-1.5260889445858044</td><td>1</td><td>0</td></tr>
+<tr><td>3322773930696320512</td><td>88.80843339290348</td><td>7.334853162299928</td><td>2.6074384482375215</td><td>-0.9292104395445717</td><td>1</td><td>0</td></tr>
+<tr><td>3322774377374425728</td><td>88.86806108182265</td><td>7.371287731275939</td><td>3.9555477866915383</td><td>-3.8676624830902435</td><td>1</td><td>0</td></tr>
+<tr><td>3322773724537891456</td><td>88.81308602813434</td><td>7.32488574492059</td><td>51.34995462741039</td><td>-33.078133430952086</td><td>1</td><td>0</td></tr>
+<tr><td>3322773724537891328</td><td>88.81570329208743</td><td>7.3223019772324855</td><td>1.9389988498951845</td><td>0.3110526931576576</td><td>1</td><td>0</td></tr>
+<tr><td>3322773930696321792</td><td>88.8050736770331</td><td>7.332371472206583</td><td>2.264014834476311</td><td>1.0772755505138008</td><td>1</td><td>0</td></tr>
+<tr><td>3322773724537890944</td><td>88.81241651540533</td><td>7.327864052479726</td><td>-0.36003627434304625</td><td>-6.393939291541333</td><td>1</td><td>0</td></tr>
+<tr><td>3322773930696322176</td><td>88.80128682574824</td><td>7.334292036448643</td><td>--</td><td>--</td><td>1</td><td>0</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>3322962359501481088</td><td>88.85037722908271</td><td>7.402162717053584</td><td>2.058216493648542</td><td>-2.249255322558584</td><td>1</td><td>0</td></tr>
+<tr><td>3322962393861228544</td><td>88.82108234976155</td><td>7.4044425496203</td><td>-0.916760881643629</td><td>-1.1113319053861441</td><td>1</td><td>0</td></tr>
+<tr><td>3322955831151254912</td><td>88.74620347799508</td><td>7.342728619145855</td><td>0.1559833902071379</td><td>-1.750598455959734</td><td>1</td><td>0</td></tr>
+<tr><td>3322962118983356032</td><td>88.76109637722949</td><td>7.380564308268047</td><td>--</td><td>--</td><td>1</td><td>0</td></tr>
+<tr><td>3322963527732585984</td><td>88.78813701704823</td><td>7.456696889759524</td><td>1.1363354614104264</td><td>-2.46251296961979</td><td>1</td><td>0</td></tr>
+<tr><td>3322961775385969024</td><td>88.79723215862369</td><td>7.359756552906535</td><td>2.121021366548921</td><td>-6.605711792572964</td><td>1</td><td>0</td></tr>
+<tr><td>3322962084625312512</td><td>88.78286756313868</td><td>7.384598632215225</td><td>-0.09350717810996487</td><td>1.3495903680571226</td><td>1</td><td>0</td></tr>
+<tr><td>3322962939322692608</td><td>88.73289357818679</td><td>7.407688975612043</td><td>-0.11002934783569704</td><td>1.002126813991455</td><td>1</td><td>0</td></tr>
+<tr><td>3322963459013111808</td><td>88.80348931842845</td><td>7.438699901204871</td><td>0.800833828337078</td><td>-3.3780655466364626</td><td>1</td><td>0</td></tr>
+<tr><td>3322962015904143872</td><td>88.74740822271643</td><td>7.387057037713974</td><td>-0.7201178533250112</td><td>0.5565841272341593</td><td>1</td><td>0</td></tr>
+</table>
+
+
+
+Notice that this result has fewer rows than the previous result.
+That's because there are sources in the Gaia table with no
+corresponding source in the Pan-STARRS table.
+
+By default, the result of the join only includes rows where the same
+`source_id` appears in both tables.
+This default is called an "inner" join because the results include
+only the intersection of the two tables.
+[You can read about the other kinds of join
+here](https://www.geeksforgeeks.org/sql-join-set-1-inner-left-right-and-full-joins/).
+
+## Adding the Pan-STARRS table
+
+### Exercise
+
+Now we're ready to bring in the Pan-STARRS table.  Starting with the
+previous query, add a second `JOIN` clause that joins with
+`gaiadr2.panstarrs1_original_valid`, gives it the abbreviated name
+`ps`, and matches `original_ext_source_id` from the best neighbor
+table with `obj_id` from the Pan-STARRS table.
+
+Add `g_mean_psf_mag` and `i_mean_psf_mag` to the column list, and run the query.
+The result should contain 490 rows and 9 columns.
+
+
+>
+> > ## Solution
+> > 
+> > ~~~
+> > 
+> > query_base = """SELECT 
+> > {columns}
+> > FROM gaiadr2.gaia_source as gaia
+> > JOIN gaiadr2.panstarrs1_best_neighbour as best
+> >   ON gaia.source_id = best.source_id
+> > JOIN gaiadr2.panstarrs1_original_valid as ps
+> >   ON best.original_ext_source_id = ps.obj_id
+> > WHERE 1=CONTAINS(
+> >   POINT(gaia.ra, gaia.dec),
+> >   CIRCLE(88.8, 7.4, 0.08333333))
+> > """
+> > 
+> > column_list = ['gaia.source_id',
+> >                'gaia.ra',
+> >                'gaia.dec',
+> >                'gaia.pmra',
+> >                'gaia.pmdec',
+> >                'best.best_neighbour_multiplicity',
+> >                'best.number_of_mates',
+> >                'ps.g_mean_psf_mag',
+> >                'ps.i_mean_psf_mag']
+> > 
+> > columns = ', '.join(column_list)
+> > 
+> > query = query_base.format(columns=columns)
+> > print(query)
+> > 
+> > job = Gaia.launch_job_async(query=query)
+> > results = job.get_results()
+> > results
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
+
+## Selecting by coordinates and proper motion
+
+Now let's bring in the `WHERE` clause from the previous lesson, which
+selects sources based on parallax, BP-RP color, sky coordinates, and
+proper motion.
+
+Here's `query6_base` from the previous lesson.
+
+
+
+~~~
+query6_base = """SELECT 
+{columns}
+FROM gaiadr2.gaia_source
+WHERE parallax < 1
+  AND bp_rp BETWEEN -0.75 AND 2 
+  AND 1 = CONTAINS(POINT(ra, dec), 
+                   POLYGON({point_list}))
+  AND 1 = CONTAINS(POINT(pmra, pmdec),
+                   POLYGON({pm_point_list}))
+"""
+~~~
+{: .language-python}
+
+Let's reload the Pandas `Series` that contains `point_list` and `pm_point_list`.
+
+
+
+~~~
+import pandas as pd
+
+filename = 'gd1_data.hdf'
+point_series = pd.read_hdf(filename, 'point_series')
+point_series
+~~~
+{: .language-python}
+
+~~~
+point_list       135.306, 8.39862, 126.51, 13.4449, 163.017, 54...
+pm_point_list     -4.05037121,-14.75623261, -3.41981085,-14.723...
+dtype: object
 ~~~
 {: .output}
 
@@ -716,21 +947,78 @@ results1.colnames
 
 
 
-Because one of the column names appears in both tables, the second
-instance of `source_id` has been appended with the suffix `_2`.
-
-The length of `results1` is about 3000, which means we were not able
-to find matches for all stars in the list of candidates.
+Now we can assemble the query.
 
 
 
 ~~~
-len(results1)
+columns = 'source_id, ra, dec, pmra, pmdec'
+
+query6 = query6_base.format(columns=columns,
+                            point_list=point_series['point_list'],
+                            pm_point_list=point_series['pm_point_list'])
+
+print(query6)
 ~~~
 {: .language-python}
 
 ~~~
-3724
+SELECT 
+source_id, ra, dec, pmra, pmdec
+FROM gaiadr2.gaia_source
+WHERE parallax < 1
+  AND bp_rp BETWEEN -0.75 AND 2 
+  AND 1 = CONTAINS(POINT(ra, dec), 
+                   POLYGON(135.306, 8.39862, 126.51, 13.4449, 163.017, 54.2424, 172.933, 46.4726, 135.306, 8.39862))
+  AND 1 = CONTAINS(POINT(pmra, pmdec),
+                   POLYGON( -4.05037121,-14.75623261, -3.41981085,-14.72365546, -3.03521988,-14.44357135, -2.26847919,-13.7140236 , -2.61172203,-13.24797471, -2.73471401,-13.09054471, -3.19923146,-12.5942653 , -3.34082546,-12.47611926, -5.67489413,-11.16083338, -5.95159272,-11.10547884, -6.42394023,-11.05981295, -7.09631023,-11.95187806, -7.30641519,-12.24559977, -7.04016696,-12.88580702, -6.00347705,-13.75912098, -4.42442296,-14.74641176))
+
+
+~~~
+{: .output}
+
+
+    
+
+Again, let's run it to make sure we are starting with a working query.
+
+
+
+~~~
+job = Gaia.launch_job_async(query=query6)
+~~~
+{: .language-python}
+
+~~~
+INFO: Query finished. [astroquery.utils.tap.core]
+
+~~~
+{: .output}
+
+
+    
+
+
+
+~~~
+results = job.get_results()
+results
+~~~
+{: .language-python}
+
+~~~
+<Table length=7345>
+    source_id              ra         ...        pmdec       
+                          deg         ...       mas / yr     
+      int64             float64       ...       float64      
+------------------ ------------------ ... -------------------
+635559124339440000 137.58671691646745 ... -12.490481778113859
+635860218726658176  138.5187065217173 ... -11.346409129876392
+635674126383965568  138.8428741026386 ... -12.702779525389634
+635535454774983040  137.8377518255436 ... -14.492308604905652
+635497276810313600  138.0445160213759 ... -12.291499169815987
+635614168640132864 139.59219748145836 ... -13.708904908478631
+[Output truncated]
 ~~~
 {: .output}
 
@@ -738,9 +1026,85 @@ len(results1)
 
 
 
-    
+<i>Table length=7345</i>
+<table id="table140104380909120" class="table-striped table-bordered table-condensed">
+<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>635559124339440000</td><td>137.58671691646745</td><td>19.1965441084838</td><td>-3.770521900009566</td><td>-12.490481778113859</td></tr>
+<tr><td>635860218726658176</td><td>138.5187065217173</td><td>19.09233926905897</td><td>-5.941679495793577</td><td>-11.346409129876392</td></tr>
+<tr><td>635674126383965568</td><td>138.8428741026386</td><td>19.031798198627634</td><td>-3.8970011609340207</td><td>-12.702779525389634</td></tr>
+<tr><td>635535454774983040</td><td>137.8377518255436</td><td>18.864006786112604</td><td>-4.335040664412791</td><td>-14.492308604905652</td></tr>
+<tr><td>635497276810313600</td><td>138.0445160213759</td><td>19.00947118796605</td><td>-7.1729306406216615</td><td>-12.291499169815987</td></tr>
+<tr><td>635614168640132864</td><td>139.59219748145836</td><td>18.807955539071433</td><td>-3.309602916796381</td><td>-13.708904908478631</td></tr>
+<tr><td>635821843194387840</td><td>139.88094034815086</td><td>19.62185456718988</td><td>-6.544201177153814</td><td>-12.55978220563274</td></tr>
+<tr><td>635551706931167104</td><td>138.04665586038192</td><td>19.248909662830798</td><td>-6.224595114220405</td><td>-12.224246333795001</td></tr>
+<tr><td>635518889086133376</td><td>137.2374229207837</td><td>18.7428630711791</td><td>-3.3186800714801046</td><td>-12.710314902969365</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>612282738058264960</td><td>134.0445768189235</td><td>18.11915820167003</td><td>-2.5972485319419127</td><td>-13.651740929272187</td></tr>
+<tr><td>612485911486166656</td><td>134.96582769047063</td><td>19.309965857307247</td><td>-4.519325315774155</td><td>-11.998725329569156</td></tr>
+<tr><td>612386332668697600</td><td>135.45701048323093</td><td>18.63266345155342</td><td>-5.07684899854408</td><td>-12.436641304786672</td></tr>
+<tr><td>612296172717818624</td><td>133.80060286960668</td><td>18.08186533343457</td><td>-6.112792578821885</td><td>-12.50750861370402</td></tr>
+<tr><td>612250375480101760</td><td>134.64754712466774</td><td>18.122419425065015</td><td>-2.8969262278467127</td><td>-14.061676353845487</td></tr>
+<tr><td>612394926899159168</td><td>135.51997060013844</td><td>18.817675531233004</td><td>-3.9968965218753763</td><td>-13.526821099431533</td></tr>
+<tr><td>612288854091187712</td><td>134.07970733489358</td><td>18.15424015818678</td><td>-5.96977151283562</td><td>-11.162471664228455</td></tr>
+<tr><td>612428870024913152</td><td>134.8384242853297</td><td>18.758253070693225</td><td>-4.0022333299353825</td><td>-14.247379430659198</td></tr>
+<tr><td>612256418500423168</td><td>134.90752972739924</td><td>18.280596648172743</td><td>-6.109836304219565</td><td>-12.145212331165776</td></tr>
+<tr><td>612429144902815104</td><td>134.77293979509543</td><td>18.73628415871413</td><td>-5.257085979310591</td><td>-13.962312685889454</td></tr>
+</table>
 
 
+
+> ## Exercise
+> 
+> Create a new query base called `query7_base` that combines the `WHERE`
+> clauses from the previous query with the `JOIN` clauses for the best
+> neighbor and Pan-STARRS tables.
+> Format the query base using the column names in `column_list`, and
+> call the result `query7`.
+> 
+> Hint: Make sure you use qualified column names everywhere!
+> 
+> Run your query and download the results.  The table you get should
+> have 3725 rows and 9 columns.
+>
+> > ## Solution
+> > 
+> > ~~~
+> > 
+> > query7_base = """
+> > SELECT 
+> > {columns}
+> > FROM gaiadr2.gaia_source as gaia
+> > JOIN gaiadr2.panstarrs1_best_neighbour as best
+> >   ON gaia.source_id = best.source_id
+> > JOIN gaiadr2.panstarrs1_original_valid as ps
+> >   ON best.original_ext_source_id = ps.obj_id
+> > WHERE parallax < 1
+> >   AND bp_rp BETWEEN -0.75 AND 2 
+> >   AND 1 = CONTAINS(POINT(gaia.ra, gaia.dec), 
+> >                    POLYGON({point_list}))
+> >   AND 1 = CONTAINS(POINT(gaia.pmra, gaia.pmdec),
+> >                    POLYGON({pm_point_list}))
+> > """
+> > 
+> > columns = ', '.join(column_list)
+> > 
+> > query7 = query7_base.format(columns=columns,
+> >                             point_list=point_series['point_list'],
+> >                             pm_point_list=point_series['pm_point_list'])
+> > print(query7)
+> > 
+> > 
+> > job = Gaia.launch_job_async(query=query7)
+> > results = job.get_results()
+> > results
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
+
+## Checking the match
 
 To get more information about the matching process, we can inspect
 `best_neighbour_multiplicity`, which indicates for each star in Gaia
@@ -749,12 +1113,12 @@ how many stars in Pan-STARRS are equally likely matches.
 
 
 ~~~
-results1['best_neighbour_multiplicity']
+results['best_neighbour_multiplicity']
 ~~~
 {: .language-python}
 
 ~~~
-<MaskedColumn name='best_neighbour_multiplicity' dtype='int16' description='Number of neighbours with same probability as best neighbour' length=3724>
+<MaskedColumn name='best_neighbour_multiplicity' dtype='int16' description='Number of neighbours with same probability as best neighbour' length=3725>
   1
   1
   1
@@ -773,7 +1137,7 @@ results1['best_neighbour_multiplicity']
 
 
 
-&lt;MaskedColumn name=&apos;best_neighbour_multiplicity&apos; dtype=&apos;int16&apos; description=&apos;Number of neighbours with same probability as best neighbour&apos; length=3724&gt;
+&lt;MaskedColumn name=&apos;best_neighbour_multiplicity&apos; dtype=&apos;int16&apos; description=&apos;Number of neighbours with same probability as best neighbour&apos; length=3725&gt;
 <table>
 <tr><td>1</td></tr>
 <tr><td>1</td></tr>
@@ -817,13 +1181,13 @@ in Lesson 3.
 ~~~
 import pandas as pd
 
-multiplicity = pd.Series(results1['best_neighbour_multiplicity'])
+multiplicity = pd.Series(results['best_neighbour_multiplicity'])
 multiplicity.describe()
 ~~~
 {: .language-python}
 
 ~~~
-count    3724.0
+count    3725.0
 mean        1.0
 std         0.0
 min         1.0
@@ -852,13 +1216,13 @@ Gaia that match with the same star in Pan-STARRS.
 
 
 ~~~
-mates = pd.Series(results1['number_of_mates'])
+mates = pd.Series(results['number_of_mates'])
 mates.describe()
 ~~~
 {: .language-python}
 
 ~~~
-count    3724.0
+count    3725.0
 mean        0.0
 std         0.0
 min         0.0
@@ -883,304 +1247,130 @@ found in Pan-STARRS, there are no other stars in Gaia that also match.
 
 **Detail:** The table also contains `number_of_neighbors` which is the
 number of stars in Pan-STARRS that match in terms of position, before
-using other criteria to choose the most likely match.
+using other criteria to choose the most likely match.  But we are more
+interested in the final match, using both criteria.
 
-## Getting the photometry data
+## Transforming coordinates
 
-The most important column in `results1` is `original_ext_source_id`
-which is the `obj_id` we will use to look up the likely matches in
-Pan-STARRS to get photometry data.
-
-The process is similar to what we just did to look up the matches.  We will:
-
-1. Make a table that contains `source_id` and `original_ext_source_id`.
-
-2. Write the table to an XML VOTable file.
-
-3. Write a query that joins the uploaded table with
-`gaiadr2.panstarrs1_original_valid` and selects the photometry data we
-want.
-
-4. Run the query using the uploaded table.
-
-Since we've done everything here before, we'll do these steps as an exercise.
-
-> ## Exercise
-> 
-> Select `source_id` and `original_ext_source_id` from `results1` and
-> write the resulting table as a file named `external.xml`.
-
-
->
-> > ## Solution
-> > 
-> > ~~~
-> > 
-> > table_ext = results1[['source_id', 'original_ext_source_id']]
-> > table_ext.write('external.xml', format='votable', overwrite=True)
-> > ~~~
-> > {: .language-python}
-> {: .solution}
-{: .challenge}
-
-
-
-Use `!head` to confirm that the file exists and contains an XML VOTable.
+Here's the function we've used to transform the results from ICRS to
+GD-1 coordinates.
 
 
 
 ~~~
-!head external.xml
+import astropy.units as u
+from astropy.coordinates import SkyCoord
+from gala.coordinates import GD1Koposov10
+from gala.coordinates import reflex_correct
+
+def make_dataframe(table):
+    """Transform coordinates from ICRS to GD-1 frame.
+    
+    table: Astropy Table
+    
+    returns: Pandas DataFrame
+    """
+    skycoord = SkyCoord(
+               ra=table['ra'], 
+               dec=table['dec'],
+               pm_ra_cosdec=table['pmra'],
+               pm_dec=table['pmdec'], 
+               distance=8*u.kpc, 
+               radial_velocity=0*u.km/u.s)
+
+    gd1_frame = GD1Koposov10()
+    transformed = skycoord.transform_to(gd1_frame)
+    skycoord_gd1 = reflex_correct(transformed)
+
+    df = table.to_pandas()
+    df['phi1'] = skycoord_gd1.phi1
+    df['phi2'] = skycoord_gd1.phi2
+    df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
+    df['pm_phi2'] = skycoord_gd1.pm_phi2
+    return df
+~~~
+{: .language-python}
+
+Now can transform the result from the last query.
+
+
+
+~~~
+candidate_df = make_dataframe(results)
+~~~
+{: .language-python}
+
+And see how it looks.
+
+
+
+~~~
+import matplotlib.pyplot as plt
+
+x = candidate_df['phi1']
+y = candidate_df['phi2']
+plt.plot(x, y, 'ko', markersize=0.5, alpha=0.5)
+
+plt.xlabel('phi1 (degree GD1)')
+plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .language-python}
 
 ~~~
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Produced with astropy.io.votable version 4.2
-     http://www.astropy.org/ -->
-<VOTABLE version="1.4" xmlns="http://www.ivoa.net/xml/VOTable/v1.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.ivoa.net/xml/VOTable/v1.4">
- <RESOURCE type="results">
-  <TABLE>
-   <FIELD ID="source_id" datatype="long" name="source_id" ucd="meta.id;meta.main">
-    <DESCRIPTION>
-     Unique Gaia source identifier
-    </DESCRIPTION>
-
+<Figure size 432x288 with 1 Axes>
 ~~~
 {: .output}
+
 
 
     
-
-> ## Exercise
-> 
-> Read [the documentation of the Pan-STARRS
-> table](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_external_catalogues/ssec_dm_panstarrs1_original_valid.html)
-> and make note of `obj_id`, which contains the object IDs we'll use to
-> find the rows we want.
-> 
-> Write a query that uses each value of `original_ext_source_id` from
-> the uploaded table to find a row in
-> `gaiadr2.panstarrs1_original_valid` with the same value in `obj_id`,
-> and select all columns from both tables.
-> 
-> Suggestion: Develop and test your query incrementally.  For example:
-> 
-> 1. Write a query that downloads all columns from the uploaded table.
-> Test to make sure we can read the uploaded table.
-> 
-> 2. Write a query that downloads the first 10 rows from
-> `gaiadr2.panstarrs1_original_valid`.  Test to make sure we can access
-> Pan-STARRS data.
-> 
-> 3. Write a query that joins the two tables and selects all columns.
-> Test that the join works as expected.
-> 
-> 
-> As a bonus exercise, write a query that joins the two tables and
-> selects just the columns we need:
-> 
-> * `source_id` from the uploaded table
-> 
-> * `g_mean_psf_mag` from `gaiadr2.panstarrs1_original_valid`
-> 
-> * `i_mean_psf_mag` from `gaiadr2.panstarrs1_original_valid`
-> 
-> Hint: When you select a column from a join, you have to specify which
-> table the column is in.
+![png](05-join_files/05-join_70_0.png)
+    
 
 
->
-> > ## Solution
-> > 
-> > ~~~
-> > 
-> > # First test
-> > 
-> > query2 = """SELECT *
-> > FROM tap_upload.external as external
-> > """
-> > 
-> > # Second test
-> > 
-> > query2 = """SELECT TOP 10
-> > FROM gaiadr2.panstarrs1_original_valid
-> > """
-> > 
-> > # Third test
-> > 
-> > query2 = """SELECT *
-> > FROM gaiadr2.panstarrs1_original_valid as ps
-> > JOIN tap_upload.external as external
-> >   ON ps.obj_id = external.original_ext_source_id
-> > """
-> > 
-> > # Complete query
-> > 
-> > query2 = """SELECT
-> > external.source_id, ps.g_mean_psf_mag, ps.i_mean_psf_mag
-> > FROM gaiadr2.panstarrs1_original_valid as ps
-> > JOIN tap_upload.external as external
-> >   ON ps.obj_id = external.original_ext_source_id
-> > """
-> > ~~~
-> > {: .language-python}
-> {: .solution}
-{: .challenge}
+The result is similar to what we saw in the previous lesson, except
+that have fewer stars now, because we did not find photometry data for
+all of the candidate sources.
 
+## Saving the DataFrame
 
-
-Here's how we launch the job and get the results.
+Let's save this `DataFrame` so we can pick up where we left off
+without running this query again.
+The HDF file should already exist, so we'll add `candidate_df` to it.
 
 
 
 ~~~
-job2 = Gaia.launch_job_async(query=query2, 
-                       upload_resource='external.xml', 
-                       upload_table_name='external')
+filename = 'gd1_data.hdf'
+
+candidate_df.to_hdf(filename, 'candidate_df')
+~~~
+{: .language-python}
+
+We can use `getsize` to confirm that the file exists and check the size:
+
+
+
+~~~
+from os.path import getsize
+
+MB = 1024 * 1024
+getsize(filename) / MB
 ~~~
 {: .language-python}
 
 ~~~
-INFO: Query finished. [astroquery.utils.tap.core]
-
+5.574869155883789
 ~~~
 {: .output}
+
+
+
 
 
     
 
 
-
-~~~
-results2 = job2.get_results()
-results2
-~~~
-{: .language-python}
-
-~~~
-<Table length=3724>
-    source_id       g_mean_psf_mag   i_mean_psf_mag 
-                                          mag       
-      int64            float64          float64     
------------------- ---------------- ----------------
-635860218726658176 17.8978004455566 17.5174007415771
-635674126383965568 19.2873001098633 17.6781005859375
-635535454774983040 16.9237995147705  16.478099822998
-635497276810313600 19.9242000579834 18.3339996337891
-635614168640132864 16.1515998840332 14.6662998199463
-635598607974369792 16.5223999023438 16.1375007629395
-[Output truncated]
-~~~
-{: .output}
-
-
-
-
-
-<i>Table length=3724</i>
-<table id="table139832332951360" class="table-striped table-bordered table-condensed">
-<thead><tr><th>source_id</th><th>g_mean_psf_mag</th><th>i_mean_psf_mag</th></tr></thead>
-<thead><tr><th></th><th></th><th>mag</th></tr></thead>
-<thead><tr><th>int64</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>635860218726658176</td><td>17.8978004455566</td><td>17.5174007415771</td></tr>
-<tr><td>635674126383965568</td><td>19.2873001098633</td><td>17.6781005859375</td></tr>
-<tr><td>635535454774983040</td><td>16.9237995147705</td><td>16.478099822998</td></tr>
-<tr><td>635497276810313600</td><td>19.9242000579834</td><td>18.3339996337891</td></tr>
-<tr><td>635614168640132864</td><td>16.1515998840332</td><td>14.6662998199463</td></tr>
-<tr><td>635598607974369792</td><td>16.5223999023438</td><td>16.1375007629395</td></tr>
-<tr><td>635737661835496576</td><td>14.5032997131348</td><td>13.9849004745483</td></tr>
-<tr><td>635850945892748672</td><td>16.5174999237061</td><td>16.0450000762939</td></tr>
-<tr><td>635600532119713664</td><td>20.4505996704102</td><td>19.5177001953125</td></tr>
-<tr><td>...</td><td>...</td><td>...</td></tr>
-<tr><td>612241781249124608</td><td>20.2343997955322</td><td>18.6518001556396</td></tr>
-<tr><td>612332147361443072</td><td>21.3848991394043</td><td>20.3076000213623</td></tr>
-<tr><td>612426744016802432</td><td>17.8281002044678</td><td>17.4281005859375</td></tr>
-<tr><td>612331739340341760</td><td>21.8656997680664</td><td>19.5223007202148</td></tr>
-<tr><td>612282738058264960</td><td>22.5151996612549</td><td>19.9743995666504</td></tr>
-<tr><td>612386332668697600</td><td>19.3792991638184</td><td>17.9923000335693</td></tr>
-<tr><td>612296172717818624</td><td>17.4944000244141</td><td>16.926700592041</td></tr>
-<tr><td>612250375480101760</td><td>15.3330001831055</td><td>14.6280002593994</td></tr>
-<tr><td>612394926899159168</td><td>16.4414005279541</td><td>15.8212003707886</td></tr>
-<tr><td>612256418500423168</td><td>20.8715991973877</td><td>19.9612007141113</td></tr>
-</table>
-
-
-
-> ## Exercise
-> 
-> Optional Challenge: Do both joins in one query.
-> 
-> There's an [example
-> here](https://github.com/smoh/Getting-started-with-Gaia/blob/master/gaia-adql-snippets.md)
-> you could start with.
-
-
->
-> > ## Solution
-> > 
-> > ~~~
-> > 
-> > query3 = """SELECT
-> > candidate_df.source_id, ps.g_mean_psf_mag, ps.i_mean_psf_mag
-> > FROM tap_upload.candidate_df as candidate_df
-> > JOIN gaiadr2.panstarrs1_best_neighbour as best
-> >   ON best.source_id = candidate_df.source_id
-> > JOIN gaiadr2.panstarrs1_original_valid as ps
-> >   ON ps.obj_id = best.original_ext_source_id
-> > """
-> > 
-> > # job3 = Gaia.launch_job_async(query=query3, 
-> > #                       upload_resource='candidate_df.xml', 
-> > #                       upload_table_name='candidate_df')
-> > 
-> > # results3 = job3.get_results()
-> > # results3
-> > ~~~
-> > {: .language-python}
-> {: .solution}
-{: .challenge}
-
-
-
-## Write the data
-
-Since we have the data in an Astropy `Table`, let's store it in a FITS file.
-
-
-
-~~~
-filename = 'gd1_photo.fits'
-results2.write(filename, overwrite=True)
-~~~
-{: .language-python}
-
-We can check that the file exists, and see how big it is.
-
-
-
-~~~
-!ls -lh gd1_photo.fits
-~~~
-{: .language-python}
-
-~~~
--rw-rw-r-- 1 downey downey 96K Dec 29 11:51 gd1_photo.fits
-
-~~~
-{: .output}
-
-
-    
-
-At around 175 KB, it is smaller than some of the other files we've
-been working with.
-
-If you are using Windows, `ls` might not work; in that case, try:
-
-```
-!dir gd1_photo.fits
-```
 
 ## Summary
 
@@ -1192,7 +1382,345 @@ In the next notebook, we'll use this data for a second round of
 selection, identifying stars that have photometry data consistent with
 GD-1.
 
-## Best practice
+But before you go on, you might be interested in another file format, CSV.
+
+## CSV
+
+Pandas can write a variety of other formats, [which you can read about
+here](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html).
+We won't cover all of them, but one other important one is
+[CSV](https://en.wikipedia.org/wiki/Comma-separated_values), which
+stands for "comma-separated values".
+
+CSV is a plain-text format that can be read and written by pretty much
+any tool that works with data.  In that sense, it is the "least common
+denominator" of data formats.
+
+However, it has an important limitation: some information about the
+data gets lost in translation, notably the data types.  If you read a
+CSV file from someone else, you might need some additional information
+to make sure you are getting it right.
+
+Also, CSV files tend to be big, and slow to read and write.
+
+With those caveats, here's how to write one:
+
+
+
+~~~
+candidate_df.to_csv('gd1_data.csv')
+~~~
+{: .language-python}
+
+We can check the file size like this:
+
+
+
+~~~
+getsize('gd1_data.csv') / MB
+~~~
+{: .language-python}
+
+~~~
+0.7606849670410156
+~~~
+{: .output}
+
+
+
+
+
+    
+
+
+
+We can see the first few lines like this:
+
+
+
+~~~
+def head(filename, n=3):
+    """Print the first `n` lines of a file."""
+    with open(filename) as fp:
+        for i in range(n):
+            print(next(fp))
+~~~
+{: .language-python}
+
+
+
+~~~
+head('gd1_data.csv')
+~~~
+{: .language-python}
+
+~~~
+,source_id,ra,dec,pmra,pmdec,best_neighbour_multiplicity,number_of_mates,g_mean_psf_mag,i_mean_psf_mag,phi1,phi2,pm_phi1,pm_phi2
+
+0,635860218726658176,138.5187065217173,19.09233926905897,-5.941679495793577,-11.346409129876392,1,0,17.8978004455566,17.5174007415771,-59.247329893833296,-2.016078400820631,-7.527126084640531,1.7487794924176672
+
+1,635674126383965568,138.8428741026386,19.031798198627634,-3.8970011609340207,-12.702779525389634,1,0,19.2873001098633,17.6781005859375,-59.13339098769217,-2.306900745179831,-7.560607655557415,-0.7417999555980248
+
+
+~~~
+{: .output}
+
+
+    
+
+The CSV file contains the names of the columns, but not the data types.
+
+We can read the CSV file back like this:
+
+
+
+~~~
+read_back_csv = pd.read_csv('gd1_data.csv')
+~~~
+{: .language-python}
+
+Let's compare the first few rows of `candidate_df` and `read_back_csv`
+
+
+
+~~~
+candidate_df.head(3)
+~~~
+{: .language-python}
+
+~~~
+            source_id          ra        dec      pmra      pmdec  \
+0  635860218726658176  138.518707  19.092339 -5.941679 -11.346409   
+1  635674126383965568  138.842874  19.031798 -3.897001 -12.702780   
+2  635535454774983040  137.837752  18.864007 -4.335041 -14.492309   
+
+   best_neighbour_multiplicity  number_of_mates  g_mean_psf_mag  \
+0                            1                0         17.8978   
+1                            1                0         19.2873   
+2                            1                0         16.9238   
+
+   i_mean_psf_mag       phi1      phi2   pm_phi1   pm_phi2  
+[Output truncated]
+~~~
+{: .output}
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>source_id</th>
+      <th>ra</th>
+      <th>dec</th>
+      <th>pmra</th>
+      <th>pmdec</th>
+      <th>best_neighbour_multiplicity</th>
+      <th>number_of_mates</th>
+      <th>g_mean_psf_mag</th>
+      <th>i_mean_psf_mag</th>
+      <th>phi1</th>
+      <th>phi2</th>
+      <th>pm_phi1</th>
+      <th>pm_phi2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>635860218726658176</td>
+      <td>138.518707</td>
+      <td>19.092339</td>
+      <td>-5.941679</td>
+      <td>-11.346409</td>
+      <td>1</td>
+      <td>0</td>
+      <td>17.8978</td>
+      <td>17.517401</td>
+      <td>-59.247330</td>
+      <td>-2.016078</td>
+      <td>-7.527126</td>
+      <td>1.748779</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>635674126383965568</td>
+      <td>138.842874</td>
+      <td>19.031798</td>
+      <td>-3.897001</td>
+      <td>-12.702780</td>
+      <td>1</td>
+      <td>0</td>
+      <td>19.2873</td>
+      <td>17.678101</td>
+      <td>-59.133391</td>
+      <td>-2.306901</td>
+      <td>-7.560608</td>
+      <td>-0.741800</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>635535454774983040</td>
+      <td>137.837752</td>
+      <td>18.864007</td>
+      <td>-4.335041</td>
+      <td>-14.492309</td>
+      <td>1</td>
+      <td>0</td>
+      <td>16.9238</td>
+      <td>16.478100</td>
+      <td>-59.785300</td>
+      <td>-1.594569</td>
+      <td>-9.357536</td>
+      <td>-1.218492</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+
+~~~
+read_back_csv.head(3)
+~~~
+{: .language-python}
+
+~~~
+   Unnamed: 0           source_id          ra        dec      pmra      pmdec  \
+0           0  635860218726658176  138.518707  19.092339 -5.941679 -11.346409   
+1           1  635674126383965568  138.842874  19.031798 -3.897001 -12.702780   
+2           2  635535454774983040  137.837752  18.864007 -4.335041 -14.492309   
+
+   best_neighbour_multiplicity  number_of_mates  g_mean_psf_mag  \
+0                            1                0         17.8978   
+1                            1                0         19.2873   
+2                            1                0         16.9238   
+
+   i_mean_psf_mag       phi1      phi2   pm_phi1   pm_phi2  
+[Output truncated]
+~~~
+{: .output}
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>source_id</th>
+      <th>ra</th>
+      <th>dec</th>
+      <th>pmra</th>
+      <th>pmdec</th>
+      <th>best_neighbour_multiplicity</th>
+      <th>number_of_mates</th>
+      <th>g_mean_psf_mag</th>
+      <th>i_mean_psf_mag</th>
+      <th>phi1</th>
+      <th>phi2</th>
+      <th>pm_phi1</th>
+      <th>pm_phi2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>635860218726658176</td>
+      <td>138.518707</td>
+      <td>19.092339</td>
+      <td>-5.941679</td>
+      <td>-11.346409</td>
+      <td>1</td>
+      <td>0</td>
+      <td>17.8978</td>
+      <td>17.517401</td>
+      <td>-59.247330</td>
+      <td>-2.016078</td>
+      <td>-7.527126</td>
+      <td>1.748779</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>635674126383965568</td>
+      <td>138.842874</td>
+      <td>19.031798</td>
+      <td>-3.897001</td>
+      <td>-12.702780</td>
+      <td>1</td>
+      <td>0</td>
+      <td>19.2873</td>
+      <td>17.678101</td>
+      <td>-59.133391</td>
+      <td>-2.306901</td>
+      <td>-7.560608</td>
+      <td>-0.741800</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>635535454774983040</td>
+      <td>137.837752</td>
+      <td>18.864007</td>
+      <td>-4.335041</td>
+      <td>-14.492309</td>
+      <td>1</td>
+      <td>0</td>
+      <td>16.9238</td>
+      <td>16.478100</td>
+      <td>-59.785300</td>
+      <td>-1.594569</td>
+      <td>-9.357536</td>
+      <td>-1.218492</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+Notice that the index in `candidate_df` has become an unnamed column
+in `read_back_csv`.  The Pandas functions for writing and reading CSV
+files provide options to avoid that problem, but this is an example of
+the kind of thing that can go wrong with CSV files.
+
+## Best practices
 
 * Use `JOIN` operations to combine data from multiple tables in a
 databased, using some kind of identifier to match up records from one
@@ -1200,6 +1728,15 @@ table with records from another.
 
 * This is another example of a practice we saw in the previous
 notebook, moving the computation to the data.
+
+* For most applications, saving data in FITS or HDF5 is better than
+CSV.  FITS and HDF5 are binary formats, so the files are usually
+smaller, and they store metadata, so you don't lose anything when you
+read the file back.
+
+* On the other hand, CSV is a "least common denominator" format; that
+is, it can be read by practically any application that works with
+data.
 
 
 

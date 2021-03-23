@@ -77,27 +77,31 @@ After completing this lesson, you should be able to
 ## Reload the data
 
 In the previous lesson, we ran a query on the Gaia server and
-downloaded data for roughly 100,000 stars.  We saved the data in a
+downloaded data for roughly 140,000 stars.  We saved the data in a
 FITS file so that now, picking up where we left off, we can read the
 data from a local file rather than running the query again.
 
 If you ran the previous lesson successfully, you should already have a
 file called `gd1_results.fits` that contains the data we downloaded.
 
-If not, you can run the following cell, which downloads the data from
-our repository.
+If not, you can [download the
+file](https://github.com/AllenDowney/AstronomicalData/raw/main/data/gd1_results.fits)
+or run the following cell.
 
 
 
 ~~~
-import os
-from wget import download
+from os.path import basename, exists
 
-filename = 'gd1_results.fits'
-path = 'https://github.com/AllenDowney/AstronomicalData/raw/main/data/'
+def download(url):
+    filename = basename(url)
+    if not exists(filename):
+        from urllib.request import urlretrieve
+        local, _ = urlretrieve(url, filename)
+        print('Downloaded ' + local)
 
-if not os.path.exists(filename):
-    print(download(path+filename))
+download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
+         'data/gd1_results.fits')
 ~~~
 {: .language-python}
 
@@ -108,6 +112,7 @@ Now here's how we can read the data from the file back into an Astropy `Table`:
 ~~~
 from astropy.table import Table
 
+filename = 'gd1_results.fits'
 results = Table.read(filename)
 ~~~
 {: .language-python}
@@ -132,7 +137,6 @@ source_id   int64          Unique source identifier (unique within a particular 
       dec float64      deg                                                        Declination
      pmra float64 mas / yr                         Proper motion in right ascension direction
     pmdec float64 mas / yr                             Proper motion in declination direction
- parallax float64      mas                                                           Parallax
 ~~~
 {: .output}
 
@@ -161,7 +165,7 @@ results.colnames
 {: .language-python}
 
 ~~~
-['source_id', 'ra', 'dec', 'pmra', 'pmdec', 'parallax']
+['source_id', 'ra', 'dec', 'pmra', 'pmdec']
 ~~~
 {: .output}
 
@@ -268,11 +272,11 @@ results[0]
 
 ~~~
 <Row index=0>
-    source_id              ra                dec                pmra              pmdec             parallax     
-                          deg                deg              mas / yr           mas / yr             mas        
-      int64             float64            float64            float64            float64            float64      
------------------- ------------------ ----------------- ------------------- ----------------- -------------------
-637987125186749568 142.48301935991023 21.75771616932985 -2.5168384683875766 2.941813096629439 -0.2573448962333354
+    source_id              ra                dec                pmra              pmdec      
+                          deg                deg              mas / yr           mas / yr    
+      int64             float64            float64            float64            float64     
+------------------ ------------------ ----------------- ------------------- -----------------
+637987125186749568 142.48301935991023 21.75771616932985 -2.5168384683875766 2.941813096629439
 ~~~
 {: .output}
 
@@ -281,11 +285,11 @@ results[0]
 
 
 <i>Row index=0</i>
-<table id="table140013965422016">
-<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th><th>parallax</th></tr></thead>
-<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th><th>mas</th></tr></thead>
-<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>637987125186749568</td><td>142.48301935991023</td><td>21.75771616932985</td><td>-2.5168384683875766</td><td>2.941813096629439</td><td>-0.2573448962333354</td></tr>
+<table id="table140559241197024">
+<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>637987125186749568</td><td>142.48301935991023</td><td>21.75771616932985</td><td>-2.5168384683875766</td><td>2.941813096629439</td></tr>
 </table>
 
 
@@ -314,7 +318,6 @@ astropy.table.row.Row
 
 Notice that the bracket operator selects both columns and rows.  You
 might wonder how it knows which to select.
-
 If the expression in brackets is a string, it selects a column; if the
 expression is an integer, it selects a row.
 
@@ -370,7 +373,6 @@ You get the same result either way.
 To see what the results look like, we'll use a scatter plot.  The
 library we'll use is [Matplotlib](https://matplotlib.org/), which is
 the most widely-used plotting library for Python.
-
 The Matplotlib interface is based on MATLAB (hence the name), so if
 you know MATLAB, some of it will be familiar.
 
@@ -387,8 +389,8 @@ Pyplot is part of the Matplotlib library.  It is conventional to
 import it using the shortened name `plt`.
 
 In recent versions of Jupyter, plots appear "inline"; that is, they
-are part of the notebook.  In some older versions, plots might appear
-in a new window.
+are part of the notebook.  In some older versions, plots appear in a
+new window.
 In that case, you might want to run the following Jupyter [magic
 command](https://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-matplotlib)
 in a notebook cell:
@@ -409,7 +411,7 @@ in a scatter plot a different color.
 substantially faster.
 
 Jake Vanderplas explains these differences in [The Python Data Science
-Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/04.02-simple-scatter-plots.html)
+Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/04.02-simple-scatter-plots.html).
 
 Since we are plotting more than 100,000 points and they are all the
 same size and color, we'll use `plot`.
@@ -437,17 +439,20 @@ plt.ylabel('dec (degree ICRS)');
 
 
     
-![png](03-motion_files/03-motion_30_0.png)
+![png](03-motion_files/03-motion_28_0.png)
     
 
 
 The arguments to `plt.plot` are `x`, `y`, and a string that specifies
 the style.  In this case, the letters `ko` indicate that we want a
 black, round marker (`k` is for black because `b` is for blue).
-
 The functions `xlabel` and `ylabel` put labels on the axes.
 
-This scatter plot has a problem.  It is
+Looking at this plot, we can see that the region we selected, which is
+a rectangle in GD-1 coordinates, is a non-rectanglar region in ICRS
+coordinates.
+
+However, this scatter plot has a problem.  It is
 "[overplotted](https://python-graph-gallery.com/134-how-to-avoid-overplotting-with-python/)",
 which means that there are so many overlapping points, we can't
 distinguish between high and low density areas.
@@ -472,8 +477,6 @@ transparency of the points.
 > 2](https://www.cosmos.esa.int/web/gaia/dr2), covers 22 months of
 > observations; during this time, some parts of the sky were scanned
 > more than others.
-
-
 >
 > > ## Solution
 > > 
@@ -490,8 +493,6 @@ transparency of the points.
 > {: .solution}
 {: .challenge}
 
-
-
 ## Transform back
 
 Remember that we selected data from a rectangle of coordinates in the
@@ -503,11 +504,12 @@ To plot them, we will transform them back to the `GD1Koposov10` frame;
 that way, the axes of the figure are aligned with the orbit of GD-1,
 which is useful for two reasons:
 
-* We can identify stars that are likely to be in GD-1 by selecting
-stars near the centerline of the stream, where $\phi_2$ is close to 0.
+* By transforming the coordinates, we can identify stars that are
+likely to be in GD-1 by selecting stars near the centerline of the
+stream, where $\phi_2$ is close to 0.
 
-* We expect stars in GD-1 to have similar non-zero proper motion along
-the $\phi_1$ axis.
+* By transforming the proper motions, we can identify stars with
+non-zero proper motion along the $\phi_1$ axis.
 
 To do the transformation, we'll put the results into a `SkyCoord`
 object.  In a previous lesson we created a `SkyCoord` object like
@@ -635,12 +637,12 @@ plt.ylabel('phi2 (degree GD1)');
 
 
     
-![png](03-motion_files/03-motion_45_0.png)
+![png](03-motion_files/03-motion_43_0.png)
     
 
 
 Remember that we started with a rectangle in the GD-1 frame.  When
-transformed to the ICRS frame, it's a non-rectangular polygon.  Now,
+transformed to the ICRS frame, it's a non-rectangular region.  Now,
 transformed back to the GD-1 frame, it's a rectangle again.
 
 ## Pandas DataFrame
@@ -696,7 +698,7 @@ provides different capabilities.  But working with multiple object
 types can be awkward.
 
 It will be more convenient to choose one object and get all of the
-data into it.  We'll use a Pandas DataFrame, for two reasons:
+data into it.  We'll choose a Pandas `DataFrame`, for two reasons:
 
 1. It provides capabilities that (almost) a superset of the other data
 structures, so it's the all-in-one solution.
@@ -717,12 +719,20 @@ It's easy to convert a `Table` to a Pandas `DataFrame`.
 import pandas as pd
 
 results_df = results.to_pandas()
+~~~
+{: .language-python}
+
+`DataFrame` provides `shape`, which shows the number of rows and columns.
+
+
+
+~~~
 results_df.shape
 ~~~
 {: .language-python}
 
 ~~~
-(140339, 6)
+(140339, 5)
 ~~~
 {: .output}
 
@@ -734,9 +744,7 @@ results_df.shape
 
 
 
-`DataFrame` provides `shape`, which shows the number of rows and columns.
-
-It also provides `head`, which displays the first few rows.  It is
+It also provides `head`, which displays the first few rows.  `head` is
 useful for spot-checking large results as you go along.
 
 
@@ -747,12 +755,12 @@ results_df.head()
 {: .language-python}
 
 ~~~
-            source_id          ra        dec       pmra      pmdec  parallax
-0  637987125186749568  142.483019  21.757716  -2.516838   2.941813 -0.257345
-1  638285195917112960  142.254529  22.476168   2.662702 -12.165984  0.422728
-2  638073505568978688  142.645286  22.166932  18.306747  -7.950660  0.103640
-3  638086386175786752  142.577394  22.227920   0.987786  -2.584105 -0.857327
-4  638049655615392384  142.589136  22.110783   0.244439  -4.941079  0.099625
+            source_id          ra        dec       pmra      pmdec
+0  637987125186749568  142.483019  21.757716  -2.516838   2.941813
+1  638285195917112960  142.254529  22.476168   2.662702 -12.165984
+2  638073505568978688  142.645286  22.166932  18.306747  -7.950660
+3  638086386175786752  142.577394  22.227920   0.987786  -2.584105
+4  638049655615392384  142.589136  22.110783   0.244439  -4.941079
 ~~~
 {: .output}
 
@@ -783,7 +791,6 @@ results_df.head()
       <th>dec</th>
       <th>pmra</th>
       <th>pmdec</th>
-      <th>parallax</th>
     </tr>
   </thead>
   <tbody>
@@ -794,7 +801,6 @@ results_df.head()
       <td>21.757716</td>
       <td>-2.516838</td>
       <td>2.941813</td>
-      <td>-0.257345</td>
     </tr>
     <tr>
       <th>1</th>
@@ -803,7 +809,6 @@ results_df.head()
       <td>22.476168</td>
       <td>2.662702</td>
       <td>-12.165984</td>
-      <td>0.422728</td>
     </tr>
     <tr>
       <th>2</th>
@@ -812,7 +817,6 @@ results_df.head()
       <td>22.166932</td>
       <td>18.306747</td>
       <td>-7.950660</td>
-      <td>0.103640</td>
     </tr>
     <tr>
       <th>3</th>
@@ -821,7 +825,6 @@ results_df.head()
       <td>22.227920</td>
       <td>0.987786</td>
       <td>-2.584105</td>
-      <td>-0.857327</td>
     </tr>
     <tr>
       <th>4</th>
@@ -830,7 +833,6 @@ results_df.head()
       <td>22.110783</td>
       <td>0.244439</td>
       <td>-4.941079</td>
-      <td>0.099625</td>
     </tr>
   </tbody>
 </table>
@@ -856,7 +858,7 @@ results_df.shape
 {: .language-python}
 
 ~~~
-(140339, 8)
+(140339, 7)
 ~~~
 {: .output}
 
@@ -881,7 +883,7 @@ results_df.shape
 {: .language-python}
 
 ~~~
-(140339, 10)
+(140339, 9)
 ~~~
 {: .output}
 
@@ -903,7 +905,6 @@ We could have: `proper_motion` contains the same data as
 
 One benefit of using Pandas is that it provides functions for
 exploring the data and checking for problems.
-
 One of the most useful of these functions is `describe`, which
 computes summary statistics for each column.
 
@@ -916,16 +917,16 @@ results_df.describe()
 
 ~~~
           source_id             ra            dec           pmra  \
-count  1.403400e+05  140340.000000  140340.000000  140340.000000   
-mean   6.792378e+17     143.822971      26.780161      -2.484410   
-std    3.792015e+16       3.697824       3.052639       5.913923   
+count  1.403390e+05  140339.000000  140339.000000  140339.000000   
+mean   6.792399e+17     143.823122      26.780285      -2.484404   
+std    3.792177e+16       3.697850       3.052592       5.913939   
 min    6.214900e+17     135.425699      19.286617    -106.755260   
-25%    6.443515e+17     140.967807      24.592348      -5.038746   
-50%    6.888056e+17     143.734183      26.746169      -1.834971   
-75%    6.976578e+17     146.607180      28.990490       0.452995   
+25%    6.443517e+17     140.967966      24.592490      -5.038789   
+50%    6.888060e+17     143.734409      26.746261      -1.834943   
+75%    6.976579e+17     146.607350      28.990500       0.452893   
 max    7.974418e+17     152.777393      34.285481     104.319923   
 
-               pmdec       parallax  parallax_error  radial_velocity  \
+               pmdec           phi1           phi2        pm_phi1  \
 [Output truncated]
 ~~~
 {: .output}
@@ -957,9 +958,6 @@ max    7.974418e+17     152.777393      34.285481     104.319923
       <th>dec</th>
       <th>pmra</th>
       <th>pmdec</th>
-      <th>parallax</th>
-      <th>parallax_error</th>
-      <th>radial_velocity</th>
       <th>phi1</th>
       <th>phi2</th>
       <th>pm_phi1</th>
@@ -969,48 +967,39 @@ max    7.974418e+17     152.777393      34.285481     104.319923
   <tbody>
     <tr>
       <th>count</th>
-      <td>1.403400e+05</td>
-      <td>140340.000000</td>
-      <td>140340.000000</td>
-      <td>140340.000000</td>
-      <td>140340.000000</td>
-      <td>140340.000000</td>
-      <td>140340.000000</td>
-      <td>1.403400e+05</td>
-      <td>140340.000000</td>
-      <td>140340.000000</td>
-      <td>140340.000000</td>
-      <td>140340.000000</td>
+      <td>1.403390e+05</td>
+      <td>140339.000000</td>
+      <td>140339.000000</td>
+      <td>140339.000000</td>
+      <td>140339.000000</td>
+      <td>140339.000000</td>
+      <td>140339.000000</td>
+      <td>140339.000000</td>
+      <td>140339.000000</td>
     </tr>
     <tr>
       <th>mean</th>
-      <td>6.792378e+17</td>
-      <td>143.822971</td>
-      <td>26.780161</td>
-      <td>-2.484410</td>
-      <td>-6.100784</td>
-      <td>0.179474</td>
-      <td>0.518068</td>
-      <td>9.931167e+19</td>
-      <td>-50.091337</td>
-      <td>-1.803264</td>
-      <td>-0.868980</td>
-      <td>1.409215</td>
+      <td>6.792399e+17</td>
+      <td>143.823122</td>
+      <td>26.780285</td>
+      <td>-2.484404</td>
+      <td>-6.100777</td>
+      <td>-50.091158</td>
+      <td>-1.803301</td>
+      <td>-0.868963</td>
+      <td>1.409208</td>
     </tr>
     <tr>
       <th>std</th>
-      <td>3.792015e+16</td>
-      <td>3.697824</td>
-      <td>3.052639</td>
-      <td>5.913923</td>
-      <td>7.202013</td>
-      <td>0.759622</td>
-      <td>0.505558</td>
-      <td>8.267982e+18</td>
-      <td>2.892321</td>
-      <td>3.444439</td>
-      <td>6.657700</td>
-      <td>6.518573</td>
+      <td>3.792177e+16</td>
+      <td>3.697850</td>
+      <td>3.052592</td>
+      <td>5.913939</td>
+      <td>7.202047</td>
+      <td>2.892344</td>
+      <td>3.444398</td>
+      <td>6.657714</td>
+      <td>6.518615</td>
     </tr>
     <tr>
       <th>min</th>
@@ -1019,9 +1008,6 @@ max    7.974418e+17     152.777393      34.285481     104.319923
       <td>19.286617</td>
       <td>-106.755260</td>
       <td>-138.065163</td>
-      <td>-15.287602</td>
-      <td>0.020824</td>
-      <td>-1.792684e+02</td>
       <td>-54.999989</td>
       <td>-8.029159</td>
       <td>-115.275637</td>
@@ -1029,48 +1015,39 @@ max    7.974418e+17     152.777393      34.285481     104.319923
     </tr>
     <tr>
       <th>25%</th>
-      <td>6.443515e+17</td>
-      <td>140.967807</td>
-      <td>24.592348</td>
-      <td>-5.038746</td>
-      <td>-8.341641</td>
-      <td>-0.035983</td>
-      <td>0.141108</td>
-      <td>1.000000e+20</td>
-      <td>-52.603097</td>
-      <td>-4.750410</td>
-      <td>-2.948851</td>
-      <td>-1.107074</td>
+      <td>6.443517e+17</td>
+      <td>140.967966</td>
+      <td>24.592490</td>
+      <td>-5.038789</td>
+      <td>-8.341561</td>
+      <td>-52.602952</td>
+      <td>-4.750426</td>
+      <td>-2.948723</td>
+      <td>-1.107128</td>
     </tr>
     <tr>
       <th>50%</th>
-      <td>6.888056e+17</td>
-      <td>143.734183</td>
-      <td>26.746169</td>
-      <td>-1.834971</td>
-      <td>-4.689570</td>
-      <td>0.362705</td>
-      <td>0.336103</td>
-      <td>1.000000e+20</td>
-      <td>-50.147567</td>
-      <td>-1.671497</td>
-      <td>0.585038</td>
-      <td>1.987196</td>
+      <td>6.888060e+17</td>
+      <td>143.734409</td>
+      <td>26.746261</td>
+      <td>-1.834943</td>
+      <td>-4.689596</td>
+      <td>-50.147362</td>
+      <td>-1.671502</td>
+      <td>0.585037</td>
+      <td>1.987149</td>
     </tr>
     <tr>
       <th>75%</th>
-      <td>6.976578e+17</td>
-      <td>146.607180</td>
-      <td>28.990490</td>
-      <td>0.452995</td>
-      <td>-1.937833</td>
-      <td>0.657636</td>
-      <td>0.751171</td>
-      <td>1.000000e+20</td>
-      <td>-47.593466</td>
-      <td>1.160632</td>
-      <td>3.001761</td>
-      <td>4.628859</td>
+      <td>6.976579e+17</td>
+      <td>146.607350</td>
+      <td>28.990500</td>
+      <td>0.452893</td>
+      <td>-1.937809</td>
+      <td>-47.593279</td>
+      <td>1.160514</td>
+      <td>3.001768</td>
+      <td>4.628965</td>
     </tr>
     <tr>
       <th>max</th>
@@ -1079,11 +1056,8 @@ max    7.974418e+17     152.777393      34.285481     104.319923
       <td>34.285481</td>
       <td>104.319923</td>
       <td>20.981070</td>
-      <td>0.999957</td>
-      <td>4.171221</td>
-      <td>1.000000e+20</td>
-      <td>-45.000086</td>
-      <td>4.014794</td>
+      <td>-44.999985</td>
+      <td>4.014609</td>
       <td>39.802471</td>
       <td>79.275199</td>
     </tr>
@@ -1100,8 +1074,6 @@ max    7.974418e+17     152.777393      34.285481     104.319923
 > * Do the values make sense based on what you know about the context?
 > 
 > * Do you see any values that seem problematic, or evidence of other data issues?
-
-
 >
 > > ## Solution
 > > 
@@ -1122,8 +1094,6 @@ max    7.974418e+17     152.777393      34.285481     104.319923
 > {: .solution}
 {: .challenge}
 
-
-
 ## Plot proper motion
 
 Now we are ready to replicate one of the panels in Figure 1 of the
@@ -1133,11 +1103,11 @@ motion as a scatter plot:
 <img width="300"
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-1.png">
 
-In this figure, the shaded area is a high-density region of stars with
-the proper motion we expect for stars in GD-1.
+In this figure, the shaded area identifies stars that are likely to be
+in GD-1 because:
 
 * Due to the nature of tidal streams, we expect the proper motion for
-most stars to be along the axis of the stream; that is, we expect
+stars in GD-1 to be along the axis of the stream; that is, we expect
 motion in the direction of `phi2` to be near 0.
 
 * In the direction of `phi1`, we don't have a prior expectation for
@@ -1147,6 +1117,9 @@ value.
 By plotting proper motion in the GD-1 frame, we hope to find this cluster.
 Then we will use the bounds of the cluster to select stars that are
 more likely to be in GD-1.
+
+The following figure is a scatter plot of proper motion, in the GD-1
+frame, for the stars in `results_df`.
 
 
 
@@ -1168,13 +1141,12 @@ plt.ylabel('Proper motion phi2 (mas/yr GD1 frame)');
 
 
     
-![png](03-motion_files/03-motion_68_0.png)
+![png](03-motion_files/03-motion_67_0.png)
     
 
 
 Most of the proper motions are near the origin, but there are a few
 extreme values.
-
 Following the example in the paper, we'll use `xlim` and `ylim` to
 zoom in on the region near the origin.
 
@@ -1201,7 +1173,7 @@ plt.ylim(-10, 10);
 
 
     
-![png](03-motion_files/03-motion_70_0.png)
+![png](03-motion_files/03-motion_69_0.png)
     
 
 
@@ -1210,7 +1182,6 @@ didn't know where to look, you would miss it.
 
 To see the cluster more clearly, we need a sample that contains a
 higher proportion of stars in GD-1.
-
 We'll do that by selecting stars close to the centerline.
 
 ## Selecting the centerline
@@ -1304,8 +1275,9 @@ Name: phi2, dtype: bool
 
 
 
-The `&` operator computes "logical AND", which means the result is
-true where elements from both Boolean `Series` are true.
+To select values that fall between `phi2_min` and `phi2_max`, we'll
+use the `&` operator, which computes "logical AND".
+The result is true where elements from both Boolean `Series` are true.
 
 
 
@@ -1314,13 +1286,14 @@ mask = (phi2 > phi2_min) & (phi2 < phi2_max)
 ~~~
 {: .language-python}
 
-**Python detail:** We need the parentheses around the conditions;
-otherwise the order of operations is incorrect.
+**Python detail:** Python's logical operators (`and`, `or`, and `not`)
+don't work with NumPy or Pandas.  Both libraries use the bitwise
+operators (`&`, `|`, and `~`) to do elementwise logical operations
+([explanation
+here](https://stackoverflow.com/questions/21415661/logical-operators-for-boolean-indexing-in-pandas)).
 
-Also, Python's logical operators (`and`, `or`, and `not`) don't work
-with NumPy or Pandas.  Both libraries use the bitwise operators (`&`,
-`|`, and `~`) to do elementwise logical operations [explanation
-here](https://stackoverflow.com/questions/21415661/logical-operators-for-boolean-indexing-in-pandas).
+Also, we need the parentheses around the conditions; otherwise the
+order of operations is incorrect.
 
 The sum of a Boolean `Series` is the number of `True` values, so we
 can use `sum` to see how many stars are in the selected region.
@@ -1371,8 +1344,8 @@ pandas.core.frame.DataFrame
 
 
 `centerline_df` is a `DataFrame` that contains only the rows from
-`results_df` that correspond to `True` values in `mask`; that is, in
-contains the stars near the centerline of GD-1.
+`results_df` that correspond to `True` values in `mask`.
+So it contains the stars near the centerline of GD-1.
 
 We can use `len` to see how many rows are in `centerline_df`:
 
@@ -1444,6 +1417,8 @@ def plot_proper_motion(df):
     plt.ylim(-10, 10)
 ~~~
 {: .language-python}
+
+And we can call it like this:
 
 
 
@@ -1729,8 +1704,6 @@ should overwrite it.
 > code to add it as a second Dataset in the HDF5 file.
 > 
 > Hint: Since the file already exists, you should *not* use `mode='w'`.
-
-
 >
 > > ## Solution
 > > 
@@ -1742,33 +1715,30 @@ should overwrite it.
 > {: .solution}
 {: .challenge}
 
-
-
-We can use `ls` to confirm that the file exists and check the size:
+We can use `getsize` to confirm that the file exists and check the size:
 
 
 
 ~~~
-!ls -lh gd1_data.hdf
+from os.path import getsize
+
+MB = 1024 * 1024
+getsize(filename) / MB
 ~~~
 {: .language-python}
 
 ~~~
--rw-rw-r-- 1 downey downey 2.7M Jan  9 17:25 gd1_data.hdf
-
+2.0090408325195312
 ~~~
 {: .output}
 
 
+
+
+
     
 
-If you are using Windows, `ls` might not work; in that case, try:
 
-```
-!dir gd1_data.hdf
-```
-
-We can read the file back like this:
 
 If you forget what the names of the Datasets in the file are, you can
 read them back like this:
@@ -1789,6 +1759,11 @@ with pd.HDFStore(filename) as hdf:
 
 
     
+
+**Python note:** We use a `with` statement here to open the file
+before the print statement and (automatically) close it after.  Read
+more about [context
+managers](https://book.pythontips.com/en/latest/context_managers.html).
 
 The keys are the names of the Datasets.  Notice that they start with
 `/`, which indicates that they are at the top level of the Dataset
@@ -1834,3 +1809,10 @@ but for many projects, either one would be a reasonable choice.
 
 * To store data from a Pandas `DataFrame`, a good option is an HDF
 file, which can contain multiple Datasets.
+
+
+
+~~~
+
+~~~
+{: .language-python}

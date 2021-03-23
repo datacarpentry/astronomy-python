@@ -66,7 +66,6 @@ After completing this lesson, you should be able to
 
 The measurements we will work with are physical quantities, which
 means that they have two parts, a value and a unit.
-
 For example, the coordinate $30^{\circ}$ has value 30 and its units are degrees.
 
 Until recently, most scientific computation was done with values only;
@@ -164,7 +163,7 @@ angle
 
 
 
-$10 \; \mathrm{{}^{\circ}}$
+$10 \; \mathrm{^{\circ}}$
 
 
 
@@ -188,7 +187,7 @@ angle_arcmin
 
 
 
-$600 \; \mathrm{{}^{\prime}}$
+$600 \; \mathrm{^{\prime}}$
 
 
 
@@ -210,7 +209,7 @@ angle + 30 * u.arcmin
 
 
 
-$10.5 \; \mathrm{{}^{\circ}}$
+$10.5 \; \mathrm{^{\circ}}$
 
 
 
@@ -230,41 +229,24 @@ causes a `UnitConversionError`.
 > and assign it to a variable called `radius`.
 > 
 > Then convert it to degrees.
-
-
-
-~~~
-## Solution
-
-radius = 5 * u.arcmin
-print(radius)
-
-radius.to(u.degree)
-~~~
-{: .language-python}
-
-~~~
-5.0 arcmin
-
-<Quantity 0.08333333 deg>
-~~~
-{: .output}
-
-
-    
-
-
-
-
-$0.083333333 \; \mathrm{{}^{\circ}}$
-
-
+>
+> > ## Solution
+> > 
+> > ~~~
+> > 
+> > radius = 5 * u.arcmin
+> > print(radius)
+> > 
+> > radius.to(u.degree)
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
 
 ## Selecting a Region
 
 One of the most common ways to restrict a query is to select stars in
 a particular region of the sky.
-
 For example, here's a query from the [Gaia archive
 documentation](https://gea.esac.esa.int/archive-help/adql/examples/index.html)
 that selects objects in a circular region centered at (88.8, 7.4) with
@@ -300,7 +282,6 @@ Here is the [documentation of
 `CONTAINS`](http://www.ivoa.net/documents/ADQL/20180112/PR-ADQL-2.1-20180112.html#tth_sEc4.2.12).
 
 A query like this is called a cone search because it selects stars in a cone.
-
 Here's how we run it.
 
 
@@ -325,7 +306,7 @@ Created TAP+ (v1.2.1) - Connection:
 	Port: 443
 	SSL Port: 443
 
-<astroquery.utils.tap.model.job.Job at 0x7ff00010b9a0>
+<astroquery.utils.tap.model.job.Job at 0x7f277785fa30>
 ~~~
 {: .output}
 
@@ -368,7 +349,7 @@ results
 
 
 <i>Table length=10</i>
-<table id="table140668769974208" class="table-striped table-bordered table-condensed">
+<table id="table139807485721280" class="table-striped table-bordered table-condensed">
 <thead><tr><th>source_id</th></tr></thead>
 <thead><tr><th>int64</th></tr></thead>
 <tr><td>3322773965056065536</td></tr>
@@ -397,8 +378,6 @@ results
 > In the previous query, replace `TOP 10 source_id` with
 > `COUNT(source_id)` and run the query again.  How many stars has Gaia
 > identified in the cone we searched?
-
-
 >
 > > ## Solution
 > > 
@@ -419,20 +398,6 @@ results
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-
-
-
-
-
-
-<i>Table length=1</i>
-<table id="table140668536967072" class="table-striped table-bordered table-condensed">
-<thead><tr><th>count</th></tr></thead>
-<thead><tr><th>int64</th></tr></thead>
-<tr><td>594</td></tr>
-</table>
-
-
 
 ## Getting GD-1 Data
 
@@ -533,8 +498,8 @@ coord_galactic
 
 
 
-Notice that in Galactic frame, the coordinates are called `l` and `b`,
-not `ra` and `dec`.
+Notice that in the Galactic frame, the coordinates are called `l` and
+`b`, not `ra` and `dec`.
 
 To transform to and from GD-1 coordinates, we'll use a frame defined
 by [Gala](https://gala-astro.readthedocs.io/en/latest/), which is an
@@ -606,8 +571,6 @@ These are the coordinates shown in the figure from the paper, above.
 > 
 > Hint: Because ICRS is built into Astropy, you can specify it by name,
 > `icrs` (as we did with `galactic`).
-
-
 >
 > > ## Solution
 > > 
@@ -633,16 +596,6 @@ These are the coordinates shown in the figure from the paper, above.
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-
-
-
-
-
-
-    <SkyCoord (ICRS): (ra, dec) in deg
-        (200., 59.4504341)>
-
-
 
 Notice that the origin of the GD-1 frame maps to `ra=200`, exactly, in
 ICRS.  That's by design.
@@ -745,7 +698,8 @@ corners_icrs
 
 
 Notice that a rectangle in one coordinate system is not necessarily a
-rectangle in another.  In this example, the result is a polygon.
+rectangle in another.  In this example, the result is a
+(non-rectangular) polygon.
 
 ## Defining a polygon
 
@@ -931,7 +885,7 @@ print(query4)
 ~~~
 SELECT
 TOP 10
-source_id, ra, dec, pmra, pmdec, parallax
+source_id, ra, dec, pmra, pmdec
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
@@ -965,8 +919,8 @@ source_id   int64          Unique source identifier (unique within a particular 
       dec float64      deg                                                        Declination
      pmra float64 mas / yr                         Proper motion in right ascension direction
     pmdec float64 mas / yr                             Proper motion in declination direction
- parallax float64      mas                                                           Parallax
-Jobid: 1610552468498O
+Jobid: 1615815873808O
+Phase: COMPLETED
 [Output truncated]
 ~~~
 {: .output}
@@ -986,16 +940,16 @@ results
 
 ~~~
 <Table length=10>
-    source_id              ra         ...       parallax      
-                          deg         ...         mas         
-      int64             float64       ...       float64       
------------------- ------------------ ... --------------------
-637987125186749568 142.48301935991023 ...  -0.2573448962333354
-638285195917112960 142.25452941346344 ...   0.4227283465319491
-638073505568978688 142.64528557468074 ...  0.10363972229362585
-638086386175786752 142.57739430926034 ...  -0.8573270355079308
-638049655615392384 142.58913564478618 ...    0.099624729200593
-638267565075964032 141.81762228999614 ... -0.07271215219283075
+    source_id              ra         ...        pmdec       
+                          deg         ...       mas / yr     
+      int64             float64       ...       float64      
+------------------ ------------------ ... -------------------
+637987125186749568 142.48301935991023 ...   2.941813096629439
+638285195917112960 142.25452941346344 ... -12.165984395577347
+638073505568978688 142.64528557468074 ...  -7.950659620550862
+638086386175786752 142.57739430926034 ...  -2.584105480335548
+638049655615392384 142.58913564478618 ...  -4.941079187010136
+638267565075964032 141.81762228999614 ...  1.8838892877285924
 [Output truncated]
 ~~~
 {: .output}
@@ -1005,20 +959,20 @@ results
 
 
 <i>Table length=10</i>
-<table id="table140668327439376" class="table-striped table-bordered table-condensed">
-<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th><th>parallax</th></tr></thead>
-<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th><th>mas</th></tr></thead>
-<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>637987125186749568</td><td>142.48301935991023</td><td>21.75771616932985</td><td>-2.5168384683875766</td><td>2.941813096629439</td><td>-0.2573448962333354</td></tr>
-<tr><td>638285195917112960</td><td>142.25452941346344</td><td>22.476168171141378</td><td>2.6627020143457996</td><td>-12.165984395577347</td><td>0.4227283465319491</td></tr>
-<tr><td>638073505568978688</td><td>142.64528557468074</td><td>22.16693224953078</td><td>18.30674739454163</td><td>-7.950659620550862</td><td>0.10363972229362585</td></tr>
-<tr><td>638086386175786752</td><td>142.57739430926034</td><td>22.22791951401365</td><td>0.9877856720147953</td><td>-2.584105480335548</td><td>-0.8573270355079308</td></tr>
-<tr><td>638049655615392384</td><td>142.58913564478618</td><td>22.110783166677418</td><td>0.24443878227817095</td><td>-4.941079187010136</td><td>0.099624729200593</td></tr>
-<tr><td>638267565075964032</td><td>141.81762228999614</td><td>22.375696125322275</td><td>-3.413174589660796</td><td>1.8838892877285924</td><td>-0.07271215219283075</td></tr>
-<tr><td>638028902333511168</td><td>143.18339801317677</td><td>22.2512465812369</td><td>7.848511762712128</td><td>-21.391145547787154</td><td>0.28736226011479443</td></tr>
-<tr><td>638085767700610432</td><td>142.9347319464589</td><td>22.46244080823965</td><td>-3.6585960944321476</td><td>-12.486419770278376</td><td>-0.9896728393047383</td></tr>
-<tr><td>638299863230178304</td><td>142.26769745823267</td><td>22.640183776884836</td><td>-1.8168370892218297</td><td>1.0537342990941316</td><td>0.16396383783029062</td></tr>
-<tr><td>637973067758974208</td><td>142.89551292869012</td><td>21.612824100339875</td><td>-8.645166256559063</td><td>-44.41164172204947</td><td>0.7647361167279948</td></tr>
+<table id="table139807251332016" class="table-striped table-bordered table-condensed">
+<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>637987125186749568</td><td>142.48301935991023</td><td>21.75771616932985</td><td>-2.5168384683875766</td><td>2.941813096629439</td></tr>
+<tr><td>638285195917112960</td><td>142.25452941346344</td><td>22.476168171141378</td><td>2.6627020143457996</td><td>-12.165984395577347</td></tr>
+<tr><td>638073505568978688</td><td>142.64528557468074</td><td>22.16693224953078</td><td>18.30674739454163</td><td>-7.950659620550862</td></tr>
+<tr><td>638086386175786752</td><td>142.57739430926034</td><td>22.22791951401365</td><td>0.9877856720147953</td><td>-2.584105480335548</td></tr>
+<tr><td>638049655615392384</td><td>142.58913564478618</td><td>22.110783166677418</td><td>0.24443878227817095</td><td>-4.941079187010136</td></tr>
+<tr><td>638267565075964032</td><td>141.81762228999614</td><td>22.375696125322275</td><td>-3.413174589660796</td><td>1.8838892877285924</td></tr>
+<tr><td>638028902333511168</td><td>143.18339801317677</td><td>22.2512465812369</td><td>7.848511762712128</td><td>-21.391145547787154</td></tr>
+<tr><td>638085767700610432</td><td>142.9347319464589</td><td>22.46244080823965</td><td>-3.6585960944321476</td><td>-12.486419770278376</td></tr>
+<tr><td>638299863230178304</td><td>142.26769745823267</td><td>22.640183776884836</td><td>-1.8168370892218297</td><td>1.0537342990941316</td></tr>
+<tr><td>637973067758974208</td><td>142.89551292869012</td><td>21.612824100339875</td><td>-8.645166256559063</td><td>-44.41164172204947</td></tr>
 </table>
 
 
@@ -1052,7 +1006,7 @@ print(query5)
 
 ~~~
 SELECT
-source_id, ra, dec, pmra, pmdec, parallax
+source_id, ra, dec, pmra, pmdec
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
@@ -1084,8 +1038,8 @@ source_id   int64          Unique source identifier (unique within a particular 
       dec float64      deg                                                        Declination
      pmra float64 mas / yr                         Proper motion in right ascension direction
     pmdec float64 mas / yr                             Proper motion in declination direction
- parallax float64      mas                                                           Parallax
-Jobid: 1610552483857O
+Jobid: 1615815886707O
+Phase: COMPLETED
 [Output truncated]
 ~~~
 {: .output}
@@ -1142,31 +1096,30 @@ metadata associated with the table.
 If the file already exists, the `overwrite` argument causes it to be
 overwritten.
 
-To see how big the file is, we can use `ls` with the `-lh` option,
-which prints information about the file including its size in
-human-readable form.
+We can use `getsize` to confirm that the file exists and check the size:
 
 
 
 ~~~
-!ls -lh gd1_results.fits
+from os.path import getsize
+
+MB = 1024 * 1024
+getsize(filename) / MB
 ~~~
 {: .language-python}
 
 ~~~
--rw-rw-r-- 1 downey downey 6.5M Jan 13 11:00 gd1_results.fits
-
+5.36407470703125
 ~~~
 {: .output}
 
 
+
+
+
     
 
-If you are using Windows, `ls` might not work; in that case, try:
 
-```
-!dir gd1_results.fits
-```
 
 ## Summary
 

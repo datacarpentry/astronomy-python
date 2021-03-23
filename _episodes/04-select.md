@@ -69,14 +69,17 @@ necessary, and load it into a Pandas `DataFrame`.
 
 
 ~~~
-import os
-from wget import download
+from os.path import basename, exists
 
-filename = 'gd1_data.hdf'
-path = 'https://github.com/AllenDowney/AstronomicalData/raw/main/data/'
+def download(url):
+    filename = basename(url)
+    if not exists(filename):
+        from urllib.request import urlretrieve
+        local, _ = urlretrieve(url, filename)
+        print('Downloaded ' + local)
 
-if not os.path.exists(filename):
-    print(download(path+filename))
+download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
+         'data/gd1_data.hdf')
 ~~~
 {: .language-python}
 
@@ -85,6 +88,7 @@ if not os.path.exists(filename):
 ~~~
 import pandas as pd
 
+filename = 'gd1_data.hdf'
 centerline_df = pd.read_hdf(filename, 'centerline_df')
 selected_df = pd.read_hdf(filename, 'selected_df')
 ~~~
@@ -204,7 +208,7 @@ plt.plot(x, y, 'gx', markersize=0.3, alpha=0.3);
 
 
     
-![png](04-select_files/04-select_15_0.png)
+![png](04-select_files/04-select_13_0.png)
     
 
 
@@ -238,7 +242,7 @@ plt.ylim([-20, 5]);
 
 
     
-![png](04-select_files/04-select_17_0.png)
+![png](04-select_files/04-select_15_0.png)
     
 
 
@@ -304,7 +308,7 @@ hull
 {: .language-python}
 
 ~~~
-<scipy.spatial.qhull.ConvexHull at 0x7fb34c626a60>
+<scipy.spatial.qhull.ConvexHull at 0x7fd95de628b0>
 ~~~
 {: .output}
 
@@ -384,9 +388,10 @@ pmra_poly, pmdec_poly = np.transpose(pm_vertices)
 ~~~
 {: .language-python}
 
-This use of `transpose` is a bit of a NumPy trick.  Because
-`pm_vertices` has two columns, its transpose has two rows, which are
-assigned to the two variables `pmra_poly` and `pmdec_poly`.
+This use of `transpose` is a useful NumPy idiom.  Because
+`pm_vertices` has two columns, its [matrix
+transpose](https://en.wikipedia.org/wiki/Transpose) has two rows,
+which are assigned to the two variables `pmra_poly` and `pmdec_poly`.
 
 The following figure shows proper motion in ICRS again, along with the
 convex hull we just computed.
@@ -420,7 +425,7 @@ plt.ylim([-20, 5]);
 
 
     
-![png](04-select_files/04-select_31_0.png)
+![png](04-select_files/04-select_28_0.png)
     
 
 
@@ -530,12 +535,12 @@ point_list
 
 
 
-Here again are the columns we want to select.
+Here are the columns we want to select.
 
 
 
 ~~~
-columns = 'source_id, ra, dec, pmra, pmdec, parallax'
+columns = 'source_id, ra, dec, pmra, pmdec'
 ~~~
 {: .language-python}
 
@@ -553,7 +558,7 @@ print(query5)
 
 ~~~
 SELECT
-source_id, ra, dec, pmra, pmdec, parallax
+source_id, ra, dec, pmra, pmdec
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
@@ -632,8 +637,6 @@ pm_point_list
 > Define `query6_base`, starting with `query5_base` and adding a new
 > clause to select stars whose coordinates of proper motion, `pmra` and
 > `pmdec`, fall within the polygon defined by `pm_point_list`.
-
-
 >
 > > ## Solution
 > > 
@@ -654,41 +657,23 @@ pm_point_list
 > {: .solution}
 {: .challenge}
 
-
-
 > ## Exercise
 > 
 > Use `format` to format `query6_base` and define `query6`, filling in
 > the values of `columns`, `point_list`, and `pm_point_list`.
-
-
 >
 > > ## Solution
 > > 
 > > ~~~
 > > 
 > > query6 = query6_base.format(columns=columns, 
-> >                           point_list=point_list,
-> >                           pm_point_list=pm_point_list)
+> >                             point_list=point_list,
+> >                             pm_point_list=pm_point_list)
 > > print(query6)
 > > ~~~
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
-
-
-
-    SELECT 
-    source_id, ra, dec, pmra, pmdec, parallax
-    FROM gaiadr2.gaia_source
-    WHERE parallax < 1
-      AND bp_rp BETWEEN -0.75 AND 2 
-      AND 1 = CONTAINS(POINT(ra, dec), 
-                       POLYGON(135.306, 8.39862, 126.51, 13.4449, 163.017, 54.2424, 172.933, 46.4726, 135.306, 8.39862))
-      AND 1 = CONTAINS(POINT(pmra, pmdec),
-                       POLYGON( -4.05037121,-14.75623261, -3.41981085,-14.72365546, -3.03521988,-14.44357135, -2.26847919,-13.7140236 , -2.61172203,-13.24797471, -2.73471401,-13.09054471, -3.19923146,-12.5942653 , -3.34082546,-12.47611926, -5.67489413,-11.16083338, -5.95159272,-11.10547884, -6.42394023,-11.05981295, -7.09631023,-11.95187806, -7.30641519,-12.24559977, -7.04016696,-12.88580702, -6.00347705,-13.75912098, -4.42442296,-14.74641176))
-    
-
 
 Now we can run the query like this:
 
@@ -703,17 +688,17 @@ print(job)
 {: .language-python}
 
 ~~~
+Created TAP+ (v1.2.1) - Connection:
+	Host: gea.esac.esa.int
+	Use HTTPS: True
+	Port: 443
+	SSL Port: 443
+Created TAP+ (v1.2.1) - Connection:
+	Host: geadata.esac.esa.int
+	Use HTTPS: True
+	Port: 443
+	SSL Port: 443
 INFO: Query finished. [astroquery.utils.tap.core]
-<Table length=7345>
-   name    dtype    unit                              description                            
---------- ------- -------- ------------------------------------------------------------------
-source_id   int64          Unique source identifier (unique within a particular Data Release)
-       ra float64      deg                                                    Right ascension
-      dec float64      deg                                                        Declination
-     pmra float64 mas / yr                         Proper motion in right ascension direction
-    pmdec float64 mas / yr                             Proper motion in declination direction
- parallax float64      mas                                                           Parallax
-Jobid: 1610562623566O
 [Output truncated]
 ~~~
 {: .output}
@@ -747,6 +732,72 @@ len(candidate_table)
 We call the results `candidate_table` because it contains stars that
 are good candidates for GD-1.
 
+For the next lesson, we'll need `point_list` and `pm_point_list`
+again, so we should save them in a file.
+There are several ways we could do that, but since we are already
+storing data in an HDF file, let's do the same with these variables.
+
+We've seen how to save a `DataFrame` in an HDF file.
+We can do the same thing with a Pandas `Series`.
+To make one, we'll start with a dictionary:
+
+
+
+~~~
+d = dict(point_list=point_list, pm_point_list=pm_point_list)
+d
+~~~
+{: .language-python}
+
+~~~
+{'point_list': '135.306, 8.39862, 126.51, 13.4449, 163.017, 54.2424, 172.933, 46.4726, 135.306, 8.39862',
+ 'pm_point_list': ' -4.05037121,-14.75623261, -3.41981085,-14.72365546, -3.03521988,-14.44357135, -2.26847919,-13.7140236 , -2.61172203,-13.24797471, -2.73471401,-13.09054471, -3.19923146,-12.5942653 , -3.34082546,-12.47611926, -5.67489413,-11.16083338, -5.95159272,-11.10547884, -6.42394023,-11.05981295, -7.09631023,-11.95187806, -7.30641519,-12.24559977, -7.04016696,-12.88580702, -6.00347705,-13.75912098, -4.42442296,-14.74641176'}
+~~~
+{: .output}
+
+
+
+
+
+    
+
+
+
+And use it to initialize a `Series.`
+
+
+
+~~~
+point_series = pd.Series(d)
+point_series
+~~~
+{: .language-python}
+
+~~~
+point_list       135.306, 8.39862, 126.51, 13.4449, 163.017, 54...
+pm_point_list     -4.05037121,-14.75623261, -3.41981085,-14.723...
+dtype: object
+~~~
+{: .output}
+
+
+
+
+
+    
+
+
+
+Now we can save it in the usual way.
+
+
+
+~~~
+filename = 'gd1_data.hdf'
+point_series.to_hdf(filename, 'point_series')
+~~~
+{: .language-python}
+
 ## Plotting one more time
 
 Let's see what the results look like.
@@ -771,7 +822,7 @@ plt.ylabel('dec (degree ICRS)');
 
 
     
-![png](04-select_files/04-select_64_0.png)
+![png](04-select_files/04-select_65_0.png)
     
 
 
@@ -780,7 +831,6 @@ ICRS, it is more difficult to identity the stars near the centerline
 of GD-1.
 
 So let's transform the results back to the GD-1 frame.
-
 Here's the code we used to transform the coordinates and make a Pandas
 `DataFrame`, wrapped in a function.
 
@@ -848,12 +898,11 @@ plt.ylabel('phi2 (degree GD1)');
 
 
     
-![png](04-select_files/04-select_70_0.png)
+![png](04-select_files/04-select_71_0.png)
     
 
 
 We're starting to see GD-1 more clearly.
-
 We can compare this figure with this panel from Figure 1 from the
 original paper:
 
@@ -874,349 +923,6 @@ Later we'll see how to add annotations like the ones in the figure and
 customize the style of the figure to present the results clearly and
 compellingly.
 
-## Saving the DataFrame
-
-Let's save this `DataFrame` so we can pick up where we left off
-without running this query again.
-
-The HDF file should already exist, so we'll add `candidate_df` to it.
-
-
-
-~~~
-filename = 'gd1_data.hdf'
-
-candidate_df.to_hdf(filename, 'candidate_df')
-~~~
-{: .language-python}
-
-We can use `ls` to confirm that the file exists and check the size:
-
-
-
-~~~
-!ls -lh gd1_data.hdf
-~~~
-{: .language-python}
-
-~~~
--rw-rw-r-- 1 downey downey 3.3M Jan 13 13:32 gd1_data.hdf
-
-~~~
-{: .output}
-
-
-    
-
-If you are using Windows, `ls` might not work; in that case, try:
-
-```
-!dir gd1_data.hdf
-```
-
-## CSV
-
-Pandas can write a variety of other formats, [which you can read about
-here](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html).
-
-We won't cover all of them, but one other important one is
-[CSV](https://en.wikipedia.org/wiki/Comma-separated_values), which
-stands for "comma-separated values".
-
-CSV is a plain-text format that can be read and written by pretty much
-any tool that works with data.  In that sense, it is the "least common
-denominator" of data formats.
-
-However, it has an important limitation: some information about the
-data gets lost in translation, notably the data types.  If you read a
-CSV file from someone else, you might need some additional information
-to make sure you are getting it right.
-
-Also, CSV files tend to be big, and slow to read and write.
-
-With those caveats, here's how to write one:
-
-
-
-~~~
-candidate_df.to_csv('gd1_data.csv')
-~~~
-{: .language-python}
-
-We can check the file size like this:
-
-
-
-~~~
-!ls -lh gd1_data.csv
-~~~
-{: .language-python}
-
-~~~
--rw-rw-r-- 1 downey downey 1.4M Jan 13 13:33 gd1_data.csv
-
-~~~
-{: .output}
-
-
-    
-
-We can see the first few lines like this:
-
-
-
-~~~
-!head -3 gd1_data.csv
-~~~
-{: .language-python}
-
-~~~
-,source_id,ra,dec,pmra,pmdec,parallax,phi1,phi2,pm_phi1,pm_phi2
-0,635559124339440000,137.58671691646745,19.1965441084838,-3.770521900009566,-12.490481778113859,0.7913934419894347,-59.63048941944402,-1.2164852515042963,-7.361362712597496,-0.592632882064492
-1,635860218726658176,138.5187065217173,19.09233926905897,-5.941679495793577,-11.346409129876392,0.30745551377348623,-59.247329893833296,-2.016078400820631,-7.527126084640531,1.7487794924176672
-
-~~~
-{: .output}
-
-
-    
-
-On Windows you can use 
-
-```
-!dir gd1_data.csv
-``` 
-
-to confirm that the file exists and  
-
-```
-!type gd1_data.csv
-```
-
-to view the contents.
-
-The CSV file contains the names of the columns, but not the data types.
-
-We can read the CSV file back like this:
-
-
-
-~~~
-read_back_csv = pd.read_csv('gd1_data.csv')
-~~~
-{: .language-python}
-
-Let's compare the first few rows of `candidate_df` and `read_back_csv`
-
-
-
-~~~
-candidate_df.head(3)
-~~~
-{: .language-python}
-
-~~~
-            source_id          ra        dec      pmra      pmdec  parallax  \
-0  635559124339440000  137.586717  19.196544 -3.770522 -12.490482  0.791393   
-1  635860218726658176  138.518707  19.092339 -5.941679 -11.346409  0.307456   
-2  635674126383965568  138.842874  19.031798 -3.897001 -12.702780  0.779463   
-
-        phi1      phi2   pm_phi1   pm_phi2  
-0 -59.630489 -1.216485 -7.361363 -0.592633  
-1 -59.247330 -2.016078 -7.527126  1.748779  
-2 -59.133391 -2.306901 -7.560608 -0.741800  
-~~~
-{: .output}
-
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>source_id</th>
-      <th>ra</th>
-      <th>dec</th>
-      <th>pmra</th>
-      <th>pmdec</th>
-      <th>parallax</th>
-      <th>phi1</th>
-      <th>phi2</th>
-      <th>pm_phi1</th>
-      <th>pm_phi2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>635559124339440000</td>
-      <td>137.586717</td>
-      <td>19.196544</td>
-      <td>-3.770522</td>
-      <td>-12.490482</td>
-      <td>0.791393</td>
-      <td>-59.630489</td>
-      <td>-1.216485</td>
-      <td>-7.361363</td>
-      <td>-0.592633</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>635860218726658176</td>
-      <td>138.518707</td>
-      <td>19.092339</td>
-      <td>-5.941679</td>
-      <td>-11.346409</td>
-      <td>0.307456</td>
-      <td>-59.247330</td>
-      <td>-2.016078</td>
-      <td>-7.527126</td>
-      <td>1.748779</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>635674126383965568</td>
-      <td>138.842874</td>
-      <td>19.031798</td>
-      <td>-3.897001</td>
-      <td>-12.702780</td>
-      <td>0.779463</td>
-      <td>-59.133391</td>
-      <td>-2.306901</td>
-      <td>-7.560608</td>
-      <td>-0.741800</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-
-
-~~~
-read_back_csv.head(3)
-~~~
-{: .language-python}
-
-~~~
-   Unnamed: 0           source_id          ra        dec      pmra      pmdec  \
-0           0  635559124339440000  137.586717  19.196544 -3.770522 -12.490482   
-1           1  635860218726658176  138.518707  19.092339 -5.941679 -11.346409   
-2           2  635674126383965568  138.842874  19.031798 -3.897001 -12.702780   
-
-   parallax       phi1      phi2   pm_phi1   pm_phi2  
-0  0.791393 -59.630489 -1.216485 -7.361363 -0.592633  
-1  0.307456 -59.247330 -2.016078 -7.527126  1.748779  
-2  0.779463 -59.133391 -2.306901 -7.560608 -0.741800  
-~~~
-{: .output}
-
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Unnamed: 0</th>
-      <th>source_id</th>
-      <th>ra</th>
-      <th>dec</th>
-      <th>pmra</th>
-      <th>pmdec</th>
-      <th>parallax</th>
-      <th>phi1</th>
-      <th>phi2</th>
-      <th>pm_phi1</th>
-      <th>pm_phi2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>635559124339440000</td>
-      <td>137.586717</td>
-      <td>19.196544</td>
-      <td>-3.770522</td>
-      <td>-12.490482</td>
-      <td>0.791393</td>
-      <td>-59.630489</td>
-      <td>-1.216485</td>
-      <td>-7.361363</td>
-      <td>-0.592633</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>1</td>
-      <td>635860218726658176</td>
-      <td>138.518707</td>
-      <td>19.092339</td>
-      <td>-5.941679</td>
-      <td>-11.346409</td>
-      <td>0.307456</td>
-      <td>-59.247330</td>
-      <td>-2.016078</td>
-      <td>-7.527126</td>
-      <td>1.748779</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2</td>
-      <td>635674126383965568</td>
-      <td>138.842874</td>
-      <td>19.031798</td>
-      <td>-3.897001</td>
-      <td>-12.702780</td>
-      <td>0.779463</td>
-      <td>-59.133391</td>
-      <td>-2.306901</td>
-      <td>-7.560608</td>
-      <td>-0.741800</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-Notice that the index in `candidate_df` has become an unnamed column
-in `read_back_csv`.  The Pandas functions for writing and reading CSV
-files provide options to avoid that problem, but this is an example of
-the kind of thing that can go wrong with CSV files.
-
 ## Summary
 
 In the previous lesson we downloaded data for a large number of stars
@@ -1231,7 +937,7 @@ we're able to either:
 
 2. Search a larger region while still downloading a manageable amount of data.
 
-In the next lesson, we'll learn about the databased `JOIN` operation
+In the next lesson, we'll learn about the database `JOIN` operation
 and use it to download photometry data from Pan-STARRS.
 
 ## Best practices
@@ -1240,14 +946,6 @@ and use it to download photometry data from Pan-STARRS.
 much of the work as possible on the database server before downloading
 the data.
 
-* For most applications, saving data in FITS or HDF5 is better than
-CSV.  FITS and HDF5 are binary formats, so the files are usually
-smaller, and they store metadata, so you don't lose anything when you
-read the file back.
-
-* On the other hand, CSV is a "least common denominator" format; that
-is, it can be read by practically any application that works with
-data.
 
 
 
