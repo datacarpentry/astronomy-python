@@ -57,6 +57,7 @@ Because this lesson follows a single dataset throughout, its easy for students (
 * Students struggle with what we're transforming between and why. Repeat this as many times as possible. The Gaia catalog is in a universal frame (ICRS) but its easier to visualize and create filters specific to GD-1 when the axes of our reference frame are aligned with the GD-1 stream direction. So we will be switching between them often. To the GD-1 frame to build our filter then to the ICRS frame to actually query the database, then back to the GD-1 frame to visualize our results
 * Emphasize the basic structure of the SkyCoord object: location along axis 1, location along axis 2, frame. For example in the ICRS frame, axis 1 is ra and axis 2 is dec. In the GD-1 frame, axis 1 is phi1 and axis 2 is phi2
 * Mention that this is a benefit of using a unified framework like astropy. You can build a custom frame object and then have access to all of the other astropy tools that deal with coordinate transformations
+* When you define phi1_min, phi1_max, etc go back to Figure 1 and show learners the region you are defining, connecting the min and max values to the coordinates in the GD-1 frame. This is another place you can mention the benefit of using the GD-1 frame is that we can define a rectangle around the stream.
 ### Lesson 3: Proper motion 
 ### Lesson 4: Coordinate transformation and selection
 ### Lesson 5: Joining tables
