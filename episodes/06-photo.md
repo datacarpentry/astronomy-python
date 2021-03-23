@@ -4,29 +4,27 @@ teaching: 3000
 exercises: 0
 questions:
 
-- "How do we use Matplotlib to select a polygon and Pandas to merge data from multiple tables?"
+- "How do we use Matplotlib to define a polygon and select points that fall inside it?"
 
 objectives:
 
-- "Use Matplotlib to specify a polygon and determine which points fall inside it."
+- "Use isochrone data to specify a polygon and determine which points fall inside it."
 
-- "Use Pandas to merge data from multiple `DataFrames`, much like a database `JOIN` operation."
+- "Use Matplotlib features to customize the appearance of figures."
 
 keypoints:
 
 - "Matplotlib provides operations for working with points, polygons, and other geometric entities, so it's not just for making figures."
 
-- "If you want to perform something like a database `JOIN` operation with data that is in a Pandas `DataFrame`, you can use the `join` or `merge` function.  In many cases, `merge` is easier to use because the arguments are more like SQL."
-
 - "Use Matplotlib options to control the size and aspect ratio of figures to make them easier to interpret."
 
-- "Be sure to record every element of the data analysis pipeline that would be needed to replicate the results."
+- "Record every element of the data analysis pipeline that would be needed to replicate the results."
 
 ---
 
 {% include links.md %}
 
-# Photometry
+# 6. Photometry
 
 This is the sixth in a series of notebooks related to astronomy data.
 
@@ -64,9 +62,6 @@ color-magnitude diagram.
 2. We'll use an isochrone computed by MIST to specify a polygonal
 region in the color-magnitude diagram and select the stars inside it.
 
-3. Then we'll merge the photometry data with the list of candidate
-stars, storing the result in a Pandas `DataFrame`.
-
 After completing this lesson, you should be able to
 
 * Use Matplotlib to specify a `Polygon` and determine which points
@@ -86,7 +81,7 @@ previous notebook.
 import os
 from wget import download
 
-filename = 'gd1_photo.fits'
+filename = 'gd1_data.hdf'
 filepath = 'https://github.com/AllenDowney/AstronomicalData/raw/main/data/'
 
 if not os.path.exists(filename):
@@ -94,14 +89,12 @@ if not os.path.exists(filename):
 ~~~
 {: .language-python}
 
-Now we can read the data back into an Astropy `Table`.
-
 
 
 ~~~
-from astropy.table import Table
+import pandas as pd
 
-photo_table = Table.read(filename)
+candidate_df = pd.read_hdf(filename, 'candidate_df')
 ~~~
 {: .language-python}
 
@@ -193,7 +186,7 @@ Here's what the results look like.
 
 
 ~~~
-plot_cmd(photo_table)
+plot_cmd(candidate_df)
 ~~~
 {: .language-python}
 
@@ -205,7 +198,7 @@ plot_cmd(photo_table)
 
 
     
-![png](06-photo_files/06-photo_14_0.png)
+![png](06-photo_files/06-photo_11_0.png)
     
 
 
@@ -533,7 +526,7 @@ Now we can plot it on the color-magnitude diagram like this.
 
 
 ~~~
-plot_cmd(photo_table)
+plot_cmd(candidate_df)
 plt.plot(color_g_i, mag_g);
 ~~~
 {: .language-python}
@@ -546,7 +539,7 @@ plt.plot(color_g_i, mag_g);
 
 
     
-![png](06-photo_files/06-photo_44_0.png)
+![png](06-photo_files/06-photo_41_0.png)
     
 
 
@@ -646,7 +639,6 @@ And then save it.
 
 ~~~
 filename = 'gd1_isochrone.hdf5'
-
 iso_df.to_hdf(filename, 'iso_df')
 ~~~
 {: .language-python}
@@ -753,7 +745,7 @@ Here's what the isochrone looks like on the color-magnitude diagram.
 
 
 ~~~
-plot_cmd(photo_table)
+plot_cmd(candidate_df)
 plt.plot(iso_df['color_g_i'], iso_df['mag_g']);
 ~~~
 {: .language-python}
@@ -766,7 +758,7 @@ plt.plot(iso_df['color_g_i'], iso_df['mag_g']);
 
 
     
-![png](06-photo_files/06-photo_54_0.png)
+![png](06-photo_files/06-photo_51_0.png)
     
 
 
@@ -916,7 +908,7 @@ Here's what these boundaries look like:
 
 
 ~~~
-plot_cmd(photo_table)
+plot_cmd(candidate_df)
 
 plt.plot(left_color, g, label='left color')
 plt.plot(right_color, g, label='right color')
@@ -933,7 +925,7 @@ plt.legend();
 
 
     
-![png](06-photo_files/06-photo_64_0.png)
+![png](06-photo_files/06-photo_61_0.png)
     
 
 
@@ -1029,7 +1021,7 @@ Here's what the loop looks like.
 
 
 ~~~
-plot_cmd(photo_table)
+plot_cmd(candidate_df)
 plt.plot(color_loop, mag_loop);
 ~~~
 {: .language-python}
@@ -1042,7 +1034,7 @@ plt.plot(color_loop, mag_loop);
 
 
     
-![png](06-photo_files/06-photo_72_0.png)
+![png](06-photo_files/06-photo_69_0.png)
     
 
 
@@ -1055,8 +1047,77 @@ To make a `Polygon`, it will be convenient to put `color_loop` and
 loop_df = pd.DataFrame()
 loop_df['color_loop'] = color_loop
 loop_df['mag_loop'] = mag_loop
+loop_df.head()
 ~~~
 {: .language-python}
+
+~~~
+   color_loop   mag_loop
+0    0.632171  21.411746
+1    0.610238  21.322466
+2    0.588449  21.233380
+3    0.566924  21.144427
+4    0.545461  21.054549
+~~~
+{: .output}
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>color_loop</th>
+      <th>mag_loop</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.632171</td>
+      <td>21.411746</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.610238</td>
+      <td>21.322466</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.588449</td>
+      <td>21.233380</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.566924</td>
+      <td>21.144427</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.545461</td>
+      <td>21.054549</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 Now we can pass `loop_df` to `Polygon`:
 
@@ -1071,7 +1132,7 @@ polygon
 {: .language-python}
 
 ~~~
-<matplotlib.patches.Polygon at 0x7fe98cd29400>
+<matplotlib.patches.Polygon at 0x7fd8a96084f0>
 ~~~
 {: .output}
 
@@ -1147,327 +1208,23 @@ Here's how we can save it in an HDF file.
 
 
 ~~~
-filename = 'gd1_polygon.hdf5'
+filename = 'gd1_data.hdf'
 loop_df.to_hdf(filename, 'loop_df')
 ~~~
 {: .language-python}
 
-## Reloading the data
-
-Now we need to combine the photometry data with the list of candidate
-stars we identified in a previous notebook.  The following cell
-downloads it:
-
-
-
-
-
-~~~
-import os
-from wget import download
-
-filename = 'gd1_candidates.hdf5'
-filepath = 'https://github.com/AllenDowney/AstronomicalData/raw/main/data/'
-
-if not os.path.exists(filename):
-    print(download(filepath+filename))
-~~~
-{: .language-python}
-
-
-
-~~~
-import pandas as pd
-
-candidate_df = pd.read_hdf(filename, 'candidate_df')
-~~~
-{: .language-python}
-
-`candidate_df` is the Pandas DataFrame that contains the results from
-Lesson 4, which selects stars likely to be in GD-1 based on proper
-motion.  It also includes position and proper motion transformed to
-the ICRS frame.
-
-## Merging photometry data
-
-Before we select stars based on photometry data, we have to solve two problems:
-
-1. We only have Pan-STARRS data for some stars in `candidate_df`.
-
-2. Even for the stars where we have Pan-STARRS data in `photo_table`,
-some photometry data is missing.
-
-We will solve these problems in two step:
-
-1. We'll merge the data from `candidate_df` and `photo_table` into a
-single Pandas `DataFrame`.
-
-2. We'll use Pandas functions to deal with missing data.
-
-`candidate_df` is already a `DataFrame`, but `results` is an Astropy
-`Table`.  Let's convert it to Pandas:
-
-
-
-~~~
-photo_df = photo_table.to_pandas()
-
-for colname in photo_df.columns:
-    print(colname)
-~~~
-{: .language-python}
-
-~~~
-source_id
-g_mean_psf_mag
-i_mean_psf_mag
-
-~~~
-{: .output}
-
-
-    
-
-Now we want to combine `candidate_df` and `photo_df` into a single
-table, using `source_id` to match up the rows.
-
-You might recognize this task; it's the same as the JOIN operation in ADQL/SQL.
-
-Pandas provides a function called `merge` that does what we want.
-Here's how we use it.
-
-
-
-~~~
-merged = pd.merge(candidate_df, 
-                  photo_df, 
-                  on='source_id')
-merged.head()
-~~~
-{: .language-python}
-
-~~~
-            source_id          ra        dec      pmra      pmdec  parallax  \
-0  635860218726658176  138.518707  19.092339 -5.941679 -11.346409  0.307456   
-1  635674126383965568  138.842874  19.031798 -3.897001 -12.702780  0.779463   
-2  635535454774983040  137.837752  18.864007 -4.335041 -14.492309  0.314514   
-3  635497276810313600  138.044516  19.009471 -7.172931 -12.291499  0.425404   
-4  635614168640132864  139.592197  18.807956 -3.309603 -13.708905  0.583382   
-
-   radial_velocity       phi1      phi2   pm_phi1   pm_phi2  g_mean_psf_mag  \
-0              NaN -59.247330 -2.016078 -7.527126  1.748779         17.8978   
-1              NaN -59.133391 -2.306901 -7.560608 -0.741800         19.2873   
-2              NaN -59.785300 -1.594569 -9.357536 -1.218492         16.9238   
-[Output truncated]
-~~~
-{: .output}
-
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>source_id</th>
-      <th>ra</th>
-      <th>dec</th>
-      <th>pmra</th>
-      <th>pmdec</th>
-      <th>parallax</th>
-      <th>radial_velocity</th>
-      <th>phi1</th>
-      <th>phi2</th>
-      <th>pm_phi1</th>
-      <th>pm_phi2</th>
-      <th>g_mean_psf_mag</th>
-      <th>i_mean_psf_mag</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>635860218726658176</td>
-      <td>138.518707</td>
-      <td>19.092339</td>
-      <td>-5.941679</td>
-      <td>-11.346409</td>
-      <td>0.307456</td>
-      <td>NaN</td>
-      <td>-59.247330</td>
-      <td>-2.016078</td>
-      <td>-7.527126</td>
-      <td>1.748779</td>
-      <td>17.8978</td>
-      <td>17.517401</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>635674126383965568</td>
-      <td>138.842874</td>
-      <td>19.031798</td>
-      <td>-3.897001</td>
-      <td>-12.702780</td>
-      <td>0.779463</td>
-      <td>NaN</td>
-      <td>-59.133391</td>
-      <td>-2.306901</td>
-      <td>-7.560608</td>
-      <td>-0.741800</td>
-      <td>19.2873</td>
-      <td>17.678101</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>635535454774983040</td>
-      <td>137.837752</td>
-      <td>18.864007</td>
-      <td>-4.335041</td>
-      <td>-14.492309</td>
-      <td>0.314514</td>
-      <td>NaN</td>
-      <td>-59.785300</td>
-      <td>-1.594569</td>
-      <td>-9.357536</td>
-      <td>-1.218492</td>
-      <td>16.9238</td>
-      <td>16.478100</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>635497276810313600</td>
-      <td>138.044516</td>
-      <td>19.009471</td>
-      <td>-7.172931</td>
-      <td>-12.291499</td>
-      <td>0.425404</td>
-      <td>NaN</td>
-      <td>-59.557744</td>
-      <td>-1.682147</td>
-      <td>-9.000831</td>
-      <td>2.334407</td>
-      <td>19.9242</td>
-      <td>18.334000</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>635614168640132864</td>
-      <td>139.592197</td>
-      <td>18.807956</td>
-      <td>-3.309603</td>
-      <td>-13.708905</td>
-      <td>0.583382</td>
-      <td>NaN</td>
-      <td>-58.938113</td>
-      <td>-3.024192</td>
-      <td>-8.062762</td>
-      <td>-1.869082</td>
-      <td>16.1516</td>
-      <td>14.666300</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-The first argument is the "left" table, the second argument is the
-"right" table, and the keyword argument `on='source_id'` specifies a
-column to use to match up the rows.
-
-The result is a `DataFrame` that contains the same number of rows as
-`photo_df`.
-
-
-
-~~~
-len(candidate_df), len(photo_df), len(merged)
-~~~
-{: .language-python}
-
-~~~
-(7346, 3724, 3724)
-~~~
-{: .output}
-
-
-
-
-
-    
-
-
-
-And it contains all columns from both tables.
-
-
-
-~~~
-for colname in merged.columns:
-    print(colname)
-~~~
-{: .language-python}
-
-~~~
-source_id
-ra
-dec
-pmra
-pmdec
-parallax
-radial_velocity
-phi1
-phi2
-pm_phi1
-pm_phi2
-[Output truncated]
-~~~
-{: .output}
-
-
-    
-
-**Detail** You might notice that Pandas also provides a function
-called `join`; it does almost the same thing, but the interface is
-slightly different.  We think `merge` is a little easier to use, so
-that's what we chose.  It's also more consistent with JOIN in SQL, so
-if you learn how to use `pd.merge`, you are also learning how to use
-SQL JOIN.
-
-Also, someone might ask why we have to use Pandas to do this join; why
-didn't we do it in ADQL.  The answer is that we could have done that,
-but since we already have the data we need, we should probably do the
-computation locally rather than make another round trip to the Gaia
-server.
-
 ## Selecting based on photometry
 
-Now let's see how many of these points are inside the polygon we chose.
-
-We'll put color and magnitude data from `merged` into a new `DataFrame`:
+Now let's see how many of the candidate stars are inside the polygon we chose.
+We'll put color and magnitude data from `candidate_df` into a new `DataFrame`:
 
 
 
 ~~~
 points = pd.DataFrame()
 
-points['color'] = merged['g_mean_psf_mag'] - merged['i_mean_psf_mag']
-points['mag'] = merged['g_mean_psf_mag']
+points['color'] = candidate_df['g_mean_psf_mag'] - candidate_df['i_mean_psf_mag']
+points['mag'] = candidate_df['g_mean_psf_mag']
 
 points.head()
 ~~~
@@ -1592,8 +1349,7 @@ Now we can use `inside` as a mask to select stars that fall inside the polygon.
 
 
 ~~~
-selected2 = merged[inside]
-points2 = points[inside]
+winner_df = candidate_df[inside]
 ~~~
 {: .language-python}
 
@@ -1603,11 +1359,13 @@ selected stars with green markers.
 
 
 ~~~
-plot_cmd(photo_table)
+plot_cmd(candidate_df)
 plt.plot(color_g_i, mag_g)
 plt.plot(color_loop, mag_loop)
 
-plt.plot(points2['color'], points2['mag'], 'g.');
+x = winner_df['g_mean_psf_mag'] - winner_df['i_mean_psf_mag']
+y = winner_df['g_mean_psf_mag']
+plt.plot(x, y, 'go', markersize=0.5, alpha=0.5);
 ~~~
 {: .language-python}
 
@@ -1619,7 +1377,7 @@ plt.plot(points2['color'], points2['mag'], 'g.');
 
 
     
-![png](06-photo_files/06-photo_106_0.png)
+![png](06-photo_files/06-photo_90_0.png)
     
 
 
@@ -1633,9 +1391,8 @@ Finally, we can plot the coordinates of the selected stars:
 ~~~
 plt.figure(figsize=(10,2.5))
 
-x = selected2['phi1']
-y = selected2['phi2']
-
+x = winner_df['phi1']
+y = winner_df['phi2']
 plt.plot(x, y, 'ko', markersize=0.7, alpha=0.9)
 
 plt.xlabel('ra (degree GD1)')
@@ -1653,7 +1410,7 @@ plt.axis('equal');
 
 
     
-![png](06-photo_files/06-photo_108_0.png)
+![png](06-photo_files/06-photo_92_0.png)
     
 
 
@@ -1673,77 +1430,58 @@ represented accurately.
 
 ## Write the data
 
-Finally, let's write the merged DataFrame to a file.
+Finally, let's write the selected stars to a file.
 
 
 
 ~~~
-filename = 'gd1_merged.hdf5'
-
-merged.to_hdf(filename, 'merged')
-selected2.to_hdf(filename, 'selected2')
+filename = 'gd1_data.hdf'
+winner_df.to_hdf(filename, 'winner_df')
 ~~~
 {: .language-python}
 
 
 
 ~~~
-!ls -lh gd1_merged.hdf5
+from os.path import getsize
+
+MB = 1024 * 1024
+getsize(filename) / MB
 ~~~
 {: .language-python}
 
 ~~~
--rw-rw-r-- 1 downey downey 1.1M Dec 29 11:51 gd1_merged.hdf5
-
+2.512819290161133
 ~~~
 {: .output}
 
 
+
+
+
     
 
-If you are using Windows, `ls` might not work; in that case, try:
 
-```
-!dir gd1_merged.hdf5
-```
 
 ## Summary
 
-In this lesson, we worked with three datasets: 
-
-* The list of candidate stars from Gaia,
-
-* The photometry data from Pan-STARRS, and
-
-* An isochrone computed by MIST.
-
-We drew a color-magnitude diagram and used it to identify stars we
-think are likely to be in GD-1.
-
-We used the isochrone to define a polygon that includes those stars.
-
-Then we used a Pandas `merge` operation to combine Gaia and Pan-STARRS
-data into a single `DataFrame`.
-
-Plotting the results, we have a clear picture of GD-1, similar to
-Figure 1 in the original paper.
+In this lesson, we used photometry data from Pan-STARRS to draw a
+color-magnitude diagram.
+We used an isochrone to define a polygon and select stars we think are
+likely to be in GD-1.  Plotting the results, we have a clearer picture
+of GD-1, similar to Figure 1 in the original paper.
 
 ## Best practices
 
 * Matplotlib provides operations for working with points, polygons,
 and other geometric entities, so it's not just for making figures.
 
-* If you want to perform something like a database `JOIN` operation
-with data that is in a Pandas `DataFrame`, you can use the `join` or
-`merge` function.  In many cases, `merge` is easier to use because the
-arguments are more like SQL.
-
 * Use Matplotlib options to control the size and aspect ratio of
 figures to make them easier to interpret.  In this example, we scaled
 the axes so the size of a degree is equal along both axes.
 
-* Be sure to record every element of the data analysis pipeline that
-would be needed to replicate the results.
+* Record every element of the data analysis pipeline that would be
+needed to replicate the results.
 
 
 
