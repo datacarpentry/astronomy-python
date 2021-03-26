@@ -142,18 +142,10 @@ meta = Gaia.load_table('gaiadr2.panstarrs1_best_neighbour')
 {: .language-python}
 
 ~~~
-Created TAP+ (v1.2.1) - Connection:
-	Host: gea.esac.esa.int
-	Use HTTPS: True
-	Port: 443
-	SSL Port: 443
-Created TAP+ (v1.2.1) - Connection:
-	Host: geadata.esac.esa.int
-	Use HTTPS: True
-	Port: 443
-	SSL Port: 443
 Retrieving table 'gaiadr2.panstarrs1_best_neighbour'
-[Output truncated]
+Parsing table 'gaiadr2.panstarrs1_best_neighbour'...
+Done.
+
 ~~~
 {: .output}
 
@@ -282,7 +274,7 @@ results
 
 
 <i>Table length=5</i>
-<table id="table140104392580448" class="table-striped table-bordered table-condensed">
+<table id="table140523981953776" class="table-striped table-bordered table-condensed">
 <thead><tr><th>source_id</th><th>number_of_neighbours</th><th>number_of_mates</th><th>original_ext_source_id</th></tr></thead>
 <thead><tr><th>int64</th><th>int32</th><th>int16</th><th>int64</th></tr></thead>
 <tr><td>6745938972433480704</td><td>1</td><td>0</td><td>69742925668851205</td></tr>
@@ -438,7 +430,7 @@ results
 
 
 <i>Table length=5</i>
-<table id="table140104844641184" class="table-striped table-bordered table-condensed">
+<table id="table140523984535712" class="table-striped table-bordered table-condensed">
 <thead><tr><th>obj_id</th><th>g_mean_psf_mag</th><th>i_mean_psf_mag</th></tr></thead>
 <thead><tr><th></th><th></th><th>mag</th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th></tr></thead>
@@ -540,7 +532,7 @@ results
 
 
 <i>Table length=10</i>
-<table id="table140104380877264" class="table-striped table-bordered table-condensed">
+<table id="table140523908331168" class="table-striped table-bordered table-condensed">
 <thead><tr><th>source_id</th></tr></thead>
 <thead><tr><th>int64</th></tr></thead>
 <tr><td>3322773965056065536</td></tr>
@@ -647,7 +639,7 @@ results
 
 
 <i>Table length=594</i>
-<table id="table140104380909264" class="table-striped table-bordered table-condensed">
+<table id="table140523908331456" class="table-striped table-bordered table-condensed">
 <thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
@@ -802,7 +794,7 @@ results
 
 
 <i>Table length=490</i>
-<table id="table140104380908352" class="table-striped table-bordered table-condensed">
+<table id="table140524639163968" class="table-striped table-bordered table-condensed">
 <thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th><th>best_neighbour_multiplicity</th><th>number_of_mates</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th><th></th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>int16</th><th>int16</th></tr></thead>
@@ -1027,7 +1019,7 @@ results
 
 
 <i>Table length=7345</i>
-<table id="table140104380909120" class="table-striped table-bordered table-condensed">
+<table id="table140523982340048" class="table-striped table-bordered table-condensed">
 <thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
@@ -1360,7 +1352,7 @@ getsize(filename) / MB
 {: .language-python}
 
 ~~~
-5.574869155883789
+3.5835609436035156
 ~~~
 {: .output}
 

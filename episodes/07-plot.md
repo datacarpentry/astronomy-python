@@ -139,28 +139,36 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.pn
 
 ## Plotting GD-1
 
-Let's start with the panel in the lower left.  The following cell
-reloads the data.
+Let's start with the panel in the lower left.  You can [download the
+data from the previous
+lesson](https://github.com/AllenDowney/AstronomicalData/raw/main/data/gd1_data.hdf)
+or run the following cell, which downloads it if necessary.
 
 
 
 ~~~
-import os
-from wget import download
+from os.path import basename, exists
 
-filename = 'gd1_data.hdf'
-path = 'https://github.com/AllenDowney/AstronomicalData/raw/main/data/'
+def download(url):
+    filename = basename(url)
+    if not exists(filename):
+        from urllib.request import urlretrieve
+        local, _ = urlretrieve(url, filename)
+        print('Downloaded ' + local)
 
-if not os.path.exists(filename):
-    print(download(path+filename))
+download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
+         'data/gd1_data.hdf')
 ~~~
 {: .language-python}
+
+Now we can reload `winner_df`
 
 
 
 ~~~
 import pandas as pd
 
+filename = 'gd1_data.hdf'
 winner_df = pd.read_hdf(filename, 'winner_df')
 ~~~
 {: .language-python}
@@ -195,14 +203,14 @@ plot_second_selection(winner_df)
 {: .language-python}
 
 ~~~
-<Figure size 720x180 with 1 Axes>
+<Figure size 1000x250 with 1 Axes>
 ~~~
 {: .output}
 
 
 
     
-![png](07-plot_files/07-plot_12_0.png)
+![png](07-plot_files/07-plot_13_0.png)
     
 
 
@@ -423,19 +431,15 @@ make your own.  This repository includes a style sheet called
 `az-paper-twocol.mplstyle`, with customizations chosen by Azalee
 Bostroem for publication in astronomy journals.
 
-The following cell downloads the style sheet.
+You can [download the style
+sheet](https://github.com/AllenDowney/AstronomicalData/raw/main/az-paper-twocol.mplstyle)
+or run the following cell, which downloads it if necessary.
 
 
 
 ~~~
-import os
-from wget import download
-
-filename = 'az-paper-twocol.mplstyle'
-path = 'https://github.com/AllenDowney/AstronomicalData/raw/main/'
-
-if not os.path.exists(filename):
-    print(download(path+filename))
+download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
+         'az-paper-twocol.mplstyle')
 ~~~
 {: .language-python}
 
@@ -663,7 +667,7 @@ plot_proper_motion(centerline_df)
 
 
     
-![png](07-plot_files/07-plot_52_0.png)
+![png](07-plot_files/07-plot_53_0.png)
     
 
 
@@ -716,7 +720,7 @@ plot_first_selection(candidate_df)
 
 
     
-![png](07-plot_files/07-plot_58_0.png)
+![png](07-plot_files/07-plot_59_0.png)
     
 
 
@@ -766,7 +770,7 @@ plot_cmd(candidate_df)
 
 
     
-![png](07-plot_files/07-plot_62_0.png)
+![png](07-plot_files/07-plot_63_0.png)
     
 
 
@@ -917,7 +921,7 @@ plt.tight_layout()
 
 
     
-![png](07-plot_files/07-plot_68_0.png)
+![png](07-plot_files/07-plot_69_0.png)
     
 
 
@@ -978,7 +982,7 @@ plt.tight_layout()
 
 
     
-![png](07-plot_files/07-plot_71_0.png)
+![png](07-plot_files/07-plot_72_0.png)
     
 
 
