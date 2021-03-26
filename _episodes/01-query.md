@@ -647,7 +647,7 @@ We use `launch_job_async` to submit an asynchronous query.
 
 
 ~~~
-job = Gaia.launch_job_async(query)
+job = Gaia.launch_job_async(query2)
 job
 ~~~
 {: .language-python}
