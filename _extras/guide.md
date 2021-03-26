@@ -5,18 +5,21 @@ title: "Instructor Notes"
 ## Instructor notes
 
 ### Overview
-This lesson guides students through analyzing data from a large database. Scientifically, we are identifying stars in GD-1, a stellar stream in the Milky Way (creating Figure 1 in TODO: link to paper). The first part of this lesson (1-5) shows students how to prototype a query, starting by querying a subset of the sky we ultimately want and then building up stronger and stronger filters. With our filters in place, lesson 6 performs the full query giving us a dataset to visualize in lesson 7. Lesson 7 demonstrates best practices and tips and tricks to efficiently and effectively visualize data. 
+This lesson guides students through analyzing data from a large database. Scientifically, we are identifying stars in GD-1, a stellar stream in the Milky Way (creating Figure 1 in "[Off the beaten path: Gaia reveals GD-1 stars outside of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian Price-Whelan and Ana Bonaca.). The first part of this lesson (1-5) shows students how to prototype a query, starting by querying a subset of the sky we ultimately want and then building up stronger and stronger filters. With our filters in place, lesson 6 performs the full query giving us a dataset to visualize in lesson 7. Lesson 7 demonstrates best practices and tips and tricks to efficiently and effectively visualize data.
 
 Because this lesson follows a single dataset throughout, its easy for students (and instructors) to lose sight of the bigger picture and focus instead on the scientific goals. At the beginning of each lesson it is recommended that the instructor discuss both the scientific goal of the lesson (with frequent references to Figure 1) and highlight the big picture skills that we hope each student takes away from the lesson, beyond the specific science case. At the end of the lesson the instructors should recap the same information, highlighting the best practices covered. TODO: reference slide show.
 
 ### Introduction
+
 * Astronomical datasets are getting larger and larger. As a result, the days of downloading a raw image and performing the end to end analysis are numbered. Instead, already reduced data (and simulations) are being stored in databases. If you know how to ask these databases the right questions, they are an incredibly powerful tool. The ability to interact with these large databases is fundamental to the future of astronomy as well as a skill that is highly valued outside of astronomy.
-* Motivate this statement with your science whether it is transients, exoplanets, or weak lensing (or something else)
+
+* Motivate this statement with your science whether it is transients, exoplanets, or weak lensing (or something else).
+
 * Introduce the tools we will be teaching and why you think these are important for astronomers to know:
     - SQL: general purpose language to interact with databases - used widely in astronomy and industry
     - Python: general purpose programming language - used widely in astronomy and industry
     - Astropy: package with common astronomical functions and objects to facilitate analysis of astronomical data
-    - Astroquery: python interface to SQL-flavored astronomical databases (this might be a good place to show all of the catalogs that astroquery supports) 
+    - Astroquery: python interface to SQL-flavored astronomical databases (this might be a good place to show all of the catalogs that astroquery supports)
     - Pandas: python package to deal with arrays and databases - used widely by astronomy and industry
     - Matplotlib: python visualization package - used widely by astronomy and industry
 * Note that this is a balance of astronomy specific tools which allow us to efficiently interact with our specific data and broadly used tools (including industry)
@@ -46,21 +49,72 @@ Because this lesson follows a single dataset throughout, its easy for students (
 * For each lesson start with an overview - often its good to show Figure 1 and talk about what you just did and what you are going to do. Be sure to highlight the learning objectives and discuss how these tools and skills are applicable beyond this dataset and science case.
 * End each lesson with a summary of what you just did and going over the best-practices. Take this as an opportunity to connect the skills used for this specific science case to the broader skill set that can be applied to any science case.
 * Share links to the lesson with students. There is a lot of typing and if a student gets stuck debugging a typo, having the lesson can allow them to catch up. Encourage them to type along and only use the lesson as a back up.
-* It is recommended that each day be a new notebook (they get really slow)
-* It is recommended that you do not repeat variable names and that you do not modify queries in place. If a student misses a step then they don't have an easy way to determine that they don't have the same code that you have.
+* It is recommended that each day be a new notebook (Note from ABD: I think there's a tradeoff here.  Breaking a complex analysis into multiple notebooks is generally good practice, but for the workshop it might cause more problems than it is worth.)
+* It is recommended that you do not repeat variable names and that you do not modify queries in place. If a student misses a step then they don't have an easy way to determine that they don't have the same code that you have. (Note from ABD: I might soften this recommendation and suggest that modifying a query in place is a good way to develop a query incrementally, but that they might want to name a few milestones to refer back to)
 * Although students should have seen functions in the SWC python lesson, its always good to reiterate the process of prototyping what you want to do. Then if you find yourself wanting to do it over and over, make it into a function (a good rule of thumb is if you're copy and pasting, then think about whether you should be using a function)
 * Highlight throughout the lesson what commands are ADQL specific and what are general SQL commands
 ### Lesson 1: Queries
-* remind students: if you get exactly 2000 results, check that you did an async query and not a synchronous query
+
+* At the beginning of this lesson, possible points of confusion are (1) there are two functions with similar named, `load_tables` and `load_table`, and neither of them actually downloads a table; rather, they download metadata about the tables.
+
+* For `query2` (and most subsequent queries) if you get exactly 2000 results, it's probably because you used `launch_job` rather than `launch_job_async`.
+
+* One of the challenges of debugging queries is that `astroquery` provides basically no debugging information other than a generic error message.  So it is important to emphasize careful checking of queries and incremental development: starting with a known-good query and making small changes.
+
+
 ### Lesson 2: Coordinates and units
 * Highlight how the WHERE and CONTAINS statements interact - that CONTAINS returns a 1 when something is contained within the defined shape and you're checking WHERE 1=CONTAINS and this is true when something is located in a region
 * Students struggle with what we're transforming between and why. Repeat this as many times as possible. The Gaia catalog is in a universal frame (ICRS) but its easier to visualize and create filters specific to GD-1 when the axes of our reference frame are aligned with the GD-1 stream direction. So we will be switching between them often. To the GD-1 frame to build our filter then to the ICRS frame to actually query the database, then back to the GD-1 frame to visualize our results
-* Emphasize the basic structure of the SkyCoord object: location along axis 1, location along axis 2, frame. For example in the ICRS frame, axis 1 is ra and axis 2 is dec. In the GD-1 frame, axis 1 is phi1 and axis 2 is phi2
+* Emphasize the basic structure of the SkyCoord object: location along axis 1, location along axis 2, frame. For example in the ICRS frame, axis 1 is `ra` and axis 2 is `dec`. In the GD-1 frame, axis 1 is `phi1` and axis 2 is `phi2`.
 * Mention that this is a benefit of using a unified framework like astropy. You can build a custom frame object and then have access to all of the other astropy tools that deal with coordinate transformations
 * When you define phi1_min, phi1_max, etc go back to Figure 1 and show learners the region you are defining, connecting the min and max values to the coordinates in the GD-1 frame. This is another place you can mention the benefit of using the GD-1 frame is that we can define a rectangle around the stream.
-### Lesson 3: Proper motion 
+
+### Lesson 3: Proper motion
+
+* Notice that the first time we use `DataFrame.to_hdf`, we use the `w` argument to indicate that we want to create a new, empty HDF Store.  For all subsequent uses, we should *not* use the `w` argument, so that we add new Datasets to the existing Store, rather than starting over.
+
 ### Lesson 4: Coordinate transformation and selection
+
+* As in previous lessons, a challenge for students here is keeping track of what we are doing and why.  Surface periodically to remind them where we are.
+
+* Another difficulty is that we re-use several functions from previous notebooks.  If students are working in the same notebook through multiple lessons, they might already have them.  Otherwise it is probably best to instruct them to [copy and paste from here](https://allendowney.github.io/AstronomicalData/04_select.html) rather than retyping.
+
+* This lesson uses the following idiom several times
+
+```
+x = ...
+y = ...
+plt.plot(x, y)
+```
+
+This idiom violates the recommendation not to repeat variables names, but since they are defined and used immediately, it might be ok.  If you don't like it, you can inline the expressions.
+
+* The use of ConvexHull in this lesson is a bit of a hack, but some students will find the computation geometry functions in SciPy useful.
+
+* This lesson includes a NumPy trick for assigning columns of an array to variables:
+
+```
+pmra_poly, pmdec_poly = np.transpose(pm_vertices)
+```
+
+* Notice that the definitions of `phi1_min`, `phi1_max`, etc.  are different in this lesson.  Because we are adding more filters, we can select a bigger region without exceeding resource limits.  If students don't get as many "candidates" as expected, they might be using the old values of these bounds.
+
+* When you get to `make_dataframe`, you might want to copy and paste it from the notes, rather than retyping.
+
+* Recall that the first time we use `DataFrame.to_hdf`, we use the `w` argument to indicate that we want to create a new, empty HDF Store.  For all subsequent uses, we should *not* use the `w` argument, so that we add new Datasets to the existing Store, rather than starting over.
+
+
 ### Lesson 5: Joining tables
+
 ### Lesson 6: Photometry
+
+* The notes include code that uses `read_mist_models` to read the isochrone computed by MIST, clean the data, and get it into a `DataFrame`.  You *can* present this material, but you don't have to.  The alternative is to skip to the next section, which reads the cleaned isochrone data from `gd1_data` as a `DataFrame`.
+
+* In the original paper, they use an idiosyncratic function to define the boundaries of the isochrone filter.  You *can* present the original form, but it takes some explaining.  The alternative is to use the simpler boundaries in the notes.
+
+* Students might express concern that the polygon we use to select candidate stars is not closed.  That's ok; the `contains_points` method treats the polygon as if it is closed (by connecting the last point to the first).
+
+
+
 ### Lesson 7: Visualization
 {% include links.md %}
