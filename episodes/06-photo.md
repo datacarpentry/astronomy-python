@@ -72,28 +72,35 @@ database `JOIN` operation.
 
 ## Reload the data
 
-The following cell downloads the photometry data we created in the
-previous notebook.
+You can [download the data from the previous
+lesson](https://github.com/AllenDowney/AstronomicalData/raw/main/data/gd1_data.hdf)
+or run the following cell, which downloads it if necessary.
 
 
 
 ~~~
-import os
-from wget import download
+from os.path import basename, exists
 
-filename = 'gd1_data.hdf'
-filepath = 'https://github.com/AllenDowney/AstronomicalData/raw/main/data/'
+def download(url):
+    filename = basename(url)
+    if not exists(filename):
+        from urllib.request import urlretrieve
+        local, _ = urlretrieve(url, filename)
+        print('Downloaded ' + local)
 
-if not os.path.exists(filename):
-    print(download(filepath+filename))
+download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
+         'data/gd1_data.hdf')
 ~~~
 {: .language-python}
+
+Now we can reload `candidate_df`.
 
 
 
 ~~~
 import pandas as pd
 
+filename = 'gd1_data.hdf'
 candidate_df = pd.read_hdf(filename, 'candidate_df')
 ~~~
 {: .language-python}
@@ -198,7 +205,7 @@ plot_cmd(candidate_df)
 
 
     
-![png](06-photo_files/06-photo_11_0.png)
+![png](06-photo_files/06-photo_12_0.png)
     
 
 
@@ -240,14 +247,8 @@ The following cell downloads the results:
 
 
 ~~~
-import os
-from wget import download
-
-filename = 'MIST_iso_5fd2532653c27.iso.cmd'
-filepath = 'https://github.com/AllenDowney/AstronomicalData/raw/main/data/'
-
-if not os.path.exists(filename):
-    print(download(filepath+filename))
+download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
+         'data/MIST_iso_5fd2532653c27.iso.cmd')
 ~~~
 {: .language-python}
 
@@ -257,14 +258,8 @@ repository](https://github.com/jieunchoi/MIST_codes).
 
 
 ~~~
-import os
-from wget import download
-
-filename = 'read_mist_models.py'
-filepath = 'https://github.com/jieunchoi/MIST_codes/raw/master/scripts/'
-
-if not os.path.exists(filename):
-    print(download(filepath+filename))
+download('https://github.com/jieunchoi/MIST_codes/raw/master/scripts/' +
+         'read_mist_models.py')
 ~~~
 {: .language-python}
 
@@ -539,7 +534,7 @@ plt.plot(color_g_i, mag_g);
 
 
     
-![png](06-photo_files/06-photo_41_0.png)
+![png](06-photo_files/06-photo_42_0.png)
     
 
 
@@ -651,14 +646,8 @@ section, if necessary.
 
 
 ~~~
-import os
-from wget import download
-
-filename = 'gd1_isochrone.hdf5'
-filepath = 'https://github.com/AllenDowney/AstronomicalData/raw/main/data/'
-
-if not os.path.exists(filename):
-    print(download(filepath+filename))
+download('https://github.com/AllenDowney/AstronomicalData/raw/main/data/' +
+         'gd1_isochrone.hdf5')
 ~~~
 {: .language-python}
 
@@ -667,6 +656,7 @@ Now we can read it back in.
 
 
 ~~~
+filename = 'gd1_isochrone.hdf5'
 iso_df = pd.read_hdf(filename, 'iso_df')
 iso_df.head()
 ~~~
@@ -758,7 +748,7 @@ plt.plot(iso_df['color_g_i'], iso_df['mag_g']);
 
 
     
-![png](06-photo_files/06-photo_51_0.png)
+![png](06-photo_files/06-photo_52_0.png)
     
 
 
@@ -925,7 +915,7 @@ plt.legend();
 
 
     
-![png](06-photo_files/06-photo_61_0.png)
+![png](06-photo_files/06-photo_62_0.png)
     
 
 
@@ -1034,7 +1024,7 @@ plt.plot(color_loop, mag_loop);
 
 
     
-![png](06-photo_files/06-photo_69_0.png)
+![png](06-photo_files/06-photo_70_0.png)
     
 
 
@@ -1132,7 +1122,7 @@ polygon
 {: .language-python}
 
 ~~~
-<matplotlib.patches.Polygon at 0x7fd8a96084f0>
+<matplotlib.patches.Polygon at 0x7f439d33fdf0>
 ~~~
 {: .output}
 
@@ -1377,7 +1367,7 @@ plt.plot(x, y, 'go', markersize=0.5, alpha=0.5);
 
 
     
-![png](06-photo_files/06-photo_90_0.png)
+![png](06-photo_files/06-photo_91_0.png)
     
 
 
@@ -1410,7 +1400,7 @@ plt.axis('equal');
 
 
     
-![png](06-photo_files/06-photo_92_0.png)
+![png](06-photo_files/06-photo_93_0.png)
     
 
 
@@ -1451,7 +1441,7 @@ getsize(filename) / MB
 {: .language-python}
 
 ~~~
-2.512819290161133
+3.6441001892089844
 ~~~
 {: .output}
 
