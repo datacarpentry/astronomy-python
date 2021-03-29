@@ -63,8 +63,9 @@ After completing this lesson, you should be able to
 
 ## Reload the data
 
-The following cells download the data from the previous lesson, if
-necessary, and load it into a Pandas `DataFrame`.
+You can [download the data from the previous
+lesson](https://github.com/AllenDowney/AstronomicalData/raw/main/data/gd1_data.hdf)
+or run the following cell, which downloads it if necessary.
 
 
 
@@ -82,6 +83,8 @@ download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
          'data/gd1_data.hdf')
 ~~~
 {: .language-python}
+
+Now we can reload `centerline_df` and `selected_df`.
 
 
 
@@ -208,7 +211,7 @@ plt.plot(x, y, 'gx', markersize=0.3, alpha=0.3);
 
 
     
-![png](04-select_files/04-select_13_0.png)
+![png](04-select_files/04-select_14_0.png)
     
 
 
@@ -242,7 +245,7 @@ plt.ylim([-20, 5]);
 
 
     
-![png](04-select_files/04-select_15_0.png)
+![png](04-select_files/04-select_16_0.png)
     
 
 
@@ -308,7 +311,7 @@ hull
 {: .language-python}
 
 ~~~
-<scipy.spatial.qhull.ConvexHull at 0x7fd95de628b0>
+<scipy.spatial.qhull.ConvexHull at 0x7ff6207866a0>
 ~~~
 {: .output}
 
@@ -425,7 +428,7 @@ plt.ylim([-20, 5]);
 
 
     
-![png](04-select_files/04-select_28_0.png)
+![png](04-select_files/04-select_29_0.png)
     
 
 
@@ -688,17 +691,17 @@ print(job)
 {: .language-python}
 
 ~~~
-Created TAP+ (v1.2.1) - Connection:
-	Host: gea.esac.esa.int
-	Use HTTPS: True
-	Port: 443
-	SSL Port: 443
-Created TAP+ (v1.2.1) - Connection:
-	Host: geadata.esac.esa.int
-	Use HTTPS: True
-	Port: 443
-	SSL Port: 443
 INFO: Query finished. [astroquery.utils.tap.core]
+<Table length=7345>
+   name    dtype    unit                              description                            
+--------- ------- -------- ------------------------------------------------------------------
+source_id   int64          Unique source identifier (unique within a particular Data Release)
+       ra float64      deg                                                    Right ascension
+      dec float64      deg                                                        Declination
+     pmra float64 mas / yr                         Proper motion in right ascension direction
+    pmdec float64 mas / yr                             Proper motion in declination direction
+Jobid: 1616771462206O
+Phase: COMPLETED
 [Output truncated]
 ~~~
 {: .output}
@@ -822,7 +825,7 @@ plt.ylabel('dec (degree ICRS)');
 
 
     
-![png](04-select_files/04-select_65_0.png)
+![png](04-select_files/04-select_66_0.png)
     
 
 
@@ -898,7 +901,7 @@ plt.ylabel('phi2 (degree GD1)');
 
 
     
-![png](04-select_files/04-select_71_0.png)
+![png](04-select_files/04-select_72_0.png)
     
 
 

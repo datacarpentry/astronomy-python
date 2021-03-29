@@ -137,6 +137,7 @@ source_id   int64          Unique source identifier (unique within a particular 
       dec float64      deg                                                        Declination
      pmra float64 mas / yr                         Proper motion in right ascension direction
     pmdec float64 mas / yr                             Proper motion in declination direction
+ parallax float64      mas                                                           Parallax
 ~~~
 {: .output}
 
@@ -165,7 +166,7 @@ results.colnames
 {: .language-python}
 
 ~~~
-['source_id', 'ra', 'dec', 'pmra', 'pmdec']
+['source_id', 'ra', 'dec', 'pmra', 'pmdec', 'parallax']
 ~~~
 {: .output}
 
@@ -272,11 +273,11 @@ results[0]
 
 ~~~
 <Row index=0>
-    source_id              ra                dec                pmra              pmdec      
-                          deg                deg              mas / yr           mas / yr    
-      int64             float64            float64            float64            float64     
------------------- ------------------ ----------------- ------------------- -----------------
-637987125186749568 142.48301935991023 21.75771616932985 -2.5168384683875766 2.941813096629439
+    source_id              ra                dec                pmra              pmdec             parallax     
+                          deg                deg              mas / yr           mas / yr             mas        
+      int64             float64            float64            float64            float64            float64      
+------------------ ------------------ ----------------- ------------------- ----------------- -------------------
+637987125186749568 142.48301935991023 21.75771616932985 -2.5168384683875766 2.941813096629439 -0.2573448962333354
 ~~~
 {: .output}
 
@@ -285,11 +286,11 @@ results[0]
 
 
 <i>Row index=0</i>
-<table id="table140559241197024">
-<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th></tr></thead>
-<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th></tr></thead>
-<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>637987125186749568</td><td>142.48301935991023</td><td>21.75771616932985</td><td>-2.5168384683875766</td><td>2.941813096629439</td></tr>
+<table id="table139673160217120">
+<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th><th>parallax</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th><th>mas</th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>637987125186749568</td><td>142.48301935991023</td><td>21.75771616932985</td><td>-2.5168384683875766</td><td>2.941813096629439</td><td>-0.2573448962333354</td></tr>
 </table>
 
 
@@ -732,7 +733,7 @@ results_df.shape
 {: .language-python}
 
 ~~~
-(140339, 5)
+(140339, 6)
 ~~~
 {: .output}
 
@@ -755,12 +756,12 @@ results_df.head()
 {: .language-python}
 
 ~~~
-            source_id          ra        dec       pmra      pmdec
-0  637987125186749568  142.483019  21.757716  -2.516838   2.941813
-1  638285195917112960  142.254529  22.476168   2.662702 -12.165984
-2  638073505568978688  142.645286  22.166932  18.306747  -7.950660
-3  638086386175786752  142.577394  22.227920   0.987786  -2.584105
-4  638049655615392384  142.589136  22.110783   0.244439  -4.941079
+            source_id          ra        dec       pmra      pmdec  parallax
+0  637987125186749568  142.483019  21.757716  -2.516838   2.941813 -0.257345
+1  638285195917112960  142.254529  22.476168   2.662702 -12.165984  0.422728
+2  638073505568978688  142.645286  22.166932  18.306747  -7.950660  0.103640
+3  638086386175786752  142.577394  22.227920   0.987786  -2.584105 -0.857327
+4  638049655615392384  142.589136  22.110783   0.244439  -4.941079  0.099625
 ~~~
 {: .output}
 
@@ -791,6 +792,7 @@ results_df.head()
       <th>dec</th>
       <th>pmra</th>
       <th>pmdec</th>
+      <th>parallax</th>
     </tr>
   </thead>
   <tbody>
@@ -801,6 +803,7 @@ results_df.head()
       <td>21.757716</td>
       <td>-2.516838</td>
       <td>2.941813</td>
+      <td>-0.257345</td>
     </tr>
     <tr>
       <th>1</th>
@@ -809,6 +812,7 @@ results_df.head()
       <td>22.476168</td>
       <td>2.662702</td>
       <td>-12.165984</td>
+      <td>0.422728</td>
     </tr>
     <tr>
       <th>2</th>
@@ -817,6 +821,7 @@ results_df.head()
       <td>22.166932</td>
       <td>18.306747</td>
       <td>-7.950660</td>
+      <td>0.103640</td>
     </tr>
     <tr>
       <th>3</th>
@@ -825,6 +830,7 @@ results_df.head()
       <td>22.227920</td>
       <td>0.987786</td>
       <td>-2.584105</td>
+      <td>-0.857327</td>
     </tr>
     <tr>
       <th>4</th>
@@ -833,6 +839,7 @@ results_df.head()
       <td>22.110783</td>
       <td>0.244439</td>
       <td>-4.941079</td>
+      <td>0.099625</td>
     </tr>
   </tbody>
 </table>
@@ -858,7 +865,7 @@ results_df.shape
 {: .language-python}
 
 ~~~
-(140339, 7)
+(140339, 8)
 ~~~
 {: .output}
 
@@ -883,7 +890,7 @@ results_df.shape
 {: .language-python}
 
 ~~~
-(140339, 9)
+(140339, 10)
 ~~~
 {: .output}
 
@@ -926,7 +933,7 @@ min    6.214900e+17     135.425699      19.286617    -106.755260
 75%    6.976579e+17     146.607350      28.990500       0.452893   
 max    7.974418e+17     152.777393      34.285481     104.319923   
 
-               pmdec           phi1           phi2        pm_phi1  \
+               pmdec       parallax           phi1           phi2  \
 [Output truncated]
 ~~~
 {: .output}
@@ -958,6 +965,7 @@ max    7.974418e+17     152.777393      34.285481     104.319923
       <th>dec</th>
       <th>pmra</th>
       <th>pmdec</th>
+      <th>parallax</th>
       <th>phi1</th>
       <th>phi2</th>
       <th>pm_phi1</th>
@@ -976,6 +984,7 @@ max    7.974418e+17     152.777393      34.285481     104.319923
       <td>140339.000000</td>
       <td>140339.000000</td>
       <td>140339.000000</td>
+      <td>140339.000000</td>
     </tr>
     <tr>
       <th>mean</th>
@@ -984,6 +993,7 @@ max    7.974418e+17     152.777393      34.285481     104.319923
       <td>26.780285</td>
       <td>-2.484404</td>
       <td>-6.100777</td>
+      <td>0.179492</td>
       <td>-50.091158</td>
       <td>-1.803301</td>
       <td>-0.868963</td>
@@ -996,6 +1006,7 @@ max    7.974418e+17     152.777393      34.285481     104.319923
       <td>3.052592</td>
       <td>5.913939</td>
       <td>7.202047</td>
+      <td>0.759590</td>
       <td>2.892344</td>
       <td>3.444398</td>
       <td>6.657714</td>
@@ -1008,6 +1019,7 @@ max    7.974418e+17     152.777393      34.285481     104.319923
       <td>19.286617</td>
       <td>-106.755260</td>
       <td>-138.065163</td>
+      <td>-15.287602</td>
       <td>-54.999989</td>
       <td>-8.029159</td>
       <td>-115.275637</td>
@@ -1020,6 +1032,7 @@ max    7.974418e+17     152.777393      34.285481     104.319923
       <td>24.592490</td>
       <td>-5.038789</td>
       <td>-8.341561</td>
+      <td>-0.035981</td>
       <td>-52.602952</td>
       <td>-4.750426</td>
       <td>-2.948723</td>
@@ -1032,6 +1045,7 @@ max    7.974418e+17     152.777393      34.285481     104.319923
       <td>26.746261</td>
       <td>-1.834943</td>
       <td>-4.689596</td>
+      <td>0.362708</td>
       <td>-50.147362</td>
       <td>-1.671502</td>
       <td>0.585037</td>
@@ -1044,6 +1058,7 @@ max    7.974418e+17     152.777393      34.285481     104.319923
       <td>28.990500</td>
       <td>0.452893</td>
       <td>-1.937809</td>
+      <td>0.657637</td>
       <td>-47.593279</td>
       <td>1.160514</td>
       <td>3.001768</td>
@@ -1056,6 +1071,7 @@ max    7.974418e+17     152.777393      34.285481     104.319923
       <td>34.285481</td>
       <td>104.319923</td>
       <td>20.981070</td>
+      <td>0.999957</td>
       <td>-44.999985</td>
       <td>4.014609</td>
       <td>39.802471</td>
@@ -1728,7 +1744,7 @@ getsize(filename) / MB
 {: .language-python}
 
 ~~~
-2.0090408325195312
+2.2084197998046875
 ~~~
 {: .output}
 
