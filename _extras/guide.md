@@ -55,26 +55,21 @@ Because this lesson follows a single dataset throughout, its easy for students (
 * Although students should have seen functions in the SWC python lesson, its always good to reiterate the process of prototyping what you want to do. Then if you find yourself wanting to do it over and over, make it into a function (a good rule of thumb is if you're copy and pasting, then think about whether you should be using a function)
 * Highlight throughout the lesson what commands are ADQL specific and what are general SQL commands
 ### Lesson 1: Queries
-<<<<<<< HEAD
-* remind students: if you get exactly 2000 results, check that you did an async query and not a synchronous query
-* throughout the lessons we check the type of our output. This is a good best practice to make sure that you're getting what you think you're getting. You can remind students of this when it comes up.
-=======
 
 * At the beginning of this lesson, possible points of confusion are (1) there are two functions with similar named, `load_tables` and `load_table`, and neither of them actually downloads a table; rather, they download metadata about the tables.
 
-* For `query2` (and most subsequent queries) if you get exactly 2000 results, it's probably because you used `launch_job` rather than `launch_job_async`.
+* For `query2` (and most subsequent queries) if you get exactly 2000 results, it's probably because you used `launch_job` rather than `launch_job_async`. This is a good oppotuntinutiy to remind students: if you get exactly 2000 results, check that you did an async query and not a synchronous query
 
 * One of the challenges of debugging queries is that `astroquery` provides basically no debugging information other than a generic error message.  So it is important to emphasize careful checking of queries and incremental development: starting with a known-good query and making small changes.
 
+* throughout the lessons we check the type of our output. This is a good best practice to make sure that you're getting what you think you're getting. You can remind students of this when it comes up.
 
->>>>>>> 4106b025fd39b939ba281145ee765339d8371648
 ### Lesson 2: Coordinates and units
 * Highlight how the WHERE and CONTAINS statements interact - that CONTAINS returns a 1 when something is contained within the defined shape and you're checking WHERE 1=CONTAINS and this is true when something is located in a region
 * Students struggle with what we're transforming between and why. Repeat this as many times as possible. The Gaia catalog is in a universal frame (ICRS) but its easier to visualize and create filters specific to GD-1 when the axes of our reference frame are aligned with the GD-1 stream direction. So we will be switching between them often. To the GD-1 frame to build our filter then to the ICRS frame to actually query the database, then back to the GD-1 frame to visualize our results
 * Emphasize the basic structure of the SkyCoord object: location along axis 1, location along axis 2, frame. For example in the ICRS frame, axis 1 is `ra` and axis 2 is `dec`. In the GD-1 frame, axis 1 is `phi1` and axis 2 is `phi2`.
 * Mention that this is a benefit of using a unified framework like astropy. You can build a custom frame object and then have access to all of the other astropy tools that deal with coordinate transformations
 * When you define phi1_min, phi1_max, etc go back to Figure 1 and show learners the region you are defining, connecting the min and max values to the coordinates in the GD-1 frame. This is another place you can mention the benefit of using the GD-1 frame is that we can define a rectangle around the stream.
-<<<<<<< HEAD
 ### Lesson 3: Proper motion 
 * This is a really long lesson. But, by the end of it you will have prototyped making the first row of Figure 1. Make sure to keep your eyes on the prize
 * Transforming back: the discussion about the motivation to transform back to GD-1 frame is a great time to have student build up some intuition about the proper motion selection and how this relates to the physical picture. Remind them again that GD-1 is a globular cluster that is being pulled into a stream along the phi1 direction. This means that GD-1 stars should have non-zero motion along the phi1 direction and motion close to 0 in the phi2 direction. 
@@ -83,13 +78,9 @@ Because this lesson follows a single dataset throughout, its easy for students (
 * This lesson takes a slight detour to introduce a few features of Pandas DataFrames. To keep this connected to the story, you can talk about how data exploration is an important part of prototyping your query and making sure you are getting the results you expect in the format you expect them in.
 * Starting with selecting the centerline, we do a series of filters on different data frames. Take a minute before you teach this section to make sure you understand what each one represents. We use results_df to build centerline_df. We use centerline_df to determine proper motion limits. We use the proper motion limits determined from centerline_df to select GD-1 stars from results_df. This is selected_df.
 * It is also worth noting that we are selecting stars close to the centerline to identify the proper motion cut, so its ok if we exclude some GD-1 stars here. In this case we prefer a more pure sample to a more complete sample. Once we have the proper motion limits from our pure sample (centerline_df), we'll include the full spatial region (results_df) and get all of the GD-1 stars (selected_df).
-=======
-
-### Lesson 3: Proper motion
 
 * Notice that the first time we use `DataFrame.to_hdf`, we use the `w` argument to indicate that we want to create a new, empty HDF Store.  For all subsequent uses, we should *not* use the `w` argument, so that we add new Datasets to the existing Store, rather than starting over.
 
->>>>>>> 4106b025fd39b939ba281145ee765339d8371648
 ### Lesson 4: Coordinate transformation and selection
 
 * As in previous lessons, a challenge for students here is keeping track of what we are doing and why.  Surface periodically to remind them where we are.
