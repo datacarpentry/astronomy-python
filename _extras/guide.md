@@ -58,7 +58,7 @@ Because this lesson follows a single dataset throughout, its easy for students (
 
 * At the beginning of this lesson, possible points of confusion are (1) there are two functions with similar named, `load_tables` and `load_table`, and neither of them actually downloads a table; rather, they download metadata about the tables.
 
-* For `query2` (and most subsequent queries) if you get exactly 2000 results, it's probably because you used `launch_job` rather than `launch_job_async`. This is a good oppotuntinutiy to remind students: if you get exactly 2000 results, check that you did an async query and not a synchronous query
+* For `query2` (and most subsequent queries) if you get exactly 2000 results, it's probably because you used `launch_job` rather than `launch_job_async`. This is a good opportunity to remind students: if you get exactly 2000 results, check that you did an async query and not a synchronous query
 
 * One of the challenges of debugging queries is that `astroquery` provides basically no debugging information other than a generic error message.  So it is important to emphasize careful checking of queries and incremental development: starting with a known-good query and making small changes.
 
@@ -70,6 +70,7 @@ Because this lesson follows a single dataset throughout, its easy for students (
 * Emphasize the basic structure of the SkyCoord object: location along axis 1, location along axis 2, frame. For example in the ICRS frame, axis 1 is `ra` and axis 2 is `dec`. In the GD-1 frame, axis 1 is `phi1` and axis 2 is `phi2`.
 * Mention that this is a benefit of using a unified framework like astropy. You can build a custom frame object and then have access to all of the other astropy tools that deal with coordinate transformations
 * When you define phi1_min, phi1_max, etc go back to Figure 1 and show learners the region you are defining, connecting the min and max values to the coordinates in the GD-1 frame. This is another place you can mention the benefit of using the GD-1 frame is that we can define a rectangle around the stream.
+
 ### Lesson 3: Proper motion 
 * This is a really long lesson. But, by the end of it you will have prototyped making the first row of Figure 1. Make sure to keep your eyes on the prize
 * Transforming back: the discussion about the motivation to transform back to GD-1 frame is a great time to have student build up some intuition about the proper motion selection and how this relates to the physical picture. Remind them again that GD-1 is a globular cluster that is being pulled into a stream along the phi1 direction. This means that GD-1 stars should have non-zero motion along the phi1 direction and motion close to 0 in the phi2 direction. 
