@@ -5,7 +5,7 @@ title: "Instructor Notes"
 ## Instructor notes
 
 ### Overview
-This lesson guides students through analyzing data from a large database. Scientifically, we are identifying stars in GD-1, a stellar stream in the Milky Way (creating Figure 1 in "[Off the beaten path: Gaia reveals GD-1 stars outside of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian Price-Whelan and Ana Bonaca.). The first part of this lesson (1-5) shows students how to prototype a query, starting by querying a subset of the sky we ultimately want and then building up stronger and stronger filters. With our filters in place, lesson 6 performs the full query giving us a dataset to visualize in lesson 7. Lesson 7 demonstrates best practices and tips and tricks to efficiently and effectively visualize data.
+This lesson guides students through analyzing data from a large database. Scientifically, we are identifying stars in GD-1, a stellar stream in the Milky Way (creating Figure 1 in "[Off the beaten path: Gaia reveals GD-1 stars outside of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian Price-Whelan and Ana Bonaca.). The first part of this lesson (1-5) shows students how to prototype a query, starting by querying a subset of the sky we ultimately want and then building up stronger and stronger filters locally. With our filters in place, lesson 6 performs the full query remotely, giving us a dataset to visualize in lesson 7. Lesson 7 demonstrates best practices and tips and tricks to efficiently and effectively visualize data.
 
 Because this lesson follows a single dataset throughout, its easy for students (and instructors) to lose sight of the bigger picture and focus instead on the scientific goals. At the beginning of each lesson it is recommended that the instructor discuss both the scientific goal of the lesson (with frequent references to Figure 1) and highlight the big picture skills that we hope each student takes away from the lesson, beyond the specific science case. At the end of the lesson the instructors should recap the same information, highlighting the best practices covered. TODO: reference slide show.
 ### Decisions Made
@@ -72,7 +72,7 @@ Because this lesson follows a single dataset throughout, its easy for students (
 * When you define phi1_min, phi1_max, etc go back to Figure 1 and show learners the region you are defining, connecting the min and max values to the coordinates in the GD-1 frame. This is another place you can mention the benefit of using the GD-1 frame is that we can define a rectangle around the stream.
 
 ### Lesson 3: Proper motion 
-* This is a really long lesson. But, by the end of it you will have prototyped making the first row of Figure 1. Make sure to keep your eyes on the prize
+* This is a really long lesson. But, by the end of it you will have prototyped making the first row of Figure 1. Make sure to keep your eyes on the prize. This is likely the last lesson of Day 1
 * Transforming back: the discussion about the motivation to transform back to GD-1 frame is a great time to have student build up some intuition about the proper motion selection and how this relates to the physical picture. Remind them again that GD-1 is a globular cluster that is being pulled into a stream along the phi1 direction. This means that GD-1 stars should have non-zero motion along the phi1 direction and motion close to 0 in the phi2 direction. 
 * Don't let students get too hung up on setting the distance and radial velocity to constants. For distance, the parallax is so close to 0 that they are unreliable and as mentioned, the radial velocity is to avoid errors.
 * The plot at the end of the reflex correction is a good example of an intermediate step to determining the best filter for GD-1 stars. You can imagine doing this data exploration yourself and trying first a purely spatial plot, then realizing that there are too many non-GD-1 stars included and that you need another way to filter out foreground stars. Proper motion!
@@ -81,12 +81,16 @@ Because this lesson follows a single dataset throughout, its easy for students (
 * It is also worth noting that we are selecting stars close to the centerline to identify the proper motion cut, so its ok if we exclude some GD-1 stars here. In this case we prefer a more pure sample to a more complete sample. Once we have the proper motion limits from our pure sample (centerline_df), we'll include the full spatial region (results_df) and get all of the GD-1 stars (selected_df).
 
 * Notice that the first time we use `DataFrame.to_hdf`, we use the `w` argument to indicate that we want to create a new, empty HDF Store.  For all subsequent uses, we should *not* use the `w` argument, so that we add new Datasets to the existing Store, rather than starting over.
+* At the end of Day 1, if a student is lost or struggled with the end of this lesson, point them to the static version of the HDF5 files (TODO: decide where this lives) so that they can read it in with everyone else on Day 2.
 
 ### Lesson 4: Coordinate transformation and selection
+* This is likely the first lesson of Day 2. You should start by having students start a new notebook. They will need to read in the data they saved yesterday to HDF5 files and the functions they wrote yesterday.
 
-* As in previous lessons, a challenge for students here is keeping track of what we are doing and why.  Surface periodically to remind them where we are.
+* This lesson is faster than it looks because students have seen much of the content already
 
-* Another difficulty is that we re-use several functions from previous notebooks.  If students are working in the same notebook through multiple lessons, they might already have them.  Otherwise it is probably best to instruct them to [copy and paste from here](https://allendowney.github.io/AstronomicalData/04_select.html) rather than retyping.
+* As in previous lessons, a challenge for students here is keeping track of what we are doing and why.  Surface periodically to remind them where we are. The big focus of this lesson is that now that we have determined how to filter based on proper motion and eliminated most of the contaminating stars from our prototype, we can repeat the query, this time on the full spatial extent of GD-1 rather than the small portion we used for our prototype.
+
+* Another difficulty is that we re-use several functions from previous notebooks.  If students are working in the same notebook through multiple lessons, they might already have them.  Otherwise it is probably best to instruct them to [copy and paste from here](https://allendowney.github.io/AstronomicalData/04_select.html) rather than retyping. TODO: Decide how we want to handle this - import?
 
 * This lesson uses the following idiom several times
 
@@ -106,7 +110,11 @@ This idiom violates the recommendation not to repeat variables names, but since 
 pmra_poly, pmdec_poly = np.transpose(pm_vertices)
 ```
 
+* Make sure to review the query from Lesson 2 and remind learners what each filter does and why we're using it
+
 * Notice that the definitions of `phi1_min`, `phi1_max`, etc.  are different in this lesson.  Because we are adding more filters, we can select a bigger region without exceeding resource limits.  If students don't get as many "candidates" as expected, they might be using the old values of these bounds.
+
+* Defining the new region is a good opportunity to go back to the figure and connect these coordinates to the physical picture of GD-1
 
 * When you get to `make_dataframe`, you might want to copy and paste it from the notes, rather than retyping.
 
