@@ -1,6 +1,6 @@
 ---
 title: "Photometry"
-teaching: 3000
+teaching: 55
 exercises: 0
 questions:
 

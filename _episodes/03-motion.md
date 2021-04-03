@@ -1,7 +1,7 @@
 ---
 title: "Plotting and Pandas"
-teaching: 3000
-exercises: 0
+teaching: 65
+exercises: 20
 
 questions:
 
@@ -461,7 +461,7 @@ distinguish between high and low density areas.
 To fix this, we can provide optional arguments to control the size and
 transparency of the points.
 
-> ## Exercise
+> ## Exercise (5 minutes)
 > 
 > In the call to `plt.plot`, use the keyword argument `markersize` to
 > make the markers smaller.
@@ -1083,7 +1083,7 @@ max    7.974418e+17     152.777393      34.285481     104.319923
 
 
 
-> ## Exercise
+> ## Exercise (10 minutes)
 > 
 > Review the summary statistics in this table.
 > 
@@ -1714,7 +1714,7 @@ the Dataset in the file the same name as the `DataFrame`.
 The argument `mode='w'` means that if the file already exists, we
 should overwrite it.
 
-> ## Exercise
+> ## Exercise (5 minutes)
 > 
 > We're going to need `centerline_df` later as well.  Write a line of
 > code to add it as a second Dataset in the HDF5 file.
