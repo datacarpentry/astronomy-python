@@ -1,7 +1,7 @@
 ---
 title: "Join"
-teaching: 3000
-exercises: 0
+teaching: 50
+exercises: 35
 questions:
 
 - "How do we use `JOIN` to combine information from multiple tables?"
@@ -835,7 +835,7 @@ here](https://www.geeksforgeeks.org/sql-join-set-1-inner-left-right-and-full-joi
 
 ## Adding the Pan-STARRS table
 
-### Exercise
+### Exercise (10 minutes)
 
 Now we're ready to bring in the Pan-STARRS table.  Starting with the
 previous query, add a second `JOIN` clause that joins with
@@ -1047,7 +1047,7 @@ results
 
 
 
-> ## Exercise
+> ## Exercise (15 minutes)
 > 
 > Create a new query base called `query7_base` that combines the `WHERE`
 > clauses from the previous query with the `JOIN` clauses for the best
