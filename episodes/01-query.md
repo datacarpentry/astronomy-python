@@ -22,6 +22,10 @@ run it synchronously, which might complete faster (but it doesn't seem to make m
 capitalize the keywords, but you should."
 - "ADQL and SQL don't require you to break a query into multiple 
 lines, but you should."
+- "Make each section of the notebook self-contained.  Try not to use
+the same variable name in more than one section."
+- "Keep notebooks short.  Look for places where you can break your
+analysis into phases with one notebook per phase."
 ---
 
 {% include links.md %}
@@ -930,39 +934,3 @@ This notebook demonstrates the following steps:
 
 In the next lesson we will extend these queries to select a particular
 region of the sky.
-
-## Best practices
-
-* If you can't download an entire dataset (or it's not practical) use
-queries to select the data you need.
-
-* Read the metadata and the documentation to make sure you understand
-the tables, their columns, and what they mean.
-
-* Develop queries incrementally: start with something simple, test it,
-and add a little bit at a time.
-
-* Use ADQL features like `TOP` and `COUNT` to test before you run a
-query that might return a lot of data.
-
-* If you know your query will return fewer than 2000 rows, you can run
-it synchronously, which might complete faster.  If it might return
-more than 2000 rows, you should run it asynchronously.
-
-* ADQL and SQL are not case-sensitive, so you don't have to capitalize
-the keywords, but you should.
-
-* ADQL and SQL don't require you to break a query into multiple lines,
-but you should.
-
-Jupyter notebooks can be good for developing and testing code, but
-they have some drawbacks.  In particular, if you run the cells out of
-order, you might find that variables don't have the values you expect.
-
-To mitigate these problems:
-
-* Make each section of the notebook self-contained.  Try not to use
-the same variable name in more than one section.
-
-* Keep notebooks short.  Look for places where you can break your
-analysis into phases with one notebook per phase.
