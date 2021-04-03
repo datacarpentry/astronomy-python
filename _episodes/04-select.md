@@ -1,7 +1,7 @@
 ---
 title: "Transform and Select"
-teaching: 3000
-exercises: 0
+teaching: 60
+exercises: 15
 questions:
 
 - "How do we move the computation to the data?"
@@ -635,7 +635,7 @@ pm_point_list
 
 
 
-> ## Exercise
+> ## Exercise (10 minutes)
 > 
 > Define `query6_base`, starting with `query5_base` and adding a new
 > clause to select stars whose coordinates of proper motion, `pmra` and
@@ -660,7 +660,7 @@ pm_point_list
 > {: .solution}
 {: .challenge}
 
-> ## Exercise
+> ## Exercise (5 minutes)
 > 
 > Use `format` to format `query6_base` and define `query6`, filling in
 > the values of `columns`, `point_list`, and `pm_point_list`.
