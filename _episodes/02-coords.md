@@ -1,7 +1,7 @@
 ---
 title: "Coordinate Transformations"
-teaching: 3000
-exercises: 0
+teaching: 75
+exercises: 18
 questions:
 
 - "How do we transform celestial coordinates from one frame to another and save results in files?"
@@ -222,7 +222,7 @@ angle + 5 * u.second
 
 causes a `UnitConversionError`.
 
-> ## Exercise
+> ## Exercise (3 minutes)
 > 
 > Create a quantity that represents 5
 > [arcminutes](https://en.wikipedia.org/wiki/Minute_and_second_of_arc)
@@ -366,7 +366,7 @@ results
 
 
 
-> ## Exercise
+> ## Exercise (5 minutes)
 > 
 > When you are debugging queries like this, you can use `TOP` to limit
 > the size of the results, but then you still don't know how big the
@@ -561,7 +561,7 @@ coord_gd1
 Notice that the coordinates are called `phi1` and `phi2`.
 These are the coordinates shown in the figure from the paper, above.
 
-> ## Exercise
+> ## Exercise (10 minutes)
 > 
 > Let's find the location of GD-1 in ICRS coordinates.
 > 
