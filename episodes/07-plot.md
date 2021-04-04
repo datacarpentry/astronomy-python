@@ -3,27 +3,18 @@ title: "Visualization"
 teaching: 55
 exercises: 30
 questions:
-
 - "How do we make a compelling visualization that tells a story?"
 
 objectives:
-
 - "Design a figure that tells a compelling story."
-
 - "Use Matplotlib features to customize the appearance of figures."
-
 - "Generate a figure with multiple subplots."
 
 keypoints:
-
 - "The most effective figures focus on telling a single story clearly."
-
 - "Consider using annotations to guide the reader's attention to the most important elements of a figure."
-
 - "The default Matplotlib style generates good quality figures, but there are several ways you can override the defaults."
-
 - "If you find yourself making the same customizations on several projects, you might want to create your own style sheet."
-
 ---
 
 {% include links.md %}
@@ -102,38 +93,34 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.pn
 >
 > > ## Solution
 > > 
-> > ~~~
+> > Some topics that might come up in this discussion:
 > > 
-> > # Some topics that might come up in this discussion:
+> > 1. The primary result is that the multiple stages of selection 
+> > make it possible to separate likely candidates from the 
+> > background more effectively than in previous work, which makes 
+> > it possible to see the structure of GD-1 in "unprecedented detail".
 > > 
-> > # 1. The primary result is that the multiple stages of selection 
-> > # make it possible to separate likely candidates from the 
-> > # background more effectively than in previous work, which makes 
-> > # it possible to see the structure of GD-1 in "unprecedented detail".
+> > 2. The figure documents the selection process as a sequence of 
+> > steps.  Reading right-to-left, top-to-bottom, we see selection 
+> > based on proper motion, the results of the first selection, 
+> > selection based on color and magnitude, and the results of the 
+> > second selection.  So this figure documents the methodology and 
+> > presents the primary result.
 > > 
-> > # 2. The figure documents the selection process as a sequence of 
-> > # steps.  Reading right-to-left, top-to-bottom, we see selection 
-> > # based on proper motion, the results of the first selection, 
-> > # selection based on color and magnitude, and the results of the 
-> > # second selection.  So this figure documents the methodology and 
-> > # presents the primary result.
+> > 3. It's mostly black and white, with minimal use of color, so 
+> > it will work well in print.  The annotations in the bottom 
+> > left panel guide the reader to the most important results.  
+> > It contains enough technical detail for a professional audience, 
+> > but most of it is also comprehensible to a more general audience.  
+> > The two left panels have the same dimensions and their axes are 
+> > aligned.
 > > 
-> > # 3. It's mostly black and white, with minimal use of color, so 
-> > # it will work well in print.  The annotations in the bottom 
-> > # left panel guide the reader to the most important results.  
-> > # It contains enough technical detail for a professional audience, 
-> > # but most of it is also comprehensible to a more general audience.  
-> > # The two left panels have the same dimensions and their axes are 
-> > # aligned.
-> > 
-> > # 4. Since the panels represent a sequence, it might be better to 
-> > # arrange them left-to-right.  The placement and size of the axis 
-> > # labels could be tweaked.  The entire figure could be a little 
-> > # bigger to match the width and proportion of the caption.  
-> > # The top left panel has unnused white space (but that leaves 
-> > # space for the annotations in the bottom left).
-> > ~~~
-> > {: .language-python}
+> > 4. Since the panels represent a sequence, it might be better to 
+> > arrange them left-to-right.  The placement and size of the axis 
+> > labels could be tweaked.  The entire figure could be a little 
+> > bigger to match the width and proportion of the caption.  
+> > The top left panel has unnused white space (but that leaves 
+> > space for the annotations in the bottom left).
 > {: .solution}
 {: .challenge}
 
@@ -143,8 +130,6 @@ Let's start with the panel in the lower left.  You can [download the
 data from the previous
 lesson](https://github.com/AllenDowney/AstronomicalData/raw/main/data/gd1_data.hdf)
 or run the following cell, which downloads it if necessary.
-
-
 
 ~~~
 from os.path import basename, exists
@@ -163,8 +148,6 @@ download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
 
 Now we can reload `winner_df`
 
-
-
 ~~~
 import pandas as pd
 
@@ -172,8 +155,6 @@ filename = 'gd1_data.hdf'
 winner_df = pd.read_hdf(filename, 'winner_df')
 ~~~
 {: .language-python}
-
-
 
 ~~~
 import matplotlib.pyplot as plt
@@ -194,8 +175,6 @@ def plot_second_selection(df):
 
 And here's what it looks like.
 
-
-
 ~~~
 plt.figure(figsize=(10,2.5))
 plot_second_selection(winner_df)
@@ -206,13 +185,8 @@ plot_second_selection(winner_df)
 <Figure size 1000x250 with 1 Axes>
 ~~~
 {: .output}
-
-
-
     
 ![png](07-plot_files/07-plot_13_0.png)
-    
-
 
 ## Annotations
 
@@ -246,22 +220,21 @@ region of GD-1,
 > > ## Solution
 > > 
 > > ~~~
+> > plt.axvline(-55, ls='--', color='gray', 
+> >             alpha=0.4, dashes=(6,4), lw=2)
+> > plt.text(-60, 5.5, 'Previously\nundetected', 
+> >          fontsize='small', ha='right', va='top');
 > > 
-> > # plt.axvline(-55, ls='--', color='gray', 
-> > #             alpha=0.4, dashes=(6,4), lw=2)
-> > # plt.text(-60, 5.5, 'Previously\nundetected', 
-> > #          fontsize='small', ha='right', va='top');
+> > arrowprops=dict(color='gray', shrink=0.05, width=1.5, 
+> >                 headwidth=6, headlength=8, alpha=0.4)
 > > 
-> > # arrowprops=dict(color='gray', shrink=0.05, width=1.5, 
-> > #                 headwidth=6, headlength=8, alpha=0.4)
+> > plt.annotate('Spur', xy=(-33, 2), xytext=(-35, 5.5),
+> >              arrowprops=arrowprops,
+> >              fontsize='small')
 > > 
-> > # plt.annotate('Spur', xy=(-33, 2), xytext=(-35, 5.5),
-> > #              arrowprops=arrowprops,
-> > #              fontsize='small')
-> > 
-> > # plt.annotate('Gap', xy=(-22, -1), xytext=(-25, -5.5),
-> > #              arrowprops=arrowprops,
-> > #              fontsize='small')
+> > plt.annotate('Gap', xy=(-22, -1), xytext=(-25, -5.5),
+> >              arrowprops=arrowprops,
+> >              fontsize='small')
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -292,9 +265,10 @@ and `tick_params` to change the settings.
 
 Here's how you can put the ticks on the inside of the figure:
 
-```
+~~~
 plt.gca().tick_params(direction='in')
-```
+~~~
+{: .language-python}
 
 > ## Exercise (5 minutes)
 > 
@@ -305,8 +279,7 @@ plt.gca().tick_params(direction='in')
 > > ## Solution
 > > 
 > > ~~~
-> > 
-> > # plt.gca().tick_params(top=True, right=True)
+> > plt.gca().tick_params(top=True, right=True)
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -319,8 +292,6 @@ notebook, you can use `rcParams`.
 
 Here's an example that reads the current font size from `rcParams`:
 
-
-
 ~~~
 plt.rcParams['font.size']
 ~~~
@@ -331,17 +302,7 @@ plt.rcParams['font.size']
 ~~~
 {: .output}
 
-
-
-
-
-    
-
-
-
 And sets it to a new value:
-
-
 
 ~~~
 plt.rcParams['font.size'] = 14
@@ -370,8 +331,6 @@ Matplotlib provides a set of predefined style sheets, or you can make your own.
 
 The following cell displays a list of style sheets installed on your system.
 
-
-
 ~~~
 plt.style.available
 ~~~
@@ -393,28 +352,14 @@ plt.style.available
 ~~~
 {: .output}
 
-
-
-
-
-    
-
-
-
 Note that `seaborn-paper`, `seaborn-talk` and `seaborn-poster` are
 particularly intended to prepare versions of a figure with text sizes
 and other features that work well in papers, talks, and posters.
 
 To use any of these style sheets, run `plt.style.use` like this:
 
-```
-plt.style.use('fivethirtyeight')
-```
-
-
-
 ~~~
-
+plt.style.use('fivethirtyeight')
 ~~~
 {: .language-python}
 
@@ -435,8 +380,6 @@ You can [download the style
 sheet](https://github.com/AllenDowney/AstronomicalData/raw/main/az-paper-twocol.mplstyle)
 or run the following cell, which downloads it if necessary.
 
-
-
 ~~~
 download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
          'az-paper-twocol.mplstyle')
@@ -445,33 +388,21 @@ download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
 
 You can use it like this:
 
-```
-plt.style.use('./az-paper-twocol.mplstyle')
-```
-
-The prefix `./` tells Matplotlib to look for the file in the current directory.
-
-
-
 ~~~
-
+plt.style.use('./az-paper-twocol.mplstyle')
 ~~~
 {: .language-python}
+
+The prefix `./` tells Matplotlib to look for the file in the current directory.
 
 As an alternative, you can install a style sheet for your own use by
 putting it in your configuration directory.  To find out where that
 is, you can run the following command:
 
-```
+~~~
 import matplotlib as mpl
 
 mpl.get_configdir()
-```
-
-
-
-~~~
-
 ~~~
 {: .language-python}
 
@@ -489,17 +420,17 @@ customize Matplotlib to use LaTeX.
 
 In `matplotlibrc` or in a style sheet, you can add the following line:
 
-```
+~~~
 text.usetex        : true
-```
+~~~
+{: .language-python}
 
 Or in a notebook you can run the following code.
 
-```
+~~~
 plt.rcParams['text.usetex'] = True
-```
-
-
+~~~
+{: .language-python}
 
 ~~~
 plt.rcParams['text.usetex'] = True
@@ -508,24 +439,25 @@ plt.rcParams['text.usetex'] = True
 
 If you go back and draw the figure again, you should see the difference.
 
-If you get an error message like
-
-```
-LaTeX Error: File `type1cm.sty' not found.
-```
-
-You might have to install a package that contains the fonts LaTeX
-needs.  On some systems, the packages `texlive-latex-extra` or
-`cm-super` might be what you need.  [See here for more help with
-this](https://stackoverflow.com/questions/11354149/python-unable-to-render-tex-in-matplotlib).
-
-In case you are curious, `cm` stands for [Computer
-Modern](https://en.wikipedia.org/wiki/Computer_Modern), the font LaTeX
-uses to typeset math.
+> ## Warning
+> If you get an error message like
+> 
+> ~~~
+> LaTeX Error: File `type1cm.sty' not found.
+> ~~~
+> {: .language-python}
+> 
+> You might have to install a package that contains the fonts LaTeX
+> needs.  On some systems, the packages `texlive-latex-extra` or
+> `cm-super` might be what you need.  [See here for more help with
+> this](https://stackoverflow.com/questions/11354149/python-unable-to-render-tex-in-matplotlib).
+> 
+> In case you are curious, `cm` stands for [Computer
+> Modern](https://en.wikipedia.org/wiki/Computer_Modern), the font LaTeX
+> uses to typeset math.
+{: .error}
 
 Before we go on, let's put things back where we found them.
-
-
 
 ~~~
 plt.rcParams['text.usetex'] = False
@@ -564,8 +496,6 @@ generates each panel in a function.
 
 To make the panel in the upper right, we have to reload `centerline_df`.
 
-
-
 ~~~
 filename = 'gd1_data.hdf'
 centerline_df = pd.read_hdf(filename, 'centerline_df')
@@ -573,8 +503,6 @@ centerline_df = pd.read_hdf(filename, 'centerline_df')
 {: .language-python}
 
 And define the coordinates of the rectangle we selected.
-
-
 
 ~~~
 pm1_min = -8.9
@@ -593,8 +521,6 @@ To plot this rectangle, we'll use a feature we have not seen before:
 To create a `Polygon`, we have to put the coordinates in an array with
 `x` values in the first column and `y` values in the second column.
 
-
-
 ~~~
 import numpy as np
 
@@ -611,19 +537,9 @@ array([[-8.9, -2.2],
 ~~~
 {: .output}
 
-
-
-
-
-    
-
-
-
 The following function takes a `DataFrame` as a parameter, plots the
 proper motion for each star, and adds a shaded `Polygon` to show the
 region we selected.
-
-
 
 ~~~
 from matplotlib.patches import Polygon
@@ -652,8 +568,6 @@ we have to use `gca` to get the current axes.
 Here's what the new version of the figure looks like.  We've changed
 the labels on the axes to be consistent with the paper.
 
-
-
 ~~~
 plot_proper_motion(centerline_df)
 ~~~
@@ -663,19 +577,12 @@ plot_proper_motion(centerline_df)
 <Figure size 640x480 with 1 Axes>
 ~~~
 {: .output}
-
-
-
-    
+   
 ![png](07-plot_files/07-plot_53_0.png)
-    
-
 
 ## Upper left
 
 Now let's work on the panel in the upper left. We have to reload `candidates`.
-
-
 
 ~~~
 filename = 'gd1_data.hdf'
@@ -685,8 +592,6 @@ candidate_df = pd.read_hdf(filename, 'candidate_df')
 
 Here's a function that takes a `DataFrame` of candidate stars and
 plots their positions in GD-1 coordindates.
-
-
 
 ~~~
 def plot_first_selection(df):
@@ -705,8 +610,6 @@ def plot_first_selection(df):
 
 And here's what it looks like.
 
-
-
 ~~~
 plot_first_selection(candidate_df)
 ~~~
@@ -716,20 +619,13 @@ plot_first_selection(candidate_df)
 <Figure size 640x480 with 1 Axes>
 ~~~
 {: .output}
-
-
-
     
 ![png](07-plot_files/07-plot_59_0.png)
-    
-
 
 ## Lower right
 
 For the figure in the lower right, we'll use this function to plots
 the color-magnitude diagram.
-
-
 
 ~~~
 import matplotlib.pyplot as plt
@@ -755,8 +651,6 @@ def plot_cmd(table):
 
 Here's what it looks like.
 
-
-
 ~~~
 plot_cmd(candidate_df)
 ~~~
@@ -766,17 +660,10 @@ plot_cmd(candidate_df)
 <Figure size 640x480 with 1 Axes>
 ~~~
 {: .output}
-
-
-
     
 ![png](07-plot_files/07-plot_63_0.png)
-    
-
 
 And here's how we read it back.
-
-
 
 ~~~
 filename = 'gd1_data.hdf'
@@ -794,10 +681,6 @@ loop_df.head()
 4    0.545461  21.054549
 ~~~
 {: .output}
-
-
-
-
 
 <div>
 <style scoped>
@@ -863,10 +746,9 @@ loop_df.head()
 > > ## Solution
 > > 
 > > ~~~
-> > 
-> > # poly = Polygon(loop_df, closed=True, 
-> > #                facecolor='C1', alpha=0.4)
-> > # plt.gca().add_patch(poly)
+> > poly = Polygon(loop_df, closed=True, 
+> >               facecolor='C1', alpha=0.4)
+> > plt.gca().add_patch(poly)
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -889,8 +771,6 @@ For the first panel, `loc` is `(0, 0)`, which indicates row 0 and
 column 0, which is the upper-left panel.
 
 Here's how we use it to draw the four panels.
-
-
 
 ~~~
 shape = (2, 2)
@@ -917,13 +797,8 @@ plt.tight_layout()
 <Figure size 640x480 with 4 Axes>
 ~~~
 {: .output}
-
-
-
-    
+   
 ![png](07-plot_files/07-plot_69_0.png)
-    
-
 
 We use
 [`plt.tight_layout`](https://matplotlib.org/3.3.1/tutorials/intermediate/tight_layout_guide.html)
@@ -948,8 +823,6 @@ wider than the panels on the right.
 
 At the same time, we use `figsize` to adjust the aspect ratio of the
 whole figure.
-
-
 
 ~~~
 plt.figure(figsize=(9, 4.5))
@@ -978,13 +851,8 @@ plt.tight_layout()
 <Figure size 900x450 with 4 Axes>
 ~~~
 {: .output}
-
-
-
     
 ![png](07-plot_files/07-plot_72_0.png)
-    
-
 
 This is looking more and more like the figure in the paper.
 
@@ -997,25 +865,25 @@ This is looking more and more like the figure in the paper.
 > > 
 > > ~~~
 > > 
-> > # plt.figure(figsize=(9, 4.5))
+> > plt.figure(figsize=(9, 4.5))
 > > 
-> > # shape = (2, 5)                                   # CHANGED
-> > # plt.subplot2grid(shape, (0, 0), colspan=3)
-> > # plot_first_selection(candidate_df)
+> > shape = (2, 5)                                   # CHANGED
+> > plt.subplot2grid(shape, (0, 0), colspan=3)
+> > plot_first_selection(candidate_df)
 > > 
-> > # plt.subplot2grid(shape, (0, 3), colspan=2)       # CHANGED
-> > # plot_proper_motion(centerline_df)
+> > plt.subplot2grid(shape, (0, 3), colspan=2)       # CHANGED
+> > plot_proper_motion(centerline_df)
 > > 
-> > # plt.subplot2grid(shape, (1, 0), colspan=3)
-> > # plot_second_selection(winner_df)
+> > plt.subplot2grid(shape, (1, 0), colspan=3)
+> > plot_second_selection(winner_df)
 > > 
-> > # plt.subplot2grid(shape, (1, 3), colspan=2)       # CHANGED
-> > # plot_cmd(candidate_df)
-> > # poly = Polygon(coords, closed=True, 
-> > #                facecolor='C1', alpha=0.4)
-> > # plt.gca().add_patch(poly)
+> > plt.subplot2grid(shape, (1, 3), colspan=2)       # CHANGED
+> > plot_cmd(candidate_df)
+> > poly = Polygon(coords, closed=True, 
+> >                facecolor='C1', alpha=0.4)
+> > plt.gca().add_patch(poly)
 > > 
-> > # plt.tight_layout()
+> > plt.tight_layout()
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -1031,24 +899,3 @@ We explored features Matplotlib provides for adding annotations to
 figures -- including text, lines, arrows, and polygons -- and several
 ways to customize the appearance of figures.  And we learned how to
 create figures that contain multiple panels.
-
-## Best practices
-
-* The most effective figures focus on telling a single story clearly
-and compellingly.
-
-* Consider using annotations to guide the reader's attention to the
-most important elements of a figure.
-
-* The default Matplotlib style generates good quality figures, but
-there are several ways you can override the defaults.
-
-* If you find yourself making the same customizations on several
-projects, you might want to create your own style sheet.
-
-
-
-~~~
-
-~~~
-{: .language-python}

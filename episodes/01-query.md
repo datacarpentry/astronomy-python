@@ -10,24 +10,22 @@ objectives:
 - "Use queries to explore a database and its tables."
 - "Use queries to download data."
 - "Develop, test, and debug a query incrementally."
+
 keypoints:
 - "If you can't download an entire dataset (or it's not practical) use queries to select the data you need."
-
 - "Read the metadata and the documentation to make sure you understand the tables, their columns, and what they mean."
-
 - "Develop queries incrementally: start with something simple, test it, and add a little bit at a time."
-
 - "Use ADQL features like `TOP` and `COUNT` to test before you run a query that might return a lot of data."
-
 - "If you know your query will return fewer than 3000 rows, you can 
 run it synchronously, which might complete faster (but it doesn't seem to make much difference).  If it might return more than 3000 rows, you should run it asynchronously."
-
 - "ADQL and SQL are not case-sensitive, so you don't have to 
 capitalize the keywords, but you should."
-
 - "ADQL and SQL don't require you to break a query into multiple 
 lines, but you should."
-
+- "Make each section of the notebook self-contained.  Try not to use
+the same variable name in more than one section."
+- "Keep notebooks short.  Look for places where you can break your
+analysis into phases with one notebook per phase."
 ---
 
 {% include links.md %}
@@ -53,7 +51,6 @@ from the Gaia Database:
 3. We will write a query and send it to the server, and finally
 
 4. We will download the response from the server.
-
 
 ## Query Language
 
@@ -134,8 +131,6 @@ database](https://astroquery.readthedocs.io/en/latest/gaia/gaia.html).
 
 We can connect to the Gaia database like this:
 
-
-
 ~~~
 from astroquery.gaia import Gaia
 ~~~
@@ -152,12 +147,8 @@ Created TAP+ (v1.2.1) - Connection:
 	Use HTTPS: True
 	Port: 443
 	SSL Port: 443
-
 ~~~
 {: .output}
-
-
-    
 
 This import statement creates a
 [TAP+](http://www.ivoa.net/documents/TAP/) connection; TAP stands for
@@ -177,8 +168,6 @@ We can use `Gaia.load_tables` to get the names of the tables in the
 Gaia database.  With the option `only_names=True`, it loads
 information about the tables, called "metadata", not the data itself.
 
-
-
 ~~~
 tables = Gaia.load_tables(only_names=True)
 ~~~
@@ -188,16 +177,10 @@ tables = Gaia.load_tables(only_names=True)
 INFO: Retrieving tables... [astroquery.utils.tap.core]
 INFO: Parsing tables... [astroquery.utils.tap.core]
 INFO: Done. [astroquery.utils.tap.core]
-
 ~~~
 {: .output}
 
-
-    
-
 The following `for` loop prints the names of the tables.
-
-
 
 ~~~
 for table in tables:
@@ -221,9 +204,6 @@ external.skymapperdr2_master
 ~~~
 {: .output}
 
-
-    
-
 So that's a lot of tables.  The ones we'll use are:
 
 * `gaiadr2.gaia_source`, which contains Gaia data from [data release
@@ -238,8 +218,6 @@ each star observed by Gaia with the same star observed by PanSTARRS.
 We can use `load_table` (not `load_tables`) to get the metadata for a
 single table.  The name of this function is misleading, because it
 only downloads metadata, not the contents of the table.
-
-
 
 ~~~
 meta = Gaia.load_table('gaiadr2.gaia_source')
@@ -256,22 +234,10 @@ Done.
 ~~~
 {: .output}
 
-
-    
-
-
-
-
-    
-
-
-
 Jupyter shows that the result is an object of type `TapTableMeta`, but
 it does not display the contents.
 
 To see the metadata, we have to print the object.
-
-
 
 ~~~
 print(meta)
@@ -286,18 +252,12 @@ release has been generated. It contains the basic source parameters,
 that is only final data (no epoch data) and no spectra (neither final
 nor epoch).
 Num. columns: 96
-
 ~~~
 {: .output}
-
-
-    
 
 ## Columns
 
 The following loop prints the names of the columns in the table.
-
-
 
 ~~~
 for column in meta.columns:
@@ -320,9 +280,6 @@ parallax_error
 [Output truncated]
 ~~~
 {: .output}
-
-
-    
 
 You can probably infer what many of these columns are by looking at
 the names, but you should resist the temptation to guess.
@@ -365,8 +322,6 @@ database, the query language is a dialect of SQL called ADQL.
 
 Here's an example of an ADQL query.
 
-
-
 ~~~
 query1 = """SELECT 
 TOP 10
@@ -404,8 +359,6 @@ don't affect the behavior of the query.
 To run this query, we use the `Gaia` object, which represents our
 connection to the Gaia database, and invoke `launch_job`:
 
-
-
 ~~~
 job = Gaia.launch_job(query1)
 job
@@ -417,19 +370,9 @@ job
 ~~~
 {: .output}
 
-
-
-
-
-    
-
-
-
 The result is an object that represents the job running on a Gaia server.
 
 If you print it, it displays metadata for the forthcoming results.
-
-
 
 ~~~
 print(job)
@@ -452,16 +395,11 @@ Output file: sync_20210315090602.xml.gz
 ~~~
 {: .output}
 
-
-    
-
 Don't worry about `Results: None`.  That does not actually mean there
 are no results.
 
 However, `Phase: COMPLETED` indicates that the job is complete, so we
 can get the results like this:
-
-
 
 ~~~
 results = job.get_results()
@@ -473,14 +411,6 @@ type(results)
 astropy.table.table.Table
 ~~~
 {: .output}
-
-
-
-
-
-    
-
-
 
 The `type` function indicates that the result is an [Astropy
 Table](https://docs.astropy.org/en/stable/table/).
@@ -504,8 +434,6 @@ rows.  But these operations use Python syntax, not SQL.
 
 Jupyter knows how to display the contents of a `Table`.
 
-
-
 ~~~
 results
 ~~~
@@ -527,10 +455,6 @@ results
 ~~~
 {: .output}
 
-
-
-
-
 <i>Table length=10</i>
 <table id="table139985564118224" class="table-striped table-bordered table-condensed">
 <thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>parallax</th></tr></thead>
@@ -547,8 +471,6 @@ results
 <tr><td>5887982043490374016</td><td>227.985260087594</td><td>-53.683444499055575</td><td>0.02878111976456593</td></tr>
 <tr><td>5887982971205433856</td><td>227.89884570686218</td><td>-53.67430215342567</td><td>--</td></tr>
 </table>
-
-
 
 Each column has a name, units, and a data type.
 
@@ -619,8 +541,6 @@ proper motions along the axes of `ra` and `dec`.
 
 * It uses a new keyword, `WHERE`.
 
-
-
 ~~~
 query2 = """SELECT 
 TOP 3000
@@ -644,8 +564,6 @@ from the database.
 
 We use `launch_job_async` to submit an asynchronous query.
 
-
-
 ~~~
 job = Gaia.launch_job_async(query2)
 job
@@ -659,19 +577,7 @@ INFO: Query finished. [astroquery.utils.tap.core]
 ~~~
 {: .output}
 
-
-    
-
-
-
-
-    
-
-
-
 And here are the results.
-
-
 
 ~~~
 results = job.get_results()
@@ -695,10 +601,6 @@ results
 ~~~
 {: .output}
 
-
-
-
-
 <i>Table length=10</i>
 <table id="table139986226873968" class="table-striped table-bordered table-condensed">
 <thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>parallax</th><th>radial_velocity</th></tr></thead>
@@ -715,8 +617,6 @@ results
 <tr><td>5895264899260932352</td><td>213.21521027193236</td><td>-56.78420864489118</td><td>--</td><td>--</td></tr>
 <tr><td>5895265925746051584</td><td>213.17082359534547</td><td>-56.74540885107754</td><td>0.2986918215101751</td><td>--</td></tr>
 </table>
-
-
 
 You might notice that some values of `parallax` are negative.  As
 [this FAQ
@@ -859,8 +759,6 @@ except the column names.
 
 Here's the list of columns we'll select.  
 
-
-
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec, parallax'
 ~~~
@@ -868,8 +766,6 @@ columns = 'source_id, ra, dec, pmra, pmdec, parallax'
 
 And here's the base; it's a string that contains at least one format
 specifier in curly brackets (braces).
-
-
 
 ~~~
 query3_base = """SELECT 
@@ -888,8 +784,6 @@ placeholder for the list of column names we will provide.
 To assemble the query, we invoke `format` on the base string and
 provide a keyword argument that assigns a value to `columns`.
 
-
-
 ~~~
 query3 = query3_base.format(columns=columns)
 ~~~
@@ -902,8 +796,6 @@ That's not required, but it is a common style.
 The result is a string with line breaks.  If you display it, the line
 breaks appear as `\n`.
 
-
-
 ~~~
 query3
 ~~~
@@ -914,17 +806,7 @@ query3
 ~~~
 {: .output}
 
-
-
-
-
-    
-
-
-
 But if you print it, the line breaks appear as... line breaks.
-
-
 
 ~~~
 print(query3)
@@ -938,19 +820,12 @@ source_id, ra, dec, pmra, pmdec
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2
-
-
 ~~~
 {: .output}
-
-
-    
 
 Notice that the format specifier has been replaced with the value of `columns`.
 
 Let's run it and see if it works:
-
-
 
 ~~~
 job = Gaia.launch_job(query3)
@@ -974,11 +849,6 @@ Owner: None
 ~~~
 {: .output}
 
-
-    
-
-
-
 ~~~
 results = job.get_results()
 results
@@ -1001,10 +871,6 @@ results
 ~~~
 {: .output}
 
-
-
-
-
 <i>Table length=10</i>
 <table id="table139985564118512" class="table-striped table-bordered table-condensed">
 <thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th></tr></thead>
@@ -1021,8 +887,6 @@ results
 <tr><td>4143614130253524096</td><td>269.1749117455479</td><td>-18.53415139972117</td><td>2.6164274510804826</td><td>1.3244248889980894</td></tr>
 <tr><td>4065443904433108992</td><td>273.26868565443743</td><td>-24.421651815402857</td><td>-1.663096652191022</td><td>-2.6514745376067683</td></tr>
 </table>
-
-
 
 Good so far.
 
@@ -1070,46 +934,3 @@ This notebook demonstrates the following steps:
 
 In the next lesson we will extend these queries to select a particular
 region of the sky.
-
-## Best practices
-
-* If you can't download an entire dataset (or it's not practical) use
-queries to select the data you need.
-
-* Read the metadata and the documentation to make sure you understand
-the tables, their columns, and what they mean.
-
-* Develop queries incrementally: start with something simple, test it,
-and add a little bit at a time.
-
-* Use ADQL features like `TOP` and `COUNT` to test before you run a
-query that might return a lot of data.
-
-* If you know your query will return fewer than 2000 rows, you can run
-it synchronously, which might complete faster.  If it might return
-more than 2000 rows, you should run it asynchronously.
-
-* ADQL and SQL are not case-sensitive, so you don't have to capitalize
-the keywords, but you should.
-
-* ADQL and SQL don't require you to break a query into multiple lines,
-but you should.
-
-Jupyter notebooks can be good for developing and testing code, but
-they have some drawbacks.  In particular, if you run the cells out of
-order, you might find that variables don't have the values you expect.
-
-To mitigate these problems:
-
-* Make each section of the notebook self-contained.  Try not to use
-the same variable name in more than one section.
-
-* Keep notebooks short.  Look for places where you can break your
-analysis into phases with one notebook per phase.
-
-
-
-~~~
-
-~~~
-{: .language-python}
