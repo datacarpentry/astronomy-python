@@ -1,7 +1,7 @@
 ---
 title: "Basic queries"
-teaching: 3000
-exercises: 0
+teaching: 65
+exercises: 25
 questions:
 - "How can we select and download the data we want from the Gaia server?"
 
@@ -290,7 +290,7 @@ If you want to know what can go wrong when you don't read the
 documentation, [you might like this
 article](https://www.vox.com/future-perfect/2019/6/4/18650969/married-women-miserable-fake-paul-dolan-happiness).
 
-> ## Exercise
+> ## Exercise (2 minutes)
 > 
 > One of the other tables we'll use is
 > `gaiadr2.panstarrs1_original_valid`.  Use `load_table` to get the
@@ -482,7 +482,7 @@ to store measurements with a fraction part.
 This information comes from the Gaia database, and has been stored in
 the Astropy `Table` by Astroquery.
 
-> ## Exercise
+> ## Exercise (3 minutes)
 > 
 > Read [the
 > documentation](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html)
@@ -625,7 +625,7 @@ explains](https://www.cosmos.esa.int/web/gaia/archive-tips#negative%20parallax),
 have "no physical meaning," but they can be a "useful diagnostic on
 the quality of the astrometric solution."
 
-> ## Exercise
+> ## Exercise (5 minutes)
 > 
 > The clauses in a query have to be in the right order.  Go back and
 > change the order of the clauses in `query2` and run it again.
@@ -689,7 +689,7 @@ You can combine comparisons using the logical operators:
 
 Finally, you can use `NOT` to invert the result of a comparison. 
 
-> ## Exercise
+> ## Exercise (5 minutes)
 > 
 > [Read about SQL operators
 > here](https://www.w3schools.com/sql/sql_operators.asp) and then modify
@@ -890,7 +890,7 @@ results
 
 Good so far.
 
-> ## Exercise
+> ## Exercise (10 minutes)
 > 
 > This query always selects sources with `parallax` less than 1.  But
 > suppose you want to take that upper bound as an input.
