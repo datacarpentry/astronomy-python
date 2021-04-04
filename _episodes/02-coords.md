@@ -178,8 +178,7 @@ causes a `UnitConversionError`.
 >
 > > ## Solution
 > > 
-> > ~~~
-> > 
+> > ~~~ 
 > > radius = 5 * u.arcmin
 > > print(radius)
 > > 
@@ -274,22 +273,6 @@ results
 ~~~
 {: .output}
 
-<i>Table length=10</i>
-<table id="table139807485721280" class="table-striped table-bordered table-condensed">
-<thead><tr><th>source_id</th></tr></thead>
-<thead><tr><th>int64</th></tr></thead>
-<tr><td>3322773965056065536</td></tr>
-<tr><td>3322773758899157120</td></tr>
-<tr><td>3322774068134271104</td></tr>
-<tr><td>3322773930696320512</td></tr>
-<tr><td>3322774377374425728</td></tr>
-<tr><td>3322773724537891456</td></tr>
-<tr><td>3322773724537891328</td></tr>
-<tr><td>3322773930696321792</td></tr>
-<tr><td>3322773724537890944</td></tr>
-<tr><td>3322773930696322176</td></tr>
-</table>
-
 > ## Exercise (5 minutes)
 > 
 > When you are debugging queries like this, you can use `TOP` to limit
@@ -306,7 +289,6 @@ results
 > > ## Solution
 > > 
 > > ~~~
-> > 
 > > query = """SELECT 
 > > COUNT(source_id)
 > > FROM gaiadr2.gaia_source
@@ -459,7 +441,6 @@ These are the coordinates shown in the figure from the paper, above.
 > > ## Solution
 > > 
 > > ~~~
-> > 
 > > origin_gd1 = SkyCoord(0*u.degree, 0*u.degree, frame=gd1_frame)
 > > 
 > > # OR
@@ -753,23 +734,6 @@ results
 ~~~
 {: .output}
 
-<i>Table length=10</i>
-<table id="table139807251332016" class="table-striped table-bordered table-condensed">
-<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th></tr></thead>
-<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th></tr></thead>
-<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>637987125186749568</td><td>142.48301935991023</td><td>21.75771616932985</td><td>-2.5168384683875766</td><td>2.941813096629439</td></tr>
-<tr><td>638285195917112960</td><td>142.25452941346344</td><td>22.476168171141378</td><td>2.6627020143457996</td><td>-12.165984395577347</td></tr>
-<tr><td>638073505568978688</td><td>142.64528557468074</td><td>22.16693224953078</td><td>18.30674739454163</td><td>-7.950659620550862</td></tr>
-<tr><td>638086386175786752</td><td>142.57739430926034</td><td>22.22791951401365</td><td>0.9877856720147953</td><td>-2.584105480335548</td></tr>
-<tr><td>638049655615392384</td><td>142.58913564478618</td><td>22.110783166677418</td><td>0.24443878227817095</td><td>-4.941079187010136</td></tr>
-<tr><td>638267565075964032</td><td>141.81762228999614</td><td>22.375696125322275</td><td>-3.413174589660796</td><td>1.8838892877285924</td></tr>
-<tr><td>638028902333511168</td><td>143.18339801317677</td><td>22.2512465812369</td><td>7.848511762712128</td><td>-21.391145547787154</td></tr>
-<tr><td>638085767700610432</td><td>142.9347319464589</td><td>22.46244080823965</td><td>-3.6585960944321476</td><td>-12.486419770278376</td></tr>
-<tr><td>638299863230178304</td><td>142.26769745823267</td><td>22.640183776884836</td><td>-1.8168370892218297</td><td>1.0537342990941316</td></tr>
-<tr><td>637973067758974208</td><td>142.89551292869012</td><td>21.612824100339875</td><td>-8.645166256559063</td><td>-44.41164172204947</td></tr>
-</table>
-
 Finally, we can remove `TOP 10` run the query again.
 
 The result is bigger than our previous queries, so it will take a little longer.
@@ -887,18 +851,3 @@ and saved them in a FITS file.
 In the next notebook, we'll reload the data from this file and
 replicate the next step in the analysis, using proper motion to
 identify stars likely to be in GD-1.
-
-## Best practices
-
-* For measurements with units, use `Quantity` objects that represent
-units explicitly and check for errors.
-
-* Use the `format` function to compose queries; code written this way
-is easier to read and less error-prone.
-
-* Develop queries incrementally: start with something simple, test it,
-and add a little bit at a time.
-
-* Once you have a query working, save the data in a local file.  If
-you shut down the notebook and come back to it later, you can reload
-the file; you don't have to run the query again.
