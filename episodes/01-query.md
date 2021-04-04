@@ -300,7 +300,6 @@ article](https://www.vox.com/future-perfect/2019/6/4/18650969/married-women-mise
 > > ## Solution
 > > 
 > > ~~~
-> > 
 > > meta2 = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
 > > print(meta2)
 > > 
@@ -331,10 +330,11 @@ FROM gaiadr2.gaia_source
 ~~~
 {: .language-python}
 
-**Python note:** We use a [triple-quoted
-string](https://docs.python.org/3/tutorial/introduction.html#strings)
-here so we can include line breaks in the query, which makes it easier
-to read.
+> ## Python note
+> We use a [triple-quoted string](https://docs.python.org/3/tutorial/introduction.html#strings)
+> here so we can include line breaks in the query, which makes it easier
+> to read.
+{: .callout}
 
 The words in uppercase are ADQL keywords:
 
@@ -415,11 +415,13 @@ astropy.table.table.Table
 The `type` function indicates that the result is an [Astropy
 Table](https://docs.astropy.org/en/stable/table/).
 
-**Optional detail:**  Why is `table` repeated three times?  The first
-is the name of the module, the second is the name of the submodule,
-and the third is the name of the class.  Most of the time we only care
-about the last one.  It's like the Linnean name for gorilla, which is
-*Gorilla gorilla gorilla*.
+> ## Repetition
+> Why is `table` repeated three times?  The first
+> is the name of the module, the second is the name of the submodule,
+> and the third is the name of the class.  Most of the time we only care
+> about the last one.  It's like the Linnean name for gorilla, which is
+> *Gorilla gorilla gorilla*.
+{: .callout}
 
 An Astropy `Table` is similar to a table in an SQL database except:
 
@@ -455,23 +457,6 @@ results
 ~~~
 {: .output}
 
-<i>Table length=10</i>
-<table id="table139985564118224" class="table-striped table-bordered table-condensed">
-<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>parallax</th></tr></thead>
-<thead><tr><th></th><th>deg</th><th>deg</th><th>mas</th></tr></thead>
-<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>5887983246081387776</td><td>227.978818386372</td><td>-53.64996962450103</td><td>1.0493172163332998</td></tr>
-<tr><td>5887971250213117952</td><td>228.32280834041364</td><td>-53.66270726203726</td><td>0.29455652682279093</td></tr>
-<tr><td>5887991866047288704</td><td>228.1582047014091</td><td>-53.454724911639794</td><td>-0.5789179941669236</td></tr>
-<tr><td>5887968673232040832</td><td>228.07420888099884</td><td>-53.8064612895961</td><td>0.41030970779603076</td></tr>
-<tr><td>5887979844465854720</td><td>228.42547805195946</td><td>-53.48882284470035</td><td>-0.23379683441525864</td></tr>
-<tr><td>5887978607515442688</td><td>228.23831627636855</td><td>-53.56328249482688</td><td>-0.9252161956789068</td></tr>
-<tr><td>5887978298278520704</td><td>228.26015640396173</td><td>-53.607284412896476</td><td>--</td></tr>
-<tr><td>5887995581231772928</td><td>228.12871598211902</td><td>-53.373625663608316</td><td>-0.3325818206439385</td></tr>
-<tr><td>5887982043490374016</td><td>227.985260087594</td><td>-53.683444499055575</td><td>0.02878111976456593</td></tr>
-<tr><td>5887982971205433856</td><td>227.89884570686218</td><td>-53.67430215342567</td><td>--</td></tr>
-</table>
-
 Each column has a name, units, and a data type.
 
 For example, the units of `ra` and `dec` are degrees, and their data
@@ -484,26 +469,23 @@ the Astropy `Table` by Astroquery.
 
 > ## Exercise (3 minutes)
 > 
-> Read [the
-> documentation](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html)
+> Read [the documentation](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html)
 > of this table and choose a column that looks interesting to you.  Add
 > the column name to the query and run it again.  What are the units of
 > the column you selected?  What is its data type?
 >
 > > ## Solution
 > > 
+> > Let's add
+> > radial_velocity : Radial velocity (double, Velocity[km/s] )
+> > 
+> > Spectroscopic radial velocity in the solar barycentric 
+> > reference frame.
+> > 
+> > The radial velocity provided is the median value of the 
+> > radial velocity measurements at all epochs.
+> >
 > > ~~~
-> > 
-> > # Let's add
-> > #
-> > # radial_velocity : Radial velocity (double, Velocity[km/s] )
-> > #
-> > # Spectroscopic radial velocity in the solar barycentric 
-> > # reference frame.
-> > #
-> > # The radial velocity provided is the median value of the 
-> > # radial velocity measurements at all epochs.
-> > 
 > > query = """SELECT 
 > > TOP 10
 > > source_id, ra, dec, parallax, radial_velocity
@@ -601,23 +583,6 @@ results
 ~~~
 {: .output}
 
-<i>Table length=10</i>
-<table id="table139986226873968" class="table-striped table-bordered table-condensed">
-<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>parallax</th><th>radial_velocity</th></tr></thead>
-<thead><tr><th></th><th>deg</th><th>deg</th><th>mas</th><th>km / s</th></tr></thead>
-<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>5895270396817359872</td><td>213.08433715252883</td><td>-56.64104701005694</td><td>2.041947005434917</td><td>--</td></tr>
-<tr><td>5895272561481374080</td><td>213.2606587905109</td><td>-56.55044401535715</td><td>0.15693467895110133</td><td>--</td></tr>
-<tr><td>5895247410183786368</td><td>213.38479712976664</td><td>-56.97008551185148</td><td>-0.19017525742552605</td><td>--</td></tr>
-<tr><td>5895249226912448000</td><td>213.41587389088238</td><td>-56.849596577635786</td><td>--</td><td>--</td></tr>
-<tr><td>5895261875598904576</td><td>213.5508930114549</td><td>-56.61037780154348</td><td>-0.29471722363529257</td><td>--</td></tr>
-<tr><td>5895258302187834624</td><td>213.87631129557286</td><td>-56.678537259039906</td><td>0.6468437015289753</td><td>--</td></tr>
-<tr><td>5895247444506644992</td><td>213.33215109206796</td><td>-56.975347759380995</td><td>0.390215490234287</td><td>--</td></tr>
-<tr><td>5895259470417635968</td><td>213.78815034206346</td><td>-56.64585047451594</td><td>0.953377710788918</td><td>--</td></tr>
-<tr><td>5895264899260932352</td><td>213.21521027193236</td><td>-56.78420864489118</td><td>--</td><td>--</td></tr>
-<tr><td>5895265925746051584</td><td>213.17082359534547</td><td>-56.74540885107754</td><td>0.2986918215101751</td><td>--</td></tr>
-</table>
-
 You might notice that some values of `parallax` are negative.  As
 [this FAQ
 explains](https://www.cosmos.esa.int/web/gaia/archive-tips#negative%20parallax),
@@ -647,11 +612,8 @@ the quality of the astrometric solution."
 > * Launching test queries synchronously might make them start faster, too.
 >
 > > ## Solution
-> > 
+> > In this example, the WHERE clause is in the wrong place.
 > > ~~~
-> > 
-> > # In this example, the WHERE clause is in the wrong place
-> > 
 > > query = """SELECT 
 > > TOP 3000
 > > WHERE parallax < 1
@@ -659,7 +621,7 @@ the quality of the astrometric solution."
 > > FROM gaiadr2.gaia_source
 > > """
 > > ~~~
-> > {: .language-python}
+> > {: .error}
 > {: .solution}
 {: .challenge}
 
@@ -691,17 +653,16 @@ Finally, you can use `NOT` to invert the result of a comparison.
 
 > ## Exercise (5 minutes)
 > 
-> [Read about SQL operators
-> here](https://www.w3schools.com/sql/sql_operators.asp) and then modify
+> [Read about SQL operators here](https://www.w3schools.com/sql/sql_operators.asp) 
+> and then modify
 > the previous query to select rows where `bp_rp` is between `-0.75` and
 > `2`.
 >
 > > ## Solution
 > > 
+> > Here's a solution using > and < operators
+> > 
 > > ~~~
-> > 
-> > # Here's a solution using > and < operators
-> > 
 > > query = """SELECT 
 > > TOP 10
 > > source_id, ref_epoch, ra, dec, parallax
@@ -709,9 +670,12 @@ Finally, you can use `NOT` to invert the result of a comparison.
 > > WHERE parallax < 1 
 > >   AND bp_rp > -0.75 AND bp_rp < 2
 > > """
+> > ~~~
+> > {: .language-python}
 > > 
-> > # And here's a solution using the BETWEEN operator
+> > And here's a solution using the BETWEEN operator
 > > 
+> > ~~~
 > > query = """SELECT 
 > > TOP 10
 > > source_id, ref_epoch, ra, dec, parallax
@@ -871,23 +835,6 @@ results
 ~~~
 {: .output}
 
-<i>Table length=10</i>
-<table id="table139985564118512" class="table-striped table-bordered table-condensed">
-<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th></tr></thead>
-<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th></tr></thead>
-<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>5895272561481374080</td><td>213.2606587905109</td><td>-56.55044401535715</td><td>0.3894438898301715</td><td>1.2299266281737415</td></tr>
-<tr><td>5895261875598904576</td><td>213.5508930114549</td><td>-56.61037780154348</td><td>0.16203641364393007</td><td>-4.672602679543312</td></tr>
-<tr><td>5895247444506644992</td><td>213.33215109206796</td><td>-56.975347759380995</td><td>-7.474003156859284</td><td>-3.538080792097856</td></tr>
-<tr><td>5895259470417635968</td><td>213.78815034206346</td><td>-56.64585047451594</td><td>-5.287202255231853</td><td>-0.8163762113468646</td></tr>
-<tr><td>5895265925746051584</td><td>213.17082359534547</td><td>-56.74540885107754</td><td>-7.880749306158471</td><td>-4.8585444120179595</td></tr>
-<tr><td>5895260913525974528</td><td>213.66936020541976</td><td>-56.66655190442016</td><td>-4.7820929042428215</td><td>-1.5566420086447643</td></tr>
-<tr><td>5895264212062283008</td><td>213.7755742121852</td><td>-56.51570859067397</td><td>-6.657690998559842</td><td>-1.7616494482071872</td></tr>
-<tr><td>5895253457497979136</td><td>213.30929960610283</td><td>-56.78849448744587</td><td>-5.242106718924749</td><td>-0.18655636353898095</td></tr>
-<tr><td>4143614130253524096</td><td>269.1749117455479</td><td>-18.53415139972117</td><td>2.6164274510804826</td><td>1.3244248889980894</td></tr>
-<tr><td>4065443904433108992</td><td>273.26868565443743</td><td>-24.421651815402857</td><td>-1.663096652191022</td><td>-2.6514745376067683</td></tr>
-</table>
-
 Good so far.
 
 > ## Exercise (10 minutes)
@@ -903,7 +850,6 @@ Good so far.
 > > ## Solution
 > > 
 > > ~~~
-> > 
 > > query_base = """SELECT 
 > > TOP 10
 > > {columns}
