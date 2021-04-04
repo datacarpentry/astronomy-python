@@ -1,7 +1,7 @@
 ---
 title: "Visualization"
-teaching: 3000
-exercises: 0
+teaching: 55
+exercises: 30
 questions:
 - "How do we make a compelling visualization that tells a story?"
 
@@ -75,7 +75,7 @@ with the caption:
 <img width="500"
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.png">
 
-> ## Exercise
+> ## Exercise (5 minutes)
 > 
 > Think about the following questions:
 > 
@@ -200,7 +200,7 @@ region of GD-1,
 
 * Several annotations that combine text and arrows to identify features of GD-1.
 
-> ## Exercise
+> ## Exercise (15 minutes)
 > 
 > Choose any or all of these features and add them to the figure:
 > 
@@ -270,7 +270,7 @@ plt.gca().tick_params(direction='in')
 ~~~
 {: .language-python}
 
-> ## Exercise
+> ## Exercise (5 minutes)
 > 
 > Read the documentation of
 > [`tick_params`](https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.axes.Axes.tick_params.html)
@@ -682,7 +682,61 @@ loop_df.head()
 ~~~
 {: .output}
 
-> ## Exercise
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>color_loop</th>
+      <th>mag_loop</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.632171</td>
+      <td>21.411746</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.610238</td>
+      <td>21.322466</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.588449</td>
+      <td>21.233380</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.566924</td>
+      <td>21.144427</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.545461</td>
+      <td>21.054549</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+> ## Exercise (5 minutes)
 > 
 > Add a few lines to `plot_cmd` to show the polygon we selected as a
 > shaded area.
@@ -802,7 +856,7 @@ plt.tight_layout()
 
 This is looking more and more like the figure in the paper.
 
-> ## Exercise
+> ## Exercise (5 minutes)
 > 
 > In this example, the ratio of the widths of the panels is 3:1.  How
 > would you adjust it if you wanted the ratio to be 3:2?

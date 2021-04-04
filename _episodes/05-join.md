@@ -1,7 +1,7 @@
 ---
 title: "Join"
-teaching: 3000
-exercises: 0
+teaching: 50
+exercises: 35
 questions:
 - "How do we use `JOIN` to combine information from multiple tables?"
 
@@ -610,7 +610,7 @@ here](https://www.geeksforgeeks.org/sql-join-set-1-inner-left-right-and-full-joi
 
 ## Adding the Pan-STARRS table
 
-> ## Exercise
+> ## Exercise (10 minutes)
 > 
 > Now we're ready to bring in the Pan-STARRS table.  Starting with the
 > previous query, add a second `JOIN` clause that joins with
@@ -760,7 +760,34 @@ results
 ~~~
 {: .output}
 
-> ## Exercise
+<i>Table length=7345</i>
+<table id="table140523982340048" class="table-striped table-bordered table-condensed">
+<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th></tr></thead>
+<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th></tr></thead>
+<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
+<tr><td>635559124339440000</td><td>137.58671691646745</td><td>19.1965441084838</td><td>-3.770521900009566</td><td>-12.490481778113859</td></tr>
+<tr><td>635860218726658176</td><td>138.5187065217173</td><td>19.09233926905897</td><td>-5.941679495793577</td><td>-11.346409129876392</td></tr>
+<tr><td>635674126383965568</td><td>138.8428741026386</td><td>19.031798198627634</td><td>-3.8970011609340207</td><td>-12.702779525389634</td></tr>
+<tr><td>635535454774983040</td><td>137.8377518255436</td><td>18.864006786112604</td><td>-4.335040664412791</td><td>-14.492308604905652</td></tr>
+<tr><td>635497276810313600</td><td>138.0445160213759</td><td>19.00947118796605</td><td>-7.1729306406216615</td><td>-12.291499169815987</td></tr>
+<tr><td>635614168640132864</td><td>139.59219748145836</td><td>18.807955539071433</td><td>-3.309602916796381</td><td>-13.708904908478631</td></tr>
+<tr><td>635821843194387840</td><td>139.88094034815086</td><td>19.62185456718988</td><td>-6.544201177153814</td><td>-12.55978220563274</td></tr>
+<tr><td>635551706931167104</td><td>138.04665586038192</td><td>19.248909662830798</td><td>-6.224595114220405</td><td>-12.224246333795001</td></tr>
+<tr><td>635518889086133376</td><td>137.2374229207837</td><td>18.7428630711791</td><td>-3.3186800714801046</td><td>-12.710314902969365</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>612282738058264960</td><td>134.0445768189235</td><td>18.11915820167003</td><td>-2.5972485319419127</td><td>-13.651740929272187</td></tr>
+<tr><td>612485911486166656</td><td>134.96582769047063</td><td>19.309965857307247</td><td>-4.519325315774155</td><td>-11.998725329569156</td></tr>
+<tr><td>612386332668697600</td><td>135.45701048323093</td><td>18.63266345155342</td><td>-5.07684899854408</td><td>-12.436641304786672</td></tr>
+<tr><td>612296172717818624</td><td>133.80060286960668</td><td>18.08186533343457</td><td>-6.112792578821885</td><td>-12.50750861370402</td></tr>
+<tr><td>612250375480101760</td><td>134.64754712466774</td><td>18.122419425065015</td><td>-2.8969262278467127</td><td>-14.061676353845487</td></tr>
+<tr><td>612394926899159168</td><td>135.51997060013844</td><td>18.817675531233004</td><td>-3.9968965218753763</td><td>-13.526821099431533</td></tr>
+<tr><td>612288854091187712</td><td>134.07970733489358</td><td>18.15424015818678</td><td>-5.96977151283562</td><td>-11.162471664228455</td></tr>
+<tr><td>612428870024913152</td><td>134.8384242853297</td><td>18.758253070693225</td><td>-4.0022333299353825</td><td>-14.247379430659198</td></tr>
+<tr><td>612256418500423168</td><td>134.90752972739924</td><td>18.280596648172743</td><td>-6.109836304219565</td><td>-12.145212331165776</td></tr>
+<tr><td>612429144902815104</td><td>134.77293979509543</td><td>18.73628415871413</td><td>-5.257085979310591</td><td>-13.962312685889454</td></tr>
+</table>
+
+> ## Exercise (15 minutes)
 > 
 > Create a new query base called `query7_base` that combines the `WHERE`
 > clauses from the previous query with the `JOIN` clauses for the best
