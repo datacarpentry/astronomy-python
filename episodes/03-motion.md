@@ -165,35 +165,6 @@ results['ra']
 ~~~
 {: .output}
 
-&lt;Column name=&apos;ra&apos; dtype=&apos;float64&apos; unit=&apos;deg&apos; description=&apos;Right ascension&apos; length=140339&gt;
-<table>
-<tr><td>142.48301935991023</td></tr>
-<tr><td>142.25452941346344</td></tr>
-<tr><td>142.64528557468074</td></tr>
-<tr><td>142.57739430926034</td></tr>
-<tr><td>142.58913564478618</td></tr>
-<tr><td>141.81762228999614</td></tr>
-<tr><td>143.18339801317677</td></tr>
-<tr><td>142.9347319464589</td></tr>
-<tr><td>142.26769745823267</td></tr>
-<tr><td>142.89551292869012</td></tr>
-<tr><td>142.2780935768316</td></tr>
-<tr><td>142.06138786534987</td></tr>
-<tr><td>...</td></tr>
-<tr><td>143.05456487172972</td></tr>
-<tr><td>144.0436496516182</td></tr>
-<tr><td>144.06566578919313</td></tr>
-<tr><td>144.13177563215973</td></tr>
-<tr><td>143.77696341662764</td></tr>
-<tr><td>142.945956347594</td></tr>
-<tr><td>142.97282480557786</td></tr>
-<tr><td>143.4166017695258</td></tr>
-<tr><td>143.64484588686904</td></tr>
-<tr><td>143.41554585481808</td></tr>
-<tr><td>143.6908739159247</td></tr>
-<tr><td>143.7702681295401</td></tr>
-</table>
-
 The result is a `Column` object that contains the data, and also the
 data type, units, and name of the column.
 
@@ -224,14 +195,6 @@ results[0]
 637987125186749568 142.48301935991023 21.75771616932985 -2.5168384683875766 2.941813096629439 -0.2573448962333354
 ~~~
 {: .output}
-
-<i>Row index=0</i>
-<table id="table139673160217120">
-<thead><tr><th>source_id</th><th>ra</th><th>dec</th><th>pmra</th><th>pmdec</th><th>parallax</th></tr></thead>
-<thead><tr><th></th><th>deg</th><th>deg</th><th>mas / yr</th><th>mas / yr</th><th>mas</th></tr></thead>
-<thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
-<tr><td>637987125186749568</td><td>142.48301935991023</td><td>21.75771616932985</td><td>-2.5168384683875766</td><td>2.941813096629439</td><td>-0.2573448962333354</td></tr>
-</table>
 
 As you might have guessed, the result is a `Row` object.
 
@@ -617,82 +580,6 @@ results_df.head()
 ~~~
 {: .output}
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>source_id</th>
-      <th>ra</th>
-      <th>dec</th>
-      <th>pmra</th>
-      <th>pmdec</th>
-      <th>parallax</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>637987125186749568</td>
-      <td>142.483019</td>
-      <td>21.757716</td>
-      <td>-2.516838</td>
-      <td>2.941813</td>
-      <td>-0.257345</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>638285195917112960</td>
-      <td>142.254529</td>
-      <td>22.476168</td>
-      <td>2.662702</td>
-      <td>-12.165984</td>
-      <td>0.422728</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>638073505568978688</td>
-      <td>142.645286</td>
-      <td>22.166932</td>
-      <td>18.306747</td>
-      <td>-7.950660</td>
-      <td>0.103640</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>638086386175786752</td>
-      <td>142.577394</td>
-      <td>22.227920</td>
-      <td>0.987786</td>
-      <td>-2.584105</td>
-      <td>-0.857327</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>638049655615392384</td>
-      <td>142.589136</td>
-      <td>22.110783</td>
-      <td>0.244439</td>
-      <td>-4.941079</td>
-      <td>0.099625</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
 **Python detail:** `shape` is an attribute, so we display its value
 without calling it as a function; `head` is a function, so we need the
 parentheses.
@@ -761,145 +648,6 @@ max    7.974418e+17     152.777393      34.285481     104.319923
 [Output truncated]
 ~~~
 {: .output}
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>source_id</th>
-      <th>ra</th>
-      <th>dec</th>
-      <th>pmra</th>
-      <th>pmdec</th>
-      <th>parallax</th>
-      <th>phi1</th>
-      <th>phi2</th>
-      <th>pm_phi1</th>
-      <th>pm_phi2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>1.403390e+05</td>
-      <td>140339.000000</td>
-      <td>140339.000000</td>
-      <td>140339.000000</td>
-      <td>140339.000000</td>
-      <td>140339.000000</td>
-      <td>140339.000000</td>
-      <td>140339.000000</td>
-      <td>140339.000000</td>
-      <td>140339.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>6.792399e+17</td>
-      <td>143.823122</td>
-      <td>26.780285</td>
-      <td>-2.484404</td>
-      <td>-6.100777</td>
-      <td>0.179492</td>
-      <td>-50.091158</td>
-      <td>-1.803301</td>
-      <td>-0.868963</td>
-      <td>1.409208</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>3.792177e+16</td>
-      <td>3.697850</td>
-      <td>3.052592</td>
-      <td>5.913939</td>
-      <td>7.202047</td>
-      <td>0.759590</td>
-      <td>2.892344</td>
-      <td>3.444398</td>
-      <td>6.657714</td>
-      <td>6.518615</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>6.214900e+17</td>
-      <td>135.425699</td>
-      <td>19.286617</td>
-      <td>-106.755260</td>
-      <td>-138.065163</td>
-      <td>-15.287602</td>
-      <td>-54.999989</td>
-      <td>-8.029159</td>
-      <td>-115.275637</td>
-      <td>-161.150142</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>6.443517e+17</td>
-      <td>140.967966</td>
-      <td>24.592490</td>
-      <td>-5.038789</td>
-      <td>-8.341561</td>
-      <td>-0.035981</td>
-      <td>-52.602952</td>
-      <td>-4.750426</td>
-      <td>-2.948723</td>
-      <td>-1.107128</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>6.888060e+17</td>
-      <td>143.734409</td>
-      <td>26.746261</td>
-      <td>-1.834943</td>
-      <td>-4.689596</td>
-      <td>0.362708</td>
-      <td>-50.147362</td>
-      <td>-1.671502</td>
-      <td>0.585037</td>
-      <td>1.987149</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>6.976579e+17</td>
-      <td>146.607350</td>
-      <td>28.990500</td>
-      <td>0.452893</td>
-      <td>-1.937809</td>
-      <td>0.657637</td>
-      <td>-47.593279</td>
-      <td>1.160514</td>
-      <td>3.001768</td>
-      <td>4.628965</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>7.974418e+17</td>
-      <td>152.777393</td>
-      <td>34.285481</td>
-      <td>104.319923</td>
-      <td>20.981070</td>
-      <td>0.999957</td>
-      <td>-44.999985</td>
-      <td>4.014609</td>
-      <td>39.802471</td>
-      <td>79.275199</td>
-    </tr>
-  </tbody>
-</table>
-</div>
 
 > ## Exercise (10 minutes)
 > 
@@ -1069,14 +817,15 @@ mask = (phi2 > phi2_min) & (phi2 < phi2_max)
 ~~~
 {: .language-python}
 
-**Python detail:** Python's logical operators (`and`, `or`, and `not`)
-don't work with NumPy or Pandas.  Both libraries use the bitwise
-operators (`&`, `|`, and `~`) to do elementwise logical operations
-([explanation
-here](https://stackoverflow.com/questions/21415661/logical-operators-for-boolean-indexing-in-pandas)).
-
-Also, we need the parentheses around the conditions; otherwise the
-order of operations is incorrect.
+> ## Logical operators
+> Python's logical operators (`and`, `or`, and `not`)
+> don't work with NumPy or Pandas.  Both libraries use the bitwise
+> operators (`&`, `|`, and `~`) to do elementwise logical operations
+> ([explanation here](https://stackoverflow.com/questions/21415661/logical-operators-for-boolean-indexing-in-pandas)).
+> 
+> Also, we need the parentheses around the conditions; otherwise the
+> order of operations is incorrect.
+{: .callout}
 
 The sum of a Boolean `Series` is the number of `True` values, so we
 can use `sum` to see how many stars are in the selected region.
@@ -1388,7 +1137,6 @@ should overwrite it.
 > > ~~~
 > > centerline_df.to_hdf(filename, 'centerline_df')
 > > ~~~
-> > 
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
