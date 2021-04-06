@@ -11,7 +11,7 @@ objectives:
 keypoints:
 - "Use `JOIN` operations to combine data from multiple tables in a database, using some kind of identifier to match up records from one table with records from another. This is another example of a practice we saw in the previous notebook, moving the computation to the data."
 - "For most applications, saving data in FITS or HDF5 is better than CSV.  FITS and HDF5 are binary formats, so the files are usually smaller, and they store metadata, so you don't lose anything when you read the file back."
-- "On the other hand, CSV is a "least common denominator" format; that is, it can be read by practically any application that works with data."
+- "On the other hand, CSV is a 'least common denominator' format; that is, it can be read by practically any application that works with data."
 ---
 
 {% include links.md %}
