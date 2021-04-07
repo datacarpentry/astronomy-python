@@ -984,7 +984,7 @@ plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .output}
   
-![png](05-join_files/05-join_70_0.png)
+![png](../fig/05-join_files/05-join_70_0.png)
 
 The result is similar to what we saw in the previous lesson, except
 that have fewer stars now, because we did not find photometry data for

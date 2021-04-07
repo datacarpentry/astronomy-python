@@ -179,7 +179,7 @@ plot_cmd(candidate_df)
 ~~~
 {: .output}
     
-![png](06-photo_files/06-photo_12_0.png)
+![png](../fig/06-photo_files/06-photo_12_0.png)
  
 Our figure does not look exactly like the one in the paper because we
 are working with a smaller region of the sky, so we don't have as many
@@ -397,7 +397,7 @@ plt.plot(color_g_i, mag_g);
 ~~~
 {: .output}
   
-![png](06-photo_files/06-photo_42_0.png)
+![png](../fig/06-photo_files/06-photo_42_0.png)
 
 The theoretical isochrone passes through the overdense region where we
 expect to find stars in GD-1.
@@ -480,7 +480,7 @@ plt.plot(iso_df['color_g_i'], iso_df['mag_g']);
 ~~~
 {: .output}
 
-![png](06-photo_files/06-photo_52_0.png)
+![png](../fig/06-photo_files/06-photo_52_0.png)
 
 In the bottom half of the figure, the isochrone passes through the
 overdense region where the stars are likely to belong to GD-1.
@@ -566,7 +566,7 @@ plt.legend();
 ~~~
 {: .output}
     
-![png](06-photo_files/06-photo_62_0.png)
+![png](../fig/06-photo_files/06-photo_62_0.png)
 
 ## Which points are in the polygon?
 
@@ -646,7 +646,7 @@ plt.plot(color_loop, mag_loop);
 ~~~
 {: .output}
     
-![png](06-photo_files/06-photo_70_0.png)
+![png](../fig/06-photo_files/06-photo_70_0.png)
 
 To make a `Polygon`, it will be convenient to put `color_loop` and
 `mag_loop` into a `DataFrame`:
@@ -816,7 +816,7 @@ plt.plot(x, y, 'go', markersize=0.5, alpha=0.5);
 ~~~
 {: .output}
     
-![png](06-photo_files/06-photo_91_0.png)
+![png](../fig/06-photo_files/06-photo_91_0.png)
 
 It looks like the selected stars are, in fact, inside the polygon,
 which means they have photometry data consistent with GD-1.
@@ -842,7 +842,7 @@ plt.axis('equal');
 ~~~
 {: .output}
   
-![png](06-photo_files/06-photo_93_0.png)
+![png](../fig/06-photo_files/06-photo_93_0.png)
 
 This example includes two new Matplotlib commands:
 
