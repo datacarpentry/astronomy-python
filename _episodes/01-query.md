@@ -39,18 +39,19 @@ recent paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
 of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian
 Price-Whelan and Ana Bonaca.
 
-## Outline
-
-This lesson demonstrates the steps for selecting and downloading data
-from the Gaia Database:
-
-1. First we'll make a connection to the Gaia server,
-
-2. We will explore information about the database and the tables it contains,
-
-3. We will write a query and send it to the server, and finally
-
-4. We will download the response from the server.
+> ## Outline
+> 
+> This lesson demonstrates the steps for selecting and downloading data
+> from the Gaia Database:
+> 
+> 1. First we'll make a connection to the Gaia server,
+>
+> 2. We will explore information about the database and the tables it contains,
+>
+> 3. We will write a query and send it to the server, and finally
+>
+> 4. We will download the response from the server.
+{: .checklist}
 
 ## Query Language
 

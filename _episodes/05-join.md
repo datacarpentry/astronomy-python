@@ -41,23 +41,18 @@ age of their original globular cluster.
 By selecting stars in the shaded area, we can further distinguish the
 main sequence of GD-1 from younger background stars.
 
-## Outline
-
-Here are the steps in this notebook:
-
-1. We'll reload the candidate stars we identified in the previous notebook.
-
-2. Then we'll run a query on the Gaia server that uploads the table of
-candidates and uses a `JOIN` operation to select photometry data for
-the candidate stars.
-
-3. We'll write the results to a file for use in the next notebook.
-
-After completing this lesson, you should be able to
-
-* Upload a table to the Gaia server.
-
-* Write ADQL queries involving `JOIN` operations.
+> ## Outline
+> 
+> 1. We'll reload the candidate stars we identified in the previous
+> notebook.
+> 
+> 2. Then we'll run a query on the Gaia server that uploads the table 
+> of
+> candidates and uses a `JOIN` operation to select photometry data for
+> the candidate stars.
+> 
+> 3. We'll write the results to a file for use in the next notebook.
+{: .checklist}
 
 ## Getting photometry data
 
