@@ -293,7 +293,7 @@ plt.ylabel('dec (degree ICRS)');
 ~~~
 {: .output}
     
-![png](03-motion_files/03-motion_28_0.png)
+![png](../fig/03-motion_files/03-motion_28_0.png)
     
 The arguments to `plt.plot` are `x`, `y`, and a string that specifies
 the style.  In this case, the letters `ko` indicate that we want a
@@ -476,7 +476,7 @@ plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .output}
    
-![png](03-motion_files/03-motion_43_0.png)
+![png](../fig/03-motion_files/03-motion_43_0.png)
 
 Remember that we started with a rectangle in the GD-1 frame.  When
 transformed to the ICRS frame, it's a non-rectangular region.  Now,
@@ -700,7 +700,7 @@ plt.ylabel('Proper motion phi2 (mas/yr GD1 frame)');
 ~~~
 {: .output}
  
-![png](03-motion_files/03-motion_67_0.png)
+![png](../fig/03-motion_files/03-motion_67_0.png)
 
 Most of the proper motions are near the origin, but there are a few
 extreme values.
@@ -725,7 +725,7 @@ plt.ylim(-10, 10);
 ~~~
 {: .output}
     
-![png](03-motion_files/03-motion_69_0.png)
+![png](../fig/03-motion_files/03-motion_69_0.png)
 
 There is a hint of an overdense region near (-7.5, 0), but if you
 didn't know where to look, you would miss it.
@@ -907,7 +907,7 @@ plot_proper_motion(centerline_df)
 ~~~
 {: .output}
    
-![png](03-motion_files/03-motion_92_0.png)
+![png](../fig/03-motion_files/03-motion_92_0.png)
 
 Now we can see more clearly that there is a cluster near (-7.5, 0).
 
@@ -975,7 +975,7 @@ plt.plot(pm1_rect, pm2_rect, '-');
 ~~~
 {: .output}
    
-![png](03-motion_files/03-motion_100_0.png)
+![png](../fig/03-motion_files/03-motion_100_0.png)
 
 Now that we've identified the bounds of the cluster in proper motion,
 we'll use it to select rows from `results_df`.
@@ -1045,7 +1045,7 @@ plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .output}
    
-![png](03-motion_files/03-motion_110_0.png)
+![png](../fig/03-motion_files/03-motion_110_0.png)
 
 Now that's starting to look like a tidal stream!
 
