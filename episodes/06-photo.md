@@ -45,23 +45,14 @@ globular cluster.
 By selecting stars in the shaded area, we can further distinguish the
 main sequence of GD-1 from mostly younger background stars.
 
-## Outline
-
-Here are the steps in this notebook:
-
-1. We'll reload the data from the previous notebook and make a
-color-magnitude diagram.
-
-2. We'll use an isochrone computed by MIST to specify a polygonal
-region in the color-magnitude diagram and select the stars inside it.
-
-After completing this lesson, you should be able to
-
-* Use Matplotlib to specify a `Polygon` and determine which points
-fall inside it.
-
-* Use Pandas to merge data from multiple `DataFrames`, much like a
-database `JOIN` operation.
+> ## Outline
+> 
+> 1. We'll reload the data from the previous notebook and make a
+> color-magnitude diagram.
+> 
+> 2. We'll use an isochrone computed by MIST to specify a polygonal
+> region in the color-magnitude diagram and select the stars inside it.
+{: .checklist}
 
 ## Reload the data
 

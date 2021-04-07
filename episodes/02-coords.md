@@ -27,31 +27,24 @@ and download data from the Gaia server.
 In this lesson, we'll pick up where we left off and write a query to
 select stars from a particular region of the sky.
 
-## Outline
-
-We'll start with an example that does a "cone search"; that is, it
-selects stars that appear in a circular region of the sky.
-
-Then, to select stars in the vicinity of GD-1, we'll:
-
-* Use `Quantity` objects to represent measurements with units.
-
-* Use Astropy to convert coordinates from one frame to another.
-
-* Use the ADQL keywords `POLYGON`, `CONTAINS`, and `POINT` to select
-stars that fall within a polygonal region.
-
-* Submit a query and download the results.
-
-* Store the results in a FITS file.
-
-After completing this lesson, you should be able to
-
-* Use Python string formatting to compose more complex ADQL queries.
-
-* Work with coordinates and other quantities that have units.
-
-* Download the results of a query and store them in a file.
+> ## Outline
+> 
+> We'll start with an example that does a "cone search"; that is, it
+> selects stars that appear in a circular region of the sky.
+>
+> Then, to select stars in the vicinity of GD-1, we'll:
+>
+> * Use `Quantity` objects to represent measurements with units.
+>
+> * Use Astropy to convert coordinates from one frame to another.
+>
+> * Use the ADQL keywords `POLYGON`, `CONTAINS`, and `POINT` to select
+> stars that fall within a polygonal region.
+> 
+> * Submit a query and download the results.
+> 
+> * Store the results in a FITS file.
+{: .checklist}
 
 ## Working with Units
 

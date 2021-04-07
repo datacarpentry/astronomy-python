@@ -31,36 +31,23 @@ a FITS file.
 Now we'll read that data back and implement the next step in the
 analysis, identifying stars with the proper motion we expect for GD-1.
 
-## Outline
-
-Here are the steps in this lesson:
-
-1. We'll read back the results from the previous lesson, which we
-saved in a FITS file.
-
-2. Then we'll transform the coordinates and proper motion data from
-ICRS back to the coordinate frame of GD-1.
-
-3. We'll put those results into a Pandas `DataFrame`, which we'll use
-to select stars near the centerline of GD-1.
-
-4. Plotting the proper motion of those stars, we'll identify a region
-of proper motion for stars that are likely to be in GD-1.
-
-5. Finally, we'll select and plot the stars whose proper motion is in
-that region.
-
-After completing this lesson, you should be able to
-
-* Select rows and columns from an Astropy `Table`.
-
-* Use Matplotlib to make a scatter plot.
-
-* Use Gala to transform coordinates.
-
-* Make a Pandas `DataFrame` and use a Boolean `Series` to select rows.
-
-* Save a `DataFrame` in an HDF5 file.
+> ## Outline
+> 
+> 1. We'll read back the results from the previous lesson, which we
+> saved in a FITS file.
+> 
+> 2. Then we'll transform the coordinates and proper motion data from
+> ICRS back to the coordinate frame of GD-1.
+> 
+> 3. We'll put those results into a Pandas `DataFrame`, which we'll use
+> to select stars near the centerline of GD-1.
+> 
+> 4. Plotting the proper motion of those stars, we'll identify a region
+> of proper motion for stars that are likely to be in GD-1.
+> 
+> 5. Finally, we'll select and plot the stars whose proper motion is in
+> that region.
+{: .checklist}
 
 ## Reload the data
 

@@ -28,29 +28,18 @@ Now we'll do the same selection in an ADQL query, which will make it
 possible to work with a larger region of the sky and still download
 less data.
 
-## Outline
-
-Here are the steps in this lesson:
-
-1. Using data from the previous lesson, we'll identify the values of
-proper motion for stars likely to be in GD-1.
-
-2. Then we'll compose an ADQL query that selects stars based on proper
-motion, so we can download only the data we need.
-
-That will make it possible to search a bigger region of the sky in a
-single query.
-We'll also see how to write the results to a CSV file.
-
-After completing this lesson, you should be able to
-
-* Transform proper motions from one frame to another.
-
-* Compute the convex hull of a set of points.
-
-* Write an ADQL query that selects based on proper motion.
-
-* Save data in CSV format.
+> ## Outline
+> 
+> 1. Using data from the previous lesson, we'll identify the values of
+> proper motion for stars likely to be in GD-1.
+> 
+> 2. Then we'll compose an ADQL query that selects stars based on proper
+> motion, so we can download only the data we need.
+> 
+> That will make it possible to search a bigger region of the sky in a
+> single query.
+> We'll also see how to write the results to a CSV file.
+{: .checklist}
 
 ## Reload the data
 
