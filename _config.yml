@@ -10,7 +10,7 @@
 carpentry: "dc"
 
 # Overall title for pages.
-title: "Data Analysis and Visualisation for Astronomers with SQL and Python"
+title: "Foundations of Astronomical Data Science"
 
 # Life cycle stage of the lesson
 # possible values: "pre-alpha", "alpha", "beta", "stable"
