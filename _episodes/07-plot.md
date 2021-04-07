@@ -34,25 +34,16 @@ and used it to identify stars we think are likely to be in GD-1
 In this notebook, we'll take the results from previous lessons and use
 them to make a figure that tells a compelling scientific story.
 
-## Outline
-
-Here are the steps in this notebook:
-
-1. Starting with the figure from the previous notebook, we'll add
-annotations to present the results more clearly.
-
-2. The we'll see several ways to customize figures to make them more
-appealing and effective.
-
-3. Finally, we'll see how to make a figure with multiple panels or subplots.
-
-After completing this lesson, you should be able to
-
-* Design a figure that tells a compelling story.
-
-* Use Matplotlib features to customize the appearance of figures.
-
-* Generate a figure with multiple subplots.
+> ## Outline
+> 
+> 1. Starting with the figure from the previous notebook, we'll add
+> annotations to present the results more clearly.
+> 
+> 2. The we'll see several ways to customize figures to make them more
+> appealing and effective.
+> 
+> 3. Finally, we'll see how to make a figure with multiple panels or subplots.
+{: .checklist}
 
 ## Making Figures That Tell a Story
 
