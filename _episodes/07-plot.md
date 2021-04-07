@@ -177,7 +177,7 @@ plot_second_selection(winner_df)
 ~~~
 {: .output}
     
-![png](07-plot_files/07-plot_13_0.png)
+![png](../fig/07-plot_files/07-plot_13_0.png)
 
 ## Annotations
 
@@ -569,7 +569,7 @@ plot_proper_motion(centerline_df)
 ~~~
 {: .output}
    
-![png](07-plot_files/07-plot_53_0.png)
+![png](../fig/07-plot_files/07-plot_53_0.png)
 
 ## Upper left
 
@@ -611,7 +611,7 @@ plot_first_selection(candidate_df)
 ~~~
 {: .output}
     
-![png](07-plot_files/07-plot_59_0.png)
+![png](../fig/07-plot_files/07-plot_59_0.png)
 
 ## Lower right
 
@@ -652,7 +652,7 @@ plot_cmd(candidate_df)
 ~~~
 {: .output}
     
-![png](07-plot_files/07-plot_63_0.png)
+![png](../fig/07-plot_files/07-plot_63_0.png)
 
 And here's how we read it back.
 
@@ -789,7 +789,7 @@ plt.tight_layout()
 ~~~
 {: .output}
    
-![png](07-plot_files/07-plot_69_0.png)
+![png](../fig/07-plot_files/07-plot_69_0.png)
 
 We use
 [`plt.tight_layout`](https://matplotlib.org/3.3.1/tutorials/intermediate/tight_layout_guide.html)
@@ -843,7 +843,7 @@ plt.tight_layout()
 ~~~
 {: .output}
     
-![png](07-plot_files/07-plot_72_0.png)
+![png](../fig/07-plot_files/07-plot_72_0.png)
 
 This is looking more and more like the figure in the paper.
 

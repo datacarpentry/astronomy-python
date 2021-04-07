@@ -174,7 +174,7 @@ plt.plot(x, y, 'gx', markersize=0.3, alpha=0.3);
 ~~~
 {: .output}
  
-![png](04-select_files/04-select_14_0.png)
+![png](../fig/04-select_files/04-select_14_0.png)
 
 Now we'll make the same plot using proper motions in the ICRS frame,
 which are stored in columns `pmra` and `pmdec`.
@@ -201,7 +201,7 @@ plt.ylim([-20, 5]);
 ~~~
 {: .output}
   
-![png](04-select_files/04-select_16_0.png)
+![png](../fig/04-select_files/04-select_16_0.png)
 
 The proper motions of the selected stars are more spread out in this
 frame, which is why it was preferable to do the selection in the GD-1
@@ -337,7 +337,7 @@ plt.ylim([-20, 5]);
 ~~~
 {: .output}
     
-![png](04-select_files/04-select_29_0.png)
+![png](../fig/04-select_files/04-select_29_0.png)
 
 So `pm_vertices` represents the polygon we want to select.
 The next step is to use it as part of an ADQL query.
@@ -638,7 +638,7 @@ plt.ylabel('dec (degree ICRS)');
 ~~~
 {: .output}
     
-![png](04-select_files/04-select_66_0.png)
+![png](../fig/04-select_files/04-select_66_0.png)
 
 Here we can see why it was useful to transform these coordinates.  In
 ICRS, it is more difficult to identity the stars near the centerline
@@ -703,7 +703,7 @@ plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .output}
   
-![png](04-select_files/04-select_72_0.png)
+![png](../fig/04-select_files/04-select_72_0.png)
 
 We're starting to see GD-1 more clearly.
 We can compare this figure with this panel from Figure 1 from the
