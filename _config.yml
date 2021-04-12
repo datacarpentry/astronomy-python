@@ -96,3 +96,6 @@ exclude:
 
 # Turn on built-in syntax highlighting.
 highlighter: rouge
+
+# Remote theme
+remote_theme: carpentries/carpentries-theme
