@@ -221,8 +221,8 @@ single table.  The name of this function is misleading, because it
 only downloads metadata, not the contents of the table.
 
 ~~~
-meta = Gaia.load_table('gaiadr2.gaia_source')
-meta
+table_metadata = Gaia.load_table('gaiadr2.gaia_source')
+table_metadata
 ~~~
 {: .language-python}
 
@@ -241,7 +241,7 @@ it does not display the contents.
 To see the metadata, we have to print the object.
 
 ~~~
-print(meta)
+print(table_metadata)
 ~~~
 {: .language-python}
 
@@ -261,7 +261,7 @@ Num. columns: 96
 The following loop prints the names of the columns in the table.
 
 ~~~
-for column in meta.columns:
+for column in table_metadata.columns:
     print(column.name)
 ~~~
 {: .language-python}
@@ -301,10 +301,10 @@ article](https://www.vox.com/future-perfect/2019/6/4/18650969/married-women-mise
 > > ## Solution
 > > 
 > > ~~~
-> > meta2 = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
-> > print(meta2)
+> > panstarrs_metadata = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
+> > print(panstarrs_metadata)
 > > 
-> > for column in meta2.columns:
+> > for column in panstarrs_metadata.columns:
 > >     print(column.name)
 > > ~~~
 > > {: .language-python}
@@ -361,8 +361,8 @@ To run this query, we use the `Gaia` object, which represents our
 connection to the Gaia database, and invoke `launch_job`:
 
 ~~~
-job = Gaia.launch_job(query1)
-job
+job1 = Gaia.launch_job(query1)
+job1
 ~~~
 {: .language-python}
 
@@ -376,7 +376,7 @@ The result is an object that represents the job running on a Gaia server.
 If you print it, it displays metadata for the forthcoming results.
 
 ~~~
-print(job)
+print(job1)
 ~~~
 {: .language-python}
 
@@ -403,8 +403,8 @@ However, `Phase: COMPLETED` indicates that the job is complete, so we
 can get the results like this:
 
 ~~~
-results = job.get_results()
-type(results)
+results1 = job1.get_results()
+type(results1)
 ~~~
 {: .language-python}
 
@@ -438,7 +438,7 @@ rows.  But these operations use Python syntax, not SQL.
 Jupyter knows how to display the contents of a `Table`.
 
 ~~~
-results
+results1
 ~~~
 {: .language-python}
 
@@ -487,7 +487,7 @@ the Astropy `Table` by Astroquery.
 > > radial velocity measurements at all epochs.
 > >
 > > ~~~
-> > query = """SELECT 
+> > query1_with_rv = """SELECT 
 > > TOP 10
 > > source_id, ra, dec, parallax, radial_velocity
 > > FROM gaiadr2.gaia_source
@@ -548,8 +548,8 @@ from the database.
 We use `launch_job_async` to submit an asynchronous query.
 
 ~~~
-job = Gaia.launch_job_async(query2)
-job
+job2 = Gaia.launch_job_async(query2)
+job2
 ~~~
 {: .language-python}
 
@@ -563,8 +563,8 @@ INFO: Query finished. [astroquery.utils.tap.core]
 And here are the results.
 
 ~~~
-results = job.get_results()
-results
+results2 = job2.get_results()
+results2
 ~~~
 {: .language-python}
 
@@ -615,7 +615,7 @@ the quality of the astrometric solution."
 > > ## Solution
 > > In this example, the WHERE clause is in the wrong place.
 > > ~~~
-> > query = """SELECT 
+> > query2_erroneous = """SELECT 
 > > TOP 3000
 > > WHERE parallax < 1
 > > source_id, ref_epoch, ra, dec, parallax
@@ -664,7 +664,7 @@ Finally, you can use `NOT` to invert the result of a comparison.
 > > Here's a solution using > and < operators
 > > 
 > > ~~~
-> > query = """SELECT 
+> > query2_sol1 = """SELECT 
 > > TOP 10
 > > source_id, ref_epoch, ra, dec, parallax
 > > FROM gaiadr2.gaia_source
@@ -677,7 +677,7 @@ Finally, you can use `NOT` to invert the result of a comparison.
 > > And here's a solution using the BETWEEN operator
 > > 
 > > ~~~
-> > query = """SELECT 
+> > query2_sol2 = """SELECT 
 > > TOP 10
 > > source_id, ref_epoch, ra, dec, parallax
 > > FROM gaiadr2.gaia_source
@@ -793,8 +793,8 @@ Notice that the format specifier has been replaced with the value of `columns`.
 Let's run it and see if it works:
 
 ~~~
-job = Gaia.launch_job(query3)
-print(job)
+job3 = Gaia.launch_job(query3)
+print(job3)
 ~~~
 {: .language-python}
 
@@ -815,8 +815,8 @@ Owner: None
 {: .output}
 
 ~~~
-results = job.get_results()
-results
+results3 = job3.get_results()
+results3
 ~~~
 {: .language-python}
 
@@ -851,7 +851,7 @@ Good so far.
 > > ## Solution
 > > 
 > > ~~~
-> > query_base = """SELECT 
+> > query_base_sol = """SELECT 
 > > TOP 10
 > > {columns}
 > > FROM gaiadr2.gaia_source
@@ -859,9 +859,9 @@ Good so far.
 > > bp_rp BETWEEN -0.75 AND 2
 > > """
 > > 
-> > query = query_base.format(columns=columns,
+> > query_sol = query_base_sol.format(columns=columns,
 > >                           max_parallax=0.5)
-> > print(query)
+> > print(query_sol)
 > > ~~~
 > > {: .language-python}
 > {: .solution}

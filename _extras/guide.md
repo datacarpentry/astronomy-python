@@ -115,11 +115,11 @@ This idiom violates the recommendation not to repeat variables names, but since 
 pmra_poly, pmdec_poly = np.transpose(pm_vertices)
 ```
 
-* Make sure to review the query from Lesson 2 and remind learners what each filter does and why we're using it
+* Make sure to review the query from Lesson 2 (this will happen naturally when you have to retype it) and remind learners what each filter does and why we're using it
 
 * Notice that the definitions of `phi1_min`, `phi1_max`, etc.  are different in this lesson.  Because we are adding more filters, we can select a bigger region without exceeding resource limits.  If learners don't get as many "candidates" as expected, they might be using the old values of these bounds.
 
-* Defining the new region is a good opportunity to go back to the figure and connect these coordinates to the physical picture of GD-1
+* Defining the new region is a good opportunity to go back to the figure and connect these coordinates to the physical picture of GD-1 (e.g. before we were only selecting from this region now we're expanding it to this whole region)
 
 * When you get to `make_dataframe`, you might want to copy and paste it from the notes, rather than retyping.
 
@@ -131,6 +131,13 @@ pmra_poly, pmdec_poly = np.transpose(pm_vertices)
 ### Lesson 5: Joining tables
 
 * The early part of this lesson brings back a lot of best practices that learners learned in earlier lessons (e.g. exploring tables, returning the top 5 rows) this is a great opportunity to high-light these and remind learners that they've seen this before and why we're doing it.
+
+* Although we don't immediately use the column definitions in panstarrs1_best_neighbour, we will come back to them in the data exploration part of this lesson
+
+* Throughout this lesson continue to come back to the central theme of starting with a simple query and building up layers of complexity, testing each layer as you go
+
+* The Pan-STARRS join exercise is likely to feel scary to a lot of students - they have only seen one example. Emphasize the building blocks of a join e.g. FROM table1 JOIN table2 ON table1.common_column=table2.common_column. It is also worth pointing out that common_columns will not have the same names in this case
+
 
 ### Lesson 6: Photometry
 

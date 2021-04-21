@@ -59,6 +59,7 @@ P_INTERNAL_INCLUDE_LINK = re.compile(r'^{% include ([^ ]*) %}$')
 # What kinds of blockquotes are allowed?
 KNOWN_BLOCKQUOTES = {
     'callout',
+    'caution',
     'challenge',
     'checklist',
     'discussion',
@@ -72,21 +73,11 @@ KNOWN_BLOCKQUOTES = {
 }
 
 # What kinds of code fragments are allowed?
+# Below we allow all 'language-*' code blocks
 KNOWN_CODEBLOCKS = {
     'error',
     'output',
     'source',
-    'language-bash',
-    'html',
-    'language-c',
-    'language-cmake',
-    'language-cpp',
-    'language-make',
-    'language-matlab',
-    'language-python',
-    'language-r',
-    'language-shell',
-    'language-sql',
     'warning'
 }
 
@@ -117,9 +108,15 @@ def main():
 
     args = parse_args()
     args.reporter = Reporter()
-    check_config(args.reporter, args.source_dir)
+    life_cycle = check_config(args.reporter, args.source_dir)
+    # pre-alpha lessons should report without error
+    if life_cycle == "pre-alpha":
+        args.permissive = True
     check_source_rmd(args.reporter, args.source_dir, args.parser)
-    args.references = read_references(args.reporter, args.reference_path)
+
+    args.references = {}
+    if not using_remote_theme():
+        args.references = read_references(args.reporter, args.reference_path)
 
     docs = read_all_markdown(args.source_dir, args.parser)
     check_fileset(args.source_dir, args.reporter, list(docs.keys()))
@@ -173,6 +170,10 @@ def parse_args():
 
     return args
 
+def using_remote_theme():
+    config_file = os.path.join(source_dir, '_config.yml')
+    config = load_yaml(config_file)
+    return 'remote_theme' in config
 
 def check_config(reporter, source_dir):
     """Check configuration file."""
@@ -182,7 +183,7 @@ def check_config(reporter, source_dir):
     reporter.check_field(config_file, 'configuration',
                          config, 'kind', 'lesson')
     reporter.check_field(config_file, 'configuration',
-                         config, 'carpentry', ('swc', 'dc', 'lc', 'cp'))
+                         config, 'carpentry', ('swc', 'dc', 'lc', 'cp', 'incubator'))
     reporter.check_field(config_file, 'configuration', config, 'title')
     reporter.check_field(config_file, 'configuration', config, 'email')
 
@@ -194,6 +195,9 @@ def check_config(reporter, source_dir):
         reporter.check(defaults in config.get('defaults', []),
                    'configuration',
                    '"root" not set to "." in configuration')
+    if 'life_cycle' not in config:
+        config['life_cycle'] = None
+    return config['life_cycle']
 
 def check_source_rmd(reporter, source_dir, parser):
     """Check that Rmd episode files include `source: Rmd`"""
@@ -395,7 +399,8 @@ class CheckBase:
 
         for node in self.find_all(self.doc, {'type': 'codeblock'}):
             cls = self.get_val(node, 'attr', 'class')
-            self.reporter.check(cls in KNOWN_CODEBLOCKS,
+            self.reporter.check(cls is not None and (cls in KNOWN_CODEBLOCKS or
+                cls.startswith('language-')),
                                 (self.filename, self.get_loc(node)),
                                 'Unknown or missing code block type {0}',
                                 cls)
@@ -495,7 +500,8 @@ class CheckEpisode(CheckBase):
         """Run extra tests."""
 
         super().check()
-        self.check_reference_inclusion()
+        if not using_remote_theme():
+            self.check_reference_inclusion()
 
     def check_metadata(self):
         super().check_metadata()
