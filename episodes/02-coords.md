@@ -50,7 +50,7 @@ select stars from a particular region of the sky.
 
 The measurements we will work with are physical quantities, which
 means that they have two parts, a value and a unit.
-For example, the coordinate $30^{\circ}$ has value 30 and its units are degrees.
+For example, the coordinate 30<sup>°</sup> has value 30 and its units are degrees.
 
 Until recently, most scientific computation was done with values only;
 units were left out of the program altogether, [often with
@@ -119,7 +119,7 @@ angle
 ~~~
 {: .output}
 
-$10 \; \mathrm{^{\circ}}$
+10<sup>°</sup>
 
 Quantities provide a method called `to` that converts to other units.
 For example, we can compute the number of arcminutes in `angle`:
@@ -135,7 +135,7 @@ angle_arcmin
 ~~~
 {: .output}
 
-$600 \; \mathrm{^{\prime}}$
+600<sup>′</sup>
 
 If you add quantities, Astropy converts them to compatible units, if possible:
 
@@ -149,7 +149,7 @@ angle + 30 * u.arcmin
 ~~~
 {: .output}
 
-$10.5 \; \mathrm{^{\circ}}$
+10.5<sup>°</sup>
 
 If the units are not compatible, you get an error.
 For example:
@@ -310,9 +310,9 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.pn
 The axes of this figure are defined so the x-axis is aligned with the
 stars in GD-1, and the y-axis is perpendicular.
 
-* Along the x-axis ($\phi_1$) the figure extends from -100 to 20 degrees.
+* Along the x-axis (φ<sub>1</sub>) the figure extends from -100 to 20 degrees.
 
-* Along the y-axis ($\phi_2$) the figure extends from about -8 to 4 degrees.
+* Along the y-axis (φ<sub>2</sub>) the figure extends from about -8 to 4 degrees.
 
 Ideally, we would select all stars from this rectangle, but there are
 more than 10 million of them, so
@@ -326,8 +326,7 @@ single query, and
 with a smaller dataset.
 
 So we'll start by selecting stars in a smaller rectangle near the
-center of GD-1, from -55 to -45 degrees $\phi_1$ and -8 to 4 degrees
-$\phi_2$.
+center of GD-1, from -55 to -45 degrees φ<sub>1</sub> and -8 to 4 degrees φ<sub>2</sub>.
 
 But first we let's see how to represent these coordinates with Astropy.
 
@@ -428,7 +427,7 @@ These are the coordinates shown in the figure from the paper, above.
 > 
 > 2. Transform it to the ICRS frame.
 > 
-> Hint: Because ICRS is built into Astropy, you can specify it by name,
+> Hint: Because ICRS is a standard frame, it is built into Astropy. You can specify it by name,
 > `icrs` (as we did with `galactic`).
 >
 > > ## Solution
@@ -464,7 +463,7 @@ Now we'll use these coordinate transformations to define a rectangle
 in the GD-1 frame and transform it to ICRS.
 
 The following variables define the boundaries of the rectangle in
-$\phi_1$ and $\phi_2$.
+φ<sub>1</sub> and φ<sub>2</sub>.
 
 ~~~
 phi1_min = -55 * u.degree
@@ -486,8 +485,8 @@ def make_rectangle(x1, x2, y1, y2):
 ~~~
 {: .language-python}
 
-The return value is a tuple containing a list of coordinates in `phi1`
-followed by a list of coordinates in `phi2`.
+The return value is a tuple containing a list of coordinates in φ<sub>1</sub>
+followed by a list of coordinates in φ<sub>2</sub>.
 
 ~~~
 phi1_rect, phi2_rect = make_rectangle(
@@ -498,8 +497,9 @@ phi1_rect, phi2_rect = make_rectangle(
 `phi1_rect` and `phi2_rect` contains the coordinates of the corners of
 a rectangle in the GD-1 frame.
 
-In order to use them in a Gaia query, we have to convert them to ICRS.
-First we'll put them into a `SkyCoord` object.
+While it is easier to visualize the regions we want to define in the GD-1 frame, the coordinates in the Gaia catalog are in the ICRS frame.
+In order to use the rectangle we defined, we need to convert the coordinates from the GD-1 frame to the ICRS frame. We’ll do this using the 
+SkyCoord object. Fortunately SkyCoord objects can take lists of coordinates, in addition to single values.
 
 ~~~
 corners = SkyCoord(phi1=phi1_rect, phi2=phi2_rect, frame=gd1_frame)
@@ -531,7 +531,7 @@ corners_icrs
 
 Notice that a rectangle in one coordinate system is not necessarily a
 rectangle in another.  In this example, the result is a
-(non-rectangular) polygon.
+(non-rectangular) polygon. This is why we defined our rectangle in the GD-1 frame.
 
 ## Defining a polygon
 
@@ -592,7 +592,8 @@ s.replace(' ', ', ')
 ~~~
 {: .output}
 
-The following function combines these steps.
+This is something we'll need to do multiple times, we we’ll write a function to do it for us so we don’t have to copy and paste every time.
+The following function combines these steps. 
 
 ~~~
 def skycoord_to_string(skycoord):
