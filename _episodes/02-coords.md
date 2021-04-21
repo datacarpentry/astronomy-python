@@ -497,8 +497,9 @@ phi1_rect, phi2_rect = make_rectangle(
 `phi1_rect` and `phi2_rect` contains the coordinates of the corners of
 a rectangle in the GD-1 frame.
 
-In order to use them in a Gaia query, we have to convert them to ICRS.
-First we'll put them into a `SkyCoord` object.
+While it is easier to visualize the regions we want to define in the GD-1 frame, the coordinates in the Gaia catalog are in the ICRS frame.
+In order to use the rectangle we defined, we need to convert the coordinates from the GD-1 frame to the ICRS frame. We’ll do this using the 
+SkyCoord object. Fortunately SkyCoord objects can take lists of coordinates, in addition to single values.
 
 ~~~
 corners = SkyCoord(phi1=phi1_rect, phi2=phi2_rect, frame=gd1_frame)
@@ -530,7 +531,7 @@ corners_icrs
 
 Notice that a rectangle in one coordinate system is not necessarily a
 rectangle in another.  In this example, the result is a
-(non-rectangular) polygon.
+(non-rectangular) polygon. This is why we defined our rectangle in the GD-1 frame.
 
 ## Defining a polygon
 
@@ -591,7 +592,8 @@ s.replace(' ', ', ')
 ~~~
 {: .output}
 
-The following function combines these steps.
+This is something we'll need to do multiple times, we we’ll write a function to do it for us so we don’t have to copy and paste every time.
+The following function combines these steps. 
 
 ~~~
 def skycoord_to_string(skycoord):
