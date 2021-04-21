@@ -258,7 +258,7 @@ import it using the shortened name `plt`.
 > {: .language-python}
 {: .callout}
 
-Pyplot provides two functions that can make scatterplots,
+Pyplot provides two functions that can make scatter plots,
 [plt.scatter](https://matplotlib.org/3.3.0/api/_as_gen/matplotlib.pyplot.scatter.html)
 and
 [plt.plot](https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html).
