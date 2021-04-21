@@ -275,7 +275,7 @@ Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/04.02-simple-scatt
 Since we are plotting more than 100,000 points and they are all the
 same size and color, we'll use `plot`.
 
-Here's a scatter plot with right ascension on the x-axis and
+Here’s a scatter plot of the stars we selected in the GD-1 region with right ascension on the x-axis and
 declination on the y-axis, both ICRS coordinates in degrees.
 
 ~~~
@@ -348,11 +348,11 @@ transparency of the points.
 ## Transform back
 
 Remember that we selected data from a rectangle of coordinates in the
-`GD1Koposov10` frame, then transformed them to ICRS when we
+`GD1` frame, then transformed them to ICRS when we
 constructed the query.
 The coordinates in `results` are in ICRS.
 
-To plot them, we will transform them back to the `GD1Koposov10` frame;
+To plot them, we will transform them back to the `GD1` frame;
 that way, the axes of the figure are aligned with the orbit of GD-1,
 which is useful for two reasons:
 
@@ -404,14 +404,14 @@ The result is an Astropy `SkyCoord` object, which we can transform to
 the GD-1 frame.
 
 ~~~
-from gala.coordinates import GD1Koposov10
+from gala.coordinates import GD1
 
-gd1_frame = GD1Koposov10()
+gd1_frame = GD1()
 transformed = skycoord.transform_to(gd1_frame)
 ~~~
 {: .language-python}
 
-The result is another `SkyCoord` object, now in the `GD1Koposov10` frame.
+The result is another `SkyCoord` object, now in the `GD1` frame.
 
 ## Reflex Correction
 
@@ -454,7 +454,7 @@ skycoord_gd1 = reflex_correct(transformed)
 The result is a `SkyCoord` object that contains 
 
 * `phi1` and `phi2`, which represent the transformed coordinates in
-the `GD1Koposov10` frame.
+the `GD1` frame.
 
 * `pm_phi1_cosphi2` and `pm_phi2`, which represent the transformed and
 corrected proper motions.
