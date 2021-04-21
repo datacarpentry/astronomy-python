@@ -379,7 +379,7 @@ Now we're going to do something similar, but in addition to `ra` and
 
 * `pmra` and `pmdec`, which are proper motion in the ICRS frame, and
 
-* `distance` and `radial_velocity`, which we explain below.
+* `distance` and `radial_velocity`, which are important for the reflex correction and will be discussed in that section.
 
 ~~~
 import astropy.units as u
@@ -398,7 +398,7 @@ skycoord = SkyCoord(ra=results['ra'],
 
 For the first four arguments, we use columns from `results`.
 
-For `distance` and `radial_velocity` we use constants, which we explain below.
+For `distance` and `radial_velocity` we use constants, which we explain in the section on reflex correction.
 
 The result is an Astropy `SkyCoord` object, which we can transform to
 the GD-1 frame.
@@ -456,8 +456,7 @@ The result is a `SkyCoord` object that contains
 * `phi1` and `phi2`, which represent the transformed coordinates in
 the `GD1` frame.
 
-* `pm_phi1_cosphi2` and `pm_phi2`, which represent the transformed and
-corrected proper motions.
+* `pm_phi1_cosphi2` and `pm_phi2`, which represent the transformed proper motions that have been corrected for the motion of the solar system around the Galactic center.
 
 We can select the coordinates and plot them like this:
 
@@ -874,8 +873,8 @@ There are about 25,000 stars in this region, about 18% of the total.
 
 ## Plotting proper motion
 
-Since we've plotted proper motion several times, let's put that code
-in a function.
+This is the second time we’re plotting proper motion, and we can imagine we might do it a few more times. Instead of copying
+and pasting the previous code, let’s write a function that we can reuse on any dataframe.
 
 ~~~
 def plot_proper_motion(df):
@@ -1109,8 +1108,8 @@ provide a name, or "key", that identifies the Dataset in the file.
 We could use any string as the key, but it will be convenient to give
 the Dataset in the file the same name as the `DataFrame`.
 
-The argument `mode='w'` means that if the file already exists, we
-should overwrite it.
+By default, writing a dataframe appends a new dataset to an existing HDF5 file. We will use the argument `mode='w'` to overwrite the 
+file if it already exists rather than append another dataset to it.
 
 > ## Exercise (5 minutes)
 > 
