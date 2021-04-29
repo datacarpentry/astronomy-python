@@ -20,7 +20,6 @@ Be able to:
 * Identify and navigate to your home directory.
 * Identify your current working directory.
 * Navigating directories using `pwd`, `ls`, `cd <subdirectory>`, and `cd ..`
-* Run a Python script from the command line.
 
 ### Python skills
 
