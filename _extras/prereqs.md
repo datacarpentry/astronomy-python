@@ -36,7 +36,6 @@ Be able to:
 * Write a `for` loop that increments a variable.
 * Write conditional statements using `if`, `elif`, and `else`.
 * Use comparison operators (`==`, `!=`, `<`, `<=`, `>`, `>=`) in conditional statements.
-* Read data from a file using `read()`, `readline()`, and `readlines()`.
 * Open, read from, write to, and close input and output files. 
 * Use `print()` and `len()` to inspect variables. 
 
