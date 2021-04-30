@@ -23,7 +23,7 @@ This is the fifth in a series of notebooks related to astronomy data.
 As a continuing example, we will replicate part of the analysis in a
 recent paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
 of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian M.
-Price-Whelan and Ana Bonaca.
+Price-Whelan and Ana Bonaca. Our goal is to obtain `g` and `r` band photometry from the Pan-STARRS survey for each candidate star we've identified in the Gaia catalog.
 
 Picking up where we left off, the next step in the analysis is to
 select candidate stars based on photometry data.
@@ -62,8 +62,7 @@ between the BP and RP bands).
 We use this variable to select stars with `bp_rp` between -0.75 and 2,
 which excludes many class M dwarf stars.
 
-Now, to select stars with the age and metal richness we expect in
-GD-1, we will use `g-i` color and apparent `g`-band magnitude, which
+But we can do one better than that. Assuming GD-1 is a globular cluster, all of the stars formed at the same time from the same material, so the stars' photometric properties should be consistent with a single isochrone in a color magnitude diagram. Therefore, to select stars with the age and metal richness we expect in GD-1, we can use `g-i` color and apparent `g`-band magnitude, which
 are available from the Pan-STARRS survey.
 
 Conveniently, the Gaia server provides data from Pan-STARRS as a table
@@ -75,7 +74,7 @@ corresponding star in the Pan-STARRS catalog is not easy.  This kind
 of cross matching is not always possible, because a star might appear
 in one catalog and not the other.  And even when both stars are
 present, there might not be a clear one-to-one relationship between
-stars in the two catalogs.
+stars in the two catalogs. Additional [catalog matching tools](https://docs.astropy.org/en/stable/coordinates/matchsep.html#matching-catalogs) are available from the Astropy coordinates package.  
 
 Fortunately, smart people have worked on this problem, and the Gaia
 database includes cross-matching tables that suggest a best neighbor
@@ -390,7 +389,7 @@ And let's run it, to make sure we have a working query to build on.
 ~~~
 from astroquery.gaia import Gaia
 
-job = Gaia.launch_job_async(query=query_cone)
+job = Gaia.launch_job(query=query_cone)
 ~~~
 {: .language-python}
 
@@ -509,7 +508,7 @@ column from the Gaia table with the `source_id` column from the best
 neighbor table.
 
 ~~~
-query_base = """SELECT 
+query_base_neighbors = """SELECT 
 {columns}
 FROM gaiadr2.gaia_source AS gaia
 JOIN gaiadr2.panstarrs1_best_neighbour AS best
@@ -551,8 +550,8 @@ column_list = ['gaia.source_id',
               ]
 columns = ', '.join(column_list)
 
-query = query_base.format(columns=columns)
-print(query)
+query_neighbors = query_base_neighbors.format(columns=columns)
+print(query_neighbors)
 ~~~
 {: .language-python}
 
@@ -569,7 +568,7 @@ WHERE 1=CONTAINS(
 {: .output}
 
 ~~~
-job = Gaia.launch_job_async(query=query)
+job_neighbors = Gaia.launch_job_async(query_neighbors)
 ~~~
 {: .language-python}
 
@@ -579,8 +578,8 @@ INFO: Query finished. [astroquery.utils.tap.core]
 {: .output}
 
 ~~~
-results = job.get_results()
-results
+results_neighbors = job_neighbors.get_results()
+results_neighbors
 ~~~
 {: .language-python}
 
@@ -627,7 +626,7 @@ here](https://www.geeksforgeeks.org/sql-join-set-1-inner-left-right-and-full-joi
 > > ## Solution
 > > 
 > > ~~~
-> > query_base = """SELECT 
+> > query_base_solution = """SELECT 
 > > {columns}
 > > FROM gaiadr2.gaia_source as gaia
 > > JOIN gaiadr2.panstarrs1_best_neighbour as best
@@ -651,12 +650,12 @@ here](https://www.geeksforgeeks.org/sql-join-set-1-inner-left-right-and-full-joi
 > > 
 > > columns = ', '.join(column_list)
 > > 
-> > query = query_base.format(columns=columns)
-> > print(query)
+> > query_solution = query_base_solution.format(columns=columns)
+> > print(query_solution)
 > > 
-> > job = Gaia.launch_job_async(query=query)
-> > results = job.get_results()
-> > results
+> > job_solution = Gaia.launch_job_async(query_solution)
+> > results_solution = job_solution.get_results()
+> > results_solution
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -900,78 +899,6 @@ found in Pan-STARRS, there are no other stars in Gaia that also match.
 number of stars in Pan-STARRS that match in terms of position, before
 using other criteria to choose the most likely match.  But we are more
 interested in the final match, using both criteria.
-
-## Transforming coordinates
-
-As always we retrieve coordinates from the database in ICRS coordinates but we always want to visualize them in GD-1 coordinates. 
-Here's the function we've used to transform the results from ICRS to
-GD-1 coordinates.
-
-~~~
-import astropy.units as u
-from astropy.coordinates import SkyCoord
-from gala.coordinates import GD1Koposov10
-from gala.coordinates import reflex_correct
-
-def make_dataframe(table):
-    """Transform coordinates from ICRS to GD-1 frame.
-    
-    table: Astropy Table
-    
-    returns: Pandas DataFrame
-    """
-    skycoord = SkyCoord(
-               ra=table['ra'], 
-               dec=table['dec'],
-               pm_ra_cosdec=table['pmra'],
-               pm_dec=table['pmdec'], 
-               distance=8*u.kpc, 
-               radial_velocity=0*u.km/u.s)
-
-    gd1_frame = GD1Koposov10()
-    transformed = skycoord.transform_to(gd1_frame)
-    skycoord_gd1 = reflex_correct(transformed)
-
-    df = table.to_pandas()
-    df['phi1'] = skycoord_gd1.phi1
-    df['phi2'] = skycoord_gd1.phi2
-    df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
-    df['pm_phi2'] = skycoord_gd1.pm_phi2
-    return df
-~~~
-{: .language-python}
-
-Now can transform the result from the last query.
-
-~~~
-candidate_df = make_dataframe(results)
-~~~
-{: .language-python}
-
-And see how it looks.
-
-~~~
-import matplotlib.pyplot as plt
-
-x = candidate_df['phi1']
-y = candidate_df['phi2']
-plt.plot(x, y, 'ko', markersize=0.5, alpha=0.5)
-
-plt.xlabel('phi1 (degree GD1)')
-plt.ylabel('phi2 (degree GD1)');
-~~~
-{: .language-python}
-
-~~~
-<Figure size 432x288 with 1 Axes>
-~~~
-{: .output}
-  
-![png](../fig/05-join_files/05-join_70_0.png)
-
-The result is similar to what we saw in the previous lesson, except
-that have fewer stars now, because we did not find photometry data for
-all of the candidate sources.
 
 ## Saving the DataFrame
 
