@@ -156,11 +156,10 @@ pmra_poly, pmdec_poly = np.transpose(pm_vertices)
 
 * Students may ask why we're initializing an empty array and then creating the columns on the fly. DataFrame initialize with arrays of rows rather than columns, so this is the easiest way without having to do some array manipulation. See https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html for more details.
 
-
-
-
-
-
-
 ### Lesson 7: Visualization
+
+* This lesson is largely about showing learners selected capabilities that will make their lives easier. Matplotlib is a huge package with infinite flexibility - this is in no way complete but hopefully gives them some barebones tools to work with and inspired them to explore further. 
+
+* In addition to the links provided in the lesson it is nice to show learners the [list of plotting commands](https://matplotlib.org/stable/api/pyplot_summary.html) and the [examples gallery](https://matplotlib.org/stable/gallery/index.html). 
+
 {% include links.md %}
