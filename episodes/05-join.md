@@ -534,7 +534,7 @@ WHERE 1=CONTAINS(
 Now that there's more than one table involved, we can't use simple
 column names any more; we have to use **qualified column names**.
 In other words, we have to specify which table each column is in. 
-The column names do not have to be the same and in fact in the next join they will not be. 
+The column names do not have to be the same and, in fact, in the next join they will not be. 
 That is one of the reasons that we explicitly specify them.
 Here's the complete query, including the columns we want from the Gaia
 and best neighbor tables. Here you can start to see that using the abbreviated names
