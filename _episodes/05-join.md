@@ -112,13 +112,12 @@ hope) in the Pan-STARRS catalog.
 
 To do that we will:
 
-1. Use the `JOIN` operator to look up each `source_id` in the
-`panstarrs1_best_neighbour` table, which contains the `obj_id` of the
-best match for each star in the Gaia catalog; then
+1. Use the `JOIN` operator to look up each Pan-STARRS `obj_id` for the stars 
+we are interested in in the` panstarrs1_best_neighbour` table using the `source_id`s
+that we have already identified.
 
-2. Use the `JOIN` operator again to look up each `obj_id` in the
-`panstarrs1_original_valid` table, which contains the Pan-STARRS
-photometry data we want.
+2. Use the `JOIN` operator again to look up the Pan-STARRS photometry for these stars
+in the `panstarrs1_original_valid` table using the` obj_ids` we just identified.
 
 Before we get to the `JOIN` operation, let's explore these tables.
 Here's the metadata for `panstarrs1_best_neighbour`.
@@ -234,7 +233,7 @@ results
 
 ## The Pan-STARRS table
 
-Here's the metadata for the table that contains the Pan-STARRS data.
+Now that we know the Pan-STARRS obj_id, we are ready to match this to the photometry in the panstarrs1_original_valid table. Here's the metadata for the table that contains the Pan-STARRS data.
 
 ~~~
 meta = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
@@ -368,7 +367,11 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/join.png
 ## Joining tables
 
 Now let's get to the details of performing a `JOIN` operation.
-As a starting place, let's go all the way back to the cone search from Lesson 2.
+
+We are about to build a complex query using software that doesn’t provide us with much information on debugging.
+For this reason we are going to start with a simplified version of what we want to do until we’re sure we’re joining
+the tables correctly, then we’ll slowly add more layers of complexity, checking at each stage that our query still works.
+As a starting place, let's go all the way back to the cone search from Lesson 2. 
 
 ~~~
 query_cone = """SELECT 
@@ -419,7 +422,8 @@ results
 {: .output}
 
 Now we can start adding features.
-First, let's replace `source_id` with a format specifier, `columns`: 
+First, let's replace `source_id` with a format specifier, `columns` so that we can alter what columns we 
+want to return without having to modify our base query:
 
 ~~~
 query_base = """SELECT 
@@ -497,7 +501,8 @@ The join operation requires two clauses:
 
 In this example, we join with `gaiadr2.panstarrs1_best_neighbour AS
 best`, which means we can refer to the best neighbor table with the
-abbreviated name `best`.
+abbreviated name `best`, which will save us a lot of typing. Similarly,
+we will be referring to the `gaiadr2.gaia_source` table by the abbreviated name `gaia`.
 
 And the `ON` clause indicates that we'll match up the `source_id`
 column from the Gaia table with the `source_id` column from the best
@@ -528,9 +533,12 @@ WHERE 1=CONTAINS(
 
 Now that there's more than one table involved, we can't use simple
 column names any more; we have to use **qualified column names**.
-In other words, we have to specify which table each column is in.
+In other words, we have to specify which table each column is in. 
+The column names do not have to be the same and in fact in the next join they will not be. 
+That is one of the reasons that we explicitly specify them.
 Here's the complete query, including the columns we want from the Gaia
-and best neighbor tables.
+and best neighbor tables. Here you can start to see that using the abbreviated names
+is making our query easier to read and is less typing for us.
 
 ~~~
 column_list = ['gaia.source_id',
@@ -656,6 +664,8 @@ here](https://www.geeksforgeeks.org/sql-join-set-1-inner-left-right-and-full-joi
 
 ## Selecting by coordinates and proper motion
 
+We’re now going to replace the cone search with the GD1 selection that we built in previous lessons. 
+We’ll start by making sure that our previous query works, then add in the JOIN.
 Now let's bring in the `WHERE` clause from the previous lesson, which
 selects sources based on parallax, BP-RP color, sky coordinates, and
 proper motion.
@@ -893,6 +903,7 @@ interested in the final match, using both criteria.
 
 ## Transforming coordinates
 
+As always we retrieve coordinates from the database in ICRS coordinates but we always want to visualize them in GD-1 coordinates. 
 Here's the function we've used to transform the results from ICRS to
 GD-1 coordinates.
 
@@ -990,17 +1001,7 @@ getsize(filename) / MB
 ~~~
 {: .output}
 
-## Summary
-
-In this notebook, we used database `JOIN` operations to select
-photometry data for the stars we've identified as candidates to be in
-GD-1.
-
-In the next notebook, we'll use this data for a second round of
-selection, identifying stars that have photometry data consistent with
-GD-1.
-
-But before you go on, you might be interested in another file format, CSV.
+Before you go on, you might be interested in another file format, CSV.
 
 ## CSV
 
@@ -1122,3 +1123,13 @@ Notice that the index in `candidate_df` has become an unnamed column
 in `read_back_csv`.  The Pandas functions for writing and reading CSV
 files provide options to avoid that problem, but this is an example of
 the kind of thing that can go wrong with CSV files.
+
+## Summary
+
+In this notebook, we used database `JOIN` operations to select
+photometry data for the stars we've identified as candidates to be in
+GD-1.
+
+In the next notebook, we'll use this data for a second round of
+selection, identifying stars that have photometry data consistent with
+GD-1.
