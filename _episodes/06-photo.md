@@ -189,7 +189,7 @@ contains this overdense regioin.
 ## Isochrone
 
 Given our understanding of the age, metallicity, and distance to GD-1 we can overlay a
-theoretical isochrone for GD-1 from the MESA Isochrones and Stellar Tracks and better identify the main sequence of GD-1
+theoretical isochrone for GD-1 from the MESA Isochrones and Stellar Tracks and better identify the main sequence of GD-1.
 
 > ## Calculating Isochrone
 > In fact, we can use [MESA Isochrones & Stellar Tracks](http://waps.cfa.harvard.edu/MIST/) (MIST) 
