@@ -794,7 +794,7 @@ We use
 [`plt.tight_layout`](https://matplotlib.org/3.3.1/tutorials/intermediate/tight_layout_guide.html)
 at the end, which adjusts the sizes of the panels to make sure the
 titles and axis labels don't overlap. You can see how convenient it is that we’ve written functions to plot each panel. 
-This code is concise and readable: we can see what is being plot in each panel thanks to our explicit function names and
+This code is concise and readable: we can see what is being plotted in each panel thanks to our explicit function names and
 we know where to look if we want to see the mechanics of exactly how the plotting is done.
 
 > ## Exercise 
