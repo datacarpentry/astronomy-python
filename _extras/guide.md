@@ -140,14 +140,26 @@ pmra_poly, pmdec_poly = np.transpose(pm_vertices)
 
 
 ### Lesson 6: Photometry
+* It is easy in this lesson to lose track of the main point: that we want to define a polygon around the main sequence of GD-1 so we can further hone our sample of candidate GD-1 stars. As we spend time on the isochrone, creating the polygon, etc make sure to come back to this big picture often.
 
-* The notes include code that uses `read_mist_models` to read the isochrone computed by MIST, clean the data, and get it into a `DataFrame`.  You *can* present this material, but you don't have to.  The alternative is to skip to the next section, which reads the cleaned isochrone data from `gd1_data` as a `DataFrame`.
+* The key take away from the CMD presentation is that GD-1 is a globular cluster which means all of the stars formed at the same time. Therefore we expect the stars in GD-1 to follow a single, tight isochrone, the main sequence of which we can easily identify.
 
-* In the original paper, they use an idiosyncratic function to define the boundaries of the isochrone filter.  You *can* present the original form, but it takes some explaining.  The alternative is to use the simpler boundaries in the notes.
+* If you (or someone in the class) are interested in how to calculate the Isochrone from the MIST models, the code can be found TODO: finish this sentence
+
+* In the original paper, they use an idiosyncratic function to define the boundaries of the isochrone filter. The intention is to define a polygon that gets wider as g increases, to reflect increasing uncertainty. For this exercise we will be using a simplified version which is a constant offset from the isochrone.
+
+* Turning the selection we've defined into a polygon (making a loop) can be challenging to explain verbally but fairly simple visually. This is a nice time to return to the slides or draw a picture
+
+* In the manipulation we do to create the polygon, it can get lost that left_color, right_color, and color_loop are all x values for the polygon (and that g and mag_loop are the y values). It is worth coming back to this over and over as you introduce each variable.
 
 * learners might express concern that the polygon we use to select candidate stars is not closed.  That's ok; the `contains_points` method treats the polygon as if it is closed (by connecting the last point to the first).
 
-
+* Students may ask why we're initializing an empty array and then creating the columns on the fly. DataFrame initialize with arrays of rows rather than columns, so this is the easiest way without having to do some array manipulation. See https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html for more details.
 
 ### Lesson 7: Visualization
+
+* This lesson is largely about showing learners selected capabilities that will make their lives easier. Matplotlib is a huge package with infinite flexibility - this is in no way complete but hopefully gives them some barebones tools to work with and inspired them to explore further. 
+
+* In addition to the links provided in the lesson it is nice to show learners the [list of plotting commands](https://matplotlib.org/stable/api/pyplot_summary.html) and the [examples gallery](https://matplotlib.org/stable/gallery/index.html). 
+
 {% include links.md %}
