@@ -39,21 +39,21 @@ them to make a figure that tells a compelling scientific story.
 > 1. Starting with the figure from the previous notebook, we'll add
 > annotations to present the results more clearly.
 > 
-> 2. The we'll see several ways to customize figures to make them more
+> 2. Then we'll see several ways to customize figures to make them more
 > appealing and effective.
 > 
-> 3. Finally, we'll see how to make a figure with multiple panels or subplots.
+> 3. Finally, we'll see how to make a figure with multiple panels.
 {: .checklist}
 
 ## Making Figures That Tell a Story
 
-So far the figure we've made have been "quick and dirty".  Mostly we
+So far the figures we've made have been "quick and dirty".  Mostly we
 have used Matplotlib's default style, although we have adjusted a few
 parameters, like `markersize` and `alpha`, to improve legibility.
 
 Now that the analysis is done, it's time to think more about:
 
-1. Making professional-looking figures that are ready for publication, and
+1. Making professional-looking figures that are ready for publication.
 
 2. Making figures that communicate a scientific result clearly and compellingly.
 
@@ -279,7 +279,8 @@ plt.gca().tick_params(direction='in')
 ## rcParams
 
 If you want to make a customization that applies to all figures in a
-notebook, you can use `rcParams`.
+notebook, you can use `rcParams`. When you import matplotlib, a dictionary is created with default values
+for everything you can change about your plot. This is what you are overriding with `tick_params` above. 
 
 Here's an example that reads the current font size from `rcParams`:
 
@@ -300,14 +301,22 @@ plt.rcParams['font.size'] = 14
 ~~~
 {: .language-python}
 
-As an exercise, plot the previous figure again, and see what font
-sizes have changed.  Look up any other element of `rcParams`, change
-its value, and check the effect on the figure.
+> ## Exercise
+> Plot the previous figure again, and see what font
+> sizes have changed.  Look up any other element of `rcParams`, change
+> its value, and check the effect on the figure.
+{: .challenge}
 
-If you find yourself making the same customizations in several
-notebooks, you can put changes to `rcParams` in a `matplotlibrc` file,
-[which you can read about
-here](https://matplotlib.org/3.3.1/tutorials/introductory/customizing.html#customizing-with-matplotlibrc-files).
+When you import Matplotlib, `plt.rcParams` is populated from a matplotlibrc file. 
+If you want to permanently change a setting for every plot you make, you can set that in your matplotlibrc file. 
+To find out where your matplotlibrc file lives type:
+~~~
+import matplotlib
+matplotlib.matplotlib_fname()
+~~~
+{: .language-python}
+
+If the file doesn’t exist, you can download one from [this tutorial](https://matplotlib.org/stable/tutorials/introductory/customizing.html#matplotlibrc-sample) to modify.
 
 ## Style sheets
 
@@ -366,16 +375,6 @@ If you can't find a style sheet that's exactly what you want, you can
 make your own.  This repository includes a style sheet called
 `az-paper-twocol.mplstyle`, with customizations chosen by Azalee
 Bostroem for publication in astronomy journals.
-
-You can [download the style
-sheet](https://github.com/AllenDowney/AstronomicalData/raw/main/az-paper-twocol.mplstyle)
-or run the following cell, which downloads it if necessary.
-
-~~~
-download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
-         'az-paper-twocol.mplstyle')
-~~~
-{: .language-python}
 
 You can use it like this:
 
@@ -436,7 +435,7 @@ If you go back and draw the figure again, you should see the difference.
 > ~~~
 > LaTeX Error: File `type1cm.sty' not found.
 > ~~~
-> {: .language-python}
+> {: .error}
 > 
 > You might have to install a package that contains the fonts LaTeX
 > needs.  On some systems, the packages `texlive-latex-extra` or
@@ -446,7 +445,7 @@ If you go back and draw the figure again, you should see the difference.
 > In case you are curious, `cm` stands for [Computer
 > Modern](https://en.wikipedia.org/wiki/Computer_Modern), the font LaTeX
 > uses to typeset math.
-{: .error}
+{: .callout}
 
 Before we go on, let's put things back where we found them.
 
@@ -794,9 +793,13 @@ plt.tight_layout()
 We use
 [`plt.tight_layout`](https://matplotlib.org/3.3.1/tutorials/intermediate/tight_layout_guide.html)
 at the end, which adjusts the sizes of the panels to make sure the
-titles and axis labels don't overlap.
+titles and axis labels don't overlap. You can see how convenient it is that we’ve written functions to plot each panel. 
+This code is concise and readable: we can see what is being plotted in each panel thanks to our explicit function names and
+we know where to look if we want to see the mechanics of exactly how the plotting is done.
 
-As an exercise, see what happens if you leave out `tight_layout`.
+> ## Exercise 
+> What happens if you leave out `tight_layout`?
+{: .challenge}
 
 ## Adjusting proportions
 
@@ -807,7 +810,8 @@ compress the ones on the right.
 To do that, we'll use the `colspan` argument to make a panel that
 spans multiple columns in the grid.
 
-In the following example, `shape` is `(2, 4)`, which means 2 rows and 4 columns.
+In the following example, `shape` is `(2, 4)`, which means 2 rows and 4 columns. To do this we’ll need more columns so we’ll 
+change the shape from (2,2) to (2,4). 
 
 The panels on the left span three columns, so they are three times
 wider than the panels on the right.
