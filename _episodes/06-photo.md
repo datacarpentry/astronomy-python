@@ -181,7 +181,7 @@ plot_cmd(candidate_df)
  
 Our figure does not look exactly like the one in the paper because we
 are working with a smaller region of the sky, so we don't have as many
-stars.  But we can see the main sequence of GD-1 as an overdense region in the lower left..
+stars.  But we can see the main sequence of GD-1 as an overdense region in the lower left.
 
 In the next section we'll use an isochrone to specify a polygon that
 contains this overdense regioin.
