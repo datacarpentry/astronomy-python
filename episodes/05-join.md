@@ -538,7 +538,7 @@ The column names do not have to be the same and, in fact, in the next join they 
 That is one of the reasons that we explicitly specify them.
 Here's the complete query, including the columns we want from the Gaia
 and best neighbor tables. Here you can start to see that using the abbreviated names
-is making our query easier to read and is less typing for us.
+is making our query easier to read and requires less typing for us.
 
 ~~~
 column_list = ['gaia.source_id',
