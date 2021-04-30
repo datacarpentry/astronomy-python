@@ -19,8 +19,6 @@ keypoints:
 
 # 6. Photometry
 
-This is the sixth in a series of notebooks related to astronomy data.
-
 As a continuing example, we will replicate part of the analysis in a
 recent paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
 of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian M.
@@ -160,12 +158,12 @@ represents the axes of the current figure, and that object provides
 > ~~~
 > plt.invert_yaxis()
 > ~~~
-> {: .language-python}
+> {: .error}
 > 
 > The most likely reason for this inconsistency
 > in the interface is that `invert_yaxis` is a lesser-used function, so
 > it's not made available at the top level of the interface.
-{: .error}
+{: .callout}
 
 Here's what the results look like.
 
@@ -183,36 +181,27 @@ plot_cmd(candidate_df)
  
 Our figure does not look exactly like the one in the paper because we
 are working with a smaller region of the sky, so we don't have as many
-stars.  But we can see an overdense region in the lower left that
-contains stars with the photometry we expect for GD-1.
+stars.  But we can see the main sequence of GD-1 as an overdense region in the lower left.
 
 In the next section we'll use an isochrone to specify a polygon that
 contains this overdense regioin.
 
 ## Isochrone
 
-Based on our best estimates for the ages of the stars in GD-1 and
-their metallicity, we can compute a [stellar
-isochrone](https://en.wikipedia.org/wiki/Stellar_isochrone) that
-predicts the relationship between their magnitude and color.
+Given our understanding of the age, metallicity, and distance to GD-1 we can overlay a
+theoretical isochrone for GD-1 from the MESA Isochrones and Stellar Tracks and better identify the main sequence of GD-1.
 
-In fact, we can use [MESA Isochrones & Stellar
-Tracks](http://waps.cfa.harvard.edu/MIST/) (MIST) to compute it for
-us.
-
-Using the [MIST Version 1.2 web
-interface](http://waps.cfa.harvard.edu/MIST/interp_isos.html), we
-computed an isochrone with the following parameters:
-    
-* Rotation initial v/v_crit = 0.4
-
-* Single age, linear scale = 12e9
-
-* Composition [Fe/H] = -1.35
-
-* Synthetic Photometry, PanStarrs
-
-* Extinction av = 0
+> ## Calculating Isochrone
+> In fact, we can use [MESA Isochrones & Stellar Tracks](http://waps.cfa.harvard.edu/MIST/) (MIST) 
+> to compute it for us.
+> Using the [MIST Version 1.2 web interface](http://waps.cfa.harvard.edu/MIST/interp_isos.html), 
+> we computed an isochrone with the following parameters:
+> * Rotation initial v/v_crit = 0.4
+> * Single age, linear scale = 12e9
+> * Composition [Fe/H] = -1.35
+> * Synthetic Photometry, PanStarrs
+> * Extinction av = 0
+{: .callout}
 
 The following cell downloads the results:
 
@@ -485,9 +474,9 @@ plt.plot(iso_df['color_g_i'], iso_df['mag_g']);
 In the bottom half of the figure, the isochrone passes through the
 overdense region where the stars are likely to belong to GD-1.
 
-In the top half, the isochrone passes through other regions where the
-stars have higher magnitude and metallicity than we expect for stars
-in GD-1.
+Although some stars near the top half of the isochrone likely belong to GD-1, 
+these represent stars that have evolved off the main sequence. The density of GD-1 stars in this region is therefore
+much less and the contamination with other stars much greater. So get the purest sample of GD-1 stars we will select only stars on the main sequence.
 
 So we'll select the part of the isochrone that lies in the overdense region.
 
@@ -526,21 +515,6 @@ iso_masked.head()
 
 Now, to select the stars in the overdense region, we have to define a
 polygon that includes stars near the isochrone.
-
-The original paper uses the following formulas to define the left and
-right boundaries.
-
-~~~
-g = iso_masked['mag_g']
-left_color = iso_masked['color_g_i'] - 0.4 * (g/28)**5
-right_color = iso_masked['color_g_i'] + 0.8 * (g/28)**5
-~~~
-{: .language-python}
-
-The intention is to define a polygon that gets wider as `g` increases,
-to reflect increasing uncertainty.
-
-But we can do about as well with a simpler formula:
 
 ~~~
 g = iso_masked['mag_g']
@@ -648,8 +622,11 @@ plt.plot(color_loop, mag_loop);
     
 ![png](../fig/06-photo_files/06-photo_70_0.png)
 
-To make a `Polygon`, it will be convenient to put `color_loop` and
-`mag_loop` into a `DataFrame`:
+To make a `Polygon`, it will be useful to put `color_loop` and 
+`mag_loop` into a `DataFrame`. This is convenient for two reasons - first, `Polygon`
+is expecting an Nx2 array and the `DataFrame` provides an easy way for us to pass that
+in that is also descriptive for us. Secondly, for reproducibility of our work, we may want
+to save the region we use to select stars, and the `DataFrame`, as we’ve already seen, allows us to save into a variety of formats.
 
 ~~~
 loop_df = pd.DataFrame()
@@ -687,11 +664,13 @@ polygon
 The result is a `Polygon` object , which provides `contains_points`,
 which figures out which points are inside the polygon.
 
-To test it, we'll create a list with two points, one inside the
-polygon and one outside.
+When we encounter a new object, its good to create a toy example to test 
+that it does what you think it does. Let’s create two points, one that we expect
+to be inside the polygon and one that we expect to be outside the polygon
+and check that we get the results we expect from contains_points.
 
 ~~~
-points = [(0.4, 20), 
+test_points = [(0.4, 20), 
           (0.4, 16)]
 ~~~
 {: .language-python}
@@ -699,8 +678,8 @@ points = [(0.4, 20),
 Now we can make sure `contains_points` does what we expect.
 
 ~~~
-inside = polygon.contains_points(points)
-inside
+test_inside_mask = polygon.contains_points(points)
+test_inside_mask
 ~~~
 {: .language-python}
 
@@ -725,7 +704,7 @@ research."
 
 This Jupyter notebook is an example of reproducible research because
 it contains all of the code needed to reproduce the results, including
-the database queries that download the data and and analysis.
+the database queries that download the data and analysis.
 
 In this lesson we used an isochrone to derive a polygon, which we used
 to select stars based on photometry.
@@ -742,15 +721,17 @@ loop_df.to_hdf(filename, 'loop_df')
 ## Selecting based on photometry
 
 Now let's see how many of the candidate stars are inside the polygon we chose.
-We'll put color and magnitude data from `candidate_df` into a new `DataFrame`:
+As we just saw, `contains_points` expects a list of (x,y) pairs. As with creating the `Polygon`, `DataFrames` are
+a convenient way to pass the colors and magnitudes for all of our stars in `candidates_df` to our `Polygon` to see
+which candidates are inside the polygon. We’ll start by putting color and magnitude data from `candidate_df` into a new `DataFrame`.
 
 ~~~
-points = pd.DataFrame()
+cmd_df = pd.DataFrame()
 
-points['color'] = candidate_df['g_mean_psf_mag'] - candidate_df['i_mean_psf_mag']
-points['mag'] = candidate_df['g_mean_psf_mag']
+cmd_df['color'] = candidate_df['g_mean_psf_mag'] - candidate_df['i_mean_psf_mag']
+cmd_df['mag'] = candidate_df['g_mean_psf_mag']
 
-points.head()
+cmd_df.head()
 ~~~
 {: .language-python}
 
@@ -767,7 +748,7 @@ points.head()
 Which we can pass to `contains_points`:
 
 ~~~
-inside = polygon.contains_points(points)
+inside = polygon.contains_points(cmd_df)
 inside
 ~~~
 {: .language-python}
