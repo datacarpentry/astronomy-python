@@ -368,7 +368,7 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/join.png
 
 Now let's get to the details of performing a `JOIN` operation.
 
-We are about to build a complex query using software that doesn’t provide us with much information on debugging.
+We are about to build a complex query using software that doesn’t provide us with any helpful information for debugging.
 For this reason we are going to start with a simplified version of what we want to do until we’re sure we’re joining
 the tables correctly, then we’ll slowly add more layers of complexity, checking at each stage that our query still works.
 As a starting place, let's go all the way back to the cone search from Lesson 2. 
