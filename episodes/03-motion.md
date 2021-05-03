@@ -93,7 +93,7 @@ The result is an Astropy `Table`.
 We can use `info` to refresh our memory of the contents.
 
 ~~~
-results.info
+results.info()
 ~~~
 {: .language-python}
 
@@ -514,9 +514,16 @@ provides different capabilities.  But working with multiple object
 types can be awkward.
 
 It will be more convenient to choose one object and get all of the
-data into it.  We'll choose a Pandas `DataFrame`, for two reasons:
+data into it.  Two common choices are the Pandas `DataFrame` and Astropy `Table`.
+Pandas `DataFrame`s and Astropy `Table`s share many of the same characteristics 
+and most of the manipulations that we do can be done with either.  As you become
+more familiar with each, you will develop a sense of which one you prefer for 
+different tasks.  For instance you may choose to use Astropy `Table`s to read
+in data, especially astronomy specific data formats but Pandas `DataFrame`s to
+inspect the data. Fortunately, Astropy makes it easy to convert between the 
+two data types. We'll choose to use Pandas `DataFrame`, for two reasons:
 
-1. It provides capabilities that (almost) a superset of the other data
+1. It provides capabilities that are (almost) a superset of the other data
 structures, so it's the all-in-one solution.
 
 2. Pandas is a general-purpose tool that is useful in many domains,
@@ -525,7 +532,10 @@ tool, Pandas is a good choice.
 
 However, compared to an Astropy `Table`, Pandas has one big drawback:
 it does not keep the metadata associated with the table, including the
-units for the columns.
+units for the columns.  Nevertheless, we think its a useful data type
+to be familiar with.
+
+
 
 It's easy to convert a `Table` to a Pandas `DataFrame`.
 
@@ -1105,10 +1115,12 @@ selected_df.to_hdf(filename, 'selected_df', mode='w')
 Because an HDF5 file can contain more than one Dataset, we have to
 provide a name, or "key", that identifies the Dataset in the file.
 
-We could use any string as the key, but it will be convenient to give
-the Dataset in the file the same name as the `DataFrame`.
+We could use any string as the key, but it is generally a good practice
+to use a descriptive name (just like your `DataFrame` variable name) so 
+ we will give the Dataset in the file the same name (key) as the `DataFrame`.
 
-By default, writing a dataframe appends a new dataset to an existing HDF5 file. We will use the argument `mode='w'` to overwrite the 
+By default, writing a `DataFrame` appends a new dataset to an existing HDF5 file.
+ We will use the argument `mode='w'` to overwrite the 
 file if it already exists rather than append another dataset to it.
 
 > ## Exercise (5 minutes)
@@ -1127,7 +1139,9 @@ file if it already exists rather than append another dataset to it.
 > {: .solution}
 {: .challenge}
 
-We can use `getsize` to confirm that the file exists and check the size:
+We can use `getsize` to confirm that the file exists and check the size.
+`getsize` returns a value in bytes. For the size files we're looking at, it will
+be useful to view their size in MegaBytes (MB), so we'll divide by 1024*1024.
 
 ~~~
 from os.path import getsize
@@ -1162,12 +1176,8 @@ with pd.HDFStore(filename) as hdf:
 > more about [context managers](https://book.pythontips.com/en/latest/context_managers.html).
 {: .callout}
 
-The keys are the names of the Datasets.  Notice that they start with
-`/`, which indicates that they are at the top level of the Dataset
-hierarchy, and not in a named "group".
-
-In future lessons we will add a few more Datasets to this file, but
-not so many that we need to organize them into groups.
+The keys are the names of the Datasets which makes it easy for us to remember which `DataFrame` is
+in which Dataset.
 
 ## Summary
 
