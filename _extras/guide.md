@@ -88,7 +88,7 @@ Because this lesson follows a single dataset throughout, its easy for learners (
 * Notice that the first time we use `DataFrame.to_hdf`, we use the `w` argument to indicate that we want to create a new, empty HDF Store.  For all subsequent uses, we should *not* use the `w` argument, so that we add new Datasets to the existing Store, rather than starting over.
 * At the end of Day 1, if a student is lost or struggled with the end of this lesson, point them to the static version of the HDF5 files (TODO: decide where this lives) so that they can read it in with everyone else on Day 2.
 
-* If a learner notices that there is a / in front of the keys at the end of the lesson here's what they mean: `/` indicates that the keys  are at the top level of the Dataset hierarchy, and not in a named "group". In future lessons we will add a few more Datasets to this file, but
+* If a learner notices that there is a `/` in front of the keys at the end of the lesson here's what they mean: `/` indicates that the keys  are at the top level of the Dataset hierarchy, and not in a named "group". In future lessons we will add a few more Datasets to this file, but
 not so many that we need to organize them into groups.
 
 ### Lesson 4: Coordinate transformation and selection
