@@ -478,8 +478,11 @@ phi2_max = 4 * u.degree
 ~~~
 {: .language-python}
 
-To create a rectangle, we'll use the following function, which takes
-the lower and upper bounds as parameters.
+Throughout this lesson we are going to be defining a rectangle often. 
+Rather than copy and paste multiple lines of code we will write a function to build the rectangle for use. 
+By having the code contained in a single location, we can easily fix bugs or update our implementation as needed. 
+By choosing an explicit function name our code is also self documenting, meaning its easy for us to see that we're building a rectangle when we call this function. 
+To create a rectangle, we'll use the following function, which takes the lower and upper bounds as parameters.
 
 ~~~
 def make_rectangle(x1, x2, y1, y2):
