@@ -294,6 +294,11 @@ results
 > > results = job.get_results()
 > > results
 > > ~~~
+> > <Table length=1>
+> > count
+> > int64
+> > -----
+> > 594
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
