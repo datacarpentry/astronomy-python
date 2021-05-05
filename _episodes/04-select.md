@@ -578,14 +578,19 @@ len(candidate_table)
 We call the results `candidate_table` because it contains stars that
 are good candidates for GD-1.
 
-For the next lesson, we'll need `point_list` and `pm_point_list`
-again, so we should save them in a file.
+Both `point_list` and `pm_point_list` are a set of selection criteria that we
+derived from data downloaded from the Gaia Database. To make sure we can repeat
+our analysis at a later date we should save both lists in a file.
 There are several ways we could do that, but since we are already
 storing data in an HDF file, let's do the same with these variables.
 
-We've seen how to save a `DataFrame` in an HDF file.
-We can do the same thing with a Pandas `Series`.
-To make one, we'll start with a dictionary:
+To save them to an HDF file we first need to put them in a `DataFrame`.
+We've seen how to create a `DataFrame` from an Astropy `Table` and from 
+another `DataFrame`, now we'll build one from scratch. To do this we need
+an object that can define both the name of each column (or `Series`) and 
+the data to go in that column. We can use a Python `Dictionary` for this, 
+defining the column names with the dictionary keys and the column data with
+the dictionary values. 
 
 ~~~
 d = dict(point_list=point_list, pm_point_list=pm_point_list)
@@ -599,10 +604,10 @@ d
 ~~~
 {: .output}
 
-And use it to initialize a `Series.`
+And use it to initialize a `DataFrame`.
 
 ~~~
-point_series = pd.Series(d)
+point_series = pd.DataFrame(d)
 point_series
 ~~~
 {: .language-python}
