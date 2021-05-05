@@ -305,10 +305,13 @@ pmra_poly, pmdec_poly = np.transpose(pm_vertices)
 ~~~
 {: .language-python}
 
-This use of `transpose` is a useful NumPy idiom.  Because
-`pm_vertices` has two columns, its [matrix
-transpose](https://en.wikipedia.org/wiki/Transpose) has two rows,
-which are assigned to the two variables `pmra_poly` and `pmdec_poly`.
+> ## Note
+> This use of `transpose` is a useful NumPy idiom to turn data that is listed as 
+> rows of (x,y) pairs into an array of x values and an array of y values. Because
+> `pm_vertices` has two columns, its [matrix
+> transpose](https://en.wikipedia.org/wiki/Transpose) has two rows,
+> which are assigned to the two variables `pmra_poly` and `pmdec_poly`.
+> {: .callout}
 
 The following figure shows proper motion in ICRS again, along with the
 convex hull we just computed.
