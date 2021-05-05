@@ -356,7 +356,7 @@ FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
   AND 1 = CONTAINS(POINT(ra, dec), 
-                   POLYGON({point_list}))
+                   POLYGON({sky_point_list}))
 """
 ~~~
 {: .language-python}
@@ -418,8 +418,8 @@ def skycoord_to_string(skycoord):
 {: .language-python}
 
 ~~~
-point_list = skycoord_to_string(corners_icrs)
-point_list
+sky_point_list = skycoord_to_string(corners_icrs)
+sky_point_list
 ~~~
 {: .language-python}
 
@@ -439,7 +439,7 @@ Now we have everything we need to assemble the query.
 
 ~~~
 query5 = query5_base.format(columns=columns, 
-                            point_list=point_list)
+                            sky_point_list=sky_point_list)
 print(query5)
 ~~~
 {: .language-python}
@@ -510,7 +510,7 @@ pm_point_list
 > > WHERE parallax < 1
 > >   AND bp_rp BETWEEN -0.75 AND 2 
 > >   AND 1 = CONTAINS(POINT(ra, dec), 
-> >                    POLYGON({point_list}))
+> >                    POLYGON({sky_point_list}))
 > >   AND 1 = CONTAINS(POINT(pmra, pmdec),
 > >                    POLYGON({pm_point_list}))
 > > """
@@ -522,13 +522,13 @@ pm_point_list
 > ## Exercise (5 minutes)
 > 
 > Use `format` to format `query6_base` and define `query6`, filling in
-> the values of `columns`, `point_list`, and `pm_point_list`.
+> the values of `columns`, `sky_point_list`, and `pm_point_list`.
 >
 > > ## Solution
 > > 
 > > ~~~
 > > query6 = query6_base.format(columns=columns, 
-> >                             point_list=point_list,
+> >                             sky_point_list=sky_point_list,
 > >                             pm_point_list=pm_point_list)
 > > print(query6)
 > > ~~~
@@ -578,7 +578,7 @@ len(candidate_table)
 We call the results `candidate_table` because it contains stars that
 are good candidates for GD-1.
 
-Both `point_list` and `pm_point_list` are a set of selection criteria that we
+Both `sky_point_list` and `pm_point_list` are a set of selection criteria that we
 derived from data downloaded from the Gaia Database. To make sure we can repeat
 our analysis at a later date we should save both lists in a file.
 There are several ways we could do that, but since we are already
@@ -593,13 +593,13 @@ defining the column names with the dictionary keys and the column data with
 the dictionary values. 
 
 ~~~
-d = dict(point_list=point_list, pm_point_list=pm_point_list)
+d = dict(sky_point_list=sky_point_list, pm_point_list=pm_point_list)
 d
 ~~~
 {: .language-python}
 
 ~~~
-{'point_list': '135.306, 8.39862, 126.51, 13.4449, 163.017, 54.2424, 172.933, 46.4726, 135.306, 8.39862',
+{'sky_point_list': '135.306, 8.39862, 126.51, 13.4449, 163.017, 54.2424, 172.933, 46.4726, 135.306, 8.39862',
  'pm_point_list': ' -4.05037121,-14.75623261, -3.41981085,-14.72365546, -3.03521988,-14.44357135, -2.26847919,-13.7140236 , -2.61172203,-13.24797471, -2.73471401,-13.09054471, -3.19923146,-12.5942653 , -3.34082546,-12.47611926, -5.67489413,-11.16083338, -5.95159272,-11.10547884, -6.42394023,-11.05981295, -7.09631023,-11.95187806, -7.30641519,-12.24559977, -7.04016696,-12.88580702, -6.00347705,-13.75912098, -4.42442296,-14.74641176'}
 ~~~
 {: .output}
@@ -613,7 +613,7 @@ point_series
 {: .language-python}
 
 ~~~
-point_list       135.306, 8.39862, 126.51, 13.4449, 163.017, 54...
+sky_point_list       135.306, 8.39862, 126.51, 13.4449, 163.017, 54...
 pm_point_list     -4.05037121,-14.75623261, -3.41981085,-14.723...
 dtype: object
 ~~~

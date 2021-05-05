@@ -678,14 +678,14 @@ FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
   AND 1 = CONTAINS(POINT(ra, dec), 
-                   POLYGON({point_list}))
+                   POLYGON({sky_point_list}))
   AND 1 = CONTAINS(POINT(pmra, pmdec),
                    POLYGON({pm_point_list}))
 """
 ~~~
 {: .language-python}
 
-Let's reload the Pandas `Series` that contains `point_list` and `pm_point_list`.
+Let's reload the Pandas `Series` that contains `sky_point_list` and `pm_point_list`.
 
 ~~~
 import pandas as pd
@@ -697,7 +697,7 @@ point_series
 {: .language-python}
 
 ~~~
-point_list       135.306, 8.39862, 126.51, 13.4449, 163.017, 54...
+sky_point_list       135.306, 8.39862, 126.51, 13.4449, 163.017, 54...
 pm_point_list     -4.05037121,-14.75623261, -3.41981085,-14.723...
 dtype: object
 ~~~
@@ -709,7 +709,7 @@ Now we can assemble the query.
 columns = 'source_id, ra, dec, pmra, pmdec'
 
 query6 = query6_base.format(columns=columns,
-                            point_list=point_series['point_list'],
+                            sky_point_list=point_series['sky_point_list'],
                             pm_point_list=point_series['pm_point_list'])
 
 print(query6)
@@ -790,7 +790,7 @@ results
 > > WHERE parallax < 1
 > >   AND bp_rp BETWEEN -0.75 AND 2 
 > >   AND 1 = CONTAINS(POINT(gaia.ra, gaia.dec), 
-> >                    POLYGON({point_list}))
+> >                    POLYGON({sky_point_list}))
 > >   AND 1 = CONTAINS(POINT(gaia.pmra, gaia.pmdec),
 > >                    POLYGON({pm_point_list}))
 > > """
@@ -798,7 +798,7 @@ results
 > > columns = ', '.join(column_list)
 > > 
 > > query7 = query7_base.format(columns=columns,
-> >                             point_list=point_series['point_list'],
+> >                             sky_point_list=point_series['sky_point_list'],
 > >                             pm_point_list=point_series['pm_point_list'])
 > > print(query7)
 > > 

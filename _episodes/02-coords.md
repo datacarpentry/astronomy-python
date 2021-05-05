@@ -615,8 +615,8 @@ def skycoord_to_string(skycoord):
 Here's how we use it.
 
 ~~~
-point_list = skycoord_to_string(corners_icrs)
-point_list
+sky_point_list = skycoord_to_string(corners_icrs)
+sky_point_list
 ~~~
 {: .language-python}
 
@@ -658,18 +658,18 @@ FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
   AND 1 = CONTAINS(POINT(ra, dec), 
-                   POLYGON({point_list}))
+                   POLYGON({sky_point_list}))
 """
 ~~~
 {: .language-python}
 
-The query base contains format specifiers for `columns` and `point_list`.
+The query base contains format specifiers for `columns` and `sky_point_list`.
 
 We'll use `format` to fill in these values.
 
 ~~~
 query4 = query4_base.format(columns=columns, 
-                          point_list=point_list)
+                          sky_point_list=sky_point_list)
 print(query4)
 ~~~
 {: .language-python}
@@ -747,14 +747,14 @@ FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
   AND 1 = CONTAINS(POINT(ra, dec), 
-                   POLYGON({point_list}))
+                   POLYGON({sky_point_list}))
 """
 ~~~
 {: .language-python}
 
 ~~~
 query5 = query5_base.format(columns=columns, 
-                          point_list=point_list)
+                          sky_point_list=sky_point_list)
 print(query5)
 ~~~
 {: .language-python}
