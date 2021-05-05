@@ -652,42 +652,8 @@ Here we can see why it was useful to transform these coordinates.  In
 ICRS, it is more difficult to identity the stars near the centerline
 of GD-1.
 
-So let's transform the results back to the GD-1 frame.
-Here's the code we used to transform the coordinates and make a Pandas
-`DataFrame`, wrapped in a function.
-
-~~~
-from gala.coordinates import reflex_correct
-
-def make_dataframe(table):
-    """Transform coordinates from ICRS to GD-1 frame.
-    
-    table: Astropy Table
-    
-    returns: Pandas DataFrame
-    """
-    skycoord = SkyCoord(
-               ra=table['ra'], 
-               dec=table['dec'],
-               pm_ra_cosdec=table['pmra'],
-               pm_dec=table['pmdec'], 
-               distance=8*u.kpc, 
-               radial_velocity=0*u.km/u.s)
-
-    gd1_frame = GD1Koposov10()
-    transformed = skycoord.transform_to(gd1_frame)
-    skycoord_gd1 = reflex_correct(transformed)
-
-    df = table.to_pandas()
-    df['phi1'] = skycoord_gd1.phi1
-    df['phi2'] = skycoord_gd1.phi2
-    df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
-    df['pm_phi2'] = skycoord_gd1.pm_phi2
-    return df
-~~~
-{: .language-python}
-
-Here's how we use it:
+So let's transform the results back to the GD-1 frame using the `make_dataframe` function 
+we wrote in episode 3.
 
 ~~~
 candidate_df = make_dataframe(candidate_table)

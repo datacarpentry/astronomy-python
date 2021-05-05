@@ -617,6 +617,63 @@ results_df.shape
 We could have: `proper_motion` contains the same data as
 `pm_phi1_cosphi2` and `pm_phi2`, but in a different format.
 
+Before we go any further, let's take all of the steps that we've done 
+and consolidate them into a single function that we can use to take the
+coordinates and proper motion that we get as an Astropy `Table` from our 
+Gaia query and transform it into a 
+Pandas `DataFrame` and add columns representing the reflex corrected 
+GD-1 coordinates and proper motions.
+This is a general function that we'll use multiple times as we build different
+queries so we want to write it once and then call the function rather than having 
+to copy and paste the code over and over again.
+
+~~~
+def make_dataframe(table):
+    """Transform coordinates from ICRS to GD-1 frame.
+    
+    table: Astropy Table
+    
+    returns: Pandas DataFrame
+    """
+    #Create a SkyCoord object with the coordinates and proper motions
+    # in the input table
+    skycoord = SkyCoord(
+               ra=table['ra'], 
+               dec=table['dec'],
+               pm_ra_cosdec=table['pmra'],
+               pm_dec=table['pmdec'], 
+               distance=8*u.kpc, 
+               radial_velocity=0*u.km/u.s)
+
+    # Define the GD-1 reference frame
+    gd1_frame = GD1Koposov10()
+
+    # Transform input coordinates to the GD-1 reference frame
+    transformed = skycoord.transform_to(gd1_frame)
+
+    # Correct GD-1 coordinates for solar system motion around galactic center
+    skycoord_gd1 = reflex_correct(transformed)
+
+    # Create DataFrame
+    df = table.to_pandas()
+
+    #Add GD-1 reference frame columns for coordinates and proper motions
+    df['phi1'] = skycoord_gd1.phi1
+    df['phi2'] = skycoord_gd1.phi2
+    df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
+    df['pm_phi2'] = skycoord_gd1.pm_phi2
+    return df
+~~~
+{: .language-python}
+
+Here's how we use it:
+
+~~~
+results_df = make_dataframe(results_table)
+~~~
+{: .language-python}
+
+
 ## Exploring data
 
 One benefit of using Pandas is that it provides functions for
