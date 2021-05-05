@@ -607,8 +607,8 @@ d
 And use it to initialize a `DataFrame`.
 
 ~~~
-point_series = pd.DataFrame(d)
-point_series
+point_df = pd.DataFrame(d)
+point_df
 ~~~
 {: .language-python}
 
@@ -623,7 +623,7 @@ Now we can save it in the usual way.
 
 ~~~
 filename = 'gd1_data.hdf'
-point_series.to_hdf(filename, 'point_series')
+point_df.to_hdf(filename, 'point_df')
 ~~~
 {: .language-python}
 
