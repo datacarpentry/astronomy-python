@@ -652,8 +652,9 @@ Here we can see why it was useful to transform these coordinates.  In
 ICRS, it is more difficult to identity the stars near the centerline
 of GD-1.
 
-So let's transform the results back to the GD-1 frame using the `make_dataframe` function 
-we wrote in episode 3.
+We can use our `make_dataframe` function from episode 3 to transform the results back
+to the GD-1 frame. In addition to doing the coordinate transformation and reflex correction
+for us this function also compiles everything into a single object (a `DataFrame`) to make it easier to use. Note that because we put this code into a function, we can do all of this with a single line of code!
 
 ~~~
 candidate_df = make_dataframe(candidate_table)
