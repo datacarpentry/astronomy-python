@@ -623,7 +623,7 @@ coordinates and proper motion that we get as an Astropy `Table` from our
 Gaia query, transform it into a 
 Pandas `DataFrame`, and add columns representing the reflex corrected 
 GD-1 coordinates and proper motions.
-This is a general function that we'll use multiple times as we build different
+This is a general function that we will use multiple times as we build different
 queries so we want to write it once and then call the function rather than having 
 to copy and paste the code over and over again.
 
