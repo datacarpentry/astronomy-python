@@ -112,12 +112,6 @@ This idiom violates the recommendation not to repeat variables names, but since 
 
 * The use of ConvexHull in this lesson is a bit of a hack, but some learners will find the computation geometry functions in SciPy useful.
 
-* This lesson includes a NumPy trick for assigning columns of an array to variables:
-
-```
-pmra_poly, pmdec_poly = np.transpose(pm_vertices)
-```
-
 * Make sure to review the query from Lesson 2 (this will happen naturally when you have to retype it) and remind learners what each filter does and why we're using it
 
 * Notice that the definitions of `phi1_min`, `phi1_max`, etc.  are different in this lesson.  Because we are adding more filters, we can select a bigger region without exceeding resource limits.  If learners don't get as many "candidates" as expected, they might be using the old values of these bounds.
@@ -125,6 +119,8 @@ pmra_poly, pmdec_poly = np.transpose(pm_vertices)
 * Defining the new region is a good opportunity to go back to the figure and connect these coordinates to the physical picture of GD-1 (e.g. before we were only selecting from this region now we're expanding it to this whole region)
 
 * When you get to `make_dataframe`, you might want to copy and paste it from the notes, rather than retyping.
+
+* Learners may ask why we are using `dict(key1=value1, key2=value2)` rather than `{key1:value1, key2:value2}`. We are using the `dict` syntax so that the key value pairs look like keyword arguments. This may simplify the understanding for learners who are less familiar with dictionaries.
 
 * Recall that the first time we use `DataFrame.to_hdf`, we use the `w` argument to indicate that we want to create a new, empty HDF Store.  For all subsequent uses, we should *not* use the `w` argument, so that we add new Datasets to the existing Store, rather than starting over.
 
