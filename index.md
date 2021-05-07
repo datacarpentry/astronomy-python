@@ -16,12 +16,14 @@ M. Price-Whelan and Ana Bonaca. The lessons show how to identify and visualize t
 cluster that has been tidally stretched by the Milky Way.
 
 This lesson can be taught in approximately 10 hours and covers the following topics:
-* Incremential creation of complex ADQL and SQL queries, including asynchronous queries.
-* Transforming coordinates between common coordinate systems.
+* Incremental creation of complex ADQL and SQL queries.
+* Using Astroquery to query a remote server in Python.
+* Transforming coordinates between common coordinate systems using Astropy units and coordinates.
 * Working with common astronomical file formats, including FITS, HDF5, and CSV.
+* Managing your data with Pandas DataFrames and Astropy Tables.
 * Writing functions to make your work less error-prone and more reproducible.
+* Creating a reproducible workflow that brings the computation to the data.
 * Customising all elements of a plot and creating complex, multi-panel, publication-quality graphics.
-* AZALEE WHAT IS MISSING HERE?
 
 <!-- this is an html comment -->
 
@@ -40,7 +42,7 @@ This lesson can be taught in approximately 10 hours and covers the following top
 > to be familiar with.
 > 
 > In addition, this lesson assumes that learners have some familiarity with astronomical concepts, including 
-> SOME THINGS THA AZALEE WILL ADD HERE. Participants should bring their own laptops and plan to participate actively.
+> reference frames, proper motion, color-magnitude diagrams, globular clusters, and isochrones. Participants should bring their own laptops and plan to participate actively.
 {: .prereq}
 
 {% include links.md %}
