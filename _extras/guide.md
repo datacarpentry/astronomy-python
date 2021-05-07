@@ -120,7 +120,7 @@ This idiom violates the recommendation not to repeat variables names, but since 
 
 * When you get to `make_dataframe`, you might want to copy and paste it from the notes, rather than retyping.
 
-* Learners may ask why we're using `dict(key1=value1, key2=value2)` rather than `{key1:value1, key2:value2}`. We are using the `dict` syntax so that the key value pairs look like keyword arguments. This may simplify the understanding for learners who are less familiar with dictionaries.
+* Learners may ask why we are using `dict(key1=value1, key2=value2)` rather than `{key1:value1, key2:value2}`. We are using the `dict` syntax so that the key value pairs look like keyword arguments. This may simplify the understanding for learners who are less familiar with dictionaries.
 
 * Recall that the first time we use `DataFrame.to_hdf`, we use the `w` argument to indicate that we want to create a new, empty HDF Store.  For all subsequent uses, we should *not* use the `w` argument, so that we add new Datasets to the existing Store, rather than starting over.
 
