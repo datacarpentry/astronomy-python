@@ -621,7 +621,7 @@ Before we go any further, we will take all of the steps that we have done
 and consolidate them into a single function that we can use to take the
 coordinates and proper motion that we get as an Astropy `Table` from our 
 Gaia query, transform it into a 
-Pandas `DataFrame` and add columns representing the reflex corrected 
+Pandas `DataFrame`, and add columns representing the reflex corrected 
 GD-1 coordinates and proper motions.
 This is a general function that we'll use multiple times as we build different
 queries so we want to write it once and then call the function rather than having 
