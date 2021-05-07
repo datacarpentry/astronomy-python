@@ -666,7 +666,7 @@ def make_dataframe(table):
 ~~~
 {: .language-python}
 
-Here's how we use it:
+Here is how we use the function:
 
 ~~~
 results_df = make_dataframe(results_table)
