@@ -580,7 +580,7 @@ are good candidates for GD-1.
 
 Both `sky_point_list` and `pm_point_list` are a set of selection criteria that we
 derived from data downloaded from the Gaia Database. To make sure we can repeat
-our analysis at a later date we should save both lists in a file.
+our analysis at a later date we should save both lists to a file.
 There are several ways we could do that, but since we are already
 storing data in an HDF file, let's do the same with these variables.
 
