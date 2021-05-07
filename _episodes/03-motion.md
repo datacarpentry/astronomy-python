@@ -617,7 +617,7 @@ results_df.shape
 We could have: `proper_motion` contains the same data as
 `pm_phi1_cosphi2` and `pm_phi2`, but in a different format.
 
-Before we go any further, let's take all of the steps that we've done 
+Before we go any further, we will take all of the steps that we have done 
 and consolidate them into a single function that we can use to take the
 coordinates and proper motion that we get as an Astropy `Table` from our 
 Gaia query and transform it into a 
