@@ -585,7 +585,7 @@ There are several ways we could do that, but since we are already
 storing data in an HDF file, let's do the same with these variables.
 
 To save them to an HDF file we first need to put them in a `DataFrame`.
-We've seen how to create a `DataFrame` from an Astropy `Table` and from 
+We have seen how to create a `DataFrame` from an Astropy `Table` and from 
 another `DataFrame`, now we'll build one from scratch. To do this we need
 an object that can define both the name of each column (or `Series`) and 
 the data to go in that column. We can use a Python `Dictionary` for this, 
