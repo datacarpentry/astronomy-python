@@ -620,7 +620,7 @@ We could have: `proper_motion` contains the same data as
 Before we go any further, we will take all of the steps that we have done 
 and consolidate them into a single function that we can use to take the
 coordinates and proper motion that we get as an Astropy `Table` from our 
-Gaia query and transform it into a 
+Gaia query, transform it into a 
 Pandas `DataFrame` and add columns representing the reflex corrected 
 GD-1 coordinates and proper motions.
 This is a general function that we'll use multiple times as we build different
