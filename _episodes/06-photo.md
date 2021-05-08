@@ -34,7 +34,7 @@ The following figure from the paper is a color-magnitude diagram
 showing the stars we previously selected based on proper motion:
 
 <img width="300"
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-3.png">
+src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-3.png" alt="Color-magnitude diagram for the stars selected based on proper motion, from Price-Whelan and Bonaca paper.">
 
 In red is a theoretical isochrone, showing where we expect the stars
 in GD-1 to fall based on the metallicity and age of their original
@@ -91,7 +91,7 @@ diagram](https://en.wikipedia.org/wiki/Galaxy_color%E2%80%93magnitude_diagram)
 from the original paper:
 
 <img width="300"
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-3.png">
+src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-3.png" alt="Color-magnitude diagram for the stars selected based on proper motion, from Price-Whelan and Bonaca paper.">
 
 The y-axis shows the apparent magnitude of each source with the [g
 filter](https://en.wikipedia.org/wiki/Photometric_system).
@@ -177,7 +177,7 @@ plot_cmd(candidate_df)
 ~~~
 {: .output}
     
-![png](../fig/06-photo_files/06-photo_12_0.png)
+![Color magnitude diagram of our selected stars showing overdense region in lower left.](../fig/06-photo_files/06-photo_12_0.png)
  
 Our figure does not look exactly like the one in the paper because we
 are working with a smaller region of the sky, so we don't have as many
@@ -386,7 +386,7 @@ plt.plot(color_g_i, mag_g);
 ~~~
 {: .output}
   
-![png](../fig/06-photo_files/06-photo_42_0.png)
+![Color magnitude diagram of our selected stars with theoretical isochrone overlaid as blue curve.](../fig/06-photo_files/06-photo_42_0.png)
 
 The theoretical isochrone passes through the overdense region where we
 expect to find stars in GD-1.
@@ -469,7 +469,7 @@ plt.plot(iso_df['color_g_i'], iso_df['mag_g']);
 ~~~
 {: .output}
 
-![png](../fig/06-photo_files/06-photo_52_0.png)
+![Color magnitude diagram of our selected stars with theoretical isochrone overlaid as blue curve.](../fig/06-photo_files/06-photo_52_0.png)
 
 In the bottom half of the figure, the isochrone passes through the
 overdense region where the stars are likely to belong to GD-1.
@@ -540,7 +540,7 @@ plt.legend();
 ~~~
 {: .output}
     
-![png](../fig/06-photo_files/06-photo_62_0.png)
+![Color magnitude diagram of our selected stars showing left boundary as blue curve and right boundary as orange curve.](../fig/06-photo_files/06-photo_62_0.png)
 
 ## Which points are in the polygon?
 
@@ -620,7 +620,7 @@ plt.plot(color_loop, mag_loop);
 ~~~
 {: .output}
     
-![png](../fig/06-photo_files/06-photo_70_0.png)
+![Color magnitude diagram of our selected stars showing polygon defined by boundaries as blue curve.](../fig/06-photo_files/06-photo_70_0.png)
 
 To make a `Polygon`, it will be useful to put `color_loop` and 
 `mag_loop` into a `DataFrame`. This is convenient for two reasons - first, `Polygon`
@@ -797,7 +797,7 @@ plt.plot(x, y, 'go', markersize=0.5, alpha=0.5);
 ~~~
 {: .output}
     
-![png](../fig/06-photo_files/06-photo_91_0.png)
+![Color magnitude diagram of our selected stars showing polygon as orange curve with isochrone overlaid as blue curve.](../fig/06-photo_files/06-photo_91_0.png)
 
 It looks like the selected stars are, in fact, inside the polygon,
 which means they have photometry data consistent with GD-1.
@@ -823,7 +823,7 @@ plt.axis('equal');
 ~~~
 {: .output}
   
-![png](../fig/06-photo_files/06-photo_93_0.png)
+![Right ascension and declination of selected stars in GD-1 frame after selecting for both proper motion and photometry.](../fig/06-photo_files/06-photo_93_0.png)
 
 This example includes two new Matplotlib commands:
 
