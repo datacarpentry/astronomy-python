@@ -699,8 +699,7 @@ diagram](https://sci.esa.int/web/gaia/-/60198-gaia-hertzsprung-russell-diagram)
 shows the BP-RP color and luminosity of stars in the Gaia catalog
 (Copyright: ESA/Gaia/DPAC, CC BY-SA 3.0 IGO).
 
-<img width="300"
-src="https://github.com/AllenDowney/AstronomicalData/raw/main/images/1567214809100-ESA_Gaia_DR2_HRD_Gaia_625.jpg" alt="Hertzsprung-Russell diagram of BP-RP color versus luminosity.">
+![Hertzsprung-Russell diagram of BP-RP color versus luminosity.](../fig/Gaia-HR-diagram.jpeg)
 
 Selecting stars with `bp-rp` less than 2 excludes many [class M dwarf
 stars](https://xkcd.com/2360/), which are low temperature, low
