@@ -31,7 +31,7 @@ The following figure from the paper is a color-magnitude diagram for
 the stars selected based on proper motion:
 
 <img width="300"
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-3.png">
+src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-3.png" alt="Color-magnitude diagram for the stars selected based on proper motion, from Price-Whelan and Bonaca paper.">
 
 In red is a [stellar
 isochrone](https://en.wikipedia.org/wiki/Stellar_isochrone), showing
@@ -361,7 +361,7 @@ If you are curious, you can [read more about
 it](https://chartio.com/learn/databases/how-does-indexing-work/).
 
 <img
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/join.png">
+src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/join.png" alt="Diagram showing relationship between the gaia_source, panstarrs1_best_neighbor, and panstarrs1_original_valid tables and result table.">
 
 ## Joining tables
 
