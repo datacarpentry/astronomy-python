@@ -174,7 +174,7 @@ plt.plot(x, y, 'gx', markersize=0.3, alpha=0.3);
 ~~~
 {: .output}
  
-![png](../fig/04-select_files/04-select_14_0.png)
+![Proper motion of stars in GD-1, showing selected region as blue box and stars within selection as green points.](../fig/04-select_files/04-select_14_0.png)
 
 Now we'll make the same plot using proper motions in the ICRS frame,
 which are stored in columns `pmra` and `pmdec`.
@@ -201,7 +201,7 @@ plt.ylim([-20, 5]);
 ~~~
 {: .output}
   
-![png](../fig/04-select_files/04-select_16_0.png)
+![Proper motion in ICRS frame, showing selected stars are more spread out in this frame.](../fig/04-select_files/04-select_16_0.png)
 
 The proper motions of the selected stars are more spread out in this
 frame, which is why it was preferable to do the selection in the GD-1
@@ -305,10 +305,13 @@ pmra_poly, pmdec_poly = np.transpose(pm_vertices)
 ~~~
 {: .language-python}
 
-This use of `transpose` is a useful NumPy idiom.  Because
-`pm_vertices` has two columns, its [matrix
-transpose](https://en.wikipedia.org/wiki/Transpose) has two rows,
-which are assigned to the two variables `pmra_poly` and `pmdec_poly`.
+> ## Note
+> This use of `transpose` is a useful NumPy idiom to turn data that is listed as 
+> rows of (x,y) pairs into an array of x values and an array of y values. Because
+> `pm_vertices` has two columns, its [matrix
+> transpose](https://en.wikipedia.org/wiki/Transpose) has two rows,
+> which are assigned to the two variables `pmra_poly` and `pmdec_poly`.
+{: .callout}
 
 The following figure shows proper motion in ICRS again, along with the
 convex hull we just computed.
@@ -337,7 +340,7 @@ plt.ylim([-20, 5]);
 ~~~
 {: .output}
     
-![png](../fig/04-select_files/04-select_29_0.png)
+![Proper motion in ICRS, with convex hull shown as blue boundary and selected stars as green points.](../fig/04-select_files/04-select_29_0.png)
 
 So `pm_vertices` represents the polygon we want to select.
 The next step is to use it as part of an ADQL query.
@@ -353,7 +356,7 @@ FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
   AND 1 = CONTAINS(POINT(ra, dec), 
-                   POLYGON({point_list}))
+                   POLYGON({sky_point_list}))
 """
 ~~~
 {: .language-python}
@@ -415,8 +418,8 @@ def skycoord_to_string(skycoord):
 {: .language-python}
 
 ~~~
-point_list = skycoord_to_string(corners_icrs)
-point_list
+sky_point_list = skycoord_to_string(corners_icrs)
+sky_point_list
 ~~~
 {: .language-python}
 
@@ -436,7 +439,7 @@ Now we have everything we need to assemble the query.
 
 ~~~
 query5 = query5_base.format(columns=columns, 
-                            point_list=point_list)
+                            sky_point_list=sky_point_list)
 print(query5)
 ~~~
 {: .language-python}
@@ -507,7 +510,7 @@ pm_point_list
 > > WHERE parallax < 1
 > >   AND bp_rp BETWEEN -0.75 AND 2 
 > >   AND 1 = CONTAINS(POINT(ra, dec), 
-> >                    POLYGON({point_list}))
+> >                    POLYGON({sky_point_list}))
 > >   AND 1 = CONTAINS(POINT(pmra, pmdec),
 > >                    POLYGON({pm_point_list}))
 > > """
@@ -519,13 +522,13 @@ pm_point_list
 > ## Exercise (5 minutes)
 > 
 > Use `format` to format `query6_base` and define `query6`, filling in
-> the values of `columns`, `point_list`, and `pm_point_list`.
+> the values of `columns`, `sky_point_list`, and `pm_point_list`.
 >
 > > ## Solution
 > > 
 > > ~~~
 > > query6 = query6_base.format(columns=columns, 
-> >                             point_list=point_list,
+> >                             sky_point_list=sky_point_list,
 > >                             pm_point_list=pm_point_list)
 > > print(query6)
 > > ~~~
@@ -575,37 +578,42 @@ len(candidate_table)
 We call the results `candidate_table` because it contains stars that
 are good candidates for GD-1.
 
-For the next lesson, we'll need `point_list` and `pm_point_list`
-again, so we should save them in a file.
+Both `sky_point_list` and `pm_point_list` are a set of selection criteria that we
+derived from data downloaded from the Gaia Database. To make sure we can repeat
+our analysis at a later date we should save both lists to a file.
 There are several ways we could do that, but since we are already
 storing data in an HDF file, let's do the same with these variables.
 
-We've seen how to save a `DataFrame` in an HDF file.
-We can do the same thing with a Pandas `Series`.
-To make one, we'll start with a dictionary:
+To save them to an HDF file we first need to put them in a `DataFrame`.
+We have seen how to create a `DataFrame` from an Astropy `Table` and from 
+another `DataFrame`, now we'll build one from scratch. To do this we need
+an object that can define both the name of each column (or `Series`) and 
+the data to go in that column. We can use a Python `Dictionary` for this, 
+defining the column names with the dictionary keys and the column data with
+the dictionary values. 
 
 ~~~
-d = dict(point_list=point_list, pm_point_list=pm_point_list)
+d = dict(sky_point_list=sky_point_list, pm_point_list=pm_point_list)
 d
 ~~~
 {: .language-python}
 
 ~~~
-{'point_list': '135.306, 8.39862, 126.51, 13.4449, 163.017, 54.2424, 172.933, 46.4726, 135.306, 8.39862',
+{'sky_point_list': '135.306, 8.39862, 126.51, 13.4449, 163.017, 54.2424, 172.933, 46.4726, 135.306, 8.39862',
  'pm_point_list': ' -4.05037121,-14.75623261, -3.41981085,-14.72365546, -3.03521988,-14.44357135, -2.26847919,-13.7140236 , -2.61172203,-13.24797471, -2.73471401,-13.09054471, -3.19923146,-12.5942653 , -3.34082546,-12.47611926, -5.67489413,-11.16083338, -5.95159272,-11.10547884, -6.42394023,-11.05981295, -7.09631023,-11.95187806, -7.30641519,-12.24559977, -7.04016696,-12.88580702, -6.00347705,-13.75912098, -4.42442296,-14.74641176'}
 ~~~
 {: .output}
 
-And use it to initialize a `Series.`
+And use it to initialize a `DataFrame`.
 
 ~~~
-point_series = pd.Series(d)
-point_series
+point_df = pd.DataFrame(d)
+point_df
 ~~~
 {: .language-python}
 
 ~~~
-point_list       135.306, 8.39862, 126.51, 13.4449, 163.017, 54...
+sky_point_list       135.306, 8.39862, 126.51, 13.4449, 163.017, 54...
 pm_point_list     -4.05037121,-14.75623261, -3.41981085,-14.723...
 dtype: object
 ~~~
@@ -615,7 +623,7 @@ Now we can save it in the usual way.
 
 ~~~
 filename = 'gd1_data.hdf'
-point_series.to_hdf(filename, 'point_series')
+point_df.to_hdf(filename, 'point_df')
 ~~~
 {: .language-python}
 
@@ -638,48 +646,15 @@ plt.ylabel('dec (degree ICRS)');
 ~~~
 {: .output}
     
-![png](../fig/04-select_files/04-select_66_0.png)
+![Scatter plot of right ascension and declination of selected stars in ICRS frame.](../fig/04-select_files/04-select_66_0.png)
 
 Here we can see why it was useful to transform these coordinates.  In
 ICRS, it is more difficult to identity the stars near the centerline
 of GD-1.
 
-So let's transform the results back to the GD-1 frame.
-Here's the code we used to transform the coordinates and make a Pandas
-`DataFrame`, wrapped in a function.
-
-~~~
-from gala.coordinates import reflex_correct
-
-def make_dataframe(table):
-    """Transform coordinates from ICRS to GD-1 frame.
-    
-    table: Astropy Table
-    
-    returns: Pandas DataFrame
-    """
-    skycoord = SkyCoord(
-               ra=table['ra'], 
-               dec=table['dec'],
-               pm_ra_cosdec=table['pmra'],
-               pm_dec=table['pmdec'], 
-               distance=8*u.kpc, 
-               radial_velocity=0*u.km/u.s)
-
-    gd1_frame = GD1Koposov10()
-    transformed = skycoord.transform_to(gd1_frame)
-    skycoord_gd1 = reflex_correct(transformed)
-
-    df = table.to_pandas()
-    df['phi1'] = skycoord_gd1.phi1
-    df['phi2'] = skycoord_gd1.phi2
-    df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
-    df['pm_phi2'] = skycoord_gd1.pm_phi2
-    return df
-~~~
-{: .language-python}
-
-Here's how we use it:
+We can use our `make_dataframe` function from episode 3 to transform the results back
+to the GD-1 frame. In addition to doing the coordinate transformation and reflex correction
+for us, this function also compiles everything into a single object (a `DataFrame`) to make it easier to use. Note that because we put this code into a function, we can do all of this with a single line of code!
 
 ~~~
 candidate_df = make_dataframe(candidate_table)
@@ -703,14 +678,14 @@ plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .output}
   
-![png](../fig/04-select_files/04-select_72_0.png)
+![Scatter plot of phi1 versus phi2 in GD-1 frame after selecting on proper motion.](../fig/04-select_files/04-select_72_0.png)
 
 We're starting to see GD-1 more clearly.
 We can compare this figure with this panel from Figure 1 from the
 original paper:
 
 <img height="150"
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-2.png">
+src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-2.png" alt="Figure from Price-Whelan and Bonaca paper showing phi1 vs phi2 in GD-1 after selecting on proper motion.">
 
 This panel shows stars selected based on proper motion only, so it is
 comparable to our figure (although notice that it covers a wider
@@ -720,7 +695,7 @@ In the next lesson, we will use photometry data from Pan-STARRS to do
 a second round of filtering, and see if we can replicate this panel.
 
 <img height="150"
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png">
+src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png" alt="Figure from Price-Whelan and Bonaca paper showing phi1 vs phi2 in GD-1 after selecting on proper motion and photometry.">
 
 Later we'll see how to add annotations like the ones in the figure and
 customize the style of the figure to present the results clearly and
