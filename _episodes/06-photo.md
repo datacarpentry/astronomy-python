@@ -826,8 +826,9 @@ x = winner_df['phi1']
 y = winner_df['phi2']
 plt.plot(x, y, 'ko', markersize=0.7, alpha=0.9)
 
-plt.xlabel('ra (degree GD1)')
-plt.ylabel('dec (degree GD1)')
+plt.xlabel('$\phi_1$ [deg]]')
+plt.ylabel('$\phi_2$ [deg]')
+plt.title('Proper motion + photometry selection', fontsize='medium')
 
 plt.axis('equal');
 ~~~
@@ -838,9 +839,9 @@ plt.axis('equal');
 ~~~
 {: .output}
   
-![png](../fig/06-photo_files/06-photo_93_0.png)
+![png](../fig/07-plot_files/07-plot_13_0.png)
 
-This example includes two new Matplotlib commands:
+This example includes three new Matplotlib commands:
 
 * `figure` creates the figure.  In previous examples, we didn't have
 to use this function; the figure was created automatically.  But when
@@ -850,9 +851,56 @@ sets the size of the figure.
 * `axis` with the parameter `equal` sets up the axes so a unit is the
 same size along the `x` and `y` axes.
 
+* `title` puts the input string as a title at the top of the plot. The `fontsize` keyword 
+sets the `fontsize` to be `medium` a little smaller than the default `large`.
+
 In an example like this, where `x` and `y` represent coordinates in
 space, equal axes ensures that the distance between points is
 represented accurately.
+
+In the example above we also used TeX markup in our axis labels so that they render as the 
+Greek letter `$\phi$` with subscripts for `1` and `2`.
+Matplotlib also allows us to write basic TeX markup by wrapping the text we want 
+rendered as TeX with `$` and then using TeX commands inside. This basic rendering 
+is performed with [mathtext](https://matplotlib.org/stable/tutorials/text/mathtext.html);
+more advanced rendering with LaTex can be done with the `usetex` option in `rcParams`
+which we will discuss in Episode 7. 
+
+In the next episode we are going to make this plot a lot, so it makes sense to 
+put the commands to make the spatial plot of the stars we selected based on proper motion
+and photometry.
+
+~~~
+import matplotlib.pyplot as plt
+
+def plot_cmd_selection(df):
+    x = df['phi1']
+    y = df['phi2']
+
+    plt.plot(x, y, 'ko', markersize=0.7, alpha=0.9)
+
+    plt.xlabel('$\phi_1$ [deg]')
+    plt.ylabel('$\phi_2$ [deg]')
+    plt.title('Proper motion + photometry selection', fontsize='medium')
+
+    plt.axis('equal')
+~~~
+{: .language-python}
+
+And here is what it looks like.
+
+~~~
+plt.figure(figsize=(10,2.5))
+plot_cmd_selection(winner_df)
+~~~
+{: .language-python}
+
+~~~
+<Figure size 1000x250 with 1 Axes>
+~~~
+{: .output}
+
+![png](../fig/07-plot_files/07-plot_13_0.png)
 
 ## Write the data
 
