@@ -64,7 +64,7 @@ the individual panels, but now let's look at the whole thing, along
 with the caption:
 
 <img width="500"
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.png">
+src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.png" alt="Figure 1 from Price-Whelan and Bonaca paper with four panels and caption. Caption reads: On-sky positions of likely GD-1 members in the GD-1 coordinate system. GD-1 is apparent as an overdensity in negative proper motions (top-right panel, orange box), so selecting on proper motion already reveals the stream in positions of individual stars (top-left panel). The stream also stands out in the color–magnitude diagram (bottom-right panel) as older and more metal-poor than the background. Selecting the main sequence of GD-1 (orange, shaded region in the bottom-right panel) along with proper motion cuts unveils the stream in unprecedented detail (bottom-left panel).">
 
 > ## Exercise (5 minutes)
 > 
@@ -151,6 +151,21 @@ winner_df = pd.read_hdf(filename, 'winner_df')
 import plot_cmd_selection
 ~~~
 {: .language-python}
+
+And here's what it looks like.
+
+~~~
+plt.figure(figsize=(10,2.5))
+plot_second_selection(winner_df)
+~~~
+{: .language-python}
+
+~~~
+<Figure size 1000x250 with 1 Axes>
+~~~
+{: .output}
+    
+![On sky coordinates of our selected stars after filtering on proper motion and photometry.](../fig/07-plot_files/07-plot_13_0.png)
 
 ## Annotations
 
@@ -541,7 +556,7 @@ plot_proper_motion(centerline_df)
 ~~~
 {: .output}
    
-![png](../fig/07-plot_files/07-plot_53_0.png)
+![Proper motion with overlaid polygon showing our selected stars.](../fig/07-plot_files/07-plot_53_0.png)
 
 ## Upper left
 
@@ -583,7 +598,7 @@ plot_first_selection(candidate_df)
 ~~~
 {: .output}
     
-![png](../fig/07-plot_files/07-plot_59_0.png)
+![GD-1 coordinates of stars selected based on proper motion, showing tidal stream.](../fig/07-plot_files/07-plot_59_0.png)
 
 ## Lower right
 
@@ -624,7 +639,7 @@ plot_cmd(candidate_df)
 ~~~
 {: .output}
     
-![png](../fig/07-plot_files/07-plot_63_0.png)
+![Color magnitude diagram of the stars we've selected by proper motion.](../fig/07-plot_files/07-plot_63_0.png)
 
 And here's how we read it back.
 
@@ -644,60 +659,6 @@ loop_df.head()
 4    0.545461  21.054549
 ~~~
 {: .output}
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>color_loop</th>
-      <th>mag_loop</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0.632171</td>
-      <td>21.411746</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>0.610238</td>
-      <td>21.322466</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>0.588449</td>
-      <td>21.233380</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>0.566924</td>
-      <td>21.144427</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>0.545461</td>
-      <td>21.054549</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
 
 > ## Exercise (5 minutes)
 > 
@@ -761,7 +722,7 @@ plt.tight_layout()
 ~~~
 {: .output}
    
-![png](../fig/07-plot_files/07-plot_69_0.png)
+![Four paneled plot showing our first recreation of figure 1 from the Price-Whelan and Bonaca paper.](../fig/07-plot_files/07-plot_69_0.png)
 
 We use
 [`plt.tight_layout`](https://matplotlib.org/3.3.1/tutorials/intermediate/tight_layout_guide.html)
@@ -820,7 +781,7 @@ plt.tight_layout()
 ~~~
 {: .output}
     
-![png](../fig/07-plot_files/07-plot_72_0.png)
+![Four paneled plot we created above with two left-hand panels increased in width.](../fig/07-plot_files/07-plot_72_0.png)
 
 This is looking more and more like the figure in the paper.
 
