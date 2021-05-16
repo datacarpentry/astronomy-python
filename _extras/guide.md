@@ -153,6 +153,8 @@ This idiom violates the recommendation not to repeat variables names, but since 
 
 * learners might express concern that the polygon we use to select candidate stars is not closed.  That's ok; the `contains_points` method treats the polygon as if it is closed (by connecting the last point to the first).
 
+* Learners may notice that `contains_points` is not actually a Polygon property. Polygon inherits this method from Patch.
+
 * Students may ask why we're initializing an empty array and then creating the columns on the fly. DataFrame initialize with arrays of rows rather than columns, so this is the easiest way without having to do some array manipulation. See https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html for more details.
 
 ### Lesson 7: Visualization
