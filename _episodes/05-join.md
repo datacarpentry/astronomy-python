@@ -177,8 +177,8 @@ The ones we'll use are:
 
 * `source_id`, which we will match up with `source_id` in the Gaia table.
 
-* `number_of_neighbours`, which indicates how many sources in
-Pan-STARRS are matched with this source in Gaia.
+* `best_neighbour_multiplicity`, which indicates how many sources in
+Pan-STARRS are matched with the same probability to this source in Gaia.
 
 * `number_of_mates`, which indicates the number of *other* sources in
 Gaia that are matched with the same source in Pan-STARRS.
@@ -186,7 +186,7 @@ Gaia that are matched with the same source in Pan-STARRS.
 * `original_ext_source_id`, which we will match up with `obj_id` in
 the Pan-STARRS table.
 
-Ideally, `number_of_neighbours` should be 1 and `number_of_mates`
+Ideally, `best_neighbour_multiplicity` should be 1 and `number_of_mates`
 should be 0; in that case, there is a one-to-one match between the
 source in Gaia and the corresponding source in Pan-STARRS.
 
@@ -195,7 +195,7 @@ Here's a query that selects these columns and returns the first 5 rows.
 ~~~
 query = """SELECT 
 TOP 5
-source_id, number_of_neighbours, number_of_mates, original_ext_source_id
+source_id, best_neighbour_multiplicity, number_of_mates, original_ext_source_id
 FROM gaiadr2.panstarrs1_best_neighbour
 """
 ~~~
@@ -219,14 +219,14 @@ results
 
 ~~~
 <Table length=5>
-     source_id      number_of_neighbours number_of_mates original_ext_source_id
-       int64               int32              int16              int64         
-------------------- -------------------- --------------- ----------------------
-6745938972433480704                    1               0      69742925668851205
-6030466788955954048                    1               0      69742509325691172
-6756488099308169600                    1               0      69742879438541228
-6700154994715046016                    1               0      69743055581721207
-6757061941303252736                    1               0      69742856540241198
+     source_id      best_neighbour_multiplicity number_of_mates original_ext_source_id
+       int64                  int32                  int16              int64         
+------------------- --------------------------- --------------- ----------------------
+6745938972433480704                           1               0      69742925668851205
+6030466788955954048                           1               0      69742509325691172
+6756488099308169600                           1               0      69742879438541228
+6700154994715046016                           1               0      69743055581721207
+6757061941303252736                           1               0      69742856540241198
 ~~~
 {: .output}
 
@@ -298,7 +298,7 @@ The ones we'll use are:
 * `obj_id`, which we will match up with `original_ext_source_id` in
 the best neighbor table.
 
-* `g_mean_psf_mag`, which contains mean magnitude from the `i` filter.
+* `g_mean_psf_mag`, which contains mean magnitude from the `g` filter.
 
 * `i_mean_psf_mag`, which contains mean magnitude from the `i` filter.
 
@@ -537,7 +537,13 @@ The column names do not have to be the same and, in fact, in the next join they 
 That is one of the reasons that we explicitly specify them.
 Here's the complete query, including the columns we want from the Gaia
 and best neighbor tables. Here you can start to see that using the abbreviated names
-is making our query easier to read and requires less typing for us.
+is making our query easier to read and requires less typing for us. In addition to the 
+spatial coordinates and proper motion, we are going to return the `best_neighbour_multiplicity` 
+and `number_of_mates` columns from the `panstarrs1_best_neighbour` table in order to evaluate the quality 
+of the data that we are using by evaluating the number of one-to-one matches between the catalogs. 
+Recall that `best_neighbour_multiplicity` tells us the number of PanSTARRs 
+objects that match a Gaia object and `number_of_mates` tells us the number of Gaia objects that match a
+PanSTARRs object.
 
 ~~~
 column_list = ['gaia.source_id',
@@ -658,6 +664,21 @@ here](https://www.geeksforgeeks.org/sql-join-set-1-inner-left-right-and-full-joi
 > > results_solution
 > > ~~~
 > > {: .language-python}
+> > ~~~
+> > <Table length=490>
+> >      source_id              ra        ...  g_mean_psf_mag   i_mean_psf_mag 
+> >                            deg        ...                        mag       
+> >        int64             float64      ...     float64          float64     
+> > ------------------- ----------------- ... ---------------- ----------------
+> > 3322773965056065536 88.78178020183375 ... 19.9431991577148 17.4221992492676
+> > 3322774068134271104  88.8206092188033 ... 18.6212005615234 16.6007995605469
+> > 3322773930696320512 88.80843339290348 ...               -- 20.2203998565674
+> > 3322774377374425728 88.86806108182265 ... 18.0676002502441 16.9762001037598
+> > 3322773724537891456 88.81308602813434 ... 20.1907005310059 17.8700008392334
+> > 3322773724537891328 88.81570329208743 ... 22.6308002471924 19.6004009246826
+> > [Output truncated]
+> > ~~~
+> > {: .output}
 > {: .solution}
 {: .challenge}
 
@@ -1047,7 +1068,7 @@ read_back_csv.head(3)
 {: .output}
 
 Notice that the index in `candidate_df` has become an unnamed column
-in `read_back_csv`.  The Pandas functions for writing and reading CSV
+in `read_back_csv` and a new index has been created.  The Pandas functions for writing and reading CSV
 files provide options to avoid that problem, but this is an example of
 the kind of thing that can go wrong with CSV files.
 
