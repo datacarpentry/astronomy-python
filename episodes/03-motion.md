@@ -293,7 +293,7 @@ plt.ylabel('dec (degree ICRS)');
 ~~~
 {: .output}
     
-![png](../fig/03-motion_files/03-motion_28_0.png)
+![Scatter plot of right ascension and declination in ICRS coordinates, demonstrating overplotting.](../fig/03-motion_files/03-motion_28_0.png)
     
 The arguments to `plt.plot` are `x`, `y`, and a string that specifies
 the style.  In this case, the letters `ko` indicate that we want a
@@ -475,7 +475,7 @@ plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .output}
    
-![png](../fig/03-motion_files/03-motion_43_0.png)
+![Scatter plot of phi1 versus phi2 in GD-1 coordinates, showing selected region is rectangular.](../fig/03-motion_files/03-motion_43_0.png)
 
 Remember that we started with a rectangle in the GD-1 frame.  When
 transformed to the ICRS frame, it's a non-rectangular region.  Now,
@@ -617,6 +617,63 @@ results_df.shape
 We could have: `proper_motion` contains the same data as
 `pm_phi1_cosphi2` and `pm_phi2`, but in a different format.
 
+Before we go any further, we will take all of the steps that we have done 
+and consolidate them into a single function that we can use to take the
+coordinates and proper motion that we get as an Astropy `Table` from our 
+Gaia query, transform it into a 
+Pandas `DataFrame`, and add columns representing the reflex corrected 
+GD-1 coordinates and proper motions.
+This is a general function that we will use multiple times as we build different
+queries so we want to write it once and then call the function rather than having 
+to copy and paste the code over and over again.
+
+~~~
+def make_dataframe(table):
+    """Transform coordinates from ICRS to GD-1 frame.
+    
+    table: Astropy Table
+    
+    returns: Pandas DataFrame
+    """
+    #Create a SkyCoord object with the coordinates and proper motions
+    # in the input table
+    skycoord = SkyCoord(
+               ra=table['ra'], 
+               dec=table['dec'],
+               pm_ra_cosdec=table['pmra'],
+               pm_dec=table['pmdec'], 
+               distance=8*u.kpc, 
+               radial_velocity=0*u.km/u.s)
+
+    # Define the GD-1 reference frame
+    gd1_frame = GD1Koposov10()
+
+    # Transform input coordinates to the GD-1 reference frame
+    transformed = skycoord.transform_to(gd1_frame)
+
+    # Correct GD-1 coordinates for solar system motion around galactic center
+    skycoord_gd1 = reflex_correct(transformed)
+
+    # Create DataFrame
+    df = table.to_pandas()
+
+    #Add GD-1 reference frame columns for coordinates and proper motions
+    df['phi1'] = skycoord_gd1.phi1
+    df['phi2'] = skycoord_gd1.phi2
+    df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
+    df['pm_phi2'] = skycoord_gd1.pm_phi2
+    return df
+~~~
+{: .language-python}
+
+Here is how we use the function:
+
+~~~
+results_df = make_dataframe(results_table)
+~~~
+{: .language-python}
+
+
 ## Exploring data
 
 One benefit of using Pandas is that it provides functions for
@@ -674,7 +731,7 @@ Price-Whelan and Bonaca paper, the one that shows components of proper
 motion as a scatter plot:
 
 <img width="300"
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-1.png">
+src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-1.png" alt="Scatter of proper motion phi1 versus phi2 showing overdensity in negative proper motions of GD-1 stars.">
 
 In this figure, the shaded area identifies stars that are likely to be
 in GD-1 because:
@@ -709,7 +766,7 @@ plt.ylabel('Proper motion phi2 (mas/yr GD1 frame)');
 ~~~
 {: .output}
  
-![png](../fig/03-motion_files/03-motion_67_0.png)
+![Scatter plot of proper motion in GD-1 frame of selected stars showing most are near the origin.](../fig/03-motion_files/03-motion_67_0.png)
 
 Most of the proper motions are near the origin, but there are a few
 extreme values.
@@ -734,7 +791,7 @@ plt.ylim(-10, 10);
 ~~~
 {: .output}
     
-![png](../fig/03-motion_files/03-motion_69_0.png)
+![Zoomed in view of previous scatter plot showing overdense region.](../fig/03-motion_files/03-motion_69_0.png)
 
 There is a hint of an overdense region near (-7.5, 0), but if you
 didn't know where to look, you would miss it.
@@ -749,7 +806,7 @@ As we can see in the following figure, many stars in GD-1 are less
 than 1 degree from the line `phi2=0`.
 
 <img
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png">
+src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png" alt="Scatter plot with selection on proper motion and photometry showing many stars in GD-1 are within 1 degree of phi2 = 0.>
 
 Stars near this line have the highest probability of being in GD-1.
 
@@ -916,7 +973,7 @@ plot_proper_motion(centerline_df)
 ~~~
 {: .output}
    
-![png](../fig/03-motion_files/03-motion_92_0.png)
+![Scatter plot of proper motion of selected stars showing cluster near (-7.5, 0).](../fig/03-motion_files/03-motion_92_0.png)
 
 Now we can see more clearly that there is a cluster near (-7.5, 0).
 
@@ -938,7 +995,7 @@ In the original paper, Price-Whelan and Bonaca used a polygon to cover
 this region, as shown in this figure.
 
 <img width="300"
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-1.png">
+src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-1.png" alt="Scatter plot of proper motion with overlaid polygon showing overdense region selected for analysis in Price-Whelan and Bonaca paper.">
 
 We'll use a simple rectangle for now, but in a later lesson we'll see
 how to select a polygonal region as well.
@@ -984,7 +1041,7 @@ plt.plot(pm1_rect, pm2_rect, '-');
 ~~~
 {: .output}
    
-![png](../fig/03-motion_files/03-motion_100_0.png)
+![Scatter plot of proper motion with blue box showing overdense region selected for our analysis.](../fig/03-motion_files/03-motion_100_0.png)
 
 Now that we've identified the bounds of the cluster in proper motion,
 we'll use it to select rows from `results_df`.
@@ -1054,7 +1111,7 @@ plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .output}
    
-![png](../fig/03-motion_files/03-motion_110_0.png)
+![Scatter plot of coordinates of stars in selected region, showing tidal stream.](../fig/03-motion_files/03-motion_110_0.png)
 
 Now that's starting to look like a tidal stream!
 
