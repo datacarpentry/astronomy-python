@@ -174,7 +174,7 @@ plt.plot(x, y, 'gx', markersize=0.3, alpha=0.3);
 ~~~
 {: .output}
  
-![png](../fig/04-select_files/04-select_14_0.png)
+![Proper motion of stars in GD-1, showing selected region as blue box and stars within selection as green points.](../fig/04-select_files/04-select_14_0.png)
 
 Now we'll make the same plot using proper motions in the ICRS frame,
 which are stored in columns `pmra` and `pmdec`.
@@ -201,7 +201,7 @@ plt.ylim([-20, 5]);
 ~~~
 {: .output}
   
-![png](../fig/04-select_files/04-select_16_0.png)
+![Proper motion in ICRS frame, showing selected stars are more spread out in this frame.](../fig/04-select_files/04-select_16_0.png)
 
 The proper motions of the selected stars are more spread out in this
 frame, which is why it was preferable to do the selection in the GD-1
@@ -311,7 +311,7 @@ pmra_poly, pmdec_poly = np.transpose(pm_vertices)
 > `pm_vertices` has two columns, its [matrix
 > transpose](https://en.wikipedia.org/wiki/Transpose) has two rows,
 > which are assigned to the two variables `pmra_poly` and `pmdec_poly`.
-> {: .callout}
+{: .callout}
 
 The following figure shows proper motion in ICRS again, along with the
 convex hull we just computed.
@@ -340,7 +340,7 @@ plt.ylim([-20, 5]);
 ~~~
 {: .output}
     
-![png](../fig/04-select_files/04-select_29_0.png)
+![Proper motion in ICRS, with convex hull shown as blue boundary and selected stars as green points.](../fig/04-select_files/04-select_29_0.png)
 
 So `pm_vertices` represents the polygon we want to select.
 The next step is to use it as part of an ADQL query.
@@ -646,7 +646,7 @@ plt.ylabel('dec (degree ICRS)');
 ~~~
 {: .output}
     
-![png](../fig/04-select_files/04-select_66_0.png)
+![Scatter plot of right ascension and declination of selected stars in ICRS frame.](../fig/04-select_files/04-select_66_0.png)
 
 Here we can see why it was useful to transform these coordinates.  In
 ICRS, it is more difficult to identity the stars near the centerline
@@ -678,14 +678,14 @@ plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .output}
   
-![png](../fig/04-select_files/04-select_72_0.png)
+![Scatter plot of phi1 versus phi2 in GD-1 frame after selecting on proper motion.](../fig/04-select_files/04-select_72_0.png)
 
 We're starting to see GD-1 more clearly.
 We can compare this figure with this panel from Figure 1 from the
 original paper:
 
 <img height="150"
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-2.png">
+src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-2.png" alt="Figure from Price-Whelan and Bonaca paper showing phi1 vs phi2 in GD-1 after selecting on proper motion.">
 
 This panel shows stars selected based on proper motion only, so it is
 comparable to our figure (although notice that it covers a wider
@@ -695,7 +695,7 @@ In the next lesson, we will use photometry data from Pan-STARRS to do
 a second round of filtering, and see if we can replicate this panel.
 
 <img height="150"
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png">
+src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png" alt="Figure from Price-Whelan and Bonaca paper showing phi1 vs phi2 in GD-1 after selecting on proper motion and photometry.">
 
 Later we'll see how to add annotations like the ones in the figure and
 customize the style of the figure to present the results clearly and
