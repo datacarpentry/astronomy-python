@@ -137,6 +137,10 @@ This idiom violates the recommendation not to repeat variables names, but since 
 
 * The Pan-STARRS join exercise is likely to feel scary to a lot of students - they have only seen one example. Emphasize the building blocks of a join e.g. FROM table1 JOIN table2 ON table1.common_column=table2.common_column. It is also worth pointing out that common_columns will not have the same names in this case
 
+* In case a student asks about the extra `unnamed` column in the CSV section here's the explanation. You may notice that all Pandas `DataFrame`s have an index column which was not part of the original table definition. 
+This essentially numbers each row. When we write a `DataFrame` in any other format, the index gets treated like a bonafide column.
+For this reason when we write a CSV file and then read it back into a `DataFrame` the index column gets written as an `unnamed` column and then when it is read back in, another index column is created leading to two extraneous columns. 
+
 
 ### Lesson 6: Photometry
 * It is easy in this lesson to lose track of the main point: that we want to define a polygon around the main sequence of GD-1 so we can further hone our sample of candidate GD-1 stars. As we spend time on the isochrone, creating the polygon, etc make sure to come back to this big picture often.
