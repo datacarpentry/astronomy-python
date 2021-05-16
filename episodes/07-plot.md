@@ -148,19 +148,7 @@ winner_df = pd.read_hdf(filename, 'winner_df')
 {: .language-python}
 
 ~~~
-import matplotlib.pyplot as plt
-
-def plot_second_selection(df):
-    x = df['phi1']
-    y = df['phi2']
-
-    plt.plot(x, y, 'ko', markersize=0.7, alpha=0.9)
-
-    plt.xlabel('$\phi_1$ [deg]')
-    plt.ylabel('$\phi_2$ [deg]')
-    plt.title('Proper motion + photometry selection', fontsize='medium')
-
-    plt.axis('equal')
+import plot_cmd_selection
 ~~~
 {: .language-python}
 
@@ -717,7 +705,7 @@ plt.subplot2grid(shape, (0, 1))
 plot_proper_motion(centerline_df)
 
 plt.subplot2grid(shape, (1, 0))
-plot_second_selection(winner_df)
+plot_cmd_selection(winner_df)
 
 plt.subplot2grid(shape, (1, 1))
 plot_cmd(candidate_df)
@@ -776,7 +764,7 @@ plt.subplot2grid(shape, (0, 3))
 plot_proper_motion(centerline_df)
 
 plt.subplot2grid(shape, (1, 0), colspan=3)
-plot_second_selection(winner_df)
+plot_cmd_selection(winner_df)
 
 plt.subplot2grid(shape, (1, 3))
 plot_cmd(candidate_df)
@@ -816,7 +804,7 @@ This is looking more and more like the figure in the paper.
 > > plot_proper_motion(centerline_df)
 > > 
 > > plt.subplot2grid(shape, (1, 0), colspan=3)
-> > plot_second_selection(winner_df)
+> > plot_cmd_selection(winner_df)
 > > 
 > > plt.subplot2grid(shape, (1, 3), colspan=2)       # CHANGED
 > > plot_cmd(candidate_df)

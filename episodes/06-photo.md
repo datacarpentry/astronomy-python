@@ -551,7 +551,38 @@ To make a `Polygon`, we need to assemble `g`, `left_color`, and
 `right_color` into a loop, so the points in `left_color` are connected
 to the points of `right_color` in reverse order.
 
-We'll use the following function, which takes two arrays and joins
+We will use a "slice index" to reverse the elements of `right_color`. 
+As explained in the [NumPy
+documentation](https://numpy.org/doc/stable/reference/arrays.indexing.html),
+a slice index has three parts separated by colons:
+
+* `start`: The index of the element where the slice starts.
+
+* `stop`: The index of the element where the slice ends.
+
+* `step`: The step size between elements.
+
+~~~
+reverse_right_color = right_color[::-1]
+~~~
+{:.language-python}
+
+In this example, `start` and `stop` are omitted, which means all
+elements are selected.
+
+And `step` is `-1`, which means the elements are in reverse order.
+
+To combine the `left_color` and `right_color` arrays we will use the numpy `append` function
+which takes two arrays as input and output them combined into a single array. By writing the
+function we can use the same code to create the x-values for the loop (colors) and the y-values
+for the loop (g-band magnitudes)
+
+~~~
+combined_array = np.append(left_color, reverse_right_color)
+~~~
+{:.language-python}
+
+We can combine these steps into the following function, which takes two arrays and joins
 them front-to-back:
 
 ~~~
@@ -563,22 +594,6 @@ def front_to_back(first, second):
 ~~~
 {: .language-python}
 
-`front_to_back` uses a "slice index" to reverse the elements of `second`.
-
-As explained in the [NumPy
-documentation](https://numpy.org/doc/stable/reference/arrays.indexing.html),
-a slice index has three parts separated by colons:
-
-* `start`: The index of the element where the slice starts.
-
-* `stop`: The index of the element where the slice ends.
-
-* `step`: The step size between elements.
-
-In this example, `start` and `stop` are omitted, which means all
-elements are selected.
-
-And `step` is `-1`, which means the elements are in reverse order.
 
 We can use `front_to_back` to make a loop that includes the elements
 of `left_color` and `right_color`:
@@ -811,8 +826,9 @@ x = winner_df['phi1']
 y = winner_df['phi2']
 plt.plot(x, y, 'ko', markersize=0.7, alpha=0.9)
 
-plt.xlabel('ra (degree GD1)')
-plt.ylabel('dec (degree GD1)')
+plt.xlabel('$\phi_1$ [deg]]')
+plt.ylabel('$\phi_2$ [deg]')
+plt.title('Proper motion + photometry selection', fontsize='medium')
 
 plt.axis('equal');
 ~~~
@@ -823,9 +839,11 @@ plt.axis('equal');
 ~~~
 {: .output}
   
+
 ![Right ascension and declination of selected stars in GD-1 frame after selecting for both proper motion and photometry.](../fig/06-photo_files/06-photo_93_0.png)
 
-This example includes two new Matplotlib commands:
+
+This example includes three new Matplotlib commands:
 
 * `figure` creates the figure.  In previous examples, we didn't have
 to use this function; the figure was created automatically.  But when
@@ -835,9 +853,56 @@ sets the size of the figure.
 * `axis` with the parameter `equal` sets up the axes so a unit is the
 same size along the `x` and `y` axes.
 
+* `title` puts the input string as a title at the top of the plot. The `fontsize` keyword 
+sets the `fontsize` to be `medium` a little smaller than the default `large`.
+
 In an example like this, where `x` and `y` represent coordinates in
 space, equal axes ensures that the distance between points is
 represented accurately.
+
+In the example above we also used TeX markup in our axis labels so that they render as the 
+Greek letter `$\phi$` with subscripts for `1` and `2`.
+Matplotlib also allows us to write basic TeX markup by wrapping the text we want 
+rendered as TeX with `$` and then using TeX commands inside. This basic rendering 
+is performed with [mathtext](https://matplotlib.org/stable/tutorials/text/mathtext.html);
+more advanced rendering with LaTex can be done with the `usetex` option in `rcParams`
+which we will discuss in Episode 7. 
+
+In the next episode we are going to make this plot a lot, so it makes sense to 
+put the commands to make the spatial plot of the stars we selected based on proper motion
+and photometry.
+
+~~~
+import matplotlib.pyplot as plt
+
+def plot_cmd_selection(df):
+    x = df['phi1']
+    y = df['phi2']
+
+    plt.plot(x, y, 'ko', markersize=0.7, alpha=0.9)
+
+    plt.xlabel('$\phi_1$ [deg]')
+    plt.ylabel('$\phi_2$ [deg]')
+    plt.title('Proper motion + photometry selection', fontsize='medium')
+
+    plt.axis('equal')
+~~~
+{: .language-python}
+
+And here is what it looks like.
+
+~~~
+plt.figure(figsize=(10,2.5))
+plot_cmd_selection(winner_df)
+~~~
+{: .language-python}
+
+~~~
+<Figure size 1000x250 with 1 Axes>
+~~~
+{: .output}
+
+![png](../fig/07-plot_files/07-plot_13_0.png)
 
 ## Write the data
 
