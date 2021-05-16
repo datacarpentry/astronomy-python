@@ -551,7 +551,38 @@ To make a `Polygon`, we need to assemble `g`, `left_color`, and
 `right_color` into a loop, so the points in `left_color` are connected
 to the points of `right_color` in reverse order.
 
-We'll use the following function, which takes two arrays and joins
+We will use a "slice index" to reverse the elements of `right_color`. 
+As explained in the [NumPy
+documentation](https://numpy.org/doc/stable/reference/arrays.indexing.html),
+a slice index has three parts separated by colons:
+
+* `start`: The index of the element where the slice starts.
+
+* `stop`: The index of the element where the slice ends.
+
+* `step`: The step size between elements.
+
+~~~
+reverse_right_color = right_color[::-1]
+~~~
+{:.language-python}
+
+In this example, `start` and `stop` are omitted, which means all
+elements are selected.
+
+And `step` is `-1`, which means the elements are in reverse order.
+
+To combine the `left_color` and `right_color` arrays we will use the numpy `append` function
+which takes two arrays as input and output them combined into a single array. By writing the
+function we can use the same code to create the x-values for the loop (colors) and the y-values
+for the loop (g-band magnitudes)
+
+~~~
+combined_array = np.append(left_color, reverse_right_color)
+~~~
+{:.language-python}
+
+We can combine these steps into the following function, which takes two arrays and joins
 them front-to-back:
 
 ~~~
@@ -563,22 +594,6 @@ def front_to_back(first, second):
 ~~~
 {: .language-python}
 
-`front_to_back` uses a "slice index" to reverse the elements of `second`.
-
-As explained in the [NumPy
-documentation](https://numpy.org/doc/stable/reference/arrays.indexing.html),
-a slice index has three parts separated by colons:
-
-* `start`: The index of the element where the slice starts.
-
-* `stop`: The index of the element where the slice ends.
-
-* `step`: The step size between elements.
-
-In this example, `start` and `stop` are omitted, which means all
-elements are selected.
-
-And `step` is `-1`, which means the elements are in reverse order.
 
 We can use `front_to_back` to make a loop that includes the elements
 of `left_color` and `right_color`:
