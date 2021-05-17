@@ -674,6 +674,12 @@ we know where to look if we want to see the mechanics of exactly how the plottin
 
 > ## Exercise 
 > What happens if you leave out `tight_layout`?
+> 
+> > ## Solution
+> > Without `tight_layout` the space between the panels is too small. In this situation, the titles from the lower plots overlap 
+> > with the x-axis labels from the upper panels and the axis labels from the right-hand panels overlap with the plots in the 
+> > left-hand panels.
+> {: .solution}
 {: .challenge}
 
 ## Adjusting proportions
