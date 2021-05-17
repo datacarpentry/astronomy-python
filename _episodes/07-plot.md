@@ -384,65 +384,6 @@ mpl.get_configdir()
 ~~~
 {: .language-python}
 
-## LaTeX fonts
-
-When you include mathematical expressions in titles, labels, and
-annotations, Matplotlib uses
-[`mathtext`](https://matplotlib.org/stable/tutorials/text/mathtext.html)
-to typeset them.  `mathtext` uses the same syntax as LaTeX, but it
-provides only a subset of its features.
-
-If you need features that are not provided by `mathtext`, or you
-prefer the way LaTeX typesets mathematical expressions, you can
-customize Matplotlib to use LaTeX.
-
-In `matplotlibrc` or in a style sheet, you can add the following line:
-
-~~~
-text.usetex        : true
-~~~
-{: .language-python}
-
-Or in a notebook you can run the following code.
-
-~~~
-plt.rcParams['text.usetex'] = True
-~~~
-{: .language-python}
-
-~~~
-plt.rcParams['text.usetex'] = True
-~~~
-{: .language-python}
-
-If you go back and draw the figure again, you should see the difference.
-
-> ## Warning
-> If you get an error message like
-> 
-> ~~~
-> LaTeX Error: File `type1cm.sty' not found.
-> ~~~
-> {: .error}
-> 
-> You might have to install a package that contains the fonts LaTeX
-> needs.  On some systems, the packages `texlive-latex-extra` or
-> `cm-super` might be what you need.  [See here for more help with
-> this](https://stackoverflow.com/questions/11354149/python-unable-to-render-tex-in-matplotlib).
-> 
-> In case you are curious, `cm` stands for [Computer
-> Modern](https://en.wikipedia.org/wiki/Computer_Modern), the font LaTeX
-> uses to typeset math.
-{: .callout}
-
-Before we go on, let's put things back where we found them.
-
-~~~
-plt.rcParams['text.usetex'] = False
-plt.style.use('default')
-~~~
-{: .language-python}
-
 ## Multiple panels
 
 So far we've been working with one figure at a time, but the figure we
