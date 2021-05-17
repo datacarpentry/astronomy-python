@@ -543,28 +543,11 @@ plot_first_selection(candidate_df)
 
 ## Lower right
 
-For the figure in the lower right, we'll use this function to plots
+For the figure in the lower right, we'll use the function that we wrote in episode 6 to plots
 the color-magnitude diagram.
 
 ~~~
-import matplotlib.pyplot as plt
-
-def plot_cmd(table):
-    """Plot a color magnitude diagram.
-    
-    table: Table or DataFrame with photometry data
-    """
-    y = table['g_mean_psf_mag']
-    x = table['g_mean_psf_mag'] - table['i_mean_psf_mag']
-
-    plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
-
-    plt.xlim([0, 1.5])
-    plt.ylim([14, 22])
-    plt.gca().invert_yaxis()
-
-    plt.ylabel('$Magnitude (g)$')
-    plt.xlabel('$Color (g-i)$')
+import plot_cmd
 ~~~
 {: .language-python}
 
@@ -603,10 +586,10 @@ loop_df.head()
 
 > ## Exercise (5 minutes)
 > 
-> Add a few lines to `plot_cmd` to show the polygon we selected as a
+> Add a few lines to be run after the `plot_cmd` function to show the polygon we selected as a
 > shaded area.
 > 
-> Hint: pass `coords` as an argument to `Polygon` and plot it using `add_patch`.
+> Hint: pass `loop_df` as an argument to `Polygon` as we did in episode 6 and then plot it using `add_patch`.
 >
 > > ## Solution
 > > 
