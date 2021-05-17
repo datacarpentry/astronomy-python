@@ -184,17 +184,17 @@ region of GD-1,
 > Choose any or all of these features and add them to the figure:
 > 
 > * To draw vertical lines, see
-> [`plt.vlines`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.vlines.html)
+> [`plt.vlines`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.vlines.html)
 > and
-> [`plt.axvline`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.axvline.html#matplotlib.pyplot.axvline).
+> [`plt.axvline`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.axvline.html).
 > 
 > * To add text, see
-> [`plt.text`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.text.html).
+> [`plt.text`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.text.html).
 > 
 > * To add an annotation with text and an arrow, see [plt.annotate]().
 > 
 > And here is some [additional information about text and
-> arrows](https://matplotlib.org/3.3.1/tutorials/text/annotations.html#plotting-guide-annotation).
+> arrows](https://matplotlib.org/stable/tutorials/text/annotations.html).
 >
 > > ## Solution
 > > 
@@ -252,7 +252,7 @@ plt.gca().tick_params(direction='in')
 > ## Exercise (5 minutes)
 > 
 > Read the documentation of
-> [`tick_params`](https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.axes.Axes.tick_params.html)
+> [`tick_params`](https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.tick_params.html)
 > and use it to put ticks on the top and right sides of the axes.
 >
 > > ## Solution
@@ -313,7 +313,7 @@ not easy to switch from one set of options to another.
 
 The solution to this problem is style sheets, [which you can read
 about
-here](https://matplotlib.org/3.1.1/tutorials/introductory/customizing.html).
+here](https://matplotlib.org/stable/tutorials/introductory/customizing.html).
 
 Matplotlib provides a set of predefined style sheets, or you can make your own.
 
@@ -384,65 +384,6 @@ mpl.get_configdir()
 ~~~
 {: .language-python}
 
-## LaTeX fonts
-
-When you include mathematical expressions in titles, labels, and
-annotations, Matplotlib uses
-[`mathtext`](https://matplotlib.org/3.1.0/tutorials/text/mathtext.html)
-to typeset them.  `mathtext` uses the same syntax as LaTeX, but it
-provides only a subset of its features.
-
-If you need features that are not provided by `mathtext`, or you
-prefer the way LaTeX typesets mathematical expressions, you can
-customize Matplotlib to use LaTeX.
-
-In `matplotlibrc` or in a style sheet, you can add the following line:
-
-~~~
-text.usetex        : true
-~~~
-{: .language-python}
-
-Or in a notebook you can run the following code.
-
-~~~
-plt.rcParams['text.usetex'] = True
-~~~
-{: .language-python}
-
-~~~
-plt.rcParams['text.usetex'] = True
-~~~
-{: .language-python}
-
-If you go back and draw the figure again, you should see the difference.
-
-> ## Warning
-> If you get an error message like
-> 
-> ~~~
-> LaTeX Error: File `type1cm.sty' not found.
-> ~~~
-> {: .error}
-> 
-> You might have to install a package that contains the fonts LaTeX
-> needs.  On some systems, the packages `texlive-latex-extra` or
-> `cm-super` might be what you need.  [See here for more help with
-> this](https://stackoverflow.com/questions/11354149/python-unable-to-render-tex-in-matplotlib).
-> 
-> In case you are curious, `cm` stands for [Computer
-> Modern](https://en.wikipedia.org/wiki/Computer_Modern), the font LaTeX
-> uses to typeset math.
-{: .callout}
-
-Before we go on, let's put things back where we found them.
-
-~~~
-plt.rcParams['text.usetex'] = False
-plt.style.use('default')
-~~~
-{: .language-python}
-
 ## Multiple panels
 
 So far we've been working with one figure at a time, but the figure we
@@ -452,16 +393,16 @@ Confusingly, Matplotlib provides *three* functions for making figures
 like this: `subplot`, `subplots`, and `subplot2grid`.
 
 *
-[`subplot`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.subplot.html)
+[`subplot`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplot.html)
 is simple and similar to MATLAB, so if you are familiar with that
 interface, you might like `subplot`
 
 *
-[`subplots`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.subplots.html)
+[`subplots`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html)
 is more object-oriented, which some people prefer.
 
 *
-[`subplot2grid`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.subplot2grid.html)
+[`subplot2grid`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplot2grid.html)
 is most convenient if you want to control the relative sizes of the
 subplots.
 
@@ -602,28 +543,11 @@ plot_first_selection(candidate_df)
 
 ## Lower right
 
-For the figure in the lower right, we'll use this function to plots
+For the figure in the lower right, we'll use the function that we wrote in episode 6 to plots
 the color-magnitude diagram.
 
 ~~~
-import matplotlib.pyplot as plt
-
-def plot_cmd(table):
-    """Plot a color magnitude diagram.
-    
-    table: Table or DataFrame with photometry data
-    """
-    y = table['g_mean_psf_mag']
-    x = table['g_mean_psf_mag'] - table['i_mean_psf_mag']
-
-    plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
-
-    plt.xlim([0, 1.5])
-    plt.ylim([14, 22])
-    plt.gca().invert_yaxis()
-
-    plt.ylabel('$Magnitude (g)$')
-    plt.xlabel('$Color (g-i)$')
+import plot_cmd
 ~~~
 {: .language-python}
 
@@ -662,10 +586,10 @@ loop_df.head()
 
 > ## Exercise (5 minutes)
 > 
-> Add a few lines to `plot_cmd` to show the polygon we selected as a
+> Add a few lines to be run after the `plot_cmd` function to show the polygon we selected as a
 > shaded area.
 > 
-> Hint: pass `coords` as an argument to `Polygon` and plot it using `add_patch`.
+> Hint: pass `loop_df` as an argument to `Polygon` as we did in episode 6 and then plot it using `add_patch`.
 >
 > > ## Solution
 > > 
@@ -682,7 +606,7 @@ loop_df.head()
 
 Now we're ready to put it all together.  To make a figure with four
 subplots, we'll use `subplot2grid`, [which requires two
-arguments](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.subplot2grid.html):
+arguments](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplot2grid.html):
 
 * `shape`, which is a tuple with the number of rows and columns in the grid, and
 
@@ -725,7 +649,7 @@ plt.tight_layout()
 ![Four paneled plot showing our first recreation of figure 1 from the Price-Whelan and Bonaca paper.](../fig/07-plot_files/07-plot_69_0.png)
 
 We use
-[`plt.tight_layout`](https://matplotlib.org/3.3.1/tutorials/intermediate/tight_layout_guide.html)
+[`plt.tight_layout`](https://matplotlib.org/stable/tutorials/intermediate/tight_layout_guide.html)
 at the end, which adjusts the sizes of the panels to make sure the
 titles and axis labels don't overlap. You can see how convenient it is that we’ve written functions to plot each panel. 
 This code is concise and readable: we can see what is being plotted in each panel thanks to our explicit function names and
@@ -733,6 +657,12 @@ we know where to look if we want to see the mechanics of exactly how the plottin
 
 > ## Exercise 
 > What happens if you leave out `tight_layout`?
+> 
+> > ## Solution
+> > Without `tight_layout` the space between the panels is too small. In this situation, the titles from the lower plots overlap 
+> > with the x-axis labels from the upper panels and the axis labels from the right-hand panels overlap with the plots in the 
+> > left-hand panels.
+> {: .solution}
 {: .challenge}
 
 ## Adjusting proportions
