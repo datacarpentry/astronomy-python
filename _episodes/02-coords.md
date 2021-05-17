@@ -342,7 +342,7 @@ But first we let's see how to represent these coordinates with Astropy.
 ## Transforming coordinates
 
 Astropy provides a `SkyCoord` object that represents sky coordinates
-relative to a specified frame.
+relative to a specified reference frame.
 
 The following example creates a `SkyCoord` object that represents the
 approximate coordinates of
@@ -370,7 +370,9 @@ coord_icrs
 ~~~
 {: .output}
 
-`SkyCoord` provides a function that transforms to other frames.
+`SkyCoord` objects require units in order to understand the context, there are a number of ways to define `SkyCoord` objects, in our example, we explicitly specified the coordinates and units and provided a reference frame. 
+
+`SkyCoord` provides the `transform_to` function to transform from one reference frame to another reference frame.
 For example, we can transform `coords_icrs` to Galactic coordinates like this:
 
 ~~~
@@ -387,6 +389,7 @@ coord_galactic
 
 Notice that in the Galactic frame, the coordinates are called `l` and
 `b`, not `ra` and `dec`.
+Notice that in the Galactic frame, the coordinates are the variables we usually use for Galactic longitude and latitude called `l` and `b`, respectively, not `ra` and `dec`. Most reference frames have different ways to specify coordinates and the `SkyCoord` object will use these names.
 
 To transform to and from GD-1 coordinates, we'll use a frame defined
 by [Gala](https://gala-astro.readthedocs.io/en/latest/), which is an
@@ -395,7 +398,10 @@ Astropy-affiliated library that provides tools for galactic dynamics.
 Gala provides
 [`GD1Koposov10`](https://gala-astro.readthedocs.io/en/latest/_modules/gala/coordinates/gd1.html),
 which is "a Heliocentric spherical coordinate system defined by the
-orbit of the GD-1 stream".
+orbit of the GD-1 stream". In this coordinate system, one axis is defined along 
+the direction of the steam (the x-axis in Figure 1) and one axis is defined 
+perpendicular to the direction of the stream (the y-axis in Figure 1). 
+These are called the $\phi_{1}$ and $\phi2_{2}$ coordinates, respectively.
 
 ~~~
 from gala.coordinates import GD1Koposov10
@@ -468,14 +474,17 @@ ICRS.  That's by design.
 
 ## Selecting a rectangle
 
-Now we'll use these coordinate transformations to define a rectangle
-in the GD-1 frame and transform it to ICRS.
+Now that we know how to define coordinate transformations, we are going 
+to use them to get a list of stars that are in GD-1. As we mentioned 
+before, this is a lot of stars, so we’re going to start by defining a 
+rectangle that encompasses a small part of GD-1. 
+This is easiest to define in GD-1 coordinates.
 
 The following variables define the boundaries of the rectangle in
 φ<sub>1</sub> and φ<sub>2</sub>.
 
 ~~~
-phi1_min = -55 * u.degree
+phi1_min = -55 * u.degree 
 phi1_max = -45 * u.degree
 phi2_min = -8 * u.degree
 phi2_max = 4 * u.degree
@@ -486,7 +495,7 @@ Throughout this lesson we are going to be defining a rectangle often.
 Rather than copy and paste multiple lines of code we will write a function to build the rectangle for use. 
 By having the code contained in a single location, we can easily fix bugs or update our implementation as needed. 
 By choosing an explicit function name our code is also self documenting, meaning its easy for us to see that we're building a rectangle when we call this function. 
-To create a rectangle, we'll use the following function, which takes the lower and upper bounds as parameters.
+To create a rectangle, we'll use the following function, which takes the lower and upper bounds as parameters and returns a list of x and y coordinates of the corners of a rectangle starting with the lower left corner and working clockwise.
 
 ~~~
 def make_rectangle(x1, x2, y1, y2):
@@ -631,7 +640,10 @@ sky_point_list
 
 ## Assembling the query
 
-Now we're ready to assemble the query. 
+Now we’re ready to assemble our query to get all of the stars in 
+the Gaia catalog that are in the small rectangle we defined and 
+are likely to be part of GD-1 with the criteria we previously defined.
+
 We need `columns` again (as we saw in the previous lesson).
 
 ~~~
