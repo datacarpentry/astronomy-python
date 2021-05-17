@@ -184,17 +184,17 @@ region of GD-1,
 > Choose any or all of these features and add them to the figure:
 > 
 > * To draw vertical lines, see
-> [`plt.vlines`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.vlines.html)
+> [`plt.vlines`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.vlines.html)
 > and
-> [`plt.axvline`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.axvline.html#matplotlib.pyplot.axvline).
+> [`plt.axvline`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.axvline.html).
 > 
 > * To add text, see
-> [`plt.text`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.text.html).
+> [`plt.text`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.text.html).
 > 
 > * To add an annotation with text and an arrow, see [plt.annotate]().
 > 
 > And here is some [additional information about text and
-> arrows](https://matplotlib.org/3.3.1/tutorials/text/annotations.html#plotting-guide-annotation).
+> arrows](https://matplotlib.org/stable/tutorials/text/annotations.html).
 >
 > > ## Solution
 > > 
@@ -252,7 +252,7 @@ plt.gca().tick_params(direction='in')
 > ## Exercise (5 minutes)
 > 
 > Read the documentation of
-> [`tick_params`](https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.axes.Axes.tick_params.html)
+> [`tick_params`](https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.tick_params.html)
 > and use it to put ticks on the top and right sides of the axes.
 >
 > > ## Solution
@@ -313,7 +313,7 @@ not easy to switch from one set of options to another.
 
 The solution to this problem is style sheets, [which you can read
 about
-here](https://matplotlib.org/3.1.1/tutorials/introductory/customizing.html).
+here](https://matplotlib.org/stable/tutorials/introductory/customizing.html).
 
 Matplotlib provides a set of predefined style sheets, or you can make your own.
 
@@ -388,7 +388,7 @@ mpl.get_configdir()
 
 When you include mathematical expressions in titles, labels, and
 annotations, Matplotlib uses
-[`mathtext`](https://matplotlib.org/3.1.0/tutorials/text/mathtext.html)
+[`mathtext`](https://matplotlib.org/stable/tutorials/text/mathtext.html)
 to typeset them.  `mathtext` uses the same syntax as LaTeX, but it
 provides only a subset of its features.
 
@@ -452,16 +452,16 @@ Confusingly, Matplotlib provides *three* functions for making figures
 like this: `subplot`, `subplots`, and `subplot2grid`.
 
 *
-[`subplot`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.subplot.html)
+[`subplot`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplot.html)
 is simple and similar to MATLAB, so if you are familiar with that
 interface, you might like `subplot`
 
 *
-[`subplots`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.subplots.html)
+[`subplots`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html)
 is more object-oriented, which some people prefer.
 
 *
-[`subplot2grid`](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.subplot2grid.html)
+[`subplot2grid`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplot2grid.html)
 is most convenient if you want to control the relative sizes of the
 subplots.
 
@@ -682,7 +682,7 @@ loop_df.head()
 
 Now we're ready to put it all together.  To make a figure with four
 subplots, we'll use `subplot2grid`, [which requires two
-arguments](https://matplotlib.org/3.3.1/api/_as_gen/matplotlib.pyplot.subplot2grid.html):
+arguments](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplot2grid.html):
 
 * `shape`, which is a tuple with the number of rows and columns in the grid, and
 
@@ -725,7 +725,7 @@ plt.tight_layout()
 ![Four paneled plot showing our first recreation of figure 1 from the Price-Whelan and Bonaca paper.](../fig/07-plot_files/07-plot_69_0.png)
 
 We use
-[`plt.tight_layout`](https://matplotlib.org/3.3.1/tutorials/intermediate/tight_layout_guide.html)
+[`plt.tight_layout`](https://matplotlib.org/stable/tutorials/intermediate/tight_layout_guide.html)
 at the end, which adjusts the sizes of the panels to make sure the
 titles and axis labels don't overlap. You can see how convenient it is that we’ve written functions to plot each panel. 
 This code is concise and readable: we can see what is being plotted in each panel thanks to our explicit function names and
