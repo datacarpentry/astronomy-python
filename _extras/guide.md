@@ -155,11 +155,15 @@ For this reason when we write a CSV file and then read it back into a `DataFrame
 
 * In the manipulation we do to create the polygon, it can get lost that left_color, right_color, and color_loop are all x values for the polygon (and that g and mag_loop are the y values). It is worth coming back to this over and over as you introduce each variable.
 
-* learners might express concern that the polygon we use to select candidate stars is not closed.  That's ok; the `contains_points` method treats the polygon as if it is closed (by connecting the last point to the first).
+* Learners might express concern that the polygon we use to select candidate stars is not closed.  That's ok; the `contains_points` method treats the polygon as if it is closed (by connecting the last point to the first).
 
 * Learners may notice that `contains_points` is not actually a Polygon property. Polygon inherits this method from Patch.
 
-* Students may ask why we're initializing an empty array and then creating the columns on the fly. DataFrame initialize with arrays of rows rather than columns, so this is the easiest way without having to do some array manipulation. See https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html for more details.
+* We mention usetex in the discussion of TeX markup in matplotlib. This option does not work for all operating system/backend combinations (in our first alpha pilot some notebooks required restarting after trying to use this option). But, one error that can be fixed is `LaTeX Error: File 'type1cm.sty' not found.` Learners with this error might have to install a package that contains the fonts LaTeX needs.  On some systems, the packages `texlive-latex-extra` or `cm-super` might be what they need.  [See here for more help with
+ this](https://stackoverflow.com/questions/11354149/python-unable-to-render-tex-in-matplotlib).
+
+
+* Learners may ask why we're initializing an empty array and then creating the columns on the fly. DataFrame initialize with arrays of rows rather than columns, so this is the easiest way without having to do some array manipulation. See https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html for more details.
 
 ### Lesson 7: Visualization
 
