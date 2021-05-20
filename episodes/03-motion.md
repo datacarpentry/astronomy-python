@@ -52,9 +52,10 @@ analysis, identifying stars with the proper motion we expect for GD-1.
 ## Reload the data
 
 In the previous lesson, we ran a query on the Gaia server and
-downloaded data for roughly 140,000 stars.  We saved the data in a
-FITS file so that now, picking up where we left off, we can read the
-data from a local file rather than running the query again.
+downloaded data for roughly 140,000 stars and saved the data in a FITS file. 
+We will use that data for this lesson. 
+Whether you are working from a new notebook or coming back from a checkpoint, 
+reloading the data will save you from having to run the query again. 
 
 If you ran the previous lesson successfully, you should already have a
 file called `gd1_results.fits` that contains the data we downloaded.
@@ -360,8 +361,8 @@ which is useful for two reasons:
 likely to be in GD-1 by selecting stars near the centerline of the
 stream, where $\phi_2$ is close to 0.
 
-* By transforming the proper motions, we can identify stars with
-non-zero proper motion along the $\phi_1$ axis.
+* By transforming the proper motions, we can identify stars with 
+non-zero proper motion along the $\phi_1$ axis, which are likely to be part of GD-1.
 
 To do the transformation, we'll put the results into a `SkyCoord`
 object.  In a previous lesson we created a `SkyCoord` object like
@@ -374,8 +375,17 @@ skycoord = SkyCoord(ra=results['ra'], dec=results['dec'])
 ~~~
 {: .language-python}
 
-Now we're going to do something similar, but in addition to `ra` and
-`dec`, we'll also include:
+Notice that we did not specify the reference frame, that is because when 
+using `ra` and `dec` in `SkyCoord`, the `ICRS` frame is assumed by default.
+
+The `SkyCoord` object can keep track not just of location, but also proper motions. 
+This means that we can initialize a `SkyCoord` object with location and proper motions, 
+then use all of these quantities together to transform into the GD1 frame.
+ 
+
+Now we're going to do something similar, but now we will add take advantage of `SkyCoord` object's 
+capacity to include and track and space motion information in addition to `ra` and
+`dec`. We will now also include:
 
 * `pmra` and `pmdec`, which are proper motion in the ICRS frame, and
 
@@ -423,9 +433,9 @@ and `radial_velocity` rather than measurements from Gaia.
 
 That might seem like a strange thing to do, but here's the motivation:
 
-* Because the stars in GD-1 are so far away, the distance estimates we
-get from Gaia, which are based on parallax, are not very precise.  So
-we replace them with our current best estimate of the mean distance to
+* Because the stars in GD-1 are so far away, parallaxes measured by Gaia 
+are negligible, making the distance estimates unreliable.  
+So we replace them with our current best estimate of the mean distance to
 GD-1, about 8 kpc.  See [Koposov, Rix, and Hogg,
 2010](https://ui.adsabs.harvard.edu/abs/2010ApJ...712..260K/abstract).
 
@@ -713,10 +723,11 @@ max    7.974418e+17     152.777393      34.285481     104.319923
 > > ## Solution
 > >
 > > The most noticeable issue is that some of the
-> > parallax values are negative, which is non-physical.
+> > parallax values are negative, which seems non-physical.
 > > 
-> > The reason is that parallax measurements are less accurate
-> > for stars that are far away.
+> > Negative parallaxes in the Gaia database can arise from a number 
+> > causes like source confusion (high negative values) and the parallax 
+> > zero point with systematic errors (low negative values). 
 > > 
 > > Fortunately, we don't use the parallax measurements in
 > > the analysis (one of the reasons we used constant distance
