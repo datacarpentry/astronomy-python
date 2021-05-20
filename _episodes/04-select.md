@@ -78,16 +78,17 @@ selected_df = pd.read_hdf(filename, 'selected_df')
 Let's review how we got to this point.
 
 1. We made an ADQL query to the Gaia server to get data for stars in
-the vicinity of GD-1.
+the vicinity of a small part of GD-1.
 
-2. We transformed the coordinates to the `GD1Koposov10` frame so we
+2. We transformed the coordinates to the GD-1 frame (`GD1Koposov10`) so we
 could select stars along the centerline of GD-1.
 
-3. We plotted the proper motion of the centerline stars to identify
-the bounds of the overdense region.
+3. We plotted the proper motion of stars along the centerline of GD-1 
+to identify the bounds of an anomalous overdense region associated 
+with the proper motion of stars in GD-1.
 
-4. We made a mask that selects stars whose proper motion is in the
-overdense region.
+4. We made a mask that selects stars whose proper motion is in this
+overdense region and which are therefore likely to be part of the GD-1 stream.
 
 At this point we have downloaded data for a relatively large number of
 stars (more than 100,000) and selected a relatively small number
@@ -98,11 +99,12 @@ need.  That would also make it possible to download data covering a
 larger region of the sky.
 
 However, the selection we did was based on proper motion in the
-`GD1Koposov10` frame.  In order to do the same selection in ADQL, we
-have to work with proper motions in ICRS.
+GD-1 frame. In order to do the same selection on the Gaia catalog in ADQL, 
+we have to work with proper motions in the ICRS frame as this is the 
+frame that the Gaia catalog uses.  
 
 As a reminder, here's the rectangle we selected based on proper motion
-in the `GD1Koposov10` frame.
+in the GD-1 frame.
 
 ~~~
 pm1_min = -8.9
@@ -274,7 +276,7 @@ array([ 692,  873,  141,  303,   42,  622,   45,   83,  127,  182, 1006,
 {: .output}
 
 We can use them as an index into the original array to select the
-corresponding rows.
+corresponding ICRS frame proper motion data points.
 
 ~~~
 pm_vertices = points[hull.vertices]
@@ -347,7 +349,8 @@ The next step is to use it as part of an ADQL query.
 
 ## Assembling the query
 
-In Lesson 2 we used the following query to select stars in a polygonal region.
+In Lesson 2 we used the following query to select stars in a polygonal region 
+around a small part of GD-1 with a few simple filters on color and distance (parallax)
 
 ~~~
 query5_base = """SELECT
@@ -363,10 +366,17 @@ WHERE parallax < 1
 
 In this lesson we'll make two changes:
 
-1. We'll select stars with coordinates in a larger region.
+1. We'll select stars with coordinates in a larger region to include more of GD-1.
 
 2. We'll add another clause to select stars whose proper motion is in
 the polygon we just computed, `pm_vertices`.
+
+The fact that we remove most contaminating stars with the proper 
+motion filter is what allows us to expand our query to include 
+most of GD-1 without returning too many results. 
+As we did in Lesson 2, we will define the physical region we want 
+to select in the GD-1 frame and transform it to the ICRS frame 
+to query the Gaia catalog which is in the ICRS frame.
 
 Here are the coordinates of the larger rectangle in the GD-1 frame.
 
@@ -467,7 +477,7 @@ motion falls in the polygon defined by `pm_vertices`.
 
 To use `pm_vertices` as part of an ADQL query, we have to convert it
 to a string.
-Using `flatten` and `array2string`, we can almost get the format we need.
+Using `flatten` to convert from a 2D array to a 1D array and `array2string` to convert the result from an array to a strong, we can almost get the format we need.
 
 ~~~
 s = np.array2string(pm_vertices.flatten(), 
@@ -715,5 +725,5 @@ we're able to either:
 
 2. Search a larger region while still downloading a manageable amount of data.
 
-In the next lesson, we'll learn about the database `JOIN` operation
-and use it to download photometry data from Pan-STARRS.
+In the next lesson, we'll learn about the database `JOIN` operation, which we will use 
+in later lessons to join our Gaia data with photometry data from Pan-STARRS.
