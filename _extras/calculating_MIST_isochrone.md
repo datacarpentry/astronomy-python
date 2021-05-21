@@ -97,7 +97,7 @@ numpy.ndarray
 ~~~
 {: .output}
 
-But it's an unusual NumPy array, because it contains names for the columns.
+But it is an unusual NumPy array, because it contains names for the columns.
 
 ~~~
 iso_array.dtype
