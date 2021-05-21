@@ -127,7 +127,7 @@ This idiom violates the recommendation not to repeat variables names, but since 
 
 * Recall that the first time we use `DataFrame.to_hdf`, we use the `w` argument to indicate that we want to create a new, empty HDF Store.  For all subsequent uses, we should *not* use the `w` argument, so that we add new Datasets to the existing Store, rather than starting over.
 
-* when writing the point_series object to an HDF5 file, learners may see the warning message like the following:
+* when writing the `point_series` object to an HDF5 file, learners may see the warning message like the following:
     ```/Users/bostroem/opt/anaconda3/envs/AstronomicalData/lib/python3.8/site-packages/pandas/core/generic.py:2434: PerformanceWarning: 
     your performance may suffer as PyTables will pickle object types that it cannot
     map directly to c-types [inferred_type->mixed,key->values] [items->None]
