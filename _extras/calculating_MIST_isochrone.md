@@ -198,7 +198,7 @@ plt.plot(color_g_i, mag_g);
 The theoretical isochrone passes through the overdense region where we
 expect to find stars in GD-1.
 
-Let's save this result so we can reload it later without repeating the
+We will save this result so we can reload it later without repeating the
 steps in this section.
 
 So we can save the data in an HDF5 file, we will put it in a Pandas
