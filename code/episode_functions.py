@@ -1,6 +1,6 @@
 """
 This module contains the functions that are defined throughout the episodes
-so that they can be imported as needed (especially between workshop days).
+so that they can be imported as needed (especially between days of the workshop).
 """
 import numpy as np
 from matplotlib import pyplot as plt
