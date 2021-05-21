@@ -82,7 +82,7 @@ gd1_frame = GD1Koposov10()
 {: .language-python}
 
 ## Selecting rows and columns
-In the previous lesson we selected spatial and proper motion information from the Gaia catalog for stars around a small part of GD-1. The output was returned as an astropy Table. 
+In the previous episode we selected spatial and proper motion information from the Gaia catalog for stars around a small part of GD-1. The output was returned as an astropy Table. 
 We can use `info` to check the contents.
 
 ~~~
