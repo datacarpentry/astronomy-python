@@ -76,7 +76,7 @@ selected_df = pd.read_hdf(filename, 'selected_df')
 ~~~
 {: .language-python}
 
-This defines previously defined quantities
+This defines previously defined quantities:
 ~~~
 pm1_min = -8.9
 pm1_max = -6.9
