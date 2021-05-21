@@ -41,7 +41,6 @@ less data.
 > We'll also see how to write the results to a CSV file.
 {: .checklist}
 
-## Reload the data
 ## Starting from this lesson
 
 In the previous lesson, we ran a query on the Gaia server and
@@ -53,7 +52,7 @@ Whether you are working from a new notebook or coming back from a checkpoint,
 reloading the data will save you from having to run the query again. 
 
 If you are starting this lesson here or starting this lesson in a new notebook,
-you will need run the following cells: and .
+you will need run the following lines of code:
 
 This imports previously imported functions:
 ~~~

@@ -58,9 +58,9 @@ Whether you are working from a new notebook or coming back from a checkpoint,
 reloading the data will save you from having to run the query again. 
 
 If you are starting this lesson here or starting this lesson in a new notebook,
-you will need to load in the data (instructions for downloading data can be
-found in the [setup directions](../setup.md)) and import the previous functions.
+you will need run the following lines of code:
 
+This imports previously imported functions:
 ~~~
 import astropy.units as u
 from astropy.coordinates import SkyCoord
@@ -68,7 +68,12 @@ from gala.coordinates import GD1Koposov10
 from astropy.table import Table
 
 from episode_functions import *
+~~~
+{: .language-python}
 
+This loads in the data (instructions for downloading data can be
+found in the [setup directions](../setup.md))
+~~~
 filename = 'gd1_results.fits'
 results = Table.read(filename)
 
