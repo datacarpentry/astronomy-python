@@ -64,12 +64,15 @@ found in the [setup directions](../setup.md)) and import the previous functions.
 ~~~
 import astropy.units as u
 from astropy.coordinates import SkyCoord
-from astroquery.gaia import Gaia
 from gala.coordinates import GD1Koposov10
 from astropy.table import Table
 
+from episode_functions import *
+
 filename = 'gd1_results.fits'
 results = Table.read(filename)
+
+gd1_frame = GD1Koposov10()
 ~~~
 {: .language-python}
 
