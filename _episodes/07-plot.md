@@ -513,7 +513,7 @@ Here's a function that takes a `DataFrame` of candidate stars and
 plots their positions in GD-1 coordindates.
 
 ~~~
-def plot_first_selection(df):
+def plot_pm_selection(df):
     x = df['phi1']
     y = df['phi2']
 
@@ -530,7 +530,7 @@ def plot_first_selection(df):
 And here's what it looks like.
 
 ~~~
-plot_first_selection(candidate_df)
+plot_pm_selection(candidate_df)
 ~~~
 {: .language-python}
 
@@ -623,7 +623,7 @@ Here's how we use it to draw the four panels.
 ~~~
 shape = (2, 2)
 plt.subplot2grid(shape, (0, 0))
-plot_first_selection(candidate_df)
+plot_pm_selection(candidate_df)
 
 plt.subplot2grid(shape, (0, 1))
 plot_proper_motion(centerline_df)
@@ -688,7 +688,7 @@ plt.figure(figsize=(9, 4.5))
 
 shape = (2, 4)
 plt.subplot2grid(shape, (0, 0), colspan=3)
-plot_first_selection(candidate_df)
+plot_pm_selection(candidate_df)
 
 plt.subplot2grid(shape, (0, 3))
 plot_proper_motion(centerline_df)
@@ -728,7 +728,7 @@ This is looking more and more like the figure in the paper.
 > > 
 > > shape = (2, 5)                                   # CHANGED
 > > plt.subplot2grid(shape, (0, 0), colspan=3)
-> > plot_first_selection(candidate_df)
+> > plot_pm_selection(candidate_df)
 > > 
 > > plt.subplot2grid(shape, (0, 3), colspan=2)       # CHANGED
 > > plot_proper_motion(centerline_df)

@@ -41,35 +41,50 @@ less data.
 > We'll also see how to write the results to a CSV file.
 {: .checklist}
 
-## Reload the data
+## Starting from this episode
 
-You can [download the data from the previous
-lesson](https://github.com/AllenDowney/AstronomicalData/raw/main/data/gd1_data.hdf)
-or run the following cell, which downloads it if necessary.
+In the previous episode, we ran a query on the Gaia server and
+downloaded data for roughly 140,000 stars and saved the data in a FITS file.
+We then selected just the stars with the same proper motion as GD-1 and saved
+the results to an HDF5 file. 
+We will use that data for this episode. 
+Whether you are working from a new notebook or coming back from a checkpoint, 
+reloading the data will save you from having to run the query again. 
 
+If you are starting this episode here or starting this episode in a new notebook,
+you will need run the following lines of code:
+
+This imports previously imported functions:
 ~~~
-from os.path import basename, exists
+import astropy.units as u
+from astropy.coordinates import SkyCoord
+from astroquery.gaia import Gaia
+from gala.coordinates import GD1Koposov10, GD1, reflex_correct
+import matplotlib.pyplot as plt
+import pandas as pd
 
-def download(url):
-    filename = basename(url)
-    if not exists(filename):
-        from urllib.request import urlretrieve
-        local, _ = urlretrieve(url, filename)
-        print('Downloaded ' + local)
-
-download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
-         'data/gd1_data.hdf')
+from episode_functions import *
 ~~~
 {: .language-python}
 
-Now we can reload `centerline_df` and `selected_df`.
-
+This loads in the data (instructions for downloading data can be
+found in the [setup instructions](../setup.md))
 ~~~
-import pandas as pd
-
 filename = 'gd1_data.hdf'
 centerline_df = pd.read_hdf(filename, 'centerline_df')
 selected_df = pd.read_hdf(filename, 'selected_df')
+~~~
+{: .language-python}
+
+This defines previously defined quantities:
+~~~
+pm1_min = -8.9
+pm1_max = -6.9
+pm2_min = -2.2
+pm2_max =  1.0
+
+pm1_rect, pm2_rect = make_rectangle(
+    pm1_min, pm1_max, pm2_min, pm2_max)
 ~~~
 {: .language-python}
 
@@ -103,55 +118,8 @@ GD-1 frame. In order to do the same selection on the Gaia catalog in ADQL,
 we have to work with proper motions in the ICRS frame as this is the 
 frame that the Gaia catalog uses.  
 
-As a reminder, here's the rectangle we selected based on proper motion
-in the GD-1 frame.
-
-~~~
-pm1_min = -8.9
-pm1_max = -6.9
-pm2_min = -2.2
-pm2_max =  1.0
-~~~
-{: .language-python}
-
-~~~
-def make_rectangle(x1, x2, y1, y2):
-    """Return the corners of a rectangle."""
-    xs = [x1, x1, x2, x2, x1]
-    ys = [y1, y2, y2, y1, y1]
-    return xs, ys
-~~~
-{: .language-python}
-
-~~~
-pm1_rect, pm2_rect = make_rectangle(
-    pm1_min, pm1_max, pm2_min, pm2_max)
-~~~
-{: .language-python}
-
-Since we'll need to plot proper motion several times, we'll use the
-following function.
-
-~~~
-import matplotlib.pyplot as plt
-
-def plot_proper_motion(df):
-    """Plot proper motion.
-    
-    df: DataFrame with `pm_phi1` and `pm_phi2`
-    """
-    x = df['pm_phi1']
-    y = df['pm_phi2']
-    plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
-
-    plt.xlabel('Proper motion phi1 (GD1 frame)')
-    plt.ylabel('Proper motion phi2 (GD1 frame)')
-
-    plt.xlim(-12, 8)
-    plt.ylim(-10, 10)
-~~~
-{: .language-python}
-
+First, we will verify that our proper motion selection was correct, 
+starting with the `plot_proper_motion` function that we defined in episode 3.
 The following figure shows:
 
 * Proper motion for the stars we selected along the center line of GD-1,
@@ -381,8 +349,6 @@ to query the Gaia catalog which is in the ICRS frame.
 Here are the coordinates of the larger rectangle in the GD-1 frame.
 
 ~~~
-import astropy.units as u
-
 phi1_min = -70 * u.degree
 phi1_max = -20 * u.degree
 phi2_min = -5 * u.degree
@@ -402,10 +368,6 @@ phi1_rect, phi2_rect = make_rectangle(
 Here's how we transform it to ICRS, as we saw in Lesson 2.
 
 ~~~
-from gala.coordinates import GD1Koposov10
-from astropy.coordinates import SkyCoord
-
-gd1_frame = GD1Koposov10()
 corners = SkyCoord(phi1=phi1_rect, 
                    phi2=phi2_rect, 
                    frame=gd1_frame)
@@ -416,16 +378,8 @@ corners_icrs = corners.transform_to('icrs')
 
 To use `corners_icrs` as part of an ADQL query, we have to convert it
 to a string.
-Here's the function from Lesson 2 we used to do that.
-
-~~~
-def skycoord_to_string(skycoord):
-    """Convert SkyCoord to string."""
-    t = skycoord.to_string()
-    s = ' '.join(t)
-    return s.replace(' ', ', ')
-~~~
-{: .language-python}
+Fortunately, we wrote a function, `skycoord_to_string` to do this in episode 2 
+which we will call now.
 
 ~~~
 sky_point_list = skycoord_to_string(corners_icrs)
@@ -549,8 +503,6 @@ pm_point_list
 Now we can run the query like this:
 
 ~~~
-from astroquery.gaia import Gaia
-
 job = Gaia.launch_job_async(query6)
 print(job)
 ~~~
@@ -594,12 +546,16 @@ our analysis at a later date we should save both lists to a file.
 There are several ways we could do that, but since we are already
 storing data in an HDF file, let's do the same with these variables.
 
-To save them to an HDF file we first need to put them in a `DataFrame`.
-We have seen how to create a `DataFrame` from an Astropy `Table` and from 
-another `DataFrame`, now we'll build one from scratch. To do this we need
-an object that can define both the name of each column (or `Series`) and 
-the data to go in that column. We can use a Python `Dictionary` for this, 
-defining the column names with the dictionary keys and the column data with
+To save them to an HDF file we first need to put them in a Pandas object.
+We have seen how to create a `Series` from a column in a `DataFrame`.
+Now we will build a `Series` from scratch. 
+We don't need the full `DataFrame` format with multiple rows and columns 
+because we are only storing two strings (`sky_point_list` and `pm_point_list`).
+We can store each string as a row in the `Series` and save it. One aspect that
+is nice about series is that we can label each row. 
+To do this we need an object that can define both the name of each row and 
+the data to go in that row. We can use a Python `Dictionary` for this, 
+defining the row names with the dictionary keys and the row data with
 the dictionary values. 
 
 ~~~
@@ -614,11 +570,11 @@ d
 ~~~
 {: .output}
 
-And use it to initialize a `DataFrame`.
+And use it to initialize a `Series`.
 
 ~~~
-point_df = pd.DataFrame(d)
-point_df
+point_series = pd.Series(d)
+point_series
 ~~~
 {: .language-python}
 
@@ -633,7 +589,7 @@ Now we can save it in the usual way.
 
 ~~~
 filename = 'gd1_data.hdf'
-point_df.to_hdf(filename, 'point_df')
+point_series.to_hdf(filename, 'point_series')
 ~~~
 {: .language-python}
 
@@ -671,15 +627,10 @@ candidate_df = make_dataframe(candidate_table)
 ~~~
 {: .language-python}
 
-And let's see the results.
+And let's see the results using the `plot_pm_selection` function we wrote in episode 3.
 
 ~~~
-x = candidate_df['phi1']
-y = candidate_df['phi2']
-plt.plot(x, y, 'ko', markersize=0.5, alpha=0.5)
-
-plt.xlabel('phi1 (degree GD1)')
-plt.ylabel('phi2 (degree GD1)');
+plot_pm_selection(candidate_df)
 ~~~
 {: .language-python}
 
