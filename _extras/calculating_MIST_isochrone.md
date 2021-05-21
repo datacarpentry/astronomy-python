@@ -18,7 +18,7 @@ download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
 ~~~
 {: .language-python}
 
-To read this file we'll download a Python module [from this
+To read this file we will download a Python module [from this
 repository](https://github.com/jieunchoi/MIST_codes).
 
 ~~~
