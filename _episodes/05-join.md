@@ -733,7 +733,7 @@ WHERE parallax < 1
 ~~~
 {: .language-python}
 
-Now we can assemble the query the sky and proper motion point lists we compiled in episode 4.
+Now we can assemble the query using the sky and proper motion point lists we compiled in episode 4.
 
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec'
