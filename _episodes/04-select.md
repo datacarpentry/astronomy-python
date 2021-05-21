@@ -41,17 +41,17 @@ less data.
 > We'll also see how to write the results to a CSV file.
 {: .checklist}
 
-## Starting from this lesson
+## Starting from this episode
 
-In the previous lesson, we ran a query on the Gaia server and
+In the previous episode, we ran a query on the Gaia server and
 downloaded data for roughly 140,000 stars and saved the data in a FITS file.
 We then selected just the stars with the same proper motion as GD-1 and saved
 the results to an HDF5 file. 
-We will use that data for this lesson. 
+We will use that data for this episode. 
 Whether you are working from a new notebook or coming back from a checkpoint, 
 reloading the data will save you from having to run the query again. 
 
-If you are starting this lesson here or starting this lesson in a new notebook,
+If you are starting this episode here or starting this episode in a new notebook,
 you will need run the following lines of code:
 
 This imports previously imported functions:

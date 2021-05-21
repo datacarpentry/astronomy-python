@@ -54,17 +54,17 @@ main sequence of GD-1 from younger background stars.
 > 3. We'll write the results to a file for use in the next notebook.
 {: .checklist}
 
-## Starting from this lesson
+## Starting from this episode
 
-In the previous lesson, we define a rectangle around stars in GD1 in spatial coordinates
+In the previous episode, we define a rectangle around stars in GD1 in spatial coordinates
 and in proper motion which we transformed into ICRS coordinates and created point
 lists of the polygon verticies.
-We will use that data for this lesson. 
+We will use that data for this episode. 
 Whether you are working from a new notebook or coming back from a checkpoint, 
 reloading the data will save you from having to run the query again. 
 
 
-If you are starting this lesson here or starting this lesson in a new notebook,
+If you are starting this episode here or starting this episode in a new notebook,
 you will need run the following lines of code:
 
 This imports previously imported functions:
