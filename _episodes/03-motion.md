@@ -1135,8 +1135,8 @@ plt.axis('equal')
 ![Scatter plot of coordinates of stars in selected region, showing tidal stream with equally proportioned axes.](../fig/03-motion_files/03-motion_plot_pm_selection.png)
 
 Before we go any further, let's put the code we wrote to make one of the panel
-figures into a function that we will use later when we build the full figure in 
-episode 7. This will allow us to recreate this entire plot with a single line of code.
+figures into a function that we will use in future episodes to recreate this 
+entire plot with a single line of code.
 
 ~~~
 def plot_pm_selection(df):
@@ -1232,7 +1232,7 @@ file if it already exists rather than append another dataset to it.
 
 > ## Exercise (5 minutes)
 > 
-> We're going to need `centerline_df` later as well.  Write a line of
+> We are going to need `centerline_df` later as well.  Write a line of
 > code to add it as a second Dataset in the HDF5 file.
 > 
 > Hint: Since the file already exists, you should *not* use `mode='w'`.
