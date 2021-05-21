@@ -547,7 +547,7 @@ There are several ways we could do that, but since we are already
 storing data in an HDF file, let's do the same with these variables.
 
 To save them to an HDF file we first need to put them in a Pandas object.
-We have seen how to create a `Series` as a column in a `DataFrame`.
+We have seen how to create a `Series` from a column in a `DataFrame`.
 Now we will build a Series from scratch. 
 We don't need the full `DataFrame` format with multiple rows and columns 
 because we are only storing two strings (`sky_point_list` and `pm_point_list`).
