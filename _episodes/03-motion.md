@@ -1101,7 +1101,7 @@ plt.ylabel('phi2 (degree GD1)');
 
 Now that's starting to look like a tidal stream!
 
-To clean up the plot a little bit we can add two new Matplotlib:
+To clean up the plot a little bit we can add two new Matplotlib commands:
 * `axis` with the parameter `equal` sets up the axes so a unit is the
 same size along the `x` and `y` axes.
 
