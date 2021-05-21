@@ -86,7 +86,7 @@ Because this lesson follows a single dataset throughout, its easy for learners (
 
 * It is also worth noting that we are selecting stars close to the centerline to identify the proper motion cut, so its ok if we exclude some GD-1 stars here. In this case we prefer a more pure sample to a more complete sample. Once we have the proper motion limits from our pure sample (centerline_df), we'll include the full spatial region (results_df) and get all of the GD-1 stars (selected_df).
 
-* Learners may be concerned that we're writing a function for later that doesn't fill the full canvas (when we set `axis('equal')`). You can reassure them that in episode 7 we'll take care of this by learning how to set the figure size, the subplot size, and we'll be using a larger spatial area (that we define in episode 4).
+* Learners may be concerned that we are writing a function for later that does not fill the full canvas (when we set `axis('equal')`). You can reassure them that in episode 7 we will take care of this by learning how to set the figure size, the subplot size, and we will be using a larger spatial area (that we define in episode 4).
 
 * Notice that the first time we use `DataFrame.to_hdf`, we use the `w` argument to indicate that we want to create a new, empty HDF Store.  For all subsequent uses, we should *not* use the `w` argument, so that we add new Datasets to the existing Store, rather than starting over.
 * At the end of Day 1, if a student is lost or struggled with the end of this lesson, point them to the static version of the HDF5 files (TODO: decide where this lives) so that they can read it in with everyone else on Day 2.
