@@ -56,10 +56,9 @@ main sequence of GD-1 from younger background stars.
 
 ## Starting from this lesson
 
-In the previous lesson, we ran a query on the Gaia server and
-downloaded data for roughly 140,000 stars and saved the data in a FITS file.
-We then selected just the stars with the same proper motion as GD-1 and saved
-the results to an HDF5 file. 
+In the previous lesson, we define a rectangle around stars in GD1 in spatial coordinates
+and in proper motion which we transformed into ICRS coordinates and created point
+lists of the polygon verticies.
 We will use that data for this lesson. 
 Whether you are working from a new notebook or coming back from a checkpoint, 
 reloading the data will save you from having to run the query again. 
