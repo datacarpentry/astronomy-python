@@ -150,7 +150,7 @@ objects we are saving are small.
 
 * The Pan-STARRS join exercise is likely to feel scary to a lot of students - they have only seen one example. Emphasize the building blocks of a join e.g. FROM table1 JOIN table2 ON table1.common_column=table2.common_column. It is also worth pointing out that common_columns will not have the same names in this case
 
-* The `head` function is a python version of the Unix `head`. The Python version (which can be found in the episode_functions.py file) is used because it is platform independent so a single syntax can be used by all learners. You don't need to go through the function, but if someone asks, feel free to open the episode functions.py file and show them. 
+* The `head` function is a Python version of the Unix `head` command. The Python version (which can be found in the episode_functions.py file) is used because it is platform independent so a single syntax can be used by all learners. You don't need to go through the function, but if someone asks, feel free to open the episode functions.py file and show them. 
 
 * In case a student asks about the extra `unnamed` column in the CSV section here's the explanation. You may notice that all Pandas `DataFrame`s have an index column which was not part of the original table definition. 
 This essentially numbers each row. When we write a `DataFrame` in any other format, the index gets treated like a bonafide column.
