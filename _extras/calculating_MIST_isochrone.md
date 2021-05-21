@@ -150,7 +150,7 @@ The other two columns we will use are `PS_g` and `PS_i`, which contain
 simulated photometry data for stars with the given age and
 metallicity, based on a model of the Pan-STARRS sensors.
 
-We'll use these columns to superimpose the isochrone on the
+We will use these columns to superimpose the isochrone on the
 color-magnitude diagram, but first we have to use a [distance
 modulus](https://en.wikipedia.org/wiki/Distance_modulus) to scale the
 isochrone based on the estimated distance of GD-1.
