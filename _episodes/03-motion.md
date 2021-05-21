@@ -49,7 +49,7 @@ analysis, identifying stars with the proper motion we expect for GD-1.
 > that region.
 {: .checklist}
 
-## Reload the data
+## Starting from this lesson
 
 In the previous lesson, we ran a query on the Gaia server and
 downloaded data for roughly 140,000 stars and saved the data in a FITS file. 
@@ -57,31 +57,15 @@ We will use that data for this lesson.
 Whether you are working from a new notebook or coming back from a checkpoint, 
 reloading the data will save you from having to run the query again. 
 
-If you ran the previous lesson successfully, you should already have a
-file called `gd1_results.fits` that contains the data we downloaded.
-
-If not, you can [download the
-file](https://github.com/AllenDowney/AstronomicalData/raw/main/data/gd1_results.fits)
-or run the following cell.
+If you are starting this lesson here or starting this lesson in a new notebook,
+you will need to load in the data (instructions for downloading data can be
+found in the [setup directions](../setup.md)) and import the previous functions.
 
 ~~~
-from os.path import basename, exists
-
-def download(url):
-    filename = basename(url)
-    if not exists(filename):
-        from urllib.request import urlretrieve
-        local, _ = urlretrieve(url, filename)
-        print('Downloaded ' + local)
-
-download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
-         'data/gd1_results.fits')
-~~~
-{: .language-python}
-
-Now here's how we can read the data from the file back into an Astropy `Table`:
-
-~~~
+import astropy.units as u
+from astropy.coordinates import SkyCoord
+from astroquery.gaia import Gaia
+from gala.coordinates import GD1Koposov10
 from astropy.table import Table
 
 filename = 'gd1_results.fits'
@@ -89,9 +73,9 @@ results = Table.read(filename)
 ~~~
 {: .language-python}
 
-The result is an Astropy `Table`.
-
-We can use `info` to refresh our memory of the contents.
+## Selecting rows and columns
+In the previous lesson we selected spatial and proper motion information from the Gaia catalog for stars around a small part of GD-1. The output was returned as an astropy Table. 
+We can use `info` to check the contents.
 
 ~~~
 results.info()
@@ -111,7 +95,7 @@ source_id   int64          Unique source identifier (unique within a particular 
 ~~~
 {: .output}
 
-## Selecting rows and columns
+
 
 In this section we'll see operations for selecting columns and rows
 from an Astropy `Table`.  You can find more information about these
@@ -369,8 +353,6 @@ object.  In a previous lesson we created a `SkyCoord` object like
 this:
 
 ~~~
-from astropy.coordinates import SkyCoord
-
 skycoord = SkyCoord(ra=results['ra'], dec=results['dec'])
 ~~~
 {: .language-python}
@@ -392,8 +374,6 @@ capacity to include and track and space motion information in addition to `ra` a
 * `distance` and `radial_velocity`, which are important for the reflex correction and will be discussed in that section.
 
 ~~~
-import astropy.units as u
-
 distance = 8 * u.kpc
 radial_velocity= 0 * u.km/u.s
 
@@ -414,9 +394,6 @@ The result is an Astropy `SkyCoord` object, which we can transform to
 the GD-1 frame.
 
 ~~~
-from gala.coordinates import GD1
-
-gd1_frame = GD1()
 transformed = skycoord.transform_to(gd1_frame)
 ~~~
 {: .language-python}
@@ -679,7 +656,7 @@ def make_dataframe(table):
 Here is how we use the function:
 
 ~~~
-results_df = make_dataframe(results_table)
+results_df = make_dataframe(results)
 ~~~
 {: .language-python}
 
@@ -1021,17 +998,7 @@ pm2_max =  1.0
 ~~~
 {: .language-python}
 
-To draw these bounds, we'll use `make_rectangle` to make two lists
-containing the coordinates of the corners of the rectangle.
-
-~~~
-def make_rectangle(x1, x2, y1, y2):
-    """Return the corners of a rectangle."""
-    xs = [x1, x1, x2, x2, x1]
-    ys = [y1, y2, y2, y1, y1]
-    return xs, ys
-~~~
-{: .language-python}
+To draw these bounds, we'll use the `make_rectangle` function we wrote in episode 2 to make two lists containing the coordinates of the corners of the rectangle.
 
 ~~~
 pm1_rect, pm2_rect = make_rectangle(
@@ -1126,6 +1093,68 @@ plt.ylabel('phi2 (degree GD1)');
 
 Now that's starting to look like a tidal stream!
 
+To clean up the plot a little bit we can add two new Matplotlib:
+* `axis` with the parameter `equal` sets up the axes so a unit is the
+same size along the `x` and `y` axes.
+
+* `title` puts the input string as a title at the top of the plot. The `fontsize` keyword 
+sets the `fontsize` to be `medium` a little smaller than the default `large`.
+
+In an example like this, where `x` and `y` represent coordinates in
+space, equal axes ensures that the distance between points is
+represented accurately. Since we're now constraining the relative proportions
+of our axes, the data may not fill the entire figure.
+
+~~~
+x = selected_df['phi1']
+y = selected_df['phi2']
+
+plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
+
+plt.xlabel('phi1 [deg]')
+plt.ylabel('phi2 [deg]')
+plt.title('Proper motion selection', fontsize='medium')
+
+plt.axis('equal')
+~~~
+{: .language-python}
+
+~~~
+<Figure size 432x288 with 1 Axes>
+~~~
+{: .output}
+
+![Scatter plot of coordinates of stars in selected region, showing tidal stream with equally proportioned axes.](../fig/03-motion_files/03-motion_plot_pm_selection.png)
+
+Before we go any further, let's put the code we wrote to make one of the panel
+figures into a function that we will use later when we build the full figure in 
+episode 7. This will allow us to recreate this entire plot with a single line of code.
+
+~~~
+def plot_pm_selection(df):
+    """Plot in GD-1 spatial coordinates the location of the stars
+    selected by proper motion
+    """
+    x = df['phi1']
+    y = df['phi2']
+
+    plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
+
+    plt.xlabel('phi1 [deg]')
+    plt.ylabel('phi2 [deg]')
+    plt.title('Proper motion selection', fontsize='medium')
+
+    plt.axis('equal')
+~~~
+{: .language-python}
+
+Now our one line plot command is:
+~~~
+plot_pm_selection(selected_df)
+~~~
+{: .language-python}
+
+
 ## Saving the DataFrame
 
 At this point we have run a successful query and cleaned up the
@@ -1135,6 +1164,8 @@ To save a Pandas `DataFrame`, one option is to convert it to an
 Astropy `Table`, like this:
 
 ~~~
+from astropy.table import Table
+
 selected_table = Table.from_pandas(selected_df)
 type(selected_table)
 ~~~

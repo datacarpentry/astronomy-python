@@ -614,22 +614,10 @@ plt.axis('equal');
 ![Right ascension and declination of selected stars in GD-1 frame after selecting for both proper motion and photometry.](../fig/06-photo_files/06-photo_93_0.png)
 
 
-This example includes three new Matplotlib commands:
-
-* `figure` creates the figure.  In previous examples, we didn't have
+This example includes the new Matplotlib command `figure` which creates the larger canvas the the subplots are placed on.  In previous examples, we didn't have
 to use this function; the figure was created automatically.  But when
 we call it explicitly, we can provide arguments like `figsize`, which
 sets the size of the figure.
-
-* `axis` with the parameter `equal` sets up the axes so a unit is the
-same size along the `x` and `y` axes.
-
-* `title` puts the input string as a title at the top of the plot. The `fontsize` keyword 
-sets the `fontsize` to be `medium` a little smaller than the default `large`.
-
-In an example like this, where `x` and `y` represent coordinates in
-space, equal axes ensures that the distance between points is
-represented accurately.
 
 In the example above we also used TeX markup in our axis labels so that they render as the 
 Greek letter `$\phi$` with subscripts for `1` and `2`.
