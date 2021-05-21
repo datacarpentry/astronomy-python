@@ -85,7 +85,7 @@ iso_array = iso.isocmds[0]
 ~~~
 {: .language-python}
 
-It's a NumPy array:
+It is a NumPy array:
 
 ~~~
 type(iso_array)
