@@ -58,7 +58,7 @@ Whether you are working from a new notebook or coming back from a checkpoint,
 reloading the data will save you from having to run the query again. 
 
 If you are starting this episode here or starting this episode in a new notebook,
-you will need run the following lines of code:
+you will need to run the following lines of code:
 
 This imports previously imported functions:
 ~~~
