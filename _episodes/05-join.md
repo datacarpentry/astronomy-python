@@ -56,7 +56,7 @@ main sequence of GD-1 from younger background stars.
 
 ## Starting from this episode
 
-In the previous episode, we define a rectangle around stars in GD1 in spatial coordinates
+In the previous episode, we define a rectangle around stars in GD-1 in spatial coordinates
 and in proper motion which we transformed into ICRS coordinates and created point
 lists of the polygon verticies.
 We will use that data for this episode. 
