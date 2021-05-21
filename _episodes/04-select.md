@@ -68,7 +68,7 @@ from episode_functions import *
 {: .language-python}
 
 This loads in the data (instructions for downloading data can be
-found in the [setup directions](../setup.md))
+found in the [setup instructions](../setup.md))
 ~~~
 filename = 'gd1_data.hdf'
 centerline_df = pd.read_hdf(filename, 'centerline_df')
