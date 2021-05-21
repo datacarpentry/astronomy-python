@@ -712,8 +712,8 @@ Let's reload the Pandas `DataFrame` that contains `sky_point_list` and `pm_point
 import pandas as pd
 
 filename = 'gd1_data.hdf'
-point_df = pd.read_hdf(filename, 'point_df')
-point_df
+point_series = pd.read_hdf(filename, 'point_series')
+point_series
 ~~~
 {: .language-python}
 
@@ -730,8 +730,8 @@ Now we can assemble the query.
 columns = 'source_id, ra, dec, pmra, pmdec'
 
 query6 = query6_base.format(columns=columns,
-                            sky_point_list=point_df['sky_point_list'],
-                            pm_point_list=point_df['pm_point_list'])
+                            sky_point_list=point_series['sky_point_list'],
+                            pm_point_list=point_series['pm_point_list'])
 
 print(query6)
 ~~~
@@ -819,8 +819,8 @@ results
 > > columns = ', '.join(column_list)
 > > 
 > > query7 = query7_base.format(columns=columns,
-> >                             sky_point_list=point_df['sky_point_list'],
-> >                             pm_point_list=point_df['pm_point_list'])
+> >                             sky_point_list=point_series['sky_point_list'],
+> >                             pm_point_list=point_series['pm_point_list'])
 > > print(query7)
 > > 
 > > 
