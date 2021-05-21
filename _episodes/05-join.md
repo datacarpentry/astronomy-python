@@ -54,6 +54,38 @@ main sequence of GD-1 from younger background stars.
 > 3. We'll write the results to a file for use in the next notebook.
 {: .checklist}
 
+## Starting from this lesson
+
+In the previous lesson, we ran a query on the Gaia server and
+downloaded data for roughly 140,000 stars and saved the data in a FITS file.
+We then selected just the stars with the same proper motion as GD-1 and saved
+the results to an HDF5 file. 
+We will use that data for this lesson. 
+Whether you are working from a new notebook or coming back from a checkpoint, 
+reloading the data will save you from having to run the query again. 
+
+
+If you are starting this lesson here or starting this lesson in a new notebook,
+you will need run the following lines of code:
+
+This imports previously imported functions:
+~~~
+from astroquery.gaia import Gaia
+import pandas as pd
+
+from episode_functions import *
+~~~
+{: .language-python}
+
+This loads in the data (instructions for downloading data can be
+found in the [setup directions](../setup.md))
+~~~
+filename = 'gd1_data.hdf'
+point_series = pd.read_hdf(filename, 'point_series')
+point_series
+~~~
+{: .language-python}
+
 ## Getting photometry data
 
 The Gaia dataset contains some photometry data, including the variable
@@ -122,8 +154,6 @@ Before we get to the `JOIN` operation, let's explore these tables.
 Here's the metadata for `panstarrs1_best_neighbour`.
 
 ~~~
-from astroquery.gaia import Gaia
-
 meta = Gaia.load_table('gaiadr2.panstarrs1_best_neighbour')
 ~~~
 {: .language-python}
@@ -387,8 +417,6 @@ WHERE 1=CONTAINS(
 And let's run it, to make sure we have a working query to build on.
 
 ~~~
-from astroquery.gaia import Gaia
-
 job = Gaia.launch_job(query=query_cone)
 ~~~
 {: .language-python}
@@ -706,25 +734,7 @@ WHERE parallax < 1
 ~~~
 {: .language-python}
 
-Let's reload the Pandas `DataFrame` that contains `sky_point_list` and `pm_point_list`.
-
-~~~
-import pandas as pd
-
-filename = 'gd1_data.hdf'
-point_series = pd.read_hdf(filename, 'point_series')
-point_series
-~~~
-{: .language-python}
-
-~~~
-sky_point_list       135.306, 8.39862, 126.51, 13.4449, 163.017, 54...
-pm_point_list     -4.05037121,-14.75623261, -3.41981085,-14.723...
-dtype: object
-~~~
-{: .output}
-
-Now we can assemble the query.
+Now we can assemble the query the sky and proper motion point lists we compiled in episode 4.
 
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec'
@@ -868,8 +878,6 @@ this column to a Pandas `Series` and use `describe`, which we saw in
 in Lesson 3.
 
 ~~~
-import pandas as pd
-
 multiplicity = pd.Series(results['best_neighbour_multiplicity'])
 multiplicity.describe()
 ~~~
@@ -990,15 +998,6 @@ getsize('gd1_data.csv') / MB
 {: .output}
 
 We can see the first few lines like this:
-
-~~~
-def head(filename, n=3):
-    """Print the first `n` lines of a file."""
-    with open(filename) as fp:
-        for i in range(n):
-            print(next(fp))
-~~~
-{: .language-python}
 
 ~~~
 head('gd1_data.csv')
