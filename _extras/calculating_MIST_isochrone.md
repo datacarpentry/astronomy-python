@@ -146,7 +146,7 @@ len(main_sequence)
 ~~~
 {: .output}
 
-The other two columns we'll use are `PS_g` and `PS_i`, which contain
+The other two columns we will use are `PS_g` and `PS_i`, which contain
 simulated photometry data for stars with the given age and
 metallicity, based on a model of the Pan-STARRS sensors.
 
