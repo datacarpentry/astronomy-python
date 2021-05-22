@@ -596,7 +596,7 @@ which means they have photometry data consistent with GD-1.
 Finally, we can plot the coordinates of the selected stars:
 
 ~~~
-plt.figure(figsize=(10,2.5))
+fig = plt.figure(figsize=(10,2.5))
 
 x = winner_df['phi1']
 y = winner_df['phi2']
@@ -622,7 +622,8 @@ plt.axis('equal');
 This example includes the new Matplotlib command `figure`, which creates the larger canvas that the subplots are placed on.  In previous examples, we didn't have
 to use this function; the figure was created automatically.  But when
 we call it explicitly, we can provide arguments like `figsize`, which
-sets the size of the figure.
+sets the size of the figure. It also returns a figure object which we will 
+use to further customize our plotting in the next episode.
 
 In the example above we also used TeX markup in our axis labels so that they render as the 
 Greek letter `$\phi$` with subscripts for `1` and `2`.
@@ -655,7 +656,7 @@ def plot_cmd_selection(df):
 And here is what it looks like.
 
 ~~~
-plt.figure(figsize=(10,2.5))
+fig = plt.figure(figsize=(10,2.5))
 plot_cmd_selection(winner_df)
 ~~~
 {: .language-python}
