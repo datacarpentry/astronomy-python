@@ -58,7 +58,7 @@ main sequence of GD-1 from younger background stars.
 
 In the previous episode, we define a rectangle around stars in GD-1 in spatial coordinates
 and in proper motion which we transformed into ICRS coordinates and created point
-lists of the polygon verticies.
+lists of the polygon vertices.
 We will use that data for this episode. 
 Whether you are working from a new notebook or coming back from a checkpoint, 
 reloading the data will save you from having to run the query again. 
@@ -834,8 +834,8 @@ results
 > > 
 > > 
 > > job = Gaia.launch_job_async(query=query7)
-> > results = job.get_results()
-> > results
+> > candidate_table = job.get_results()
+> > candidate_table
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -848,7 +848,7 @@ To get more information about the matching process, we can inspect
 how many stars in Pan-STARRS are equally likely matches.
 
 ~~~
-results['best_neighbour_multiplicity']
+candidate_table['best_neighbour_multiplicity']
 ~~~
 {: .language-python}
 
@@ -877,7 +877,7 @@ this column to a Pandas `Series` and use `describe`, which we saw in
 in Lesson 3.
 
 ~~~
-multiplicity = pd.Series(results['best_neighbour_multiplicity'])
+multiplicity = pd.Series(candidate_table['best_neighbour_multiplicity'])
 multiplicity.describe()
 ~~~
 {: .language-python}
@@ -902,7 +902,7 @@ Similarly, `number_of_mates` indicates the number of *other* stars in
 Gaia that match with the same star in Pan-STARRS.
 
 ~~~
-mates = pd.Series(results['number_of_mates'])
+mates = pd.Series(candidate_table['number_of_mates'])
 mates.describe()
 ~~~
 {: .language-python}
@@ -930,8 +930,13 @@ interested in the final match, using both criteria.
 
 ## Saving the DataFrame
 
-Let's save this `DataFrame` so we can pick up where we left off
-without running this query again.
+We can make a `DataFrame` from our Astropy `Table` and save our results so we can pick up where we left off
+without running this query again. Once again, we will make use of our `make_dataframe` function.
+~~~
+candidate_df = make_dataframe(candidate_table)
+~~~
+{: .language-python}
+
 The HDF file should already exist, so we'll add `candidate_df` to it.
 
 ~~~

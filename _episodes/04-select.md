@@ -527,8 +527,8 @@ Phase: COMPLETED
 And get the results.
 
 ~~~
-candidate_table = job.get_results()
-len(candidate_table)
+candidate_gaia_table = job.get_results()
+len(candidate_gaia_table)
 ~~~
 {: .language-python}
 
@@ -537,8 +537,8 @@ len(candidate_table)
 ~~~
 {: .output}
 
-We call the results `candidate_table` because it contains stars that
-are good candidates for GD-1.
+We call the results `candidate_gaia_table` because it contains information from
+the Gaia table for stars that are good candidates for GD-1.
 
 Both `sky_point_list` and `pm_point_list` are a set of selection criteria that we
 derived from data downloaded from the Gaia Database. To make sure we can repeat
@@ -598,8 +598,8 @@ point_series.to_hdf(filename, 'point_series')
 Let's see what the results look like.
 
 ~~~
-x = candidate_table['ra']
-y = candidate_table['dec']
+x = candidate_gaia_table['ra']
+y = candidate_gaia_table['dec']
 plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
 
 plt.xlabel('ra (degree ICRS)')
@@ -623,14 +623,14 @@ to the GD-1 frame. In addition to doing the coordinate transformation and reflex
 for us, this function also compiles everything into a single object (a `DataFrame`) to make it easier to use. Note that because we put this code into a function, we can do all of this with a single line of code!
 
 ~~~
-candidate_df = make_dataframe(candidate_table)
+candidate_gaia_df = make_dataframe(candidate_gaia_table)
 ~~~
 {: .language-python}
 
 And let's see the results using the `plot_pm_selection` function we wrote in episode 3.
 
 ~~~
-plot_pm_selection(candidate_df)
+plot_pm_selection(candidate_gaia_df)
 ~~~
 {: .language-python}
 
