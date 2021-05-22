@@ -319,7 +319,7 @@ When you import Matplotlib, `plt.rcParams` is populated from a matplotlibrc file
 If you want to permanently change a setting for every plot you make, you can set that in your matplotlibrc file. 
 To find out where your matplotlibrc file lives type:
 ~~~
-import matplotlib
+import matplotlib as mpl
 matplotlib.matplotlib_fname()
 ~~~
 {: .language-python}
@@ -398,8 +398,6 @@ putting it in your configuration directory.  To find out where that
 is, you can run the following command:
 
 ~~~
-import matplotlib as mpl
-
 mpl.get_configdir()
 ~~~
 {: .language-python}
