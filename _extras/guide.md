@@ -83,7 +83,10 @@ Because this lesson follows a single dataset throughout, its easy for learners (
 * The plot at the end of the reflex correction is a good example of an intermediate step to determining the best filter for GD-1 stars. You can imagine doing this data exploration yourself and trying first a purely spatial plot, then realizing that there are too many non-GD-1 stars included and that you need another way to filter out foreground stars. Proper motion!
 * This lesson takes a slight detour to introduce a few features of Pandas DataFrames. To keep this connected to the story, you can talk about how data exploration is an important part of prototyping your query and making sure you are getting the results you expect in the format you expect them in.
 * Starting with selecting the centerline, we do a series of filters on different data frames. Take a minute before you teach this section to make sure you understand what each one represents. We use results_df to build centerline_df. We use centerline_df to determine proper motion limits. We use the proper motion limits determined from centerline_df to select GD-1 stars from results_df. This is selected_df.
+
 * It is also worth noting that we are selecting stars close to the centerline to identify the proper motion cut, so its ok if we exclude some GD-1 stars here. In this case we prefer a more pure sample to a more complete sample. Once we have the proper motion limits from our pure sample (centerline_df), we'll include the full spatial region (results_df) and get all of the GD-1 stars (selected_df).
+
+* Learners may be concerned that we are writing a function for later that does not fill the full canvas (when we set `axis('equal')`). You can reassure them that in episode 7 we will take care of this by learning how to set the figure size, the subplot size, and we will be using a larger spatial area (that we define in episode 4).
 
 * Notice that the first time we use `DataFrame.to_hdf`, we use the `w` argument to indicate that we want to create a new, empty HDF Store.  For all subsequent uses, we should *not* use the `w` argument, so that we add new Datasets to the existing Store, rather than starting over.
 * At the end of Day 1, if a student is lost or struggled with the end of this lesson, point them to the static version of the HDF5 files (TODO: decide where this lives) so that they can read it in with everyone else on Day 2.
@@ -124,6 +127,16 @@ This idiom violates the recommendation not to repeat variables names, but since 
 
 * Recall that the first time we use `DataFrame.to_hdf`, we use the `w` argument to indicate that we want to create a new, empty HDF Store.  For all subsequent uses, we should *not* use the `w` argument, so that we add new Datasets to the existing Store, rather than starting over.
 
+* when writing the `point_series` object to an HDF5 file, learners may see the warning message like the following:
+    ```/Users/bostroem/opt/anaconda3/envs/AstronomicalData/lib/python3.8/site-packages/pandas/core/generic.py:2434: PerformanceWarning: 
+    your performance may suffer as PyTables will pickle object types that it cannot
+    map directly to c-types [inferred_type->mixed,key->values] [items->None]
+
+    pytables.to_hdf(
+    ```
+This warning is saying that pickle will be slow for large objects. We do not need to worry about this since the 
+objects we are saving are small.
+
 * If learners struggle with the query exercise - remind them that we are defining a polygon in the same way we did before (with the same syntax) but looking at proper motion instead of space.
 
 * If learners get a different number of candidates, its likely they mistyped something.
@@ -136,6 +149,8 @@ This idiom violates the recommendation not to repeat variables names, but since 
 * Throughout this lesson continue to come back to the central theme of starting with a simple query and building up layers of complexity, testing each layer as you go
 
 * The Pan-STARRS join exercise is likely to feel scary to a lot of students - they have only seen one example. Emphasize the building blocks of a join e.g. FROM table1 JOIN table2 ON table1.common_column=table2.common_column. It is also worth pointing out that common_columns will not have the same names in this case
+
+* The `head` function is a Python version of the Unix `head` command. The Python version (which can be found in the episode_functions.py file) is used because it is platform independent so a single syntax can be used by all learners. You don't need to go through the function, but if someone asks, feel free to open the episode functions.py file and show them. 
 
 * In case a student asks about the extra `unnamed` column in the CSV section here's the explanation. You may notice that all Pandas `DataFrame`s have an index column which was not part of the original table definition. 
 This essentially numbers each row. When we write a `DataFrame` in any other format, the index gets treated like a bonafide column.
