@@ -52,32 +52,34 @@ main sequence of GD-1 from mostly younger background stars.
 > region in the color-magnitude diagram and select the stars inside it.
 {: .checklist}
 
-## Reload the data
+## Starting from this episode
 
-You can [download the data from the previous
-lesson](https://github.com/AllenDowney/AstronomicalData/raw/main/data/gd1_data.hdf)
-or run the following cell, which downloads it if necessary.
+In the previous episode, we selected stars in GD-1 based on proper motion and downloaded
+the spatial, proper motion, and photometry information by joining the Gaia and PanSTARRs
+datasets.
+We will use that data for this episode. 
+Whether you are working from a new notebook or coming back from a checkpoint, 
+reloading the data will save you from having to run the query again. 
 
+If you are starting this episode here or starting this episode in a new notebook,
+you will need run the following lines of code:
+
+This imports previously imported functions:
 ~~~
-from os.path import basename, exists
+from os.path import getsize
 
-def download(url):
-    filename = basename(url)
-    if not exists(filename):
-        from urllib.request import urlretrieve
-        local, _ = urlretrieve(url, filename)
-        print('Downloaded ' + local)
+import pandas as pd
+import numpy as np
 
-download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
-         'data/gd1_data.hdf')
+from matplotlib import pyplot as plt
+
+from episode_functions import *
 ~~~
 {: .language-python}
 
-Now we can reload `candidate_df`.
-
+This loads in the data (instructions for downloading data can be
+found in the [setup instructions](../setup.md))
 ~~~
-import pandas as pd
-
 filename = 'gd1_data.hdf'
 candidate_df = pd.read_hdf(filename, 'candidate_df')
 ~~~
@@ -110,14 +112,52 @@ older](http://spiff.rit.edu/classes/ladder/lectures/ordinary_stars/ordinary.html
 Since we expect the stars in GD-1 to be older than the background
 stars, the stars in the lower-left are more likely to be in GD-1.
 
-The following function takes a table containing photometry data and
-draws a color-magnitude diagram.
-The input can be an Astropy `Table` or Pandas `DataFrame`, as long as
-it has columns named `g_mean_psf_mag` and `i_mean_psf_mag`.
+With the photometry we downloaded from the PanSTARRS table into 
+`candidate_df` we can now recreate this plot. 
 
 ~~~
-import matplotlib.pyplot as plt
+x = candidate_df['g_mean_psf_mag'] - candidate_df['i_mean_psf_mag']
+y = candidate_df['g_mean_psf_mag']
+plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
 
+plt.ylabel('Magnitude (g)')
+plt.xlabel('Color (g-i)')
+~~~
+{.language python}
+
+![Color magnitude diagram of our selected stars showing all of the stars selected](../fig/06-photo_files/06-cmd_no_lims.png)
+
+We can zoom in on the region of interest by setting the range of 
+x and y values displayed with the `xlim` and `ylim` functions.
+If we put the higher value first in the `ylim` call, this will invert
+the y-axis, putting fainter magnitudes at the bottom.
+~~~
+x = candidate_df['g_mean_psf_mag'] - candidate_df['i_mean_psf_mag']
+y = candidate_df['g_mean_psf_mag']
+plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
+
+plt.ylabel('Magnitude (g)')
+plt.xlabel('Color (g-i)')
+
+plt.xlim([0, 1.5])
+plt.ylim([22, 14])
+~~~
+{.language python}
+
+![Color magnitude diagram of our selected stars showing overdense region in lower left.](../fig/06-photo_files/06-cmd_lims.png)
+
+
+Our figure does not look exactly like the one in the paper because we
+are working with a smaller region of the sky, so we don't have as many
+stars.  But we can see the main sequence of GD-1 as an overdense region in the lower left.
+
+We want to be able to make this plot again, with any selection of PanSTARRs photometry,
+so this is a natural time to put it into a function that accepts as input
+ an Astropy `Table` or Pandas `DataFrame`, as long as
+it has columns named `g_mean_psf_mag` and `i_mean_psf_mag`. To do this we will change
+our variable name from `candidate_df` to the more generic `table`.
+
+~~~
 def plot_cmd(table):
     """Plot a color magnitude diagram.
     
@@ -129,41 +169,12 @@ def plot_cmd(table):
     plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
 
     plt.xlim([0, 1.5])
-    plt.ylim([14, 22])
-    plt.gca().invert_yaxis()
+    plt.ylim([22, 14])
 
-    plt.ylabel('$Magnitude (g)$')
-    plt.xlabel('$Color (g-i)$')
+    plt.ylabel('Magnitude (g)')
+    plt.xlabel('Color (g-i)')
 ~~~
 {: .language-python}
-
-`plot_cmd` uses a new function, `invert_yaxis`, to invert the `y`
-axis, which is conventional when plotting magnitudes, since lower
-magnitude indicates higher brightness.
-
-~~~
-plt.gca().invert_yaxis()
-~~~
-{: .language-python}
-
-`gca` stands for "get current axis".  It returns an object that
-represents the axes of the current figure, and that object provides
-`invert_yaxis`.
-
-> ## Warning 
-> 
-> `invert_yaxis` is a little different from the other functions we've
-> used.  You can't call it like this:
-> 
-> ~~~
-> plt.invert_yaxis()
-> ~~~
-> {: .error}
-> 
-> The most likely reason for this inconsistency
-> in the interface is that `invert_yaxis` is a lesser-used function, so
-> it's not made available at the top level of the interface.
-{: .callout}
 
 Here's what the results look like.
 
@@ -179,12 +190,8 @@ plot_cmd(candidate_df)
     
 ![Color magnitude diagram of our selected stars showing overdense region in lower left.](../fig/06-photo_files/06-photo_12_0.png)
  
-Our figure does not look exactly like the one in the paper because we
-are working with a smaller region of the sky, so we don't have as many
-stars.  But we can see the main sequence of GD-1 as an overdense region in the lower left.
-
-In the next section we'll use an isochrone to specify a polygon that
-contains this overdense regioin.
+In the next section we will use an isochrone to specify a polygon that
+contains this overdense region.
 
 ## Isochrone
 
@@ -207,8 +214,8 @@ theoretical isochrone for GD-1 from the MESA Isochrones and Stellar Tracks and b
 ## Making a polygon
 The MIST isochrone files available on the website above can't be directly plotted over our data. 
 We have selected the relevant part of the isochrone, the filters we are interested in, and scaled the photometry to the distance of GD-1 
-([details here](../_extras/calculating_MIST_isochrone.md)). 
-Now we can read in the results:
+([details here](../_extras/calculating_MIST_isochrone.md)).
+Now we can read in the results which you downloaded as part of the [setup instructions](../setup.md):
 
 ~~~
 filename = 'gd1_isochrone.hdf5'
@@ -357,8 +364,6 @@ We can combine these steps into the following function, which takes two arrays a
 them front-to-back:
 
 ~~~
-import numpy as np
-
 def front_to_back(first, second):
     """Join two arrays front to back."""
     return np.append(first, second[::-1])
@@ -464,7 +469,7 @@ test_points = [(0.4, 20),
 Now we can make sure `contains_points` does what we expect.
 
 ~~~
-test_inside_mask = polygon.contains_points(points)
+test_inside_mask = polygon.contains_points(test_points)
 test_inside_mask
 ~~~
 {: .language-python}
@@ -569,7 +574,7 @@ selected stars with green markers.
 
 ~~~
 plot_cmd(candidate_df)
-plt.plot(color_g_i, mag_g)
+plt.plot(iso_df['color_g_i'], iso_df['mag_g'])
 plt.plot(color_loop, mag_loop)
 
 x = winner_df['g_mean_psf_mag'] - winner_df['i_mean_psf_mag']
@@ -591,7 +596,7 @@ which means they have photometry data consistent with GD-1.
 Finally, we can plot the coordinates of the selected stars:
 
 ~~~
-plt.figure(figsize=(10,2.5))
+fig = plt.figure(figsize=(10,2.5))
 
 x = winner_df['phi1']
 y = winner_df['phi2']
@@ -617,7 +622,8 @@ plt.axis('equal');
 This example includes the new Matplotlib command `figure`, which creates the larger canvas that the subplots are placed on.  In previous examples, we didn't have
 to use this function; the figure was created automatically.  But when
 we call it explicitly, we can provide arguments like `figsize`, which
-sets the size of the figure.
+sets the size of the figure. It also returns a figure object which we will 
+use to further customize our plotting in the next episode.
 
 In the example above we also used TeX markup in our axis labels so that they render as the 
 Greek letter `$\phi$` with subscripts for `1` and `2`.
@@ -629,11 +635,10 @@ which we will discuss in Episode 7.
 
 In the next episode we are going to make this plot a lot, so it makes sense to 
 put the commands to make the spatial plot of the stars we selected based on proper motion
-and photometry.
+and photometry. As we have done with previous functions we can copy and paste what we just wrote,
+ replacing the specific variable `winner_df` with the more generic `df`.
 
 ~~~
-import matplotlib.pyplot as plt
-
 def plot_cmd_selection(df):
     x = df['phi1']
     y = df['phi2']
@@ -651,7 +656,7 @@ def plot_cmd_selection(df):
 And here is what it looks like.
 
 ~~~
-plt.figure(figsize=(10,2.5))
+fig = plt.figure(figsize=(10,2.5))
 plot_cmd_selection(winner_df)
 ~~~
 {: .language-python}
@@ -674,8 +679,6 @@ winner_df.to_hdf(filename, 'winner_df')
 {: .language-python}
 
 ~~~
-from os.path import getsize
-
 MB = 1024 * 1024
 getsize(filename) / MB
 ~~~

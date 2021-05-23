@@ -949,8 +949,8 @@ def plot_proper_motion(df):
     y = df['pm_phi2']
     plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
 
-    plt.xlabel('Proper motion phi1 (mas/yr GD1 frame)')
-    plt.ylabel('Proper motion phi2 (mas/yr GD1 frame)')
+    plt.xlabel('Proper motion phi1 (mas/yr)')
+    plt.ylabel('Proper motion phi2 (mas/yr)')
 
     plt.xlim(-12, 8)
     plt.ylim(-10, 10)

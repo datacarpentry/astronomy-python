@@ -45,6 +45,53 @@ them to make a figure that tells a compelling scientific story.
 > 3. Finally, we'll see how to make a figure with multiple panels.
 {: .checklist}
 
+## Starting from this episode
+
+In the previous episode, we selected stars in GD-1 based on proper motion and downloaded
+the spatial, proper motion, and photometry information by joining the Gaia and PanSTARRs
+datasets.
+We will use that data for this episode. 
+Whether you are working from a new notebook or coming back from a checkpoint, 
+reloading the data will save you from having to run the query again. 
+
+If you are starting this episode here or starting this episode in a new notebook,
+you will need run the following lines of code:
+
+This imports previously imported functions:
+~~~
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+from matplotlib.patches import Polygon
+
+from episode_functions import *
+~~~
+{: .language-python}
+
+This loads in the data (instructions for downloading data can be
+found in the [setup instructions](../setup.md))
+~~~
+filename = 'gd1_data.hdf'
+winner_df = pd.read_hdf(filename, 'winner_df')
+
+centerline_df = pd.read_hdf(filename, 'centerline_df')
+candidate_df = pd.read_hdf(filename, 'candidate_df')
+loop_df = pd.read_hdf(filename, 'loop_df')
+~~~
+{: .language-python}
+
+This defines previously defined quantities:
+~~~
+pm1_min = -8.9
+pm1_max = -6.9
+pm2_min = -2.2
+pm2_max =  1.0
+
+pm1_rect, pm2_rect = make_rectangle(
+    pm1_min, pm1_max, pm2_min, pm2_max)
+~~~
+{: .language-python}
+
 ## Making Figures That Tell a Story
 
 So far the figures we've made have been "quick and dirty".  Mostly we
@@ -115,61 +162,9 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.pn
 > {: .solution}
 {: .challenge}
 
-## Plotting GD-1
+## Plotting GD-1 with Annotations
 
-Let's start with the panel in the lower left.  You can [download the
-data from the previous
-lesson](https://github.com/AllenDowney/AstronomicalData/raw/main/data/gd1_data.hdf)
-or run the following cell, which downloads it if necessary.
-
-~~~
-from os.path import basename, exists
-
-def download(url):
-    filename = basename(url)
-    if not exists(filename):
-        from urllib.request import urlretrieve
-        local, _ = urlretrieve(url, filename)
-        print('Downloaded ' + local)
-
-download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
-         'data/gd1_data.hdf')
-~~~
-{: .language-python}
-
-Now we can reload `winner_df`
-
-~~~
-import pandas as pd
-
-filename = 'gd1_data.hdf'
-winner_df = pd.read_hdf(filename, 'winner_df')
-~~~
-{: .language-python}
-
-~~~
-import plot_cmd_selection
-~~~
-{: .language-python}
-
-And here's what it looks like.
-
-~~~
-plt.figure(figsize=(10,2.5))
-plot_second_selection(winner_df)
-~~~
-{: .language-python}
-
-~~~
-<Figure size 1000x250 with 1 Axes>
-~~~
-{: .output}
-    
-![On sky coordinates of our selected stars after filtering on proper motion and photometry.](../fig/07-plot_files/07-plot_13_0.png)
-
-## Annotations
-
-The figure in the paper uses three other features to present the
+The lower left panel in the paper uses three other features to present the
 results more clearly and compellingly:
 
 * A vertical dashed line to distinguish the previously undetected
@@ -181,7 +176,8 @@ region of GD-1,
 
 > ## Exercise (15 minutes)
 > 
-> Choose any or all of these features and add them to the figure:
+> Plot the selected stars in `winner_df` using the `plot_cmd_function` and then
+> choose any or all of these features and add them to the figure:
 > 
 > * To draw vertical lines, see
 > [`plt.vlines`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.vlines.html)
@@ -199,6 +195,8 @@ region of GD-1,
 > > ## Solution
 > > 
 > > ~~~
+> > fig = plt.figure(figsize=(10,2.5))
+> > plot_cmd_selection(winner_df)
 > > plt.axvline(-55, ls='--', color='gray', 
 > >             alpha=0.4, dashes=(6,4), lw=2)
 > > plt.text(-60, 5.5, 'Previously\nundetected', 
@@ -239,13 +237,33 @@ As a simple example, notice that Matplotlib puts ticks on the outside
 of the figures by default, and only on the left and bottom sides of
 the axes.
 
-To change this behavior, you can use `gca()` to get the current axes
-and `tick_params` to change the settings.
+So far, everything we have wanted to do we could call directly from 
+the pyplot module with `plt.`. As you do more and more customization
+you may need to run some methods on plotting objects themselves. To use the 
+method that changes the direction of the ticks we need an `axes` object.
+So far, Matplotlib has implicitly created our `axes` object on the fly when we called `plt.plot`.
+To explicitly create an `axes` object we can first create our `figure` object and then add an `axes` object
+to it.
+~~~
+fig = plt.figure(figsize=(10,2.5))
+ax = fig.add_subplot(1,1,1)
+~~~
+{.language python}
+> Confusingly, in Matplotlib the objects `subplot` and `axes` are often be used interchangeably. 
+> This is because a `subplot` is an `axes` object with additional methods and attributes. 
+{: .callout}
+You can use the [`add_subplot`](https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.add_subplot) method to add more than one `axes` object to a figure as we will see in a minute. 
+For this reason you have to specify the total number of columns, total number of rows, and which plot number you are
+creating i.e. `fig.add_subplot(ncols, nrows, pltnum)`. The plot number starts in the upper left corner and goes left to
+right and then top to bottom. In the example above we have one column, one row, and we're plotting into the first plot space.
 
-Here's how you can put the ticks on the inside of the figure:
+Now we are ready to change the direction of the ticks to the inside of the axes using our new
+axes object.
 
 ~~~
-plt.gca().tick_params(direction='in')
+fig = plt.figure(figsize=(10,2.5))
+ax = fig.add_subplot(1,1,1)
+ax.tick_params(direction='in')
 ~~~
 {: .language-python}
 
@@ -258,7 +276,9 @@ plt.gca().tick_params(direction='in')
 > > ## Solution
 > > 
 > > ~~~
-> > plt.gca().tick_params(top=True, right=True)
+> > fig = plt.figure(figsize=(10,2.5))
+> > ax = fig.add_subplot(1,1,1)
+> > ax.tick_params(top=True, right=True)
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -299,7 +319,7 @@ When you import Matplotlib, `plt.rcParams` is populated from a matplotlibrc file
 If you want to permanently change a setting for every plot you make, you can set that in your matplotlibrc file. 
 To find out where your matplotlibrc file lives type:
 ~~~
-import matplotlib
+import matplotlib as mpl
 matplotlib.matplotlib_fname()
 ~~~
 {: .language-python}
@@ -378,8 +398,6 @@ putting it in your configuration directory.  To find out where that
 is, you can run the following command:
 
 ~~~
-import matplotlib as mpl
-
 mpl.get_configdir()
 ~~~
 {: .language-python}
@@ -387,231 +405,16 @@ mpl.get_configdir()
 ## Multiple panels
 
 So far we've been working with one figure at a time, but the figure we
-are replicating contains multiple panels, also known as "subplots".
+are replicating contains multiple panels. We will create each of these 
+panels as a different subplot (recall this is an `axes` object with even more properties). 
+Confusingly, Matplotlib has multiple functions for making figures with multiple panels.
+While we have already seen [`add_subplot`](https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.add_subplot), this creates equal sized panels. 
+For this reason, we will use [`subplot2grid`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplot2grid.html) which allows us to control the relative sizes of the panels. 
 
-Confusingly, Matplotlib provides *three* functions for making figures
-like this: `subplot`, `subplots`, and `subplot2grid`.
+Since we have already written functions that generate each panel of this figure, 
+we can now create the full multi-panel figure by creating each subplot and then run our plotting function.
 
-*
-[`subplot`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplot.html)
-is simple and similar to MATLAB, so if you are familiar with that
-interface, you might like `subplot`
-
-*
-[`subplots`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html)
-is more object-oriented, which some people prefer.
-
-*
-[`subplot2grid`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplot2grid.html)
-is most convenient if you want to control the relative sizes of the
-subplots.
-
-So we'll use `subplot2grid`.
-
-All of these functions are easier to use if we put the code that
-generates each panel in a function.
-
-## Upper right
-
-To make the panel in the upper right, we have to reload `centerline_df`.
-
-~~~
-filename = 'gd1_data.hdf'
-centerline_df = pd.read_hdf(filename, 'centerline_df')
-~~~
-{: .language-python}
-
-And define the coordinates of the rectangle we selected.
-
-~~~
-pm1_min = -8.9
-pm1_max = -6.9
-pm2_min = -2.2
-pm2_max =  1.0
-
-pm1_rect = [pm1_min, pm1_min, pm1_max, pm1_max]
-pm2_rect = [pm2_min, pm2_max, pm2_max, pm2_min]
-~~~
-{: .language-python}
-
-To plot this rectangle, we'll use a feature we have not seen before:
-`Polygon`, which is provided by Matplotlib.
-
-To create a `Polygon`, we have to put the coordinates in an array with
-`x` values in the first column and `y` values in the second column.
-
-~~~
-import numpy as np
-
-vertices = np.transpose([pm1_rect, pm2_rect])
-vertices
-~~~
-{: .language-python}
-
-~~~
-array([[-8.9, -2.2],
-       [-8.9,  1. ],
-       [-6.9,  1. ],
-       [-6.9, -2.2]])
-~~~
-{: .output}
-
-The following function takes a `DataFrame` as a parameter, plots the
-proper motion for each star, and adds a shaded `Polygon` to show the
-region we selected.
-
-~~~
-from matplotlib.patches import Polygon
-
-def plot_proper_motion(df):
-    pm1 = df['pm_phi1']
-    pm2 = df['pm_phi2']
-
-    plt.plot(pm1, pm2, 'ko', markersize=0.3, alpha=0.3)
-    
-    poly = Polygon(vertices, closed=True, 
-                   facecolor='C1', alpha=0.4)
-    plt.gca().add_patch(poly)
-    
-    plt.xlabel('$\mu_{\phi_1} [\mathrm{mas~yr}^{-1}]$')
-    plt.ylabel('$\mu_{\phi_2} [\mathrm{mas~yr}^{-1}]$')
-
-    plt.xlim(-12, 8)
-    plt.ylim(-10, 10)
-~~~
-{: .language-python}
-
-Notice that `add_patch` is like `invert_yaxis`; in order to call it,
-we have to use `gca` to get the current axes.
-
-Here's what the new version of the figure looks like.  We've changed
-the labels on the axes to be consistent with the paper.
-
-~~~
-plot_proper_motion(centerline_df)
-~~~
-{: .language-python}
-
-~~~
-<Figure size 640x480 with 1 Axes>
-~~~
-{: .output}
-   
-![Proper motion with overlaid polygon showing our selected stars.](../fig/07-plot_files/07-plot_53_0.png)
-
-## Upper left
-
-Now let's work on the panel in the upper left. We have to reload `candidates`.
-
-~~~
-filename = 'gd1_data.hdf'
-candidate_df = pd.read_hdf(filename, 'candidate_df')
-~~~
-{: .language-python}
-
-Here's a function that takes a `DataFrame` of candidate stars and
-plots their positions in GD-1 coordindates.
-
-~~~
-def plot_pm_selection(df):
-    x = df['phi1']
-    y = df['phi2']
-
-    plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
-
-    plt.xlabel('$\phi_1$ [deg]')
-    plt.ylabel('$\phi_2$ [deg]')
-    plt.title('Proper motion selection', fontsize='medium')
-
-    plt.axis('equal')
-~~~
-{: .language-python}
-
-And here's what it looks like.
-
-~~~
-plot_pm_selection(candidate_df)
-~~~
-{: .language-python}
-
-~~~
-<Figure size 640x480 with 1 Axes>
-~~~
-{: .output}
-    
-![GD-1 coordinates of stars selected based on proper motion, showing tidal stream.](../fig/07-plot_files/07-plot_59_0.png)
-
-## Lower right
-
-For the figure in the lower right, we'll use the function that we wrote in episode 6 to plots
-the color-magnitude diagram.
-
-~~~
-import plot_cmd
-~~~
-{: .language-python}
-
-Here's what it looks like.
-
-~~~
-plot_cmd(candidate_df)
-~~~
-{: .language-python}
-
-~~~
-<Figure size 640x480 with 1 Axes>
-~~~
-{: .output}
-    
-![Color magnitude diagram of the stars we've selected by proper motion.](../fig/07-plot_files/07-plot_63_0.png)
-
-And here's how we read it back.
-
-~~~
-filename = 'gd1_data.hdf'
-loop_df = pd.read_hdf(filename, 'loop_df')
-loop_df.head()
-~~~
-{: .language-python}
-
-~~~
-   color_loop   mag_loop
-0    0.632171  21.411746
-1    0.610238  21.322466
-2    0.588449  21.233380
-3    0.566924  21.144427
-4    0.545461  21.054549
-~~~
-{: .output}
-
-> ## Exercise (5 minutes)
-> 
-> Add a few lines to be run after the `plot_cmd` function to show the polygon we selected as a
-> shaded area.
-> 
-> Hint: pass `loop_df` as an argument to `Polygon` as we did in episode 6 and then plot it using `add_patch`.
->
-> > ## Solution
-> > 
-> > ~~~
-> > poly = Polygon(loop_df, closed=True, 
-> >               facecolor='C1', alpha=0.4)
-> > plt.gca().add_patch(poly)
-> > ~~~
-> > {: .language-python}
-> {: .solution}
-{: .challenge}
-
-## Subplots
-
-Now we're ready to put it all together.  To make a figure with four
-subplots, we'll use `subplot2grid`, [which requires two
-arguments](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplot2grid.html):
-
-* `shape`, which is a tuple with the number of rows and columns in the grid, and
-
-* `loc`, which is a tuple identifying the location in the grid we're
-about to fill.
+[`subplot2grid`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplot2grid.html), like [`add_subplot`](https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.add_subplot) which requires use to specify the total number of columns and rows in the grid, this time as a tuple called `shape` and the location of the subplot, `loc`, which is a tuple identifying the location in the grid we're about to fill.
 
 In this example, `shape` is `(2, 2)` to create two rows and two columns.
 
@@ -621,21 +424,19 @@ column 0, which is the upper-left panel.
 Here's how we use it to draw the four panels.
 
 ~~~
+fig = plt.figure()
 shape = (2, 2)
-plt.subplot2grid(shape, (0, 0))
+ax1 = plt.subplot2grid(shape, (0, 0))
 plot_pm_selection(candidate_df)
 
-plt.subplot2grid(shape, (0, 1))
+ax2 = plt.subplot2grid(shape, (0, 1))
 plot_proper_motion(centerline_df)
 
-plt.subplot2grid(shape, (1, 0))
+ax3 = plt.subplot2grid(shape, (1, 0))
 plot_cmd_selection(winner_df)
 
-plt.subplot2grid(shape, (1, 1))
+ax4 = plt.subplot2grid(shape, (1, 1))
 plot_cmd(candidate_df)
-poly = Polygon(loop_df, closed=True, 
-               facecolor='C1', alpha=0.4)
-plt.gca().add_patch(poly)
 
 plt.tight_layout()
 ~~~
@@ -646,7 +447,7 @@ plt.tight_layout()
 ~~~
 {: .output}
    
-![Four paneled plot showing our first recreation of figure 1 from the Price-Whelan and Bonaca paper.](../fig/07-plot_files/07-plot_69_0.png)
+![Four paneled plot showing our first recreation of figure 1 from the Price-Whelan and Bonaca paper.](../fig/07-plot_files/07-plot_equal_size_fig1.png)
 
 We use
 [`plt.tight_layout`](https://matplotlib.org/stable/tutorials/intermediate/tight_layout_guide.html)
@@ -687,20 +488,17 @@ whole figure.
 plt.figure(figsize=(9, 4.5))
 
 shape = (2, 4)
-plt.subplot2grid(shape, (0, 0), colspan=3)
+ax1 = plt.subplot2grid(shape, (0, 0), colspan=3)
 plot_pm_selection(candidate_df)
 
-plt.subplot2grid(shape, (0, 3))
+ax2 = plt.subplot2grid(shape, (0, 3))
 plot_proper_motion(centerline_df)
 
-plt.subplot2grid(shape, (1, 0), colspan=3)
+ax3 = plt.subplot2grid(shape, (1, 0), colspan=3)
 plot_cmd_selection(winner_df)
 
-plt.subplot2grid(shape, (1, 3))
+ax4 = plt.subplot2grid(shape, (1, 3))
 plot_cmd(candidate_df)
-poly = Polygon(loop_df, closed=True, 
-               facecolor='C1', alpha=0.4)
-plt.gca().add_patch(poly)
 
 plt.tight_layout()
 ~~~
@@ -711,7 +509,7 @@ plt.tight_layout()
 ~~~
 {: .output}
     
-![Four paneled plot we created above with two left-hand panels increased in width.](../fig/07-plot_files/07-plot_72_0.png)
+![Four paneled plot we created above with two left-hand panels increased in width.](../fig/07-plot_files/07-plot_adjusted_size_fig1.png)
 
 This is looking more and more like the figure in the paper.
 
@@ -727,26 +525,150 @@ This is looking more and more like the figure in the paper.
 > > plt.figure(figsize=(9, 4.5))
 > > 
 > > shape = (2, 5)                                   # CHANGED
-> > plt.subplot2grid(shape, (0, 0), colspan=3)
+> > ax1 = plt.subplot2grid(shape, (0, 0), colspan=3)
 > > plot_pm_selection(candidate_df)
 > > 
-> > plt.subplot2grid(shape, (0, 3), colspan=2)       # CHANGED
+> > ax2 = plt.subplot2grid(shape, (0, 3), colspan=2)       # CHANGED
 > > plot_proper_motion(centerline_df)
 > > 
-> > plt.subplot2grid(shape, (1, 0), colspan=3)
+> > ax3 = plt.subplot2grid(shape, (1, 0), colspan=3)
 > > plot_cmd_selection(winner_df)
 > > 
-> > plt.subplot2grid(shape, (1, 3), colspan=2)       # CHANGED
+> > ax4 = plt.subplot2grid(shape, (1, 3), colspan=2)       # CHANGED
 > > plot_cmd(candidate_df)
-> > poly = Polygon(coords, closed=True, 
-> >                facecolor='C1', alpha=0.4)
-> > plt.gca().add_patch(poly)
 > > 
 > > plt.tight_layout()
 > > ~~~
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
+
+## Adding the shaded regions
+
+The one thing our figure is missing is the shaded regions showing the stars selected by proper motion and around
+the isochrone in the color magnitude diagram.
+
+In episode 4 we defined a rectangle in proper motion space around the stars in GD-1. 
+We stored the x-values of the vertices of this rectangle in `pm1_rect` and 
+the y-values as `pm2_rect`.
+
+To plot this rectangle, we will use the Matplotlib `Polygon` object which we used in episode 6 to check which
+points were inside the convex hull. However, this time we will be plotting the `Polygon`.
+
+To create a `Polygon`, we have to put the coordinates of the rectangle in an array with
+`x` values in the first column and `y` values in the second column. 
+
+~~~
+vertices = np.transpose([pm1_rect, pm2_rect])
+vertices
+~~~
+{: .language-python}
+
+~~~
+array([[-8.9, -2.2],
+       [-8.9,  1. ],
+       [-6.9,  1. ],
+       [-6.9, -2.2]])
+~~~
+{: .output}
+
+We will now create the `Polygon`, specifying its display properties which will be used when its plotted.
+We will specify `closed=True` to make sure the shape is closed, `facecolor='orange` to color the inside
+of the `Polygon` orange, and `alpha=0.4` to make the `Polygon` semi-transparent.
+~~~
+poly = Polygon(vertices, closed=True, 
+                   facecolor='orange', alpha=0.4)
+~~~
+{.language-python}
+
+Then to plot the `Polygon` we call the `add_patch` method. `add_patch` like `tick_params` 
+must be called on an `axes` or `subplot` object, so we will create a `subplot` and then 
+add the `Patch` to the `subplot`.
+~~~
+fig = plt.figure()
+ax = fig.add_subplot(1,1,1)
+poly = Polygon(vertices, closed=True, 
+                   facecolor='orange', alpha=0.4)
+ax.add_patch(poly)
+ax.set_xlim(-10, 7.5)
+ax.set_ylim(-10, 10)
+~~~
+![An orange rectangle at the coordinates used to select stars based on proper motion.](../fig/07-plot_files/07-poly_example.png')
+
+We can now call our plot_proper_motion function to plot the
+proper motion for each star, and the add a shaded `Polygon` to show the
+region we selected. 
+
+~~~
+fig = plt.figure()
+ax = fig.add_subplot(1,1,1)
+plot_proper_motion(centerline_df)
+poly = Polygon(vertices, closed=True, 
+               facecolor='C1', alpha=0.4)
+ax.add_patch(poly)
+~~~
+{: .language-python}
+   
+![Proper motion with overlaid polygon showing our selected stars.](../fig/07-plot_files/07-plot_53_0.png)
+
+> ## Exercise (5 minutes)
+> 
+> Add a few lines to be run after the `plot_cmd` function to show the polygon we selected as a
+> shaded area.
+> 
+> Hint: pass `loop_df` as an argument to `Polygon` as we did in episode 6 and then plot it using `add_patch`.
+>
+> > ## Solution
+> > 
+> > ~~~
+> > fig = plt.figure()
+> > ax = fig.add_subplot(1,1,1)
+> > poly_cmd = Polygon(loop_df, closed=True, 
+> >               facecolor='C1', alpha=0.4)
+> > ax.add_patch(poly_cmd)
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
+
+> ## Exercise
+> 
+> Add the Polygon patches you just created to right panels of the four panel figure.
+> 
+> > ## Solution 
+> > ~~~
+> > fig = plt.figure(figsize=(9, 4.5))
+> > 
+> > shape = (2, 4)
+> > ax1 = plt.subplot2grid(shape, (0, 0), colspan=3)
+> > plot_pm_selection(candidate_df)
+> > 
+> > ax2 = plt.subplot2grid(shape, (0, 3))
+> > plot_proper_motion(centerline_df)
+> > poly = Polygon(vertices, closed=True,
+> >                facecolor='orange', alpha=0.4)
+> > ax2.add_patch(poly)
+> > 
+> > ax3 = plt.subplot2grid(shape, (1, 0), colspan=3)
+> > plot_cmd_selection(winner_df)
+> > 
+> > ax4 = plt.subplot2grid(shape, (1, 3))
+> > plot_cmd(candidate_df)
+> > poly_cmd = Polygon(loop_df, closed=True, 
+> >                facecolor='orange', alpha=0.4)
+> > ax4.add_patch(poly_cmd)
+> > 
+> > plt.tight_layout()
+> > ~~~
+> > {: .language-python}
+> >
+> >  ~~~
+> >  <Figure size 900x450 with 4 Axes>
+> >  ~~~
+> >  {: .output}
+> >     
+> > ![Four paneled plot we created above with two left-hand panels increased in width.](../fig/07-plot_files/07-plot_72_0.> > png)
+> {.solution}
 
 ## Summary
 
