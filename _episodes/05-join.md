@@ -7,6 +7,7 @@ questions:
 
 objectives:
 - "Write ADQL queries involving `JOIN` operations."
+- "Save data in CSV format."
 
 keypoints:
 - "Use `JOIN` operations to combine data from multiple tables in a database, using some kind of identifier to match up records from one table with records from another. This is another example of a practice we saw in the previous notebook, moving the computation to the data."
@@ -18,16 +19,9 @@ keypoints:
 
 # 5. Joining Tables
 
-This is the fifth in a series of notebooks related to astronomy data.
-
-As a continuing example, we will replicate part of the analysis in a
-recent paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
-of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian M.
-Price-Whelan and Ana Bonaca. Our goal is to obtain `g` and `r` band photometry from the Pan-STARRS survey for each candidate star we've identified in the Gaia catalog.
-
-Picking up where we left off, the next step in the analysis is to
+The next step in our analysis is to
 select candidate stars based on photometry data.
-The following figure from the paper is a color-magnitude diagram for
+The following figure from the Price-Whelan and Bonaca paper is a color-magnitude diagram for
 the stars selected based on proper motion:
 
 <img width="300"
@@ -43,15 +37,15 @@ main sequence of GD-1 from younger background stars.
 
 > ## Outline
 > 
-> 1. We'll reload the candidate stars we identified in the previous
-> notebook.
+> 1. We will reload the candidate stars we identified in the previous
+> episode.
 > 
-> 2. Then we'll run a query on the Gaia server that uploads the table 
+> 2. Then we will run a query on the Gaia server that uploads the table 
 > of
 > candidates and uses a `JOIN` operation to select photometry data for
 > the candidate stars.
 > 
-> 3. We'll write the results to a file for use in the next notebook.
+> 3. We will write the results to a file for use in the next episode.
 {: .checklist}
 
 ## Starting from this episode
@@ -63,9 +57,8 @@ We will use that data for this episode.
 Whether you are working from a new notebook or coming back from a checkpoint, 
 reloading the data will save you from having to run the query again. 
 
-
 If you are starting this episode here or starting this episode in a new notebook,
-you will need run the following lines of code:
+you will need run the following lines of code.
 
 This imports previously imported functions:
 ~~~
@@ -77,7 +70,7 @@ from episode_functions import *
 {: .language-python}
 
 This loads in the data (instructions for downloading data can be
-found in the [setup instructions](../setup.md))
+found in the [setup instructions](../setup.md)):
 ~~~
 filename = 'gd1_data.hdf'
 point_series = pd.read_hdf(filename, 'point_series')
@@ -93,30 +86,35 @@ between the BP and RP bands).
 We use this variable to select stars with `bp_rp` between -0.75 and 2,
 which excludes many class M dwarf stars.
 
-But we can do one better than that. Assuming GD-1 is a globular cluster, all of the stars formed at the same time from the same material, so the stars' photometric properties should be consistent with a single isochrone in a color magnitude diagram. Therefore, to select stars with the age and metal richness we expect in GD-1, we can use `g-i` color and apparent `g`-band magnitude, which
+But we can do better than that. Assuming GD-1 is a globular cluster, all of the stars formed at the same
+time from the same material, so the stars' photometric properties should be consistent with a single 
+isochrone in a color magnitude diagram. Therefore, to select stars with the age and metal richness we
+expect in GD-1, we can use `g-i` color and apparent `g`-band magnitude, which
 are available from the Pan-STARRS survey.
 
 Conveniently, the Gaia server provides data from Pan-STARRS as a table
 in the same database we have been using, so we can access it by making
 ADQL queries.
 
-In general, choosing a star from the Gaia catalog and finding the
-corresponding star in the Pan-STARRS catalog is not easy.  This kind
-of cross matching is not always possible, because a star might appear
-in one catalog and not the other.  And even when both stars are
-present, there might not be a clear one-to-one relationship between
-stars in the two catalogs. Additional [catalog matching tools](https://docs.astropy.org/en/stable/coordinates/matchsep.html#matching-catalogs) are available from the Astropy coordinates package.  
-
-Fortunately, smart people have worked on this problem, and the Gaia
-database includes cross-matching tables that suggest a best neighbor
-in the Pan-STARRS catalog for many stars in the Gaia catalog.
-
-[This document describes the cross matching
-process](https://gea.esac.esa.int/archive/documentation/GDR2/Catalogue_consolidation/chap_cu9val_cu9val/ssec_cu9xma/sssec_cu9xma_extcat.html).
-Briefly, it uses a cone search to find possible matches in
-approximately the right position, then uses attributes like color and
-magnitude to choose pairs of observations most likely to be the same
-star.
+> ## A caveat about matching stars between catalogs
+> In general, choosing a star from the Gaia catalog and finding the
+> corresponding star in the Pan-STARRS catalog is not easy.  This kind
+> of cross matching is not always possible, because a star might appear
+> in one catalog and not the other.  And even when both stars are
+> present, there might not be a clear one-to-one relationship between
+> stars in the two catalogs. Additional [catalog matching tools](https://docs.astropy.org/en/stable/coordinates/matchsep.html#matching-catalogs) are available from the 
+> Astropy coordinates package.  
+> 
+> Fortunately, people have worked on this problem, and the Gaia
+> database includes cross-matching tables that suggest a best neighbor
+> in the Pan-STARRS catalog for many stars in the Gaia catalog.
+>
+> [This document describes the cross matching process](https://gea.esac.esa.int/archive/documentation/GDR2/Catalogue_consolidation/chap_cu9val_cu9val/ssec_cu9xma/sssec_cu9xma_extcat.html).
+> Briefly, it uses a cone search to find possible matches in
+> approximately the right position, then uses attributes like color and
+> magnitude to choose pairs of observations most likely to be the same
+> star.
+{: .callout}
 
 ## The best neighbor table
 
