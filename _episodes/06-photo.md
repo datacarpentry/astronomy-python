@@ -105,7 +105,7 @@ Stars with lower values of (g-i) are "bluer" since they are brighter in the g-ba
 the i-band, compared to other stars. To a first order approximation, the color of a star is 
 related the star's temperature with bluer stars indicating higher temperatures and redder stars 
 indicating lower temperatures. An important second order effect involves 
-the metallicity, or the amount of metals (elements heavier than He, in this case) 
+the metallicity, or the amount of metals (elements heavier than helium, in this case) 
 that are present in a star's atmosphere. 
 Higher metallicity leads to redder stars and lower metallicity leads to bluer stars. 
 
