@@ -116,7 +116,7 @@ to be
 older](http://spiff.rit.edu/classes/ladder/lectures/ordinary_stars/ordinary.html).
 
 Since we expect the stars in GD-1 to be older than the foreground and background
-stars, and far, the stars in the lower-left are more likely to be in GD-1.
+stars, and farther away, the stars in the lower-left are more likely to be in GD-1.
 
 With the photometry we downloaded from the PanSTARRS table into 
 `candidate_df` we can now recreate this plot. 
