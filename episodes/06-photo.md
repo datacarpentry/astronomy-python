@@ -110,7 +110,7 @@ that are present in a star's atmosphere.
 Higher metallicity leads to redder stars and lower metallicity leads to bluer stars. 
 
 Stars in the lower-left quadrant of this diagram are faintest and bluest suggesting 
-they are have lower metallicity  
+they are have lower metallicity than
 the other stars, which means they are [likely
 to be
 older](http://spiff.rit.edu/classes/ladder/lectures/ordinary_stars/ordinary.html).
