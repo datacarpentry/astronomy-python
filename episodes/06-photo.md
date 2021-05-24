@@ -87,10 +87,10 @@ candidate_df = pd.read_hdf(filename, 'candidate_df')
 
 ## Plotting photometry data
 
-Now that we have photometry data from Pan-STARRS, we can replicate the
+Now that we have photometry data from Pan-STARRS, we can produce a 
 [color-magnitude
-diagram](https://en.wikipedia.org/wiki/Galaxy_color%E2%80%93magnitude_diagram)
-from the original paper:
+diagram](https://coolwiki.ipac.caltech.edu/index.php/Color-Magnitude_and_Color-Color_plots_Overview)
+to replicate the diagram from the original paper:
 
 <img width="300"
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-3.png" alt="Color-magnitude diagram for the stars selected based on proper motion, from Price-Whelan and Bonaca paper.">
@@ -101,16 +101,22 @@ filter](https://en.wikipedia.org/wiki/Photometric_system).
 The x-axis shows the difference in apparent magnitude between the g
 and i filters, which indicates color.
 
-Stars with lower values of (g-i) are brighter in g-band than in
-i-band, compared to other stars, which means they are bluer.
+Stars with lower values of (g-i) are "bluer" since they are brighter in the g-band than in
+the i-band, compared to other stars. To a first order approximation, the color of a star is 
+related to the star's temperature, with bluer stars indicating higher temperatures and redder stars 
+indicating lower temperatures. An important second order effect involves 
+the metallicity, or the amount of metals (elements heavier than helium, in this case) 
+that are present in a star's atmosphere. 
+Higher metallicity leads to redder stars and lower metallicity leads to bluer stars. 
 
-Stars in the lower-left quadrant of this diagram are less bright than
-the others, and have lower metallicity, which means they are [likely
+Stars in the lower-left quadrant of this diagram are faintest and bluest suggesting 
+they are have lower metallicity than
+the other stars, which means they are [likely
 to be
 older](http://spiff.rit.edu/classes/ladder/lectures/ordinary_stars/ordinary.html).
 
-Since we expect the stars in GD-1 to be older than the background
-stars, the stars in the lower-left are more likely to be in GD-1.
+Since we expect the stars in GD-1 to be older than the foreground and background
+stars, and farther away, the stars in the lower-left are more likely to be in GD-1.
 
 With the photometry we downloaded from the PanSTARRS table into 
 `candidate_df` we can now recreate this plot. 
@@ -126,6 +132,12 @@ plt.xlabel('Color (g-i)')
 {.language python}
 
 ![Color magnitude diagram of our selected stars showing all of the stars selected](../fig/06-photo_files/06-cmd_no_lims.png)
+
+In the previous cell we have assigned the color and magnitude to variables `x` and `y`, 
+respectively.  
+We have done this out of convenience and to keep the code readable since the 
+table variables and column names are long and `x` includes an operation 
+between two columns.  
 
 We can zoom in on the region of interest by setting the range of 
 x and y values displayed with the `xlim` and `ylim` functions.
@@ -539,8 +551,8 @@ cmd_df.head()
 Which we can pass to `contains_points`:
 
 ~~~
-inside = polygon.contains_points(cmd_df)
-inside
+inside_mask = polygon.contains_points(cmd_df)
+inside_mask
 ~~~
 {: .language-python}
 
@@ -553,7 +565,7 @@ The result is a Boolean array.  We can use `sum` to see how many stars
 fall in the polygon.
 
 ~~~
-inside.sum()
+inside_mask.sum()
 ~~~
 {: .language-python}
 
@@ -562,10 +574,10 @@ inside.sum()
 ~~~
 {: .output}
 
-Now we can use `inside` as a mask to select stars that fall inside the polygon.
+Now we can use `inside_mask` as a mask to select stars that fall inside the polygon.
 
 ~~~
-winner_df = candidate_df[inside]
+winner_df = candidate_df[inside_mask]
 ~~~
 {: .language-python}
 
