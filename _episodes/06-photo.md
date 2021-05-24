@@ -135,7 +135,7 @@ plt.xlabel('Color (g-i)')
 
 In the previous cell we have assigned the color and magnitude to variables `x` and `y`, 
 respectively.  
-We've done this out of convenience and to keep the code readable since the 
+We have done this out of convenience and to keep the code readable since the 
 table variables and column names are long and `x` includes an operation 
 between two columns.  
 
