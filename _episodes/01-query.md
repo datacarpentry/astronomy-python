@@ -30,8 +30,6 @@ analysis into phases with one notebook per phase."
 
 {% include links.md %}
 
-# 1. Queries
-
 As a running example, we will replicate parts of the analysis in the 
 paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
 of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian
