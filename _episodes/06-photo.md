@@ -102,7 +102,7 @@ The x-axis shows the difference in apparent magnitude between the g
 and i filters, which indicates color.
 
 Stars with lower values of (g-i) are "bluer" since they are brighter in the g-band than in
-the i-band, compared to other stars. To first order, the color of a star is 
+the i-band, compared to other stars. To a first order approximation, the color of a star is 
 related the star's temperature with bluer stars indicating higher temperatures and redder stars 
 indicating lower temperatures. An important second order effect involves 
 the metallicity, or the amount of metals (elements heavier than He, in this case) 
