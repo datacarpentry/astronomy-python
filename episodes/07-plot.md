@@ -320,7 +320,7 @@ If you want to permanently change a setting for every plot you make, you can set
 To find out where your matplotlibrc file lives type:
 ~~~
 import matplotlib as mpl
-matplotlib.matplotlib_fname()
+mpl.matplotlib_fname()
 ~~~
 {: .language-python}
 
