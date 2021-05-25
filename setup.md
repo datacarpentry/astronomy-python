@@ -33,11 +33,11 @@ in this workshop, you will need to download an environment file from the lesson
 repository.  On Mac or Linux, you can download it using `wget` on the command line: 
 
 ```
-wget https://raw.githubusercontent.com/datacarpentry/astronomy-python/environment.yml
+wget https://raw.githubusercontent.com/datacarpentry/astronomy-python/gh-pages/code/environment.yml
 ```
 
 Or you can download the environment file by right-clicking 
-[this link](https://raw.githubusercontent.com/datacarpentry/astronomy-python/gh-pages/environment.yml) and 
+[this link](https://raw.githubusercontent.com/datacarpentry/astronomy-python/gh-pages/code/environment.yml) and 
 selecting "Save Link As". Make sure the file saves as `environment.yml`, not `environment.yml.txt`.
 
 In a Terminal or Jupyter Prompt, make sure you are in the folder where `environment.yml` is stored, and run:
@@ -58,11 +58,11 @@ We will test our environment setup using a test notebook. Before you launch Jupy
 notebook. On Mac or Linux, you can download it using `wget` on the command line: 
 
 ```
-wget https://raw.githubusercontent.com/datacarpentry/astronomy-python/test_setup.ipynb
+wget https://raw.githubusercontent.com/datacarpentry/astronomy-python/gh-pages/code/test_setup.ipynb
 ```
 
 Or you can download the test notebook by right-clicking 
-[this link](https://raw.githubusercontent.com/datacarpentry/astronomy-python/test_setup.ipynb) and 
+[this link](https://raw.githubusercontent.com/datacarpentry/astronomy-python/gh-pages/code/test_setup.ipynb) and 
 selecting "Save Link As". Make sure the file saves as `test_setup.ipynb`, not `test_setup.ipynb.txt`.
 
 To start Jupyter, make sure you have activated your new conda environment, then run:
