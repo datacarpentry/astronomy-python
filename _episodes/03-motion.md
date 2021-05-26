@@ -338,11 +338,11 @@ transparency of the points.
 ## Transform back
 
 Remember that we selected data from a rectangle of coordinates in the
-`GD1Koposov10` frame, then transformed them to ICRS when we
+GD-1 frame, then transformed them to ICRS when we
 constructed the query.
 The coordinates in `results` are in ICRS.
 
-To plot them, we will transform them back to the `GD1Koposov10` frame;
+To plot them, we will transform them back to the GD-1 frame;
 that way, the axes of the figure are aligned with the orbit of GD-1,
 which is useful for two reasons:
 
@@ -367,7 +367,7 @@ using `ra` and `dec` in `SkyCoord`, the `ICRS` frame is assumed by default.
 
 The `SkyCoord` object can keep track not just of location, but also proper motions. 
 This means that we can initialize a `SkyCoord` object with location and proper motions, 
-then use all of these quantities together to transform into the `GD1Koposov10` frame.
+then use all of these quantities together to transform into the GD-1 frame.
  
 Now we are going to do something similar, but now we will take advantage of the `SkyCoord` object's 
 capacity to include and track space motion information in addition to `ra` and
@@ -395,14 +395,14 @@ For the first four arguments, we use columns from `results`.
 For `distance` and `radial_velocity` we use constants, which we explain in the section on reflex correction.
 
 The result is an Astropy `SkyCoord` object, which we can transform to
-the `GD1Koposov10` frame.
+the GD-1 frame.
 
 ~~~
 transformed = skycoord.transform_to(gd1_frame)
 ~~~
 {: .language-python}
 
-The result is another `SkyCoord` object, now in the `GD1Koposov10` frame.
+The result is another `SkyCoord` object, now in the GD-1 frame.
 
 ## Reflex Correction
 
@@ -445,7 +445,7 @@ skycoord_gd1 = reflex_correct(transformed)
 The result is a `SkyCoord` object that contains 
 
 * `phi1` and `phi2`, which represent the transformed coordinates in
-the `GD1Koposov10` frame.
+the GD-1 frame.
 
 * `pm_phi1_cosphi2` and `pm_phi2`, which represent the transformed proper motions that have been corrected for the motion of the solar system around the Galactic center.
 
@@ -468,9 +468,9 @@ plt.ylabel('phi2 (degree GD1)');
    
 ![Scatter plot of phi1 versus phi2 in GD-1 coordinates, showing selected region is rectangular.](../fig/03-motion_files/03-motion_43_0.png)
 
-We started with a rectangle in the `GD1Koposov10` frame.  When
-transformed to the `ICRS` frame, it is a non-rectangular region.  Now,
-transformed back to the `GD1Koposov10` frame, it is a rectangle again.
+We started with a rectangle in the GD-1 frame.  When
+transformed to the ICRS frame, it is a non-rectangular region.  Now,
+transformed back to the GD-1 frame, it is a rectangle again.
 
 ## Pandas DataFrame
 
