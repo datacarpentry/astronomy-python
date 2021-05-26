@@ -7,6 +7,7 @@ questions:
 
 objectives:
 - "Write ADQL queries involving `JOIN` operations."
+- "Save data in CSV format."
 
 keypoints:
 - "Use `JOIN` operations to combine data from multiple tables in a database, using some kind of identifier to match up records from one table with records from another. This is another example of a practice we saw in the previous notebook, moving the computation to the data."
@@ -16,18 +17,9 @@ keypoints:
 
 {% include links.md %}
 
-# 5. Joining Tables
-
-This is the fifth in a series of notebooks related to astronomy data.
-
-As a continuing example, we will replicate part of the analysis in a
-recent paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
-of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian M.
-Price-Whelan and Ana Bonaca. Our goal is to obtain `g` and `r` band photometry from the Pan-STARRS survey for each candidate star we've identified in the Gaia catalog.
-
-Picking up where we left off, the next step in the analysis is to
+The next step in our analysis is to
 select candidate stars based on photometry data.
-The following figure from the paper is a color-magnitude diagram for
+The following figure from the Price-Whelan and Bonaca paper is a color-magnitude diagram for
 the stars selected based on proper motion:
 
 <img width="300"
@@ -43,15 +35,15 @@ main sequence of GD-1 from younger background stars.
 
 > ## Outline
 > 
-> 1. We'll reload the candidate stars we identified in the previous
-> notebook.
+> 1. We will reload the candidate stars we identified in the previous
+> episode.
 > 
-> 2. Then we'll run a query on the Gaia server that uploads the table 
+> 2. Then we will run a query on the Gaia server that uploads the table 
 > of
 > candidates and uses a `JOIN` operation to select photometry data for
 > the candidate stars.
 > 
-> 3. We'll write the results to a file for use in the next notebook.
+> 3. We will write the results to a file for use in the next episode.
 {: .checklist}
 
 ## Starting from this episode
@@ -63,9 +55,8 @@ We will use that data for this episode.
 Whether you are working from a new notebook or coming back from a checkpoint, 
 reloading the data will save you from having to run the query again. 
 
-
 If you are starting this episode here or starting this episode in a new notebook,
-you will need run the following lines of code:
+you will need run the following lines of code.
 
 This imports previously imported functions:
 ~~~
@@ -77,7 +68,7 @@ from episode_functions import *
 {: .language-python}
 
 This loads in the data (instructions for downloading data can be
-found in the [setup instructions](../setup.md))
+found in the [setup instructions](../setup.md)):
 ~~~
 filename = 'gd1_data.hdf'
 point_series = pd.read_hdf(filename, 'point_series')
@@ -93,30 +84,35 @@ between the BP and RP bands).
 We use this variable to select stars with `bp_rp` between -0.75 and 2,
 which excludes many class M dwarf stars.
 
-But we can do one better than that. Assuming GD-1 is a globular cluster, all of the stars formed at the same time from the same material, so the stars' photometric properties should be consistent with a single isochrone in a color magnitude diagram. Therefore, to select stars with the age and metal richness we expect in GD-1, we can use `g-i` color and apparent `g`-band magnitude, which
+But we can do better than that. Assuming GD-1 is a globular cluster, all of the stars formed at the same
+time from the same material, so the stars' photometric properties should be consistent with a single 
+isochrone in a color magnitude diagram. Therefore, to select stars with the age and metal richness we
+expect in GD-1, we can use `g-i` color and apparent `g`-band magnitude, which
 are available from the Pan-STARRS survey.
 
 Conveniently, the Gaia server provides data from Pan-STARRS as a table
 in the same database we have been using, so we can access it by making
 ADQL queries.
 
-In general, choosing a star from the Gaia catalog and finding the
-corresponding star in the Pan-STARRS catalog is not easy.  This kind
-of cross matching is not always possible, because a star might appear
-in one catalog and not the other.  And even when both stars are
-present, there might not be a clear one-to-one relationship between
-stars in the two catalogs. Additional [catalog matching tools](https://docs.astropy.org/en/stable/coordinates/matchsep.html#matching-catalogs) are available from the Astropy coordinates package.  
-
-Fortunately, smart people have worked on this problem, and the Gaia
-database includes cross-matching tables that suggest a best neighbor
-in the Pan-STARRS catalog for many stars in the Gaia catalog.
-
-[This document describes the cross matching
-process](https://gea.esac.esa.int/archive/documentation/GDR2/Catalogue_consolidation/chap_cu9val_cu9val/ssec_cu9xma/sssec_cu9xma_extcat.html).
-Briefly, it uses a cone search to find possible matches in
-approximately the right position, then uses attributes like color and
-magnitude to choose pairs of observations most likely to be the same
-star.
+> ## A caveat about matching stars between catalogs
+> In general, choosing a star from the Gaia catalog and finding the
+> corresponding star in the Pan-STARRS catalog is not easy.  This kind
+> of cross matching is not always possible, because a star might appear
+> in one catalog and not the other.  And even when both stars are
+> present, there might not be a clear one-to-one relationship between
+> stars in the two catalogs. Additional [catalog matching tools](https://docs.astropy.org/en/stable/coordinates/matchsep.html#matching-catalogs) are available from the 
+> Astropy coordinates package.  
+> 
+> Fortunately, people have worked on this problem, and the Gaia
+> database includes cross-matching tables that suggest a best neighbor
+> in the Pan-STARRS catalog for many stars in the Gaia catalog.
+>
+> [This document describes the cross matching process](https://gea.esac.esa.int/archive/documentation/GDR2/Catalogue_consolidation/chap_cu9val_cu9val/ssec_cu9xma/sssec_cu9xma_extcat.html).
+> Briefly, it uses a cone search to find possible matches in
+> approximately the right position, then uses attributes like color and
+> magnitude to choose pairs of observations most likely to be the same
+> star.
+{: .callout}
 
 ## The best neighbor table
 
@@ -125,7 +121,7 @@ results is a little tricky, but it gives us a chance to learn about
 one of the most important tools for working with databases: "joining"
 tables.
 
-In general, a "join" is an operation where you match up records from
+A "join" is an operation where you match up records from
 one table with records from another table using as a "key" a piece of
 information that is common to both tables, usually some kind of ID
 code.
@@ -137,8 +133,8 @@ In this example:
 * Stars in the Pan-STARRS dataset are identified by `obj_id`.
 
 For each candidate star we have selected so far, we have the
-`source_id`; the goal is to find the `obj_id` for the same star (we
-hope) in the Pan-STARRS catalog.
+`source_id`; the goal is to find the `obj_id` for the same star
+in the Pan-STARRS catalog.
 
 To do that we will:
 
@@ -149,8 +145,8 @@ that we have already identified.
 2. Use the `JOIN` operator again to look up the Pan-STARRS photometry for these stars
 in the `panstarrs1_original_valid` table using the` obj_ids` we just identified.
 
-Before we get to the `JOIN` operation, let's explore these tables.
-Here's the metadata for `panstarrs1_best_neighbour`.
+Before we get to the `JOIN` operation, we will explore these tables.
+Here is the metadata for `panstarrs1_best_neighbour`.
 
 ~~~
 meta = Gaia.load_table('gaiadr2.panstarrs1_best_neighbour')
@@ -199,10 +195,10 @@ gaia_astrometric_params
 ~~~
 {: .output}  
 
-Here's the [documentation for these
+Here is the [documentation for these
 variables](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_crossmatches/ssec_dm_panstarrs1_best_neighbour.html). 
 
-The ones we'll use are:
+The ones we will use are:
 
 * `source_id`, which we will match up with `source_id` in the Gaia table.
 
@@ -219,7 +215,7 @@ Ideally, `best_neighbour_multiplicity` should be 1 and `number_of_mates`
 should be 0; in that case, there is a one-to-one match between the
 source in Gaia and the corresponding source in Pan-STARRS.
 
-Here's a query that selects these columns and returns the first 5 rows.
+Here is a query that selects these columns and returns the first 5 rows.
 
 ~~~
 query = """SELECT 
@@ -261,7 +257,8 @@ results
 
 ## The Pan-STARRS table
 
-Now that we know the Pan-STARRS obj_id, we are ready to match this to the photometry in the panstarrs1_original_valid table. Here's the metadata for the table that contains the Pan-STARRS data.
+Now that we know the Pan-STARRS `obj_id`, we are ready to match this to the photometry in the 
+`panstarrs1_original_valid` table. Here is the metadata for the table that contains the Pan-STARRS data.
 
 ~~~
 meta = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
@@ -320,9 +317,9 @@ r_mean_psf_mag
 ~~~
 {: .output}
 
-Here's the [documentation for these variables]() .
+Here is the [documentation for these variables]() .
 
-The ones we'll use are:
+The ones we will use are:
 
 * `obj_id`, which we will match up with `original_ext_source_id` in
 the best neighbor table.
@@ -331,7 +328,7 @@ the best neighbor table.
 
 * `i_mean_psf_mag`, which contains mean magnitude from the `i` filter.
 
-Here's a query that selects these variables and returns the first 5 rows.
+Here is a query that selects these variables and returns the first 5 rows.
 
 ~~~
 query = """SELECT 
@@ -372,6 +369,8 @@ results
 ~~~
 {: .output}
 
+## Joining tables
+
 The following figure shows how these tables are related.
 
 * The orange circles and arrows represent the first `JOIN` operation,
@@ -382,24 +381,22 @@ value of `source_id` in the best neighbor table.
 which takes each `original_ext_source_id` in the Gaia table and finds
 the same value of `obj_id` in the best neighbor table.
 
-There's no guarantee that the corresponding rows of these tables are
+There is no guarantee that the corresponding rows of these tables are
 in the same order, so the `JOIN` operation involves some searching.
 However, ADQL/SQL databases are implemented in a way that makes this
-kind of source efficient.
+kind of search efficient.
 If you are curious, you can [read more about
 it](https://chartio.com/learn/databases/how-does-indexing-work/).
 
 <img
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/join.png" alt="Diagram showing relationship between the gaia_source, panstarrs1_best_neighbor, and panstarrs1_original_valid tables and result table.">
 
-## Joining tables
-
-Now let's get to the details of performing a `JOIN` operation.
+Now we will get to the details of performing a `JOIN` operation.
 
 We are about to build a complex query using software that doesn’t provide us with any helpful information for debugging.
-For this reason we are going to start with a simplified version of what we want to do until we’re sure we’re joining
-the tables correctly, then we’ll slowly add more layers of complexity, checking at each stage that our query still works.
-As a starting place, let's go all the way back to the cone search from Lesson 2. 
+For this reason we are going to start with a simplified version of what we want to do until we are sure  we are joining
+the tables correctly, then we will slowly add more layers of complexity, checking at each stage that our query still works.
+As a starting place, we will go all the way back to the cone search from episode 2. 
 
 ~~~
 query_cone = """SELECT 
@@ -413,7 +410,7 @@ WHERE 1=CONTAINS(
 ~~~
 {: .language-python}
 
-And let's run it, to make sure we have a working query to build on.
+And we will run it, to make sure we have a working query to build on.
 
 ~~~
 job = Gaia.launch_job(query=query_cone)
@@ -448,7 +445,7 @@ results
 {: .output}
 
 Now we can start adding features.
-First, let's replace `source_id` with a format specifier, `columns` so that we can alter what columns we 
+First, we will replace `source_id` with the format specifier `columns` so that we can alter what columns we 
 want to return without having to modify our base query:
 
 ~~~
@@ -462,7 +459,7 @@ WHERE 1=CONTAINS(
 ~~~
 {: .language-python}
 
-Here are the columns we want from the Gaia table, again. 
+As a reminder, here are the columns we want from the Gaia table: 
 
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec'
@@ -482,7 +479,7 @@ WHERE 1=CONTAINS(
 ~~~
 {: .output}
 
-And let's run the query again.
+We run the query again.
 
 ~~~
 job = Gaia.launch_job_async(query=query)
@@ -518,19 +515,19 @@ results
 
 ## Adding the best neighbor table
 
-Now we're ready for the first join.
+Now we are ready for the first join.
 The join operation requires two clauses:
 
 * `JOIN` specifies the name of the table we want to join with, and
 
-* `ON` specifies how we'll match up rows between the tables.
+* `ON` specifies how we will match up rows between the tables.
 
 In this example, we join with `gaiadr2.panstarrs1_best_neighbour AS
 best`, which means we can refer to the best neighbor table with the
 abbreviated name `best`, which will save us a lot of typing. Similarly,
 we will be referring to the `gaiadr2.gaia_source` table by the abbreviated name `gaia`.
 
-And the `ON` clause indicates that we'll match up the `source_id`
+The `ON` clause indicates that we will match up the `source_id`
 column from the Gaia table with the `source_id` column from the best
 neighbor table.
 
@@ -557,12 +554,12 @@ WHERE 1=CONTAINS(
 > {: .language-sql}
 {: .callout}
 
-Now that there's more than one table involved, we can't use simple
+Now that there is more than one table involved, we can't use simple
 column names any more; we have to use **qualified column names**.
 In other words, we have to specify which table each column is in. 
 The column names do not have to be the same and, in fact, in the next join they will not be. 
 That is one of the reasons that we explicitly specify them.
-Here's the complete query, including the columns we want from the Gaia
+Here is the complete query, including the columns we want from the Gaia
 and best neighbor tables. Here you can start to see that using the abbreviated names
 is making our query easier to read and requires less typing for us. In addition to the 
 spatial coordinates and proper motion, we are going to return the `best_neighbour_multiplicity` 
@@ -632,8 +629,8 @@ results_neighbors
 ~~~
 {: .output}
 
-Notice that this result has fewer rows than the previous result.
-That's because there are sources in the Gaia table with no
+This result has fewer rows than the previous result.
+That is because there are sources in the Gaia table with no
 corresponding source in the Pan-STARRS table.
 
 By default, the result of the join only includes rows where the same
@@ -647,7 +644,7 @@ here](https://www.geeksforgeeks.org/sql-join-set-1-inner-left-right-and-full-joi
 
 > ## Exercise (10 minutes)
 > 
-> Now we're ready to bring in the Pan-STARRS table.  Starting with the
+> Now we are ready to bring in the Pan-STARRS table.  Starting with the
 > previous query, add a second `JOIN` clause that joins with
 > `gaiadr2.panstarrs1_original_valid`, gives it the abbreviated name
 > `ps`, and matches `original_ext_source_id` from the best neighbor
@@ -711,13 +708,13 @@ here](https://www.geeksforgeeks.org/sql-join-set-1-inner-left-right-and-full-joi
 
 ## Selecting by coordinates and proper motion
 
-We’re now going to replace the cone search with the GD1 selection that we built in previous lessons. 
-We’ll start by making sure that our previous query works, then add in the JOIN.
-Now let's bring in the `WHERE` clause from the previous lesson, which
+We are now going to replace the cone search with the GD-1 selection that we built in previous episodes. 
+We will start by making sure that our previous query works, then add in the `JOIN`.
+Now we will bring in the `WHERE` clause from the previous episode, which
 selects sources based on parallax, BP-RP color, sky coordinates, and
 proper motion.
 
-Here's `query6_base` from the previous lesson.
+Here is `query6_base` from the previous episode.
 
 ~~~
 query6_base = """SELECT 
@@ -759,7 +756,7 @@ WHERE parallax < 1
 ~~~
 {: .output}
 
-Again, let's run it to make sure we are starting with a working query.
+We run it to make sure we are starting with a working query.
 
 ~~~
 job = Gaia.launch_job_async(query=query6)
@@ -868,13 +865,13 @@ candidate_table['best_neighbour_multiplicity']
 ~~~
 {: .output}
 
-It looks like most of the values are `1`, which is good; that means
+Most of the values are `1`, which is good; that means
 that for each candidate star we have identified exactly one source in
 Pan-STARRS that is likely to be the same star.
 
 To check whether there are any values other than `1`, we can convert
 this column to a Pandas `Series` and use `describe`, which we saw in
-in Lesson 3.
+in episode 3.
 
 ~~~
 multiplicity = pd.Series(candidate_table['best_neighbour_multiplicity'])
@@ -923,11 +920,13 @@ dtype: float64
 All values in this column are `0`, which means that for each match we
 found in Pan-STARRS, there are no other stars in Gaia that also match.
 
-**Detail:** The table also contains `number_of_neighbors` which is the
-number of stars in Pan-STARRS that match in terms of position, before
-using other criteria to choose the most likely match.  But we are more
-interested in the final match, using both criteria.
-
+> ## Number of neighbors
+> The table also contains `number_of_neighbors` which is the
+> number of stars in Pan-STARRS that match in terms of position, before
+> using other criteria to choose the most likely match.  But we are more
+> interested in the final match, using both criteria.
+{: .callout}
+  
 ## Saving the DataFrame
 
 We can make a `DataFrame` from our Astropy `Table` and save our results so we can pick up where we left off
@@ -937,7 +936,7 @@ candidate_df = make_dataframe(candidate_table)
 ~~~
 {: .language-python}
 
-The HDF file should already exist, so we'll add `candidate_df` to it.
+The HDF5 file should already exist, so we'll add `candidate_df` to it.
 
 ~~~
 filename = 'gd1_data.hdf'
@@ -961,10 +960,7 @@ getsize(filename) / MB
 ~~~
 {: .output}
 
-Before you go on, you might be interested in another file format, CSV.
-
-## CSV
-
+## Another file format - CSV
 Pandas can write a variety of other formats, [which you can read about
 here](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html).
 We won't cover all of them, but one other important one is
@@ -982,13 +978,13 @@ to make sure you are getting it right.
 
 Also, CSV files tend to be big, and slow to read and write.
 
-With those caveats, here's how to write one:
+With those caveats, here is how to write one:
 
 ~~~
 candidate_df.to_csv('gd1_data.csv')
 ~~~
 {: .language-python}
-
+ 
 We can check the file size like this:
 
 ~~~
@@ -1009,14 +1005,12 @@ head('gd1_data.csv')
 {: .language-python}
 
 ~~~
-,source_id,ra,dec,pmra,pmdec,best_neighbour_multiplicity,number_of_mates,g_mean_psf_mag,i_mean_psf_mag,phi1,phi2,pm_phi1,pm_phi2
-
+,source_id,ra,dec,pmra,pmdec,best_neighbour_multiplicity,number_of_mates,g_mean_psf_mag,i_mean_psf_mag,phi1,phi2,pm_phi1,pm_phi2 
 0,635860218726658176,138.5187065217173,19.09233926905897,-5.941679495793577,-11.346409129876392,1,0,17.8978004455566,17.5174007415771,-59.247329893833296,-2.016078400820631,-7.527126084640531,1.7487794924176672
 
 1,635674126383965568,138.8428741026386,19.031798198627634,-3.8970011609340207,-12.702779525389634,1,0,19.2873001098633,17.6781005859375,-59.13339098769217,-2.306900745179831,-7.560607655557415,-0.7417999555980248
 ~~~
 {: .output}  
-
 The CSV file contains the names of the columns, but not the data types.
 
 We can read the CSV file back like this:
@@ -1026,19 +1020,19 @@ read_back_csv = pd.read_csv('gd1_data.csv')
 ~~~
 {: .language-python}
 
-Let's compare the first few rows of `candidate_df` and `read_back_csv`
+We will compare the first few rows of `candidate_df` and `read_back_csv`
 
 ~~~
 candidate_df.head(3)
 ~~~
 {: .language-python}
-
+ 
 ~~~
             source_id          ra        dec      pmra      pmdec  \
 0  635860218726658176  138.518707  19.092339 -5.941679 -11.346409   
 1  635674126383965568  138.842874  19.031798 -3.897001 -12.702780   
 2  635535454774983040  137.837752  18.864007 -4.335041 -14.492309   
-
+  
    best_neighbour_multiplicity  number_of_mates  g_mean_psf_mag  \
 0                            1                0         17.8978   
 1                            1                0         19.2873   
@@ -1074,13 +1068,14 @@ Notice that the index in `candidate_df` has become an unnamed column
 in `read_back_csv` and a new index has been created.  The Pandas functions for writing and reading CSV
 files provide options to avoid that problem, but this is an example of
 the kind of thing that can go wrong with CSV files.
-
+{: .callout}
+  
 ## Summary
 
-In this notebook, we used database `JOIN` operations to select
+In this episode, we used database `JOIN` operations to select
 photometry data for the stars we've identified as candidates to be in
 GD-1.
 
-In the next notebook, we'll use this data for a second round of
+In the next episode, we will use this data for a second round of
 selection, identifying stars that have photometry data consistent with
 GD-1.
