@@ -10,22 +10,15 @@ objectives:
 - "Use Matplotlib features to customize the appearance of figures."
 
 keypoints:
-- "Matplotlib provides operations for working with points, polygons, and other geometric entities, so it's not just for making figures."
+- "Matplotlib provides operations for working with points, polygons, and other geometric entities, so it is not just for making figures."
 - "Use Matplotlib options to control the size and aspect ratio of figures to make them easier to interpret."
 - "Record every element of the data analysis pipeline that would be needed to replicate the results."
 ---
 
 {% include links.md %}
 
-# 6. Photometry
-
-As a continuing example, we will replicate part of the analysis in a
-recent paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
-of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian M.
-Price-Whelan and Ana Bonaca.
-
-In the previous lesson we downloaded photometry data from Pan-STARRS,
-which is available from the same server we've been using to get Gaia
+In the previous episode we downloaded photometry data from Pan-STARRS,
+which is available from the same server we have been using to get Gaia
 data.
 
 The next step in the analysis is to select candidate stars based on
@@ -45,11 +38,11 @@ main sequence of GD-1 from mostly younger background stars.
 
 > ## Outline
 > 
-> 1. We'll reload the data from the previous notebook and make a
+> 1. We will reload the data from the previous episode and make a
 > color-magnitude diagram.
 > 
-> 2. We'll use an isochrone computed by MIST to specify a polygonal
-> region in the color-magnitude diagram and select the stars inside it.
+> 2. We will use an isochrone computed by MIST to specify a polygonal
+> region in the color-magnitude diagram and select the stars inside of it.
 {: .checklist}
 
 ## Starting from this episode
@@ -62,7 +55,7 @@ Whether you are working from a new notebook or coming back from a checkpoint,
 reloading the data will save you from having to run the query again. 
 
 If you are starting this episode here or starting this episode in a new notebook,
-you will need run the following lines of code:
+you will need run the following lines of code.
 
 This imports previously imported functions:
 ~~~
@@ -78,7 +71,7 @@ from episode_functions import *
 {: .language-python}
 
 This loads in the data (instructions for downloading data can be
-found in the [setup instructions](../setup.md))
+found in the [setup instructions](../setup.md)):
 ~~~
 filename = 'gd1_data.hdf'
 candidate_df = pd.read_hdf(filename, 'candidate_df')
@@ -129,11 +122,11 @@ plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
 plt.ylabel('Magnitude (g)')
 plt.xlabel('Color (g-i)')
 ~~~
-{.language python}
+{: .language python}
 
 ![Color magnitude diagram of our selected stars showing all of the stars selected](../fig/06-photo_files/06-cmd_no_lims.png)
 
-In the previous cell we have assigned the color and magnitude to variables `x` and `y`, 
+We have assigned the color and magnitude to variables `x` and `y`, 
 respectively.  
 We have done this out of convenience and to keep the code readable since the 
 table variables and column names are long and `x` includes an operation 
@@ -154,14 +147,13 @@ plt.xlabel('Color (g-i)')
 plt.xlim([0, 1.5])
 plt.ylim([22, 14])
 ~~~
-{.language python}
+{: .language python}
 
 ![Color magnitude diagram of our selected stars showing overdense region in lower left.](../fig/06-photo_files/06-cmd_lims.png)
 
-
 Our figure does not look exactly like the one in the paper because we
-are working with a smaller region of the sky, so we don't have as many
-stars.  But we can see the main sequence of GD-1 as an overdense region in the lower left.
+are working with a smaller region of the sky, so we have fewer
+stars.  But the main sequence of GD-1 appears as an overdense region in the lower left.
 
 We want to be able to make this plot again, with any selection of PanSTARRs photometry,
 so this is a natural time to put it into a function that accepts as input
@@ -188,7 +180,7 @@ def plot_cmd(table):
 ~~~
 {: .language-python}
 
-Here's what the results look like.
+Here are the results:
 
 ~~~
 plot_cmd(candidate_df)
@@ -224,7 +216,7 @@ theoretical isochrone for GD-1 from the MESA Isochrones and Stellar Tracks and b
 
 
 ## Making a polygon
-The MIST isochrone files available on the website above can't be directly plotted over our data. 
+The MIST isochrone files available on the website above can not be directly plotted over our data. 
 We have selected the relevant part of the isochrone, the filters we are interested in, and scaled the photometry to the distance of GD-1 
 ([details here](../_extras/calculating_MIST_isochrone.md)).
 Now we can read in the results which you downloaded as part of the [setup instructions](../setup.md):
@@ -246,7 +238,7 @@ iso_df.head()
 ~~~
 {: .output}
 
-Here's what the isochrone looks like on the color-magnitude diagram.
+Here is what the isochrone looks like on the color-magnitude diagram.
 
 ~~~
 plot_cmd(candidate_df)
@@ -266,9 +258,9 @@ overdense region where the stars are likely to belong to GD-1.
 
 Although some stars near the top half of the isochrone likely belong to GD-1, 
 these represent stars that have evolved off the main sequence. The density of GD-1 stars in this region is therefore
-much less and the contamination with other stars much greater. So get the purest sample of GD-1 stars we will select only stars on the main sequence.
+much less and the contamination with other stars much greater. So to get the purest sample of GD-1 stars we will select only stars on the main sequence.
 
-So we'll select the part of the isochrone that lies in the overdense region.
+So we will select the part of the isochrone that lies in the overdense region.
 
 `g_mask` is a Boolean Series that is `True` where `g` is between 18.0 and 21.5.
 
@@ -313,7 +305,7 @@ right_color = iso_masked['color_g_i'] + 0.12
 ~~~
 {: .language-python}
 
-Here's what these boundaries look like:
+Here is our plot with these boundaries:
 
 ~~~
 plot_cmd(candidate_df)
@@ -362,10 +354,10 @@ elements are selected.
 
 And `step` is `-1`, which means the elements are in reverse order.
 
-To combine the `left_color` and `right_color` arrays we will use the numpy `append` function
-which takes two arrays as input and output them combined into a single array. By writing the
+To combine the `left_color` and `right_color` arrays we will use the NumPy `append` function
+which takes two arrays as input, and outputs them combined into a single array. By writing the
 function we can use the same code to create the x-values for the loop (colors) and the y-values
-for the loop (g-band magnitudes)
+for the loop (g-band magnitudes).
 
 ~~~
 combined_array = np.append(left_color, reverse_right_color)
@@ -410,7 +402,7 @@ mag_loop.shape
 ~~~
 {: .output}
 
-Here's what the loop looks like.
+Here is the loop on our plot:
 
 ~~~
 plot_cmd(candidate_df)
@@ -429,7 +421,7 @@ To make a `Polygon`, it will be useful to put `color_loop` and
 `mag_loop` into a `DataFrame`. This is convenient for two reasons - first, `Polygon`
 is expecting an Nx2 array and the `DataFrame` provides an easy way for us to pass that
 in that is also descriptive for us. Secondly, for reproducibility of our work, we may want
-to save the region we use to select stars, and the `DataFrame`, as we’ve already seen, allows us to save into a variety of formats.
+to save the region we use to select stars, and the `DataFrame`, as we have already seen, allows us to save into a variety of formats.
 
 ~~~
 loop_df = pd.DataFrame()
@@ -467,10 +459,10 @@ polygon
 The result is a `Polygon` object , which provides `contains_points`,
 which figures out which points are inside the polygon.
 
-When we encounter a new object, its good to create a toy example to test 
-that it does what you think it does. Let’s create two points, one that we expect
-to be inside the polygon and one that we expect to be outside the polygon
-and check that we get the results we expect from contains_points.
+When we encounter a new object, it is good to create a toy example to test 
+that it does what we think it does. We will create two points, one that we expect
+to be inside the polygon and one that we expect to be outside the polygon,
+and check that we get the results we expect from `contains_points`.
 
 ~~~
 test_points = [(0.4, 20), 
@@ -505,15 +497,15 @@ produce the results in the paper such as the code, data, etc. can be
 used to reproduce the results and create new work based on the
 research."
 
-This Jupyter notebook is an example of reproducible research because
+This lesson is an example of reproducible research because
 it contains all of the code needed to reproduce the results, including
-the database queries that download the data and analysis.
+the database queries that download the data and the analysis.
 
-In this lesson we used an isochrone to derive a polygon, which we used
+In this episode, we used an isochrone to derive a polygon, which we used
 to select stars based on photometry.
 So it is important to record the polygon as part of the data analysis pipeline.
 
-Here's how we can save it in an HDF file.
+Here is how we can save it in an HDF5 file.
 
 ~~~
 filename = 'gd1_data.hdf'
@@ -523,10 +515,10 @@ loop_df.to_hdf(filename, 'loop_df')
 
 ## Selecting based on photometry
 
-Now let's see how many of the candidate stars are inside the polygon we chose.
-As we just saw, `contains_points` expects a list of (x,y) pairs. As with creating the `Polygon`, `DataFrames` are
+Now we will check how many of the candidate stars are inside the polygon we chose.
+`contains_points` expects a list of (x,y) pairs. As with creating the `Polygon`, `DataFrames` are
 a convenient way to pass the colors and magnitudes for all of our stars in `candidates_df` to our `Polygon` to see
-which candidates are inside the polygon. We’ll start by putting color and magnitude data from `candidate_df` into a new `DataFrame`.
+which candidates are inside the polygon. We will start by putting color and magnitude data from `candidate_df` into a new `DataFrame`.
 
 ~~~
 cmd_df = pd.DataFrame()
@@ -562,7 +554,7 @@ array([False, False, False, ..., False, False, False])
 {: .output}
 
 The result is a Boolean array.  We can use `sum` to see how many stars
-fall in the polygon.
+fall inside the polygon.
 
 ~~~
 inside_mask.sum()
@@ -581,7 +573,7 @@ winner_df = candidate_df[inside_mask]
 ~~~
 {: .language-python}
 
-Let's make a color-magnitude plot one more time, highlighting the
+We will make a color-magnitude plot one more time, highlighting the
 selected stars with green markers.
 
 ~~~
@@ -600,9 +592,9 @@ plt.plot(x, y, 'go', markersize=0.5, alpha=0.5);
 ~~~
 {: .output}
     
-![Color magnitude diagram of our selected stars showing polygon as orange curve with isochrone overlaid as blue curve.](../fig/06-photo_files/06-photo_91_0.png)
+![Color magnitude diagram showing our selected stars in green, inside our polygon.](../fig/06-photo_files/06-photo_91_0.png)
 
-It looks like the selected stars are, in fact, inside the polygon,
+The selected stars are, in fact, inside the polygon,
 which means they have photometry data consistent with GD-1.
 
 Finally, we can plot the coordinates of the selected stars:
@@ -630,7 +622,6 @@ plt.axis('equal');
 
 ![Right ascension and declination of selected stars in GD-1 frame after selecting for both proper motion and photometry.](../fig/06-photo_files/06-photo_93_0.png)
 
-
 This example includes the new Matplotlib command `figure`, which creates the larger canvas that the subplots are placed on.  In previous examples, we didn't have
 to use this function; the figure was created automatically.  But when
 we call it explicitly, we can provide arguments like `figsize`, which
@@ -645,9 +636,8 @@ is performed with [mathtext](https://matplotlib.org/stable/tutorials/text/mathte
 more advanced rendering with LaTex can be done with the `usetex` option in `rcParams`
 which we will discuss in Episode 7. 
 
-In the next episode we are going to make this plot a lot, so it makes sense to 
-put the commands to make the spatial plot of the stars we selected based on proper motion
-and photometry. As we have done with previous functions we can copy and paste what we just wrote,
+In the next episode we are going to make this plot several more times, so it makes sense to 
+make a function. As we have done with previous functions we can copy and paste what we just wrote,
  replacing the specific variable `winner_df` with the more generic `df`.
 
 ~~~
@@ -665,7 +655,7 @@ def plot_cmd_selection(df):
 ~~~
 {: .language-python}
 
-And here is what it looks like.
+And here is how we use the function.
 
 ~~~
 fig = plt.figure(figsize=(10,2.5))
@@ -682,7 +672,7 @@ plot_cmd_selection(winner_df)
 
 ## Write the data
 
-Finally, let's write the selected stars to a file.
+Finally, we will write the selected stars to a file.
 
 ~~~
 filename = 'gd1_data.hdf'
@@ -703,7 +693,7 @@ getsize(filename) / MB
 
 ## Summary
 
-In this lesson, we used photometry data from Pan-STARRS to draw a
+In this episode, we used photometry data from Pan-STARRS to draw a
 color-magnitude diagram.
 We used an isochrone to define a polygon and select stars we think are
 likely to be in GD-1.  Plotting the results, we have a clearer picture
