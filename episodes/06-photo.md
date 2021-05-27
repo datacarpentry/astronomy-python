@@ -126,8 +126,7 @@ plt.xlabel('Color (g-i)')
 
 ![Color magnitude diagram of our selected stars showing all of the stars selected](../fig/06-photo_files/06-cmd_no_lims.png)
 
-We have assigned the color and magnitude to variables `x` and `y`, 
-respectively.  
+We have assigned the color and magnitude to variables `x` and `y`, respectively.  
 We have done this out of convenience and to keep the code readable since the 
 table variables and column names are long and `x` includes an operation 
 between two columns.  
