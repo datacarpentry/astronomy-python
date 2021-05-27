@@ -19,12 +19,8 @@ keypoints:
 
 {% include links.md %}
 
-# 2. Coordinates and Units
-
-In the previous lesson, we wrote ADQL queries and used them to select
-and download data from the Gaia server.
-
-In this lesson, we'll pick up where we left off and write a query to
+In the previous episode, we wrote ADQL queries and used them to select
+and download data from the Gaia server. In this episode, we will write a query to
 select stars from a particular region of the sky.
 
 > ## Outline
@@ -32,7 +28,7 @@ select stars from a particular region of the sky.
 > We'll start with an example that does a "cone search"; that is, it
 > selects stars that appear in a circular region of the sky.
 >
-> Then, to select stars in the vicinity of GD-1, we'll:
+> Then, to select stars in the vicinity of GD-1, we will:
 >
 > * Use `Quantity` objects to represent measurements with units.
 >
@@ -53,7 +49,7 @@ means that they have two parts, a value and a unit.
 For example, the coordinate 30<sup>°</sup> has value 30 and its units are degrees.
 
 Until recently, most scientific computation was done with values only;
-units were left out of the program altogether, [often with
+units were left out of the program altogether, [sometimes with
 catastrophic
 results](https://en.wikipedia.org/wiki/Mars_Climate_Orbiter#Cause_of_failure).
 
@@ -93,7 +89,7 @@ dir(u)
 ~~~
 {: .output}
 
-To create a quantity, we multiply a value by a unit.
+To create a quantity, we multiply a value by a unit:
 
 ~~~
 angle = 10 * u.degree
@@ -121,7 +117,7 @@ angle
 
 10<sup>°</sup>
 
-Quantities provide a method called `to` that converts to other units.
+`Quantities` provides a method called `to` that converts to other units.
 For example, we can compute the number of arcminutes in `angle`:
 
 ~~~
@@ -157,7 +153,7 @@ For example:
 ```
 angle + 5 * u.second
 ```
-{: .language-python}
+{: .error}
 
 causes a `UnitConversionError`.
 
@@ -185,7 +181,7 @@ causes a `UnitConversionError`.
 
 One of the most common ways to restrict a query is to select stars in
 a particular region of the sky.
-For example, here's a query from the [Gaia archive
+For example, here is a query from the [Gaia archive
 documentation](https://gea.esac.esa.int/archive-help/adql/examples/index.html)
 that selects objects in a circular region centered at (88.8, 7.4) with
 a search radius of 5 arcmin (0.08333 deg).
@@ -212,13 +208,11 @@ specified in degrees of right ascension and declination.
 the center and the third is the radius in degrees.
 
 * `CONTAINS`: a function that returns `1` if a `POINT` is contained in
-a shape and `0` otherwise.
-
-Here is the [documentation of
+a shape and `0` otherwise. Here is the [documentation of
 `CONTAINS`](http://www.ivoa.net/documents/ADQL/20180112/PR-ADQL-2.1-20180112.html#tth_sEc4.2.12).
 
 A query like this is called a cone search because it selects stars in a cone.
-Here's how we run it.
+Here is how we run it:
 
 ~~~
 from astroquery.gaia import Gaia
@@ -313,8 +307,7 @@ From the Price-Whelan and Bonaca paper, we will try to reproduce
 Figure 1, which includes this representation of stars likely to belong
 to GD-1:
 
-<img
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png", alt = "On-sky positions of likely GD-1 members in the GD-1 coordinate system, where selection by proper motion and photometry reveals the stream in great detail.">
+<img src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png" alt = "On-sky positions of likely GD-1 members in the GD-1 coordinate system, where selection by proper motion and photometry reveals the stream in great detail.">
 
 The axes of this figure are defined so the x-axis is aligned with the
 stars in GD-1, and the y-axis is perpendicular.
@@ -324,20 +317,14 @@ stars in GD-1, and the y-axis is perpendicular.
 * Along the y-axis (φ<sub>2</sub>) the figure extends from about -8 to 4 degrees.
 
 Ideally, we would select all stars from this rectangle, but there are
-more than 10 million of them, so
-
-* That would be difficult to work with,
-
-* As anonymous Gaia users, we are limited to 3 million rows in a
-single query, and
-
-* While we are developing and testing code, it will be faster to work
+more than 10 million of them. This would be difficult to work with, and as
+anonymous Gaia users, we are limited to 3 million rows in a
+single query. While we are developing and testing code, it will be faster to work
 with a smaller dataset.
 
-So we'll start by selecting stars in a smaller rectangle near the
-center of GD-1, from -55 to -45 degrees φ<sub>1</sub> and -8 to 4 degrees φ<sub>2</sub>.
-
-But first we let's see how to represent these coordinates with Astropy.
+So we will start by selecting stars in a smaller rectangle near the
+center of GD-1, from -55 to -45 degrees φ<sub>1</sub> and -8 to 4 degrees φ<sub>2</sub>. 
+First we will learn how to represent these coordinates with Astropy.
 
 ## Transforming coordinates
 
@@ -370,7 +357,9 @@ coord_icrs
 ~~~
 {: .output}
 
-`SkyCoord` objects require units in order to understand the context, there are a number of ways to define `SkyCoord` objects, in our example, we explicitly specified the coordinates and units and provided a reference frame. 
+`SkyCoord` objects require units in order to understand the context. There are a number of ways to define
+`SkyCoord` objects, in our example, we explicitly specified the coordinates and units and provided a
+reference frame. 
 
 `SkyCoord` provides the `transform_to` function to transform from one reference frame to another reference frame.
 For example, we can transform `coords_icrs` to Galactic coordinates like this:
@@ -387,11 +376,13 @@ coord_galactic
 ~~~
 {: .output}
 
-Notice that in the Galactic frame, the coordinates are called `l` and
-`b`, not `ra` and `dec`.
-Notice that in the Galactic frame, the coordinates are the variables we usually use for Galactic longitude and latitude called `l` and `b`, respectively, not `ra` and `dec`. Most reference frames have different ways to specify coordinates and the `SkyCoord` object will use these names.
-
-To transform to and from GD-1 coordinates, we'll use a frame defined
+> ## Coordinate Variables
+> Notice that in the Galactic frame, the coordinates are the variables we usually use for Galactic 
+> longitude and latitude called `l` and `b`, respectively, not `ra` and `dec`. Most reference frames have 
+> different ways to specify coordinates and the `SkyCoord` object will use these names.
+{: .callout}
+  
+To transform to and from GD-1 coordinates, we will use a frame defined
 by [Gala](https://gala-astro.readthedocs.io/en/latest/), which is an
 Astropy-affiliated library that provides tools for galactic dynamics.
 
@@ -401,7 +392,7 @@ which is "a Heliocentric spherical coordinate system defined by the
 orbit of the GD-1 stream". In this coordinate system, one axis is defined along 
 the direction of the steam (the x-axis in Figure 1) and one axis is defined 
 perpendicular to the direction of the stream (the y-axis in Figure 1). 
-These are called the $\phi_{1}$ and $\phi2_{2}$ coordinates, respectively.
+These are called the φ<sub>1</sub> and φ<sub>2</sub> coordinates, respectively.
 
 ~~~
 from gala.coordinates import GD1Koposov10
@@ -431,12 +422,9 @@ coord_gd1
 ~~~
 {: .output}
 
-Notice that the coordinates are called `phi1` and `phi2`.
-These are the coordinates shown in the figure from the paper, above.
-
 > ## Exercise (10 minutes)
 > 
-> Let's find the location of GD-1 in ICRS coordinates.
+> Find the location of GD-1 in ICRS coordinates.
 > 
 > 1. Create a `SkyCoord` object at 0°, 0° in the GD-1 frame.
 > 
@@ -450,33 +438,20 @@ These are the coordinates shown in the figure from the paper, above.
 > > ~~~
 > > origin_gd1 = SkyCoord(0*u.degree, 0*u.degree, frame=gd1_frame)
 > > 
-> > # OR
-> > 
-> > origin_gd1 = SkyCoord(phi1=0*u.degree, 
-> >                       phi2=0*u.degree, 
-> >                       frame=gd1_frame)
-> > 
-> > # Note: because ICRS is built into Astropy, 
-> > # we can identify it by string name
 > > origin_gd1.transform_to('icrs')
-> > 
-> > # More formally, we could instantiate it
-> > from astropy.coordinates import ICRS
-> > icrs_frame = ICRS()
-> > origin_gd1.transform_to(icrs_frame)
 > > ~~~
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
 
 Notice that the origin of the GD-1 frame maps to `ra=200`, exactly, in
-ICRS.  That's by design.
+ICRS.  That is by design.
 
 ## Selecting a rectangle
 
 Now that we know how to define coordinate transformations, we are going 
 to use them to get a list of stars that are in GD-1. As we mentioned 
-before, this is a lot of stars, so we’re going to start by defining a 
+before, this is a lot of stars, so we are going to start by defining a 
 rectangle that encompasses a small part of GD-1. 
 This is easiest to define in GD-1 coordinates.
 
@@ -492,10 +467,12 @@ phi2_max = 4 * u.degree
 {: .language-python}
 
 Throughout this lesson we are going to be defining a rectangle often. 
-Rather than copy and paste multiple lines of code we will write a function to build the rectangle for use. 
+Rather than copy and paste multiple lines of code, we will write a function to build the rectangle for us. 
 By having the code contained in a single location, we can easily fix bugs or update our implementation as needed. 
-By choosing an explicit function name our code is also self documenting, meaning its easy for us to see that we're building a rectangle when we call this function. 
-To create a rectangle, we'll use the following function, which takes the lower and upper bounds as parameters and returns a list of x and y coordinates of the corners of a rectangle starting with the lower left corner and working clockwise.
+By choosing an explicit function name our code is also self documenting, meaning its easy for us to 
+understand that we are building a rectangle when we call this function. 
+
+To create a rectangle, we will use the following function, which takes the lower and upper bounds as parameters and returns a list of x and y coordinates of the corners of a rectangle starting with the lower left corner and working clockwise.
 
 ~~~
 def make_rectangle(x1, x2, y1, y2):
@@ -601,7 +578,7 @@ s
 ~~~
 {: .output}
 
-That's almost what we need, but we have to replace the spaces with commas.
+This is almost what we need, but we have to replace the spaces with commas.
 
 ~~~
 s.replace(' ', ', ')
@@ -613,7 +590,7 @@ s.replace(' ', ', ')
 ~~~
 {: .output}
 
-This is something we'll need to do multiple times, we we’ll write a function to do it for us so we don’t have to copy and paste every time.
+This is something we will need to do multiple times. We will write a function to do it for us so we don’t have to copy and paste every time.
 The following function combines these steps. 
 
 ~~~
@@ -625,7 +602,7 @@ def skycoord_to_string(skycoord):
 ~~~
 {: .language-python}
 
-Here's how we use it.
+Here is how we use this function:
 
 ~~~
 sky_point_list = skycoord_to_string(corners_icrs)
@@ -640,18 +617,18 @@ sky_point_list
 
 ## Assembling the query
 
-Now we’re ready to assemble our query to get all of the stars in 
+Now we are ready to assemble our query to get all of the stars in 
 the Gaia catalog that are in the small rectangle we defined and 
 are likely to be part of GD-1 with the criteria we previously defined.
 
-We need `columns` again (as we saw in the previous lesson).
+We need `columns` again (as we saw in the previous episode).
 
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec, parallax'
 ~~~
 {: .language-python}
 
-And here's the query base we used in the previous lesson:
+And here is the query base we used in the previous lesson:
 
 ~~~
 query3_base = """SELECT 
@@ -664,7 +641,7 @@ WHERE parallax < 1
 ~~~
 {: .language-python}
 
-Now we'll add a `WHERE` clause to select stars in the polygon we defined.
+Now we will add a `WHERE` clause to select stars in the polygon we defined.
 
 ~~~
 query4_base = """SELECT
@@ -681,7 +658,7 @@ WHERE parallax < 1
 
 The query base contains format specifiers for `columns` and `sky_point_list`.
 
-We'll use `format` to fill in these values.
+We will use `format` to fill in these values.
 
 ~~~
 query4 = query4_base.format(columns=columns, 
@@ -752,7 +729,7 @@ results
 ~~~
 {: .output}
 
-Finally, we can remove `TOP 10` run the query again.
+Finally, we can remove `TOP 10` and run the query again.
 
 The result is bigger than our previous queries, so it will take a little longer.
 
@@ -824,10 +801,10 @@ manageable size to work with.
 
 ## Saving results
 
-This is the set of stars we'll work with in the next step.  But since
+This is the set of stars we will work with in the next step.  Since
 we have a substantial dataset now, this is a good time to save it.
 
-Storing the data in a file means we can shut down this notebook and
+Storing the data in a file means we can shut down our notebook and
 pick up where we left off without running the previous query again.
 
 Astropy `Table` objects provide `write`, which writes the table to disk.

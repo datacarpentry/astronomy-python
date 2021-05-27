@@ -12,7 +12,7 @@ positions, motions, and distances of approximately a billion stars in our Milky 
 precision, and the [Pan-STARRS](https://panstarrs.stsci.edu/) photometric survey, which precisely measures light output and 
 distribution from many stars. Together, these datasets are used to reproduce part of the analysis from the article 
 [“Off the beaten path: Gaia reveals GD-1 stars outside of the main stream”](https://arxiv.org/abs/1805.00425) by Drs. Adrian
-M. Price-Whelan and Ana Bonaca. The lessons show how to identify and visualize the GD-1 stellar stream, which is a globular
+M. Price-Whelan and Ana Bonaca. This lesson shows how to identify and visualize the GD-1 stellar stream, which is a globular
 cluster that has been tidally stretched by the Milky Way.
 
 This lesson can be taught in approximately 10 hours and covers the following topics:

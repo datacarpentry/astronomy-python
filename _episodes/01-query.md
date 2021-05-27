@@ -12,16 +12,16 @@ objectives:
 - "Develop, test, and debug a query incrementally."
 
 keypoints:
-- "If you can't download an entire dataset (or it's not practical) use queries to select the data you need."
+- "If you can't download an entire dataset (or it is not practical) use queries to select the data you need."
 - "Read the metadata and the documentation to make sure you understand the tables, their columns, and what they mean."
 - "Develop queries incrementally: start with something simple, test it, and add a little bit at a time."
 - "Use ADQL features like `TOP` and `COUNT` to test before you run a query that might return a lot of data."
 - "If you know your query will return fewer than 3000 rows, you can 
-run it synchronously, which might complete faster (but it doesn't seem to make much difference).  If it might return more than 3000 rows, you should run it asynchronously."
-- "ADQL and SQL are not case-sensitive, so you don't have to 
-capitalize the keywords, but you should."
+run it synchronously.  If it might return more than 3000 rows, you should run it asynchronously."
+- "ADQL and SQL are not case-sensitive. You don't have to 
+capitalize the keywords, but it will make your code more readable."
 - "ADQL and SQL don't require you to break a query into multiple 
-lines, but you should."
+lines, but it will make your code more readable."
 - "Make each section of the notebook self-contained.  Try not to use
 the same variable name in more than one section."
 - "Keep notebooks short.  Look for places where you can break your
@@ -30,21 +30,17 @@ analysis into phases with one notebook per phase."
 
 {% include links.md %}
 
-# 1. Queries
-
-This is the first in a series of lessons about working with astronomical data.
-
-As a running example, we will replicate parts of the analysis in a
-recent paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
+As a running example, we will replicate parts of the analysis in the 
+paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
 of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian
 Price-Whelan and Ana Bonaca.
 
 > ## Outline
 > 
-> This lesson demonstrates the steps for selecting and downloading data
+> This episode demonstrates the steps for selecting and downloading data
 > from the Gaia Database:
 > 
-> 1. First we'll make a connection to the Gaia server,
+> 1. First we will make a connection to the Gaia server,
 >
 > 2. We will explore information about the database and the tables it contains,
 >
@@ -55,9 +51,9 @@ Price-Whelan and Ana Bonaca.
 
 ## Query Language
 
-In order to select data from a database, you have to compose a query,
+In order to select data from a database, you need to compose a query,
 which is a program written in a "query language".
-The query language we'll use is ADQL, which stands for "Astronomical
+The query language we will use is ADQL, which stands for "Astronomical
 Data Query Language".
 
 ADQL is a dialect of [SQL](https://en.wikipedia.org/wiki/SQL)
@@ -83,14 +79,12 @@ There are two environments you can use to write and run notebooks:
 
 * "Jupyter Lab" is a newer environment with more features.
 
-For these lessons, you can use either one.
+For this lesson, you can use either one.
 
-If you are too impatient for the tutorials, here are the most
-important things to know:
+Here are the most important things to know about running a Jupyter notebook:
 
 1. Notebooks are made up of code cells and text cells (and a few other
-less common kinds).  Code cells contain code; text cells, like this
-one, contain explanatory text written in
+less common kinds).  Code cells contain code; text cells contain explanatory text written in
 [Markdown](https://www.markdownguide.org/).
 
 2. To run a code cell, click the cell to select it and press
@@ -103,28 +97,26 @@ likely to get errors.
 4. You can modify existing cells, but then you have to run them again
 to see the effect.
 
-5. You can add new cells, but again, you have to be careful about the
+5. You can add new cells, but you need to be careful about the
 order you run them in.
 
-6. If you have added or modified cells and the behavior of the
+6. If you have added or modified cells, and the behavior of the
 notebook seems strange, you can restart the "kernel", which clears all
 of the variables and functions you have defined, and run the cells
 again from the beginning.
 
-* If you are using Jupyter notebook, open the `Kernel` menu and select
+* If you are using Jupyter Notebook, open the `Kernel` menu and select
 "Restart and Run All".
 
 * In Jupyter Lab, open the `Kernel` menu and select "Restart Kernel
-and Run All Cells"
+and Run All Cells".
 
-* In Colab, open the `Runtime` menu and select "Restart and run all"
-
-Before you go on, you might want to explore the other menus and the
+Before you continue with this lesson, you might want to explore the other menus and the
 toolbar to see what else you can do.
 
 ## Connecting to Gaia
 
-The library we'll use to get Gaia data is
+The library we will use to get Gaia data is
 [Astroquery](https://astroquery.readthedocs.io/en/latest/).
 Astroquery provides `Gaia`, which is an [object that represents a
 connection to the Gaia
@@ -158,7 +150,7 @@ queries to the database and getting back the results.
 
 ## Databases and Tables
 
-What is a database, anyway?  Most generally, it can be any collection
+What is a database?  Most generally, it can be any collection
 of data, but when we are talking about ADQL or SQL:
 
 * A database is a collection of one or more named tables.
@@ -167,7 +159,7 @@ of data, but when we are talking about ADQL or SQL:
 
 We can use `Gaia.load_tables` to get the names of the tables in the
 Gaia database.  With the option `only_names=True`, it loads
-information about the tables, called "metadata", not the data itself.
+information about the tables, called "metadata", but not the data itself.
 
 ~~~
 tables = Gaia.load_tables(only_names=True)
@@ -205,15 +197,15 @@ external.skymapperdr2_master
 ~~~
 {: .output}
 
-So that's a lot of tables.  The ones we'll use are:
+So that is a lot of tables.  The ones we will use are:
 
 * `gaiadr2.gaia_source`, which contains Gaia data from [data release
 2](https://www.cosmos.esa.int/web/gaia/data-release-2),
 
 * `gaiadr2.panstarrs1_original_valid`, which contains the photometry
-data we'll use from PanSTARRS, and
+data we will use from PanSTARRS, and
 
-* `gaiadr2.panstarrs1_best_neighbour`, which we'll use to cross-match
+* `gaiadr2.panstarrs1_best_neighbour`, which we will use to cross-match
 each star observed by Gaia with the same star observed by PanSTARRS.
 
 We can use `load_table` (not `load_tables`) to get the metadata for a
@@ -287,13 +279,9 @@ the names, but you should resist the temptation to guess.
 To find out what the columns mean, [read the
 documentation](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html).
 
-If you want to know what can go wrong when you don't read the
-documentation, [you might like this
-article](https://www.vox.com/future-perfect/2019/6/4/18650969/married-women-miserable-fake-paul-dolan-happiness).
-
 > ## Exercise (2 minutes)
 > 
-> One of the other tables we'll use is
+> One of the other tables we will use is
 > `gaiadr2.panstarrs1_original_valid`.  Use `load_table` to get the
 > metadata for this table.  How many columns are there and what are
 > their names?
@@ -313,11 +301,11 @@ article](https://www.vox.com/future-perfect/2019/6/4/18650969/married-women-mise
 
 ## Writing queries
 
-By now you might be wondering how we download these tables.  With
+You might be wondering how we download these tables.  With
 tables this big, you generally don't.  Instead, you use queries to
 select only the data you want.
 
-A query is a string written in a query language like SQL; for the Gaia
+A query is a program written in a query language like SQL. For the Gaia
 database, the query language is a dialect of SQL called ADQL.
 
 Here's an example of an ADQL query.
@@ -331,7 +319,7 @@ FROM gaiadr2.gaia_source
 ~~~
 {: .language-python}
 
-> ## Python note
+> ## Triple-quotes strings
 > We use a [triple-quoted string](https://docs.python.org/3/tutorial/introduction.html#strings)
 > here so we can include line breaks in the query, which makes it easier
 > to read.
@@ -420,7 +408,7 @@ Table](https://docs.astropy.org/en/stable/table/).
 > Why is `table` repeated three times?  The first
 > is the name of the module, the second is the name of the submodule,
 > and the third is the name of the class.  Most of the time we only care
-> about the last one.  It's like the Linnean name for gorilla, which is
+> about the last one.  It's like the Linnean name for the Western lowland gorilla, which is
 > *Gorilla gorilla gorilla*.
 {: .callout}
 
@@ -429,7 +417,7 @@ An Astropy `Table` is similar to a table in an SQL database except:
 * SQL databases are stored on disk drives, so they are persistent;
 that is, they "survive" even if you turn off the computer.  An Astropy
 `Table` is stored in memory; it disappears when you turn off the
-computer (or shut down this Jupyter notebook).
+computer (or shut down your Jupyter notebook).
 
 * SQL databases are designed to process queries.  An Astropy `Table`
 can perform some query-like operations, like selecting columns and
@@ -477,13 +465,10 @@ the Astropy `Table` by Astroquery.
 >
 > > ## Solution
 > > 
-> > Let's add
-> > radial_velocity : Radial velocity (double, Velocity[km/s] )
-> > 
+> > For example, we can add
+> > radial_velocity : Radial velocity (double, Velocity[km/s] ) - 
 > > Spectroscopic radial velocity in the solar barycentric 
-> > reference frame.
-> > 
-> > The radial velocity provided is the median value of the 
+> > reference frame. The radial velocity provided is the median value of the 
 > > radial velocity measurements at all epochs.
 > >
 > > ~~~
@@ -506,7 +491,7 @@ to 2000 rows.  For queries that return more rows, you should run
 
 If you are not sure how many rows a query will return, you can use the
 SQL command `COUNT` to find out how many rows are in the result
-without actually returning them.  We'll see an example in the next
+without actually returning them.  We will see an example in the next
 lesson.
 
 The results of an asynchronous query are stored in a file on the
@@ -514,7 +499,7 @@ server, so you can start a query and come back later to get the
 results.
 For anonymous users, files are kept for three days.
 
-As an example, let's try a query that's similar to `query1`, with these changes:
+As an example, let us try a query that is similar to `query1`, with these changes:
 
 * It selects the first 3000 rows, so it is bigger than we should run
 synchronously.
@@ -661,7 +646,7 @@ Finally, you can use `NOT` to invert the result of a comparison.
 >
 > > ## Solution
 > > 
-> > Here's a solution using > and < operators
+> > Here is a solution using `>` and `<` operators:
 > > 
 > > ~~~
 > > query2_sol1 = """SELECT 
@@ -674,7 +659,7 @@ Finally, you can use `NOT` to invert the result of a comparison.
 > > ~~~
 > > {: .language-python}
 > > 
-> > And here's a solution using the BETWEEN operator
+> > And here is a solution using the `BETWEEN` operator:
 > > 
 > > ~~~
 > > query2_sol2 = """SELECT 
@@ -717,18 +702,18 @@ It is often better to write Python code that assembles a query for
 you.  One useful tool for that is the [string `format`
 method](https://www.w3schools.com/python/ref_string_format.asp).
 
-As an example, we'll divide the previous query into two parts; a list
+As an example, we will divide the previous query into two parts; a list
 of column names and a "base" for the query that contains everything
 except the column names.
 
-Here's the list of columns we'll select.  
+Here is the list of columns we will select.  
 
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec, parallax'
 ~~~
 {: .language-python}
 
-And here's the base; it's a string that contains at least one format
+And here is the base. It is a string that contains at least one format
 specifier in curly brackets (braces).
 
 ~~~
@@ -755,7 +740,7 @@ query3 = query3_base.format(columns=columns)
 
 In this example, the variable that contains the column names and the
 variable in the format specifier have the same name.
-That's not required, but it is a common style.
+That is not required, but it is a common style.
 
 The result is a string with line breaks.  If you display it, the line
 breaks appear as `\n`.
@@ -770,7 +755,7 @@ query3
 ~~~
 {: .output}
 
-But if you print it, the line breaks appear as... line breaks.
+But if you print it, the line breaks appear as line breaks.
 
 ~~~
 print(query3)
@@ -835,8 +820,6 @@ results3
 ~~~
 {: .output}
 
-Good so far.
-
 > ## Exercise (10 minutes)
 > 
 > This query always selects sources with `parallax` less than 1.  But
@@ -868,7 +851,7 @@ Good so far.
 
 ## Summary
 
-This notebook demonstrates the following steps:
+This episode has demonstrated the following steps:
 
 1. Making a connection to the Gaia server,
 
@@ -878,5 +861,5 @@ This notebook demonstrates the following steps:
 
 4. Downloading the response from the server as an Astropy `Table`.
 
-In the next lesson we will extend these queries to select a particular
+In the next episode we will extend these queries to select a particular
 region of the sky.

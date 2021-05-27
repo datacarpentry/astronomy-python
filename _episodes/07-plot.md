@@ -19,30 +19,21 @@ keypoints:
 
 {% include links.md %}
 
-# 7. Visualization
+In the previous episode, we selected photometry data from Pan-STARRS
+and used it to identify stars we think are likely to be in GD-1.
 
-This is the seventh in a series of notebooks related to astronomy data.
-
-As a continuing example, we will replicate part of the analysis in a
-recent paper, "[Off the beaten path: Gaia reveals GD-1 stars outside
-of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian M.
-Price-Whelan and Ana Bonaca.
-
-In the previous notebook we selected photometry data from Pan-STARRS
-and used it to identify stars we think are likely to be in GD-1
-
-In this notebook, we'll take the results from previous lessons and use
+In this episode, we will take the results from previous episodes and use
 them to make a figure that tells a compelling scientific story.
 
 > ## Outline
 > 
-> 1. Starting with the figure from the previous notebook, we'll add
+> 1. Starting with the figure from the previous episode, we will add
 > annotations to present the results more clearly.
 > 
-> 2. Then we'll see several ways to customize figures to make them more
+> 2. Then we will learn several ways to customize figures to make them more
 > appealing and effective.
 > 
-> 3. Finally, we'll see how to make a figure with multiple panels.
+> 3. Finally, we will learn how to make a figure with multiple panels.
 {: .checklist}
 
 ## Starting from this episode
@@ -55,7 +46,7 @@ Whether you are working from a new notebook or coming back from a checkpoint,
 reloading the data will save you from having to run the query again. 
 
 If you are starting this episode here or starting this episode in a new notebook,
-you will need run the following lines of code:
+you will need to run the following lines of code.
 
 This imports previously imported functions:
 ~~~
@@ -69,7 +60,7 @@ from episode_functions import *
 {: .language-python}
 
 This loads in the data (instructions for downloading data can be
-found in the [setup instructions](../setup.md))
+found in the [setup instructions](../setup.md)):
 ~~~
 filename = 'gd1_data.hdf'
 winner_df = pd.read_hdf(filename, 'winner_df')
@@ -94,11 +85,11 @@ pm1_rect, pm2_rect = make_rectangle(
 
 ## Making Figures That Tell a Story
 
-So far the figures we've made have been "quick and dirty".  Mostly we
+The figures we have made so far have been "quick and dirty".  Mostly we
 have used Matplotlib's default style, although we have adjusted a few
 parameters, like `markersize` and `alpha`, to improve legibility.
 
-Now that the analysis is done, it's time to think more about:
+Now that the analysis is done, it is time to think more about:
 
 1. Making professional-looking figures that are ready for publication.
 
@@ -106,8 +97,8 @@ Now that the analysis is done, it's time to think more about:
 
 Not necessarily in that order.
 
-Let's start by reviewing Figure 1 from the original paper.  We've seen
-the individual panels, but now let's look at the whole thing, along
+We will start by reviewing Figure 1 from the original paper.  We have seen
+the individual panels, but now we will look at the whole figure, along
 with the caption:
 
 <img style="max-width: 100%;"
@@ -121,12 +112,12 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.pn
 > 
 > 2. What story is this figure telling?
 > 
-> 3. In the design of this figure, can you identify 1-2 choices the
+> 3. In the design of this figure, can you identify 1 or 2 choices the
 > authors made that you think are effective?  Think about big-picture
 > elements, like the number of panels and how they are arranged, as well
 > as details like the choice of typeface.
 > 
-> 4. Can you identify 1-2 elements that could be improved, or that you
+> 4. Can you identify 1 or 2 elements that could be improved, or that you
 > might have done differently?
 >
 > > ## Solution
@@ -145,7 +136,7 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.pn
 > > second selection.  So this figure documents the methodology and 
 > > presents the primary result.
 > > 
-> > 3. It's mostly black and white, with minimal use of color, so 
+> > 3. The figure is mostly black and white, with minimal use of color, so 
 > > it will work well in print.  The annotations in the bottom 
 > > left panel guide the reader to the most important results.  
 > > It contains enough technical detail for a professional audience, 
@@ -157,7 +148,7 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.pn
 > > arrange them left-to-right.  The placement and size of the axis 
 > > labels could be tweaked.  The entire figure could be a little 
 > > bigger to match the width and proportion of the caption.  
-> > The top left panel has unnused white space (but that leaves 
+> > The top left panel has unused white space (but that leaves 
 > > space for the annotations in the bottom left).
 > {: .solution}
 {: .challenge}
@@ -189,7 +180,7 @@ region of GD-1,
 > 
 > * To add an annotation with text and an arrow, see [plt.annotate]().
 > 
-> And here is some [additional information about text and
+> Here is some [additional information about text and
 > arrows](https://matplotlib.org/stable/tutorials/text/annotations.html).
 >
 > > ## Solution
@@ -226,9 +217,9 @@ many other properties.
 There are several ways to override these defaults and customize your figures:
 
 * To customize only the current figure, you can call functions like
-`tick_params`, which we'll demonstrate below.
+`tick_params`, which we will demonstrate below.
 
-* To customize all figures in a notebook, you use `rcParams`.
+* To customize all figures in a notebook, you can use `rcParams`.
 
 * To override more than a few defaults at the same time, you can use a
 style sheet.
@@ -241,20 +232,23 @@ So far, everything we have wanted to do we could call directly from
 the pyplot module with `plt.`. As you do more and more customization
 you may need to run some methods on plotting objects themselves. To use the 
 method that changes the direction of the ticks we need an `axes` object.
-So far, Matplotlib has implicitly created our `axes` object on the fly when we called `plt.plot`.
+So far, Matplotlib has implicitly created our `axes` object when we called `plt.plot`.
 To explicitly create an `axes` object we can first create our `figure` object and then add an `axes` object
 to it.
 ~~~
 fig = plt.figure(figsize=(10,2.5))
 ax = fig.add_subplot(1,1,1)
 ~~~
-{.language python}
-> Confusingly, in Matplotlib the objects `subplot` and `axes` are often be used interchangeably. 
+{: .language python}
+
+> ## `subplot` and `axes`
+> Confusingly, in Matplotlib the objects `subplot` and `axes` are often used interchangeably. 
 > This is because a `subplot` is an `axes` object with additional methods and attributes. 
 {: .callout}
-You can use the [`add_subplot`](https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.add_subplot) method to add more than one `axes` object to a figure as we will see in a minute. 
+
+You can use the [`add_subplot`](https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.add_subplot) method to add more than one `axes` object to a figure. 
 For this reason you have to specify the total number of columns, total number of rows, and which plot number you are
-creating i.e. `fig.add_subplot(ncols, nrows, pltnum)`. The plot number starts in the upper left corner and goes left to
+creating (`fig.add_subplot(ncols, nrows, pltnum)`). The plot number starts in the upper left corner and goes left to
 right and then top to bottom. In the example above we have one column, one row, and we're plotting into the first plot space.
 
 Now we are ready to change the direction of the ticks to the inside of the axes using our new
@@ -287,10 +281,10 @@ ax.tick_params(direction='in')
 ## rcParams
 
 If you want to make a customization that applies to all figures in a
-notebook, you can use `rcParams`. When you import matplotlib, a dictionary is created with default values
+notebook, you can use `rcParams`. When you import Matplotlib, a dictionary is created with default values
 for everything you can change about your plot. This is what you are overriding with `tick_params` above. 
 
-Here's an example that reads the current font size from `rcParams`:
+Here is an example that reads the current font size from `rcParams`:
 
 ~~~
 plt.rcParams['font.size']
@@ -324,7 +318,7 @@ mpl.matplotlib_fname()
 ~~~
 {: .language-python}
 
-If the file doesn’t exist, you can download one from [this tutorial](https://matplotlib.org/stable/tutorials/introductory/customizing.html#matplotlibrc-sample) to modify.
+If the file doesn’t exist, you can download [a sample matplotlibrc file](https://matplotlib.org/stable/tutorials/introductory/customizing.html#matplotlibrc-sample) to modify.
 
 ## Style sheets
 
@@ -340,7 +334,7 @@ here](https://matplotlib.org/stable/tutorials/introductory/customizing.html).
 Matplotlib provides a set of predefined style sheets, or you can make your own. 
 The [style sheets reference](https://matplotlib.org/stable/gallery/style_sheets/style_sheets_reference.html) shows a gallery of plots generated by common style sheets. 
 
-The following cell displays a list of style sheets installed on your system.
+You can display a list of style sheets installed on your system.
 
 ~~~
 plt.style.available
@@ -378,11 +372,13 @@ The style sheet you choose will affect the appearance of all figures
 you plot after calling `use`, unless you override any of the options
 or call `use` again.
 
-As an exercise, choose one of the styles on the list and select it by
-calling `use`.  Then go back and plot one of the figures above and see
-what effect it has.
+> ## Exercise
+> Choose one of the styles on the list and select it by
+> calling `use`.  Then go back and plot one of the figures above and see
+> what changes in the figure's appearance.
+{: .challenge}
 
-If you can't find a style sheet that's exactly what you want, you can
+If you can't find a style sheet that is exactly what you want, you can
 make your own.  This repository includes a style sheet called
 `az-paper-twocol.mplstyle`, with customizations chosen by Azalee
 Bostroem for publication in astronomy journals.
@@ -407,24 +403,28 @@ mpl.get_configdir()
 
 ## Multiple panels
 
-So far we've been working with one figure at a time, but the figure we
+So far we have been working with one figure at a time, but the figure we
 are replicating contains multiple panels. We will create each of these 
-panels as a different subplot (recall this is an `axes` object with even more properties). 
-Confusingly, Matplotlib has multiple functions for making figures with multiple panels.
-While we have already seen [`add_subplot`](https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.add_subplot), this creates equal sized panels. 
+panels as a different subplot. 
+Matplotlib has multiple functions for making figures with multiple panels.
+We have already used [`add_subplot`](https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.add_subplot) - however, this creates equal sized panels. 
 For this reason, we will use [`subplot2grid`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplot2grid.html) which allows us to control the relative sizes of the panels. 
 
 Since we have already written functions that generate each panel of this figure, 
 we can now create the full multi-panel figure by creating each subplot and then run our plotting function.
 
-[`subplot2grid`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplot2grid.html), like [`add_subplot`](https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.add_subplot) which requires use to specify the total number of columns and rows in the grid, this time as a tuple called `shape` and the location of the subplot, `loc`, which is a tuple identifying the location in the grid we're about to fill.
+Like [`add_subplot`](https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.add_subplot), 
+[`subplot2grid`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplot2grid.html)
+requires us to specify the total number of columns and rows in the grid (this time as a tuple called 
+`shape`), and the location of the subplot (`loc`) - a tuple identifying the location in the grid we
+are about to fill.
 
 In this example, `shape` is `(2, 2)` to create two rows and two columns.
 
 For the first panel, `loc` is `(0, 0)`, which indicates row 0 and
 column 0, which is the upper-left panel.
 
-Here's how we use it to draw the four panels.
+Here is how we use this function to draw the four panels.
 
 ~~~
 fig = plt.figure()
@@ -455,9 +455,9 @@ plt.tight_layout()
 We use
 [`plt.tight_layout`](https://matplotlib.org/stable/tutorials/intermediate/tight_layout_guide.html)
 at the end, which adjusts the sizes of the panels to make sure the
-titles and axis labels don't overlap. You can see how convenient it is that we’ve written functions to plot each panel. 
-This code is concise and readable: we can see what is being plotted in each panel thanks to our explicit function names and
-we know where to look if we want to see the mechanics of exactly how the plotting is done.
+titles and axis labels don't overlap. Notice how convenient it is that we have written functions to plot each panel. 
+This code is concise and readable: we can tell what is being plotted in each panel thanks to our explicit function names and
+we know what function to investigate if we want to see the mechanics of exactly how the plotting is done.
 
 > ## Exercise 
 > What happens if you leave out `tight_layout`?
@@ -472,14 +472,12 @@ we know where to look if we want to see the mechanics of exactly how the plottin
 ## Adjusting proportions
 
 In the previous figure, the panels are all the same size.  To get a
-better view of GD-1, we'd like to stretch the panels on the left and
+better view of GD-1, we would like to stretch the panels on the left and
 compress the ones on the right.
 
-To do that, we'll use the `colspan` argument to make a panel that
-spans multiple columns in the grid.
-
-In the following example, `shape` is `(2, 4)`, which means 2 rows and 4 columns. To do this we’ll need more columns so we’ll 
-change the shape from (2,2) to (2,4). 
+To do that, we will use the `colspan` argument to make a panel that
+spans multiple columns in the grid. To do this we will need more columns so we will 
+change the `shape` from (2,2) to (2,4). 
 
 The panels on the left span three columns, so they are three times
 wider than the panels on the right.
@@ -575,18 +573,19 @@ array([[-8.9, -2.2],
 ~~~
 {: .output}
 
-We will now create the `Polygon`, specifying its display properties which will be used when its plotted.
+We will now create the `Polygon`, specifying its display properties which will be used when it is plotted.
 We will specify `closed=True` to make sure the shape is closed, `facecolor='orange` to color the inside
 of the `Polygon` orange, and `alpha=0.4` to make the `Polygon` semi-transparent.
 ~~~
 poly = Polygon(vertices, closed=True, 
                    facecolor='orange', alpha=0.4)
 ~~~
-{.language-python}
+{: .language-python}
 
 Then to plot the `Polygon` we call the `add_patch` method. `add_patch` like `tick_params` 
 must be called on an `axes` or `subplot` object, so we will create a `subplot` and then 
 add the `Patch` to the `subplot`.
+
 ~~~
 fig = plt.figure()
 ax = fig.add_subplot(1,1,1)
@@ -596,7 +595,14 @@ ax.add_patch(poly)
 ax.set_xlim(-10, 7.5)
 ax.set_ylim(-10, 10)
 ~~~
-![An orange rectangle at the coordinates used to select stars based on proper motion.](../fig/07-plot_files/07-poly_example.png')
+{: .language-python}
+
+~~~
+<Figure size 900x450 with 4 Axes>
+~~~
+{: .output}
+
+![An orange rectangle at the coordinates used to select stars based on proper motion.](../fig/07-plot_files/07-poly_example.png)
 
 We can now call our plot_proper_motion function to plot the
 proper motion for each star, and the add a shaded `Polygon` to show the
@@ -611,6 +617,11 @@ poly = Polygon(vertices, closed=True,
 ax.add_patch(poly)
 ~~~
 {: .language-python}
+
+~~~
+<Figure size 900x450 with 4 Axes>
+~~~
+{: .output}
    
 ![Proper motion with overlaid polygon showing our selected stars.](../fig/07-plot_files/07-plot_53_0.png)
 
@@ -636,7 +647,7 @@ ax.add_patch(poly)
 
 > ## Exercise
 > 
-> Add the Polygon patches you just created to right panels of the four panel figure.
+> Add the `Polygon` patches you just created to the right panels of the four panel figure.
 > 
 > > ## Solution 
 > > ~~~
@@ -670,12 +681,13 @@ ax.add_patch(poly)
 > >  ~~~
 > >  {: .output}
 > >     
-> > ![Four paneled plot we created above with two left-hand panels increased in width.](../fig/07-plot_files/07-plot_72_0.> > png)
+> > ![Four paneled plot we created above with two left-hand panels increased in width.](../fig/07-plot_files/07-plot_72_0.png)
 > {.solution}
+{: .challenge}
 
 ## Summary
 
-In this notebook, we reverse-engineered the figure we've been
+In this episode, we reverse-engineered the figure we have been
 replicating, identifying elements that seem effective and others that
 could be improved.
 
