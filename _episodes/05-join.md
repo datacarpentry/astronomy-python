@@ -149,7 +149,7 @@ Before we get to the `JOIN` operation, we will explore these tables.
 Here is the metadata for `panstarrs1_best_neighbour`.
 
 ~~~
-meta = Gaia.load_table('gaiadr2.panstarrs1_best_neighbour')
+ps_best_neighbor_meta = Gaia.load_table('gaiadr2.panstarrs1_best_neighbour')
 ~~~
 {: .language-python}
 
@@ -161,7 +161,7 @@ Done.
 {: .output}
 
 ~~~
-print(meta)
+print(ps_best_neighbor_meta)
 ~~~
 {: .language-python}
 
@@ -178,7 +178,7 @@ Num. columns: 7
 And here are the columns.
 
 ~~~
-for column in meta.columns:
+for column in ps_best_neighbor_meta.columns:
     print(column.name)
 ~~~
 {: .language-python}
@@ -218,7 +218,7 @@ source in Gaia and the corresponding source in Pan-STARRS.
 Here is a query that selects these columns and returns the first 5 rows.
 
 ~~~
-query = """SELECT 
+ps_best_neighbor_query = """SELECT 
 TOP 5
 source_id, best_neighbour_multiplicity, number_of_mates, original_ext_source_id
 FROM gaiadr2.panstarrs1_best_neighbour
@@ -227,7 +227,7 @@ FROM gaiadr2.panstarrs1_best_neighbour
 {: .language-python}
 
 ~~~
-job = Gaia.launch_job_async(query=query)
+ps_best_neighbor_job = Gaia.launch_job_async(query=ps_best_neighbor_query)
 ~~~
 {: .language-python}
 
@@ -237,8 +237,8 @@ INFO: Query finished. [astroquery.utils.tap.core]
 {: .output}
 
 ~~~
-results = job.get_results()
-results
+ps_best_neighbor_results = ps_best_neighbor_job.get_results()
+ps_best_neighbor_results
 ~~~
 {: .language-python}
 
@@ -261,7 +261,7 @@ Now that we know the Pan-STARRS `obj_id`, we are ready to match this to the phot
 `panstarrs1_original_valid` table. Here is the metadata for the table that contains the Pan-STARRS data.
 
 ~~~
-meta = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
+ps_valid_meta = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
 ~~~
 {: .language-python}
 
@@ -273,7 +273,7 @@ Done.
 {: .output}
 
 ~~~
-print(meta)
+print(ps_valid_meta)
 ~~~
 {: .language-python}
 
@@ -296,7 +296,7 @@ entries listed in the original ObjectThin table.
 And here are the columns.
 
 ~~~
-for column in meta.columns:
+for column in ps_valid_meta.columns:
     print(column.name)
 ~~~
 {: .language-python}
@@ -331,7 +331,7 @@ the best neighbor table.
 Here is a query that selects these variables and returns the first 5 rows.
 
 ~~~
-query = """SELECT 
+ps_valid_query = """SELECT 
 TOP 5
 obj_id, g_mean_psf_mag, i_mean_psf_mag 
 FROM gaiadr2.panstarrs1_original_valid
@@ -340,7 +340,7 @@ FROM gaiadr2.panstarrs1_original_valid
 {: .language-python}
 
 ~~~
-job = Gaia.launch_job_async(query=query)
+ps_valid_job = Gaia.launch_job_async(query=ps_valid_query)
 ~~~
 {: .language-python}
 
@@ -350,8 +350,8 @@ INFO: Query finished. [astroquery.utils.tap.core]
 {: .output}
 
 ~~~
-results = job.get_results()
-results
+ps_valid_results = ps_valid_job.get_results()
+ps_valid_results
 ~~~
 {: .language-python}
 
@@ -399,7 +399,7 @@ the tables correctly, then we will slowly add more layers of complexity, checkin
 As a starting place, we will go all the way back to the cone search from episode 2. 
 
 ~~~
-query_cone = """SELECT 
+test_cone_query = """SELECT 
 TOP 10 
 source_id
 FROM gaiadr2.gaia_source
@@ -413,7 +413,7 @@ WHERE 1=CONTAINS(
 And we will run it, to make sure we have a working query to build on.
 
 ~~~
-job = Gaia.launch_job(query=query_cone)
+test_cone_job = Gaia.launch_job(query=test_cone_query)
 ~~~
 {: .language-python}
 
@@ -423,8 +423,8 @@ INFO: Query finished. [astroquery.utils.tap.core]
 {: .output}
 
 ~~~
-results = job.get_results()
-results
+test_cone_results = test_cone_job.get_results()
+test_cone_results
 ~~~
 {: .language-python}
 
@@ -449,7 +449,7 @@ First, we will replace `source_id` with the format specifier `columns` so that w
 want to return without having to modify our base query:
 
 ~~~
-query_base = """SELECT 
+cone_base_query = """SELECT 
 {columns}
 FROM gaiadr2.gaia_source
 WHERE 1=CONTAINS(
@@ -464,8 +464,8 @@ As a reminder, here are the columns we want from the Gaia table:
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec'
 
-query = query_base.format(columns=columns)
-print(query)
+cone_query = cone_base_query.format(columns=columns)
+print(cone_query)
 ~~~
 {: .language-python}
 
@@ -482,7 +482,7 @@ WHERE 1=CONTAINS(
 We run the query again.
 
 ~~~
-job = Gaia.launch_job_async(query=query)
+cone_job = Gaia.launch_job_async(query=cone_query)
 ~~~
 {: .language-python}
 
@@ -492,8 +492,8 @@ INFO: Query finished. [astroquery.utils.tap.core]
 {: .output}
 
 ~~~
-results = job.get_results()
-results
+cone_results = cone_job.get_results()
+cone_results
 ~~~
 {: .language-python}
 
@@ -532,7 +532,7 @@ column from the Gaia table with the `source_id` column from the best
 neighbor table.
 
 ~~~
-query_base_neighbors = """SELECT 
+neighbors_base_query = """SELECT 
 {columns}
 FROM gaiadr2.gaia_source AS gaia
 JOIN gaiadr2.panstarrs1_best_neighbour AS best
@@ -580,8 +580,8 @@ column_list = ['gaia.source_id',
               ]
 columns = ', '.join(column_list)
 
-query_neighbors = query_base_neighbors.format(columns=columns)
-print(query_neighbors)
+neighbors_query = neighbors_base_query.format(columns=columns)
+print(neighbors_query)
 ~~~
 {: .language-python}
 
@@ -598,7 +598,7 @@ WHERE 1=CONTAINS(
 {: .output}
 
 ~~~
-job_neighbors = Gaia.launch_job_async(query_neighbors)
+neighbors_job = Gaia.launch_job_async(neighbors_query)
 ~~~
 {: .language-python}
 
@@ -608,8 +608,8 @@ INFO: Query finished. [astroquery.utils.tap.core]
 {: .output}
 
 ~~~
-results_neighbors = job_neighbors.get_results()
-results_neighbors
+neighbors_results = neighbors_job.get_results()
+neighbors_results
 ~~~
 {: .language-python}
 
@@ -656,7 +656,7 @@ here](https://www.geeksforgeeks.org/sql-join-set-1-inner-left-right-and-full-joi
 > > ## Solution
 > > 
 > > ~~~
-> > query_base_solution = """SELECT 
+> > join_solution_query_base = """SELECT 
 > > {columns}
 > > FROM gaiadr2.gaia_source as gaia
 > > JOIN gaiadr2.panstarrs1_best_neighbour as best
@@ -680,12 +680,12 @@ here](https://www.geeksforgeeks.org/sql-join-set-1-inner-left-right-and-full-joi
 > > 
 > > columns = ', '.join(column_list)
 > > 
-> > query_solution = query_base_solution.format(columns=columns)
-> > print(query_solution)
+> > join_solution_query = join_solution_query_base.format(columns=columns)
+> > print(join_solution_query)
 > > 
-> > job_solution = Gaia.launch_job_async(query_solution)
-> > results_solution = job_solution.get_results()
-> > results_solution
+> > join_solution_job = Gaia.launch_job_async(join_solution_query)
+> > join_solution_results = join_solution_job.get_results()
+> > join_solution_results
 > > ~~~
 > > {: .language-python}
 > > ~~~
@@ -714,10 +714,10 @@ Now we will bring in the `WHERE` clause from the previous episode, which
 selects sources based on parallax, BP-RP color, sky coordinates, and
 proper motion.
 
-Here is `query6_base` from the previous episode.
+Here is `candidate_coord_pm_query_base` from the previous episode.
 
 ~~~
-query6_base = """SELECT 
+candidate_coord_pm_query_base = """SELECT 
 {columns}
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
@@ -735,11 +735,11 @@ Now we can assemble the query using the sky and proper motion point lists we com
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec'
 
-query6 = query6_base.format(columns=columns,
+candidate_coord_pm_query = candidate_coord_pm_query_base.format(columns=columns,
                             sky_point_list=point_series['sky_point_list'],
                             pm_point_list=point_series['pm_point_list'])
 
-print(query6)
+print(candidate_coord_pm_query)
 ~~~
 {: .language-python}
 
@@ -759,7 +759,7 @@ WHERE parallax < 1
 We run it to make sure we are starting with a working query.
 
 ~~~
-job = Gaia.launch_job_async(query=query6)
+candidate_coord_pm_job = Gaia.launch_job_async(query=candidate_coord_pm_query)
 ~~~
 {: .language-python}
 
@@ -769,8 +769,8 @@ INFO: Query finished. [astroquery.utils.tap.core]
 {: .output}
 
 ~~~
-results = job.get_results()
-results
+candidate_coord_pm_results = candidate_coord_pm_job.get_results()
+candidate_coord_pm_results
 ~~~
 {: .language-python}
 
@@ -792,11 +792,11 @@ results
 
 > ## Exercise (15 minutes)
 > 
-> Create a new query base called `query7_base` that combines the `WHERE`
+> Create a new query base called `candidate_join_query_base` that combines the `WHERE`
 > clauses from the previous query with the `JOIN` clauses for the best
 > neighbor and Pan-STARRS tables.
 > Format the query base using the column names in `column_list`, and
-> call the result `query7`.
+> call the result `candidate_join_query`.
 > 
 > Hint: Make sure you use qualified column names everywhere!
 > 
@@ -806,7 +806,7 @@ results
 > > ## Solution
 > > 
 > > ~~~
-> > query7_base = """
+> > candidate_join_query_base = """
 > > SELECT 
 > > {columns}
 > > FROM gaiadr2.gaia_source as gaia
@@ -824,14 +824,14 @@ results
 > > 
 > > columns = ', '.join(column_list)
 > > 
-> > query7 = query7_base.format(columns=columns,
+> > candidate_join_query = candidate_join_query_base.format(columns=columns,
 > >                             sky_point_list=point_series['sky_point_list'],
 > >                             pm_point_list=point_series['pm_point_list'])
-> > print(query7)
+> > print(candidate_join_query)
 > > 
 > > 
-> > job = Gaia.launch_job_async(query=query7)
-> > candidate_table = job.get_results()
+> > candidate_join_job = Gaia.launch_job_async(query=candidate_join_query)
+> > candidate_table = candidate_join_job.get_results()
 > > candidate_table
 > > ~~~
 > > {: .language-python}
