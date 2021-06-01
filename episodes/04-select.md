@@ -315,7 +315,7 @@ In episode 2 we used the following query to select stars in a polygonal region
 around a small part of GD-1 with a few filters on color and distance (parallax):
 
 ~~~
-query5_base = """SELECT
+candidate_coord_query_base = """SELECT
 {columns}
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
@@ -399,9 +399,9 @@ Because it selects a larger region, there are too many stars to handle
 in a single query. Until we select by proper motion, that is.
 
 ~~~
-query5 = query5_base.format(columns=columns, 
+candidate_coord_query = candidate_coord_query_base.format(columns=columns, 
                             sky_point_list=sky_point_list)
-print(query5)
+print(candidate_coord_query)
 ~~~
 {: .language-python}
 
@@ -453,14 +453,14 @@ pm_point_list
 
 > ## Exercise (10 minutes)
 > 
-> Define `query6_base`, starting with `query5_base` and adding a new
+> Define `candidate_coord_pm_query_base`, starting with `candidate_coord_query_base` and adding a new
 > clause to select stars whose coordinates of proper motion, `pmra` and
 > `pmdec`, fall within the polygon defined by `pm_point_list`.
 >
 > > ## Solution
 > > 
 > > ~~~
-> > query6_base = """SELECT 
+> > candidate_coord_pm_query_base = """SELECT 
 > > {columns}
 > > FROM gaiadr2.gaia_source
 > > WHERE parallax < 1
@@ -477,16 +477,16 @@ pm_point_list
 
 > ## Exercise (5 minutes)
 > 
-> Use `format` to format `query6_base` and define `query6`, filling in
+> Use `format` to format `candidate_coord_pm_query_base` and define `candidate_coord_pm_query`, filling in
 > the values of `columns`, `sky_point_list`, and `pm_point_list`.
 >
 > > ## Solution
 > > 
 > > ~~~
-> > query6 = query6_base.format(columns=columns, 
+> > candidate_coord_pm_query = candidate_coord_pm_query_base.format(columns=columns, 
 > >                             sky_point_list=sky_point_list,
 > >                             pm_point_list=pm_point_list)
-> > print(query6)
+> > print(candidate_coord_pm_query)
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -495,8 +495,8 @@ pm_point_list
 Now we can run the query like this:
 
 ~~~
-job = Gaia.launch_job_async(query6)
-print(job)
+candidate_coord_pm_job = Gaia.launch_job_async(candidate_coord_pm_query)
+print(candidate_coord_pm_job)
 ~~~
 {: .language-python}
 
@@ -519,7 +519,7 @@ Phase: COMPLETED
 And get the results.
 
 ~~~
-candidate_gaia_table = job.get_results()
+candidate_gaia_table = candidate_coord_pm_job.get_results()
 len(candidate_gaia_table)
 ~~~
 {: .language-python}
