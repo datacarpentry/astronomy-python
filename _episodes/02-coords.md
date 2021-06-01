@@ -597,7 +597,7 @@ The following function combines these steps.
 def skycoord_to_string(skycoord):
     """Convert SkyCoord to string."""
     corners_list_str = skycoord.to_string()
-    corners_single_str = ' '.join(t)
+    corners_single_str = ' '.join(corners_list_str)
     return corners_single_str.replace(' ', ', ')
 ~~~
 {: .language-python}
