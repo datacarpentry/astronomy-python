@@ -73,7 +73,7 @@ This loads in the data (instructions for downloading data can be
 found in the [setup instructions](../setup.md)):
 ~~~
 filename = 'gd1_results.fits'
-results = Table.read(filename)
+polygon_results = Table.read(filename)
 
 gd1_frame = GD1Koposov10()
 ~~~
@@ -84,7 +84,7 @@ In the previous episode, we selected spatial and proper motion information from 
 We can use `info` to check the contents.
 
 ~~~
-results.info()
+polygon_results.info()
 ~~~
 {: .language-python}
 
@@ -111,7 +111,7 @@ documentation](https://docs.astropy.org/en/stable/table/access_table.html).
 We can get the names of the columns like this:
 
 ~~~
-results.colnames
+polygon_results.colnames
 ~~~
 {: .language-python}
 
@@ -123,7 +123,7 @@ results.colnames
 And select an individual column like this:
 
 ~~~
-results['ra']
+polygon_results['ra']
 ~~~
 {: .language-python}
 
@@ -147,7 +147,7 @@ The result is a `Column` object that contains the data, and also the
 data type, units, and name of the column.
 
 ~~~
-type(results['ra'])
+type(polygon_results['ra'])
 ~~~
 {: .language-python}
 
@@ -160,7 +160,7 @@ The rows in the `Table` are numbered from 0 to `n-1`, where `n` is the
 number of rows.  We can select the first row like this:
 
 ~~~
-results[0]
+polygon_results[0]
 ~~~
 {: .language-python}
 
@@ -177,7 +177,7 @@ results[0]
 The result is a `Row` object.
 
 ~~~
-type(results[0])
+type(polygon_results[0])
 ~~~
 {: .language-python}
 
@@ -195,7 +195,7 @@ If you apply the bracket operator twice, you can select a column and
 then an element from the column.
 
 ~~~
-results['ra'][0]
+polygon_results['ra'][0]
 ~~~
 {: .language-python}
 
@@ -207,7 +207,7 @@ results['ra'][0]
 Or you can select a row and then an element from the row.
 
 ~~~
-results[0]['ra']
+polygon_results[0]['ra']
 ~~~
 {: .language-python}
 
@@ -269,8 +269,8 @@ Here is a scatter plot of the stars we selected in the GD-1 region with right as
 declination on the y-axis, both ICRS coordinates in degrees.
 
 ~~~
-x = results['ra']
-y = results['dec']
+x = polygon_results['ra']
+y = polygon_results['dec']
 plt.plot(x, y, 'ko')
 
 plt.xlabel('ra (degree ICRS)')
@@ -323,8 +323,8 @@ transparency of the points.
 > > ## Solution
 > > 
 > > ~~~
-> > x = results['ra']
-> > y = results['dec']
+> > x = polygon_results['ra']
+> > y = polygon_results['dec']
 > > plt.plot(x, y, 'ko', markersize=0.1, alpha=0.1)
 > > 
 > > plt.xlabel('ra (degree ICRS)')
@@ -340,7 +340,7 @@ transparency of the points.
 Remember that we selected data from a rectangle of coordinates in the
 GD-1 frame, then transformed them to ICRS when we
 constructed the query.
-The coordinates in `results` are in ICRS.
+The coordinates in query results are in ICRS.
 
 To plot them, we will transform them back to the GD-1 frame;
 that way, the axes of the figure are aligned with the orbit of GD-1,
@@ -381,16 +381,16 @@ capacity to include and track space motion information in addition to `ra` and
 distance = 8 * u.kpc
 radial_velocity= 0 * u.km/u.s
 
-skycoord = SkyCoord(ra=results['ra'], 
-                    dec=results['dec'],
-                    pm_ra_cosdec=results['pmra'],
-                    pm_dec=results['pmdec'], 
+skycoord = SkyCoord(ra=polygon_results['ra'], 
+                    dec=polygon_results['dec'],
+                    pm_ra_cosdec=polygon_results['pmra'],
+                    pm_dec=polygon_results['pmdec'], 
                     distance=distance, 
                     radial_velocity=radial_velocity)
 ~~~
 {: .language-python}
 
-For the first four arguments, we use columns from `results`.
+For the first four arguments, we use columns from `polygon_results`.
 
 For `distance` and `radial_velocity` we use constants, which we explain in the section on reflex correction.
 
@@ -475,10 +475,10 @@ transformed back to the GD-1 frame, it is a rectangle again.
 ## Pandas DataFrame
 
 At this point we have two objects containing different subsets of the
-data.  `results` is the Astropy `Table` we downloaded from Gaia.
+data.  `polygon_results` is the Astropy `Table` we downloaded from Gaia.
 
 ~~~
-type(results)
+type(polygon_results)
 ~~~
 {: .language-python}
 
@@ -533,7 +533,7 @@ It is straightforward to convert an Astropy `Table` to a Pandas `DataFrame`.
 ~~~
 import pandas as pd
 
-results_df = results.to_pandas()
+results_df = polygon_results.to_pandas()
 ~~~
 {: .language-python}
 

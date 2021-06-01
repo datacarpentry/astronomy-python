@@ -187,7 +187,7 @@ that selects objects in a circular region centered at (88.8, 7.4) with
 a search radius of 5 arcmin (0.08333 deg).
 
 ~~~
-query_cone = """SELECT 
+cone_query = """SELECT 
 TOP 10 
 source_id
 FROM gaiadr2.gaia_source
@@ -217,8 +217,8 @@ Here is how we run it:
 ~~~
 from astroquery.gaia import Gaia
 
-job = Gaia.launch_job(query_cone)
-job
+cone_job = Gaia.launch_job(query_cone)
+cone_job
 ~~~
 {: .language-python}
 
@@ -239,8 +239,8 @@ Created TAP+ (v1.2.1) - Connection:
 {: .output}
 
 ~~~
-results = job.get_results()
-results
+cone_results = cone_job.get_results()
+cone_results
 ~~~
 {: .language-python}
 
@@ -276,7 +276,7 @@ results
 > > ## Solution
 > > 
 > > ~~~
-> > query = """SELECT 
+> > count_cone_query = """SELECT 
 > > COUNT(source_id)
 > > FROM gaiadr2.gaia_source
 > > WHERE 1=CONTAINS(
@@ -284,9 +284,9 @@ results
 > >   CIRCLE(88.8, 7.4, 0.08333333))
 > > """
 > > 
-> > job = Gaia.launch_job(query)
-> > results = job.get_results()
-> > results
+> > count_cone_job = Gaia.launch_job(count_cone_query)
+> > count_cone_results = count_cone_job.get_results()
+> > count_cone_results
 > > ~~~
 > > {: .language-python}
 > > 
@@ -496,7 +496,7 @@ phi1_rect, phi2_rect = make_rectangle(
 a rectangle in the GD-1 frame.
 
 While it is easier to visualize the regions we want to define in the GD-1 frame, the coordinates in the Gaia catalog are in the ICRS frame.
-In order to use the rectangle we defined, we need to convert the coordinates from the GD-1 frame to the ICRS frame. We’ll do this using the 
+In order to use the rectangle we defined, we need to convert the coordinates from the GD-1 frame to the ICRS frame. We will do this using the 
 SkyCoord object. Fortunately SkyCoord objects can take lists of coordinates, in addition to single values.
 
 ~~~
@@ -550,8 +550,8 @@ POLYGON(143.65, 20.98,
 `SkyCoord` provides `to_string`, which produces a list of strings.
 
 ~~~
-t = corners_icrs.to_string()
-t
+corners_list_str = corners_icrs.to_string()
+corners_list_str
 ~~~
 {: .language-python}
 
@@ -564,12 +564,12 @@ t
 ~~~
 {: .output}
 
-We can use the Python string function `join` to join `t` into a single
+We can use the Python string function `join` to join `corners_list_str` into a single
 string (with spaces between the pairs):
 
 ~~~
-s = ' '.join(t)
-s
+corners_single_str = ' '.join(corners_list_str)
+corners_single_str
 ~~~
 {: .language-python}
 
@@ -581,7 +581,7 @@ s
 This is almost what we need, but we have to replace the spaces with commas.
 
 ~~~
-s.replace(' ', ', ')
+corners_single_str.replace(' ', ', ')
 ~~~
 {: .language-python}
 
@@ -596,9 +596,9 @@ The following function combines these steps.
 ~~~
 def skycoord_to_string(skycoord):
     """Convert SkyCoord to string."""
-    t = skycoord.to_string()
-    s = ' '.join(t)
-    return s.replace(' ', ', ')
+    corners_list_str = skycoord.to_string()
+    corners_single_str = ' '.join(t)
+    return corners_single_str.replace(' ', ', ')
 ~~~
 {: .language-python}
 
@@ -641,10 +641,10 @@ WHERE parallax < 1
 ~~~
 {: .language-python}
 
-Now we will add a `WHERE` clause to select stars in the polygon we defined.
+Now we will add a `WHERE` clause to select stars in the polygon we defined and start using more descriptive variables for our queries.
 
 ~~~
-query4_base = """SELECT
+polygon_top10query_base = """SELECT
 TOP 10
 {columns}
 FROM gaiadr2.gaia_source
@@ -661,9 +661,9 @@ The query base contains format specifiers for `columns` and `sky_point_list`.
 We will use `format` to fill in these values.
 
 ~~~
-query4 = query4_base.format(columns=columns, 
+polygon_top10query = polygon_top10query_base.format(columns=columns, 
                           sky_point_list=sky_point_list)
-print(query4)
+print(polygon_top10query)
 ~~~
 {: .language-python}
 
@@ -684,8 +684,8 @@ WHERE parallax < 1
 As always, we should take a minute to proof-read the query before we launch it.
 
 ~~~
-job = Gaia.launch_job_async(query4)
-print(job)
+polygon_top10query_job = Gaia.launch_job_async(polygon_top10query)
+print(polygon_top10query_job)
 ~~~
 {: .language-python}
 
@@ -708,8 +708,8 @@ Phase: COMPLETED
 Here are the results.
 
 ~~~
-results = job.get_results()
-results
+polygon_top10query_results = polygon_top10query_job.get_results()
+polygon_top10query_results
 ~~~
 {: .language-python}
 
@@ -734,7 +734,7 @@ Finally, we can remove `TOP 10` and run the query again.
 The result is bigger than our previous queries, so it will take a little longer.
 
 ~~~
-query5_base = """SELECT
+polygon_query_base = """SELECT
 {columns}
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
@@ -746,9 +746,9 @@ WHERE parallax < 1
 {: .language-python}
 
 ~~~
-query5 = query5_base.format(columns=columns, 
+polygon_query = polygon_query_base.format(columns=columns, 
                           sky_point_list=sky_point_list)
-print(query5)
+print(polygon_query)
 ~~~
 {: .language-python}
 
@@ -764,8 +764,8 @@ WHERE parallax < 1
 {: .output}
 
 ~~~
-job = Gaia.launch_job_async(query5)
-print(job)
+polygon_job = Gaia.launch_job_async(polygon_query)
+print(polygon_job)
 ~~~
 {: .language-python}
 
@@ -786,8 +786,8 @@ Phase: COMPLETED
 {: .output}
 
 ~~~
-results = job.get_results()
-len(results)
+polygon_results = polygon_job.get_results()
+len(polygon_results)
 ~~~
 {: .language-python}
 
@@ -811,7 +811,7 @@ Astropy `Table` objects provide `write`, which writes the table to disk.
 
 ~~~
 filename = 'gd1_results.fits'
-results.write(filename, overwrite=True)
+polygon_results.write(filename, overwrite=True)
 ~~~
 {: .language-python}
 
