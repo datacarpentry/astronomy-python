@@ -340,7 +340,7 @@ transparency of the points.
 Remember that we selected data from a rectangle of coordinates in the
 GD-1 frame, then transformed them to ICRS when we
 constructed the query.
-The coordinates in query results are in ICRS.
+The coordinates in the query results are in ICRS.
 
 To plot them, we will transform them back to the GD-1 frame;
 that way, the axes of the figure are aligned with the orbit of GD-1,
