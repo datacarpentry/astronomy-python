@@ -15,7 +15,5 @@ dependencies:
   - scipy
   - astropy
   - astroquery
-  - gsl
   - python-wget
   - gala
-
