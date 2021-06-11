@@ -274,7 +274,7 @@ y = polygon_results['dec']
 plt.plot(x, y, 'ko')
 
 plt.xlabel('ra (degree ICRS)')
-plt.ylabel('dec (degree ICRS)');
+plt.ylabel('dec (degree ICRS)')
 ~~~
 {: .language-python}
 
@@ -328,7 +328,7 @@ transparency of the points.
 > > plt.plot(x, y, 'ko', markersize=0.1, alpha=0.1)
 > > 
 > > plt.xlabel('ra (degree ICRS)')
-> > plt.ylabel('dec (degree ICRS)');
+> > plt.ylabel('dec (degree ICRS)')
 > > ~~~
 > > 
 > > {: .language-python}
@@ -457,7 +457,7 @@ y = skycoord_gd1.phi2
 plt.plot(x, y, 'ko', markersize=0.1, alpha=0.1)
 
 plt.xlabel('phi1 (degree GD1)')
-plt.ylabel('phi2 (degree GD1)');
+plt.ylabel('phi2 (degree GD1)')
 ~~~
 {: .language-python}
 
@@ -755,7 +755,7 @@ y = results_df['pm_phi2']
 plt.plot(x, y, 'ko', markersize=0.1, alpha=0.1)
     
 plt.xlabel('Proper motion phi1 (mas/yr GD1 frame)')
-plt.ylabel('Proper motion phi2 (mas/yr GD1 frame)');
+plt.ylabel('Proper motion phi2 (mas/yr GD1 frame)')
 ~~~
 {: .language-python}
 
@@ -780,7 +780,7 @@ plt.xlabel('Proper motion phi1 (mas/yr GD1 frame)')
 plt.ylabel('Proper motion phi2 (mas/yr GD1 frame)')
 
 plt.xlim(-12, 8)
-plt.ylim(-10, 10);
+plt.ylim(-10, 10)
 ~~~
 {: .language-python}
 
@@ -1019,7 +1019,7 @@ Here is what the plot looks like with the bounds we chose.
 
 ~~~
 plot_proper_motion(centerline_df)
-plt.plot(pm1_rect, pm2_rect, '-');
+plt.plot(pm1_rect, pm2_rect, '-')
 ~~~
 {: .language-python}
 
@@ -1089,7 +1089,7 @@ y = selected_df['phi2']
 plt.plot(x, y, 'ko', markersize=1, alpha=1)
 
 plt.xlabel('phi1 (degree GD1)')
-plt.ylabel('phi2 (degree GD1)');
+plt.ylabel('phi2 (degree GD1)')
 ~~~
 {: .language-python}
 
