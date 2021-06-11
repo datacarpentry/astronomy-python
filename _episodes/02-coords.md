@@ -32,7 +32,7 @@ select stars from a particular region of the sky.
 >
 > * Use `Quantity` objects to represent measurements with units.
 >
-> * Use Astropy to convert coordinates from one frame to another.
+> * Use [Astropy](https://www.astropy.org) to convert coordinates from one frame to another.
 >
 > * Use the ADQL keywords `POLYGON`, `CONTAINS`, and `POINT` to select
 > stars that fall within a polygonal region.
@@ -304,7 +304,7 @@ cone_results
 ## Getting GD-1 Data
 
 From the Price-Whelan and Bonaca paper, we will try to reproduce
-Figure 1, which includes this representation of stars likely to belong
+[http://www.astroexplorer.org/details/apjlaad7b5f1/eyJrZXlXb3JkcyI6IlByaWNlLVdoZWxhbiIsImF1dGhvciI6IlByaWNlLVdoZWxhbiIsImZyb21ZZWFyIjoyMDE4LCJ0b1llYXIiOjIwMTgsInBhZ2UiOjEsInNob3ciOiIyMDAifQ](Figure 1), which includes this representation of stars likely to belong
 to GD-1:
 
 <img src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png" alt = "On-sky positions of likely GD-1 members in the GD-1 coordinate system, where selection by proper motion and photometry reveals the stream in great detail.">
@@ -327,6 +327,8 @@ center of GD-1, from -55 to -45 degrees φ<sub>1</sub> and -8 to 4 degrees φ<su
 First we will learn how to represent these coordinates with Astropy.
 
 ## Transforming coordinates
+
+Astronomy makes use of many different [coordinate systems](https://en.wikipedia.org/wiki/Celestial_coordinate_system). Transforming between coordinate systems is a common task in observational astronomy, and thankfully, Astropy has abstracted the required spherical trigonometry for us. Below we show the steps to go from Equatorial coordinates (sky coordinates) to Galactic coordinates and finally to a reference frame defined to more easily study GD-1.
 
 Astropy provides a `SkyCoord` object that represents sky coordinates
 relative to a specified reference frame.
