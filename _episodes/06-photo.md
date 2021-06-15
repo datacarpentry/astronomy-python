@@ -45,38 +45,39 @@ main sequence of GD-1 from mostly younger background stars.
 > region in the color-magnitude diagram and select the stars inside of it.
 {: .checklist}
 
-## Starting from this episode
-
-In the previous episode, we selected stars in GD-1 based on proper motion and downloaded
-the spatial, proper motion, and photometry information by joining the Gaia and PanSTARRs
-datasets.
-We will use that data for this episode. 
-Whether you are working from a new notebook or coming back from a checkpoint, 
-reloading the data will save you from having to run the query again. 
-
-If you are starting this episode here or starting this episode in a new notebook,
-you will need run the following lines of code.
-
-This imports previously imported functions:
-~~~
-from os.path import getsize
-
-import pandas as pd
-import numpy as np
-
-from matplotlib import pyplot as plt
-
-from episode_functions import *
-~~~
-{: .language-python}
-
-This loads in the data (instructions for downloading data can be
-found in the [setup instructions](../setup.md)):
-~~~
-filename = 'gd1_data.hdf'
-candidate_df = pd.read_hdf(filename, 'candidate_df')
-~~~
-{: .language-python}
+> ## Starting from this episode
+> 
+> In the previous episode, we selected stars in GD-1 based on proper motion and downloaded
+> the spatial, proper motion, and photometry information by joining the Gaia and PanSTARRs
+> datasets.
+> We will use that data for this episode. 
+> Whether you are working from a new notebook or coming back from a checkpoint, 
+> reloading the data will save you from having to run the query again. 
+> 
+> If you are starting this episode here or starting this episode in a new notebook,
+> you will need run the following lines of code.
+> 
+> This imports previously imported functions:
+> ~~~
+> from os.path import getsize
+> 
+> import pandas as pd
+> import numpy as np
+> 
+> from matplotlib import pyplot as plt
+> 
+> from episode_functions import *
+> ~~~
+> {: .language-python}
+> 
+> This loads in the data (instructions for downloading data can be
+> found in the [setup instructions](../setup.md)):
+> ~~~
+> filename = 'gd1_data.hdf'
+> candidate_df = pd.read_hdf(filename, 'candidate_df')
+> ~~~
+> {: .language-python}
+{: .solution}
 
 ## Plotting photometry data
 
