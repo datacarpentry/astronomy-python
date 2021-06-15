@@ -36,52 +36,53 @@ them to make a figure that tells a compelling scientific story.
 > 3. Finally, we will learn how to make a figure with multiple panels.
 {: .checklist}
 
-## Starting from this episode
-
-In the previous episode, we selected stars in GD-1 based on proper motion and downloaded
-the spatial, proper motion, and photometry information by joining the Gaia and PanSTARRs
-datasets.
-We will use that data for this episode. 
-Whether you are working from a new notebook or coming back from a checkpoint, 
-reloading the data will save you from having to run the query again. 
-
-If you are starting this episode here or starting this episode in a new notebook,
-you will need to run the following lines of code.
-
-This imports previously imported functions:
-~~~
-import pandas as pd
-import numpy as np
-from matplotlib import pyplot as plt
-from matplotlib.patches import Polygon
-
-from episode_functions import *
-~~~
-{: .language-python}
-
-This loads in the data (instructions for downloading data can be
-found in the [setup instructions](../setup.md)):
-~~~
-filename = 'gd1_data.hdf'
-winner_df = pd.read_hdf(filename, 'winner_df')
-
-centerline_df = pd.read_hdf(filename, 'centerline_df')
-candidate_df = pd.read_hdf(filename, 'candidate_df')
-loop_df = pd.read_hdf(filename, 'loop_df')
-~~~
-{: .language-python}
-
-This defines previously defined quantities:
-~~~
-pm1_min = -8.9
-pm1_max = -6.9
-pm2_min = -2.2
-pm2_max =  1.0
-
-pm1_rect, pm2_rect = make_rectangle(
-    pm1_min, pm1_max, pm2_min, pm2_max)
-~~~
-{: .language-python}
+> ## Starting from this episode
+> 
+> In the previous episode, we selected stars in GD-1 based on proper motion and downloaded
+> the spatial, proper motion, and photometry information by joining the Gaia and PanSTARRs
+> datasets.
+> We will use that data for this episode. 
+> Whether you are working from a new notebook or coming back from a checkpoint, 
+> reloading the data will save you from having to run the query again. 
+> 
+> If you are starting this episode here or starting this episode in a new notebook,
+> you will need to run the following lines of code.
+> 
+> This imports previously imported functions:
+> ~~~
+> import pandas as pd
+> import numpy as np
+> from matplotlib import pyplot as plt
+> from matplotlib.patches import Polygon
+> 
+> from episode_functions import *
+> ~~~
+> {: .language-python}
+> 
+> This loads in the data (instructions for downloading data can be
+> found in the [setup instructions](../setup.md)):
+> ~~~
+> filename = 'gd1_data.hdf'
+> winner_df = pd.read_hdf(filename, 'winner_df')
+> 
+> centerline_df = pd.read_hdf(filename, 'centerline_df')
+> candidate_df = pd.read_hdf(filename, 'candidate_df')
+> loop_df = pd.read_hdf(filename, 'loop_df')
+> ~~~
+> {: .language-python}
+> 
+> This defines previously defined quantities:
+> ~~~
+> pm1_min = -8.9
+> pm1_max = -6.9
+> pm2_min = -2.2
+> pm2_max =  1.0
+> 
+> pm1_rect, pm2_rect = make_rectangle(
+>     pm1_min, pm1_max, pm2_min, pm2_max)
+> ~~~
+> {: .language-python}
+{: .solution}
 
 ## Making Figures That Tell a Story
 
