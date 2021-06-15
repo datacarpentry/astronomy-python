@@ -47,37 +47,38 @@ analysis, identifying stars with the proper motion we expect for GD-1.
 > that region.
 {: .checklist}
 
-## Starting from this episode
-
-In the previous episode, we ran a query on the Gaia server,
-downloaded data for roughly 140,000 stars, and saved the data in a FITS file. 
-We will use that data for this episode. 
-Whether you are working from a new notebook or coming back from a checkpoint, 
-reloading the data will save you from having to run the query again. 
-
-If you are starting this episode here or starting this episode in a new notebook,
-you will need to run the following lines of code.
-
-This imports previously imported functions:
-~~~
-import astropy.units as u
-from astropy.coordinates import SkyCoord
-from gala.coordinates import GD1Koposov10
-from astropy.table import Table
-
-from episode_functions import *
-~~~
-{: .language-python}
-
-This loads in the data (instructions for downloading data can be
-found in the [setup instructions](../setup.md)):
-~~~
-filename = 'gd1_results.fits'
-polygon_results = Table.read(filename)
-
-gd1_frame = GD1Koposov10()
-~~~
-{: .language-python}
+> ## Starting from this episode
+> 
+> In the previous episode, we ran a query on the Gaia server,
+> downloaded data for roughly 140,000 stars, and saved the data in a FITS file. 
+> We will use that data for this episode. 
+> Whether you are working from a new notebook or coming back from a checkpoint, 
+> reloading the data will save you from having to run the query again. 
+> 
+> If you are starting this episode here or starting this episode in a new notebook,
+> you will need to run the following lines of code.
+> 
+> This imports previously imported functions:
+> ~~~
+> import astropy.units as u
+> from astropy.coordinates import SkyCoord
+> from gala.coordinates import GD1Koposov10
+> from astropy.table import Table
+> 
+> from episode_functions import *
+> ~~~
+> {: .language-python}
+> 
+> This loads in the data (instructions for downloading data can be
+> found in the [setup instructions](../setup.md)):
+> ~~~
+> filename = 'gd1_results.fits'
+> polygon_results = Table.read(filename)
+> 
+> gd1_frame = GD1Koposov10()
+> ~~~
+> {: .language-python}
+{: .solution}
 
 ## Selecting rows and columns
 In the previous episode, we selected spatial and proper motion information from the Gaia catalog for stars around a small part of GD-1. The output was returned as an Astropy `Table`. 
