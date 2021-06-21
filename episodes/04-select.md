@@ -9,85 +9,95 @@ objectives:
 - "Transform proper motions from one frame to another."
 - "Compute the convex hull of a set of points."
 - "Write an ADQL query that selects based on proper motion."
-- "Save data in CSV format."
 
 keypoints:
 - "When possible, 'move the computation to the data'; that is, do as much of the work as possible on the database server before downloading the data."
-- "For most applications, saving data in FITS or HDF5 is better than CSV.  FITS and HDF5 are binary formats, so the files are usually smaller, and they store metadata, so you don't lose anything when you read the file back."
-- "On the other hand, CSV is a 'least common denominator' format; that is, it can be read by practically any application that works with data."
 ---
 
 {% include links.md %}
 
-# 4. Transformation and Selection
-
-In the previous lesson, we identified stars with the proper motion we
+In the previous episode, we identified stars with the proper motion we
 expect for GD-1.
 
-Now we'll do the same selection in an ADQL query, which will make it
+Now we will do the same selection in an ADQL query, which will make it
 possible to work with a larger region of the sky and still download
 less data.
 
 > ## Outline
 > 
-> 1. Using data from the previous lesson, we'll identify the values of
+> 1. Using data from the previous episode, we will identify the values of
 > proper motion for stars likely to be in GD-1.
 > 
-> 2. Then we'll compose an ADQL query that selects stars based on proper
+> 2. Then we will compose an ADQL query that selects stars based on proper
 > motion, so we can download only the data we need.
 > 
 > That will make it possible to search a bigger region of the sky in a
 > single query.
-> We'll also see how to write the results to a CSV file.
 {: .checklist}
 
-## Reload the data
+## Starting from this episode
 
-You can [download the data from the previous
-lesson](https://github.com/AllenDowney/AstronomicalData/raw/main/data/gd1_data.hdf)
-or run the following cell, which downloads it if necessary.
+Previously, we ran a query on the Gaia server, downloaded data for roughly 140,000 stars,
+and saved the data in a FITS file.
+We then selected just the stars with the same proper motion as GD-1 and saved
+the results to an HDF5 file. 
+We will use that data for this episode. 
+Whether you are working from a new notebook or coming back from a checkpoint, 
+reloading the data will save you from having to run the query again. 
 
+If you are starting this episode here or starting this episode in a new notebook,
+you will need to run the following lines of code.
+
+This imports previously imported functions:
 ~~~
-from os.path import basename, exists
+import astropy.units as u
+from astropy.coordinates import SkyCoord
+from astroquery.gaia import Gaia
+from gala.coordinates import GD1Koposov10, GD1, reflex_correct
+import matplotlib.pyplot as plt
+import pandas as pd
 
-def download(url):
-    filename = basename(url)
-    if not exists(filename):
-        from urllib.request import urlretrieve
-        local, _ = urlretrieve(url, filename)
-        print('Downloaded ' + local)
-
-download('https://github.com/AllenDowney/AstronomicalData/raw/main/' +
-         'data/gd1_data.hdf')
+from episode_functions import *
 ~~~
 {: .language-python}
 
-Now we can reload `centerline_df` and `selected_df`.
-
+This loads in the data (instructions for downloading data can be
+found in the [setup instructions](../setup.md)):
 ~~~
-import pandas as pd
-
 filename = 'gd1_data.hdf'
 centerline_df = pd.read_hdf(filename, 'centerline_df')
 selected_df = pd.read_hdf(filename, 'selected_df')
 ~~~
 {: .language-python}
 
+This defines previously defined quantities:
+~~~
+pm1_min = -8.9
+pm1_max = -6.9
+pm2_min = -2.2
+pm2_max =  1.0
+
+pm1_rect, pm2_rect = make_rectangle(
+    pm1_min, pm1_max, pm2_min, pm2_max)
+~~~
+{: .language-python}
+
 ## Selection by proper motion
 
-Let's review how we got to this point.
+Let us review how we got to this point.
 
 1. We made an ADQL query to the Gaia server to get data for stars in
-the vicinity of GD-1.
+the vicinity of a small part of GD-1.
 
-2. We transformed the coordinates to the `GD1Koposov10` frame so we
+2. We transformed the coordinates to the GD-1 frame (`GD1Koposov10`) so we
 could select stars along the centerline of GD-1.
 
-3. We plotted the proper motion of the centerline stars to identify
-the bounds of the overdense region.
+3. We plotted the proper motion of stars along the centerline of GD-1 
+to identify the bounds of an anomalous overdense region associated 
+with the proper motion of stars in GD-1.
 
-4. We made a mask that selects stars whose proper motion is in the
-overdense region.
+4. We made a mask that selects stars whose proper motion is in this
+overdense region and which are therefore likely to be part of the GD-1 stream.
 
 At this point we have downloaded data for a relatively large number of
 stars (more than 100,000) and selected a relatively small number
@@ -98,58 +108,12 @@ need.  That would also make it possible to download data covering a
 larger region of the sky.
 
 However, the selection we did was based on proper motion in the
-`GD1Koposov10` frame.  In order to do the same selection in ADQL, we
-have to work with proper motions in ICRS.
+GD-1 frame. In order to do the same selection on the Gaia catalog in ADQL, 
+we have to work with proper motions in the ICRS frame as this is the 
+frame that the Gaia catalog uses.  
 
-As a reminder, here's the rectangle we selected based on proper motion
-in the `GD1Koposov10` frame.
-
-~~~
-pm1_min = -8.9
-pm1_max = -6.9
-pm2_min = -2.2
-pm2_max =  1.0
-~~~
-{: .language-python}
-
-~~~
-def make_rectangle(x1, x2, y1, y2):
-    """Return the corners of a rectangle."""
-    xs = [x1, x1, x2, x2, x1]
-    ys = [y1, y2, y2, y1, y1]
-    return xs, ys
-~~~
-{: .language-python}
-
-~~~
-pm1_rect, pm2_rect = make_rectangle(
-    pm1_min, pm1_max, pm2_min, pm2_max)
-~~~
-{: .language-python}
-
-Since we'll need to plot proper motion several times, we'll use the
-following function.
-
-~~~
-import matplotlib.pyplot as plt
-
-def plot_proper_motion(df):
-    """Plot proper motion.
-    
-    df: DataFrame with `pm_phi1` and `pm_phi2`
-    """
-    x = df['pm_phi1']
-    y = df['pm_phi2']
-    plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
-
-    plt.xlabel('Proper motion phi1 (GD1 frame)')
-    plt.ylabel('Proper motion phi2 (GD1 frame)')
-
-    plt.xlim(-12, 8)
-    plt.ylim(-10, 10)
-~~~
-{: .language-python}
-
+First, we will verify that our proper motion selection was correct, 
+starting with the `plot_proper_motion` function that we defined in episode 3.
 The following figure shows:
 
 * Proper motion for the stars we selected along the center line of GD-1,
@@ -174,10 +138,10 @@ plt.plot(x, y, 'gx', markersize=0.3, alpha=0.3);
 ~~~
 {: .output}
  
-![png](../fig/04-select_files/04-select_14_0.png)
+![Proper motion of stars in GD-1, showing selected region as blue box and stars within selection as green points.](../fig/04-select_files/04-select_14_0.png)
 
-Now we'll make the same plot using proper motions in the ICRS frame,
-which are stored in columns `pmra` and `pmdec`.
+Now we will make the same plot using proper motions in the ICRS frame,
+which are stored in columns named `pmra` and `pmdec`.
 
 ~~~
 x = centerline_df['pmra']
@@ -201,7 +165,7 @@ plt.ylim([-20, 5]);
 ~~~
 {: .output}
   
-![png](../fig/04-select_files/04-select_16_0.png)
+![Proper motion in ICRS frame, showing selected stars are more spread out in this frame.](../fig/04-select_files/04-select_16_0.png)
 
 The proper motions of the selected stars are more spread out in this
 frame, which is why it was preferable to do the selection in the GD-1
@@ -217,7 +181,7 @@ SciPy provides a function that computes the [convex
 hull](https://en.wikipedia.org/wiki/Convex_hull) of a set of points,
 which is the smallest convex polygon that contains all of the points.
 
-To use it, we'll select columns `pmra` and `pmdec` and convert them to
+To use this function, we will select the columns `pmra` and `pmdec` and convert them to
 a NumPy array.
 
 ~~~
@@ -233,9 +197,9 @@ points.shape
 ~~~
 {: .output}
 
-> ## Note
+> ## Older versions of Pandas
 > If you are using an older version of Pandas, you might not have
-> `to_numpy()`; you can use `values` instead, like this:
+> `to_numpy()`. You can use `values` instead, like this:
 > 
 > ~~~
 > points = selected_df[['pmra','pmdec']].values
@@ -243,7 +207,7 @@ points.shape
 > {: .language-python}
 {: .callout}
 
-We'll pass the points to `ConvexHull`, which returns an object that
+We will pass the points to `ConvexHull`, which returns an object that
 contains the results.
 
 ~~~
@@ -274,7 +238,7 @@ array([ 692,  873,  141,  303,   42,  622,   45,   83,  127,  182, 1006,
 {: .output}
 
 We can use them as an index into the original array to select the
-corresponding rows.
+corresponding ICRS frame proper motion data points.
 
 ~~~
 pm_vertices = points[hull.vertices]
@@ -305,10 +269,13 @@ pmra_poly, pmdec_poly = np.transpose(pm_vertices)
 ~~~
 {: .language-python}
 
-This use of `transpose` is a useful NumPy idiom.  Because
-`pm_vertices` has two columns, its [matrix
-transpose](https://en.wikipedia.org/wiki/Transpose) has two rows,
-which are assigned to the two variables `pmra_poly` and `pmdec_poly`.
+> ## Note
+> This use of `transpose` is a useful NumPy idiom to turn data that is listed as 
+> rows of (x,y) pairs into an array of x values and an array of y values. Because
+> `pm_vertices` has two columns, its [matrix
+> transpose](https://en.wikipedia.org/wiki/Transpose) has two rows,
+> which are assigned to the two variables `pmra_poly` and `pmdec_poly`.
+{: .callout}
 
 The following figure shows proper motion in ICRS again, along with the
 convex hull we just computed.
@@ -337,39 +304,45 @@ plt.ylim([-20, 5]);
 ~~~
 {: .output}
     
-![png](../fig/04-select_files/04-select_29_0.png)
+![Proper motion in ICRS, with convex hull shown as blue boundary and selected stars as green points.](../fig/04-select_files/04-select_29_0.png)
 
 So `pm_vertices` represents the polygon we want to select.
-The next step is to use it as part of an ADQL query.
+The next step is to use this polygon as part of an ADQL query.
 
 ## Assembling the query
 
-In Lesson 2 we used the following query to select stars in a polygonal region.
+In episode 2 we used the following query to select stars in a polygonal region 
+around a small part of GD-1 with a few filters on color and distance (parallax):
 
 ~~~
-query5_base = """SELECT
+candidate_coord_query_base = """SELECT
 {columns}
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
   AND 1 = CONTAINS(POINT(ra, dec), 
-                   POLYGON({point_list}))
+                   POLYGON({sky_point_list}))
 """
 ~~~
 {: .language-python}
 
-In this lesson we'll make two changes:
+In this episode we will make two changes:
 
-1. We'll select stars with coordinates in a larger region.
+1. We will select stars with coordinates in a larger region to include more of GD-1.
 
-2. We'll add another clause to select stars whose proper motion is in
+2. We will add another clause to select stars whose proper motion is in
 the polygon we just computed, `pm_vertices`.
+
+The fact that we remove most contaminating stars with the proper 
+motion filter is what allows us to expand our query to include 
+most of GD-1 without returning too many results. 
+As we did in episode 2, we will define the physical region we want 
+to select in the GD-1 frame and transform it to the ICRS frame 
+to query the Gaia catalog which is in the ICRS frame.
 
 Here are the coordinates of the larger rectangle in the GD-1 frame.
 
 ~~~
-import astropy.units as u
-
 phi1_min = -70 * u.degree
 phi1_max = -20 * u.degree
 phi2_min = -5 * u.degree
@@ -386,13 +359,9 @@ phi1_rect, phi2_rect = make_rectangle(
 ~~~
 {: .language-python}
 
-Here's how we transform it to ICRS, as we saw in Lesson 2.
+Here is how we transform it to ICRS, as we saw in episode 2.
 
 ~~~
-from gala.coordinates import GD1Koposov10
-from astropy.coordinates import SkyCoord
-
-gd1_frame = GD1Koposov10()
 corners = SkyCoord(phi1=phi1_rect, 
                    phi2=phi2_rect, 
                    frame=gd1_frame)
@@ -403,20 +372,12 @@ corners_icrs = corners.transform_to('icrs')
 
 To use `corners_icrs` as part of an ADQL query, we have to convert it
 to a string.
-Here's the function from Lesson 2 we used to do that.
+Fortunately, we wrote a function, `skycoord_to_string` to do this in episode 2 
+which we will call now.
 
 ~~~
-def skycoord_to_string(skycoord):
-    """Convert SkyCoord to string."""
-    t = skycoord.to_string()
-    s = ' '.join(t)
-    return s.replace(' ', ', ')
-~~~
-{: .language-python}
-
-~~~
-point_list = skycoord_to_string(corners_icrs)
-point_list
+sky_point_list = skycoord_to_string(corners_icrs)
+sky_point_list
 ~~~
 {: .language-python}
 
@@ -432,12 +393,15 @@ columns = 'source_id, ra, dec, pmra, pmdec'
 ~~~
 {: .language-python}
 
-Now we have everything we need to assemble the query.
+Now we have everything we need to assemble the query, but 
+**DO NOT try to run this query**.
+Because it selects a larger region, there are too many stars to handle
+in a single query. Until we select by proper motion, that is.
 
 ~~~
-query5 = query5_base.format(columns=columns, 
-                            point_list=point_list)
-print(query5)
+candidate_coord_query = candidate_coord_query_base.format(columns=columns, 
+                            sky_point_list=sky_point_list)
+print(candidate_coord_query)
 ~~~
 {: .language-python}
 
@@ -452,19 +416,14 @@ WHERE parallax < 1
 ~~~
 {: .output}
 
-But don't try to run that query.
-Because it selects a larger region, there are too many stars to handle
-in a single query.
-Until we select by proper motion, that is.
-
 ## Selecting proper motion
 
-Now we're ready to add a `WHERE` clause to select stars whose proper
+Now we are ready to add a `WHERE` clause to select stars whose proper
 motion falls in the polygon defined by `pm_vertices`.
 
 To use `pm_vertices` as part of an ADQL query, we have to convert it
 to a string.
-Using `flatten` and `array2string`, we can almost get the format we need.
+Using `flatten` to convert from a 2D array to a 1D array and `array2string` to convert the result from an array to a string, we can almost get the format we need.
 
 ~~~
 s = np.array2string(pm_vertices.flatten(), 
@@ -479,7 +438,7 @@ s
 ~~~
 {: .output}
 
-We just have to remove the brackets.
+But we need to remove the brackets:
 
 ~~~
 pm_point_list = s.strip('[]')
@@ -494,20 +453,20 @@ pm_point_list
 
 > ## Exercise (10 minutes)
 > 
-> Define `query6_base`, starting with `query5_base` and adding a new
+> Define `candidate_coord_pm_query_base`, starting with `candidate_coord_query_base` and adding a new
 > clause to select stars whose coordinates of proper motion, `pmra` and
 > `pmdec`, fall within the polygon defined by `pm_point_list`.
 >
 > > ## Solution
 > > 
 > > ~~~
-> > query6_base = """SELECT 
+> > candidate_coord_pm_query_base = """SELECT 
 > > {columns}
 > > FROM gaiadr2.gaia_source
 > > WHERE parallax < 1
 > >   AND bp_rp BETWEEN -0.75 AND 2 
 > >   AND 1 = CONTAINS(POINT(ra, dec), 
-> >                    POLYGON({point_list}))
+> >                    POLYGON({sky_point_list}))
 > >   AND 1 = CONTAINS(POINT(pmra, pmdec),
 > >                    POLYGON({pm_point_list}))
 > > """
@@ -518,16 +477,16 @@ pm_point_list
 
 > ## Exercise (5 minutes)
 > 
-> Use `format` to format `query6_base` and define `query6`, filling in
-> the values of `columns`, `point_list`, and `pm_point_list`.
+> Use `format` to format `candidate_coord_pm_query_base` and define `candidate_coord_pm_query`, filling in
+> the values of `columns`, `sky_point_list`, and `pm_point_list`.
 >
 > > ## Solution
 > > 
 > > ~~~
-> > query6 = query6_base.format(columns=columns, 
-> >                             point_list=point_list,
+> > candidate_coord_pm_query = candidate_coord_pm_query_base.format(columns=columns, 
+> >                             sky_point_list=sky_point_list,
 > >                             pm_point_list=pm_point_list)
-> > print(query6)
+> > print(candidate_coord_pm_query)
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -536,10 +495,8 @@ pm_point_list
 Now we can run the query like this:
 
 ~~~
-from astroquery.gaia import Gaia
-
-job = Gaia.launch_job_async(query6)
-print(job)
+candidate_coord_pm_job = Gaia.launch_job_async(candidate_coord_pm_query)
+print(candidate_coord_pm_job)
 ~~~
 {: .language-python}
 
@@ -562,8 +519,8 @@ Phase: COMPLETED
 And get the results.
 
 ~~~
-candidate_table = job.get_results()
-len(candidate_table)
+candidate_gaia_table = candidate_coord_pm_job.get_results()
+len(candidate_gaia_table)
 ~~~
 {: .language-python}
 
@@ -572,31 +529,40 @@ len(candidate_table)
 ~~~
 {: .output}
 
-We call the results `candidate_table` because it contains stars that
-are good candidates for GD-1.
+We call the results `candidate_gaia_table` because it contains information from
+the Gaia table for stars that are good candidates for GD-1.
 
-For the next lesson, we'll need `point_list` and `pm_point_list`
-again, so we should save them in a file.
+Both `sky_point_list` and `pm_point_list` are a set of selection criteria that we
+derived from data downloaded from the Gaia Database. To make sure we can repeat
+our analysis at a later date we should save both lists to a file.
 There are several ways we could do that, but since we are already
-storing data in an HDF file, let's do the same with these variables.
+storing data in an HDF5 file, we will do the same with these variables.
 
-We've seen how to save a `DataFrame` in an HDF file.
-We can do the same thing with a Pandas `Series`.
-To make one, we'll start with a dictionary:
+To save them to an HDF5 file we first need to put them in a Pandas object.
+We have seen how to create a `Series` from a column in a `DataFrame`.
+Now we will build a `Series` from scratch. 
+We do not need the full `DataFrame` format with multiple rows and columns 
+because we are only storing two strings (`sky_point_list` and `pm_point_list`).
+We can store each string as a row in the `Series` and save it. One aspect that
+is nice about `Series` is that we can label each row. 
+To do this we need an object that can define both the name of each row and 
+the data to go in that row. We can use a Python `Dictionary` for this, 
+defining the row names with the dictionary keys and the row data with
+the dictionary values. 
 
 ~~~
-d = dict(point_list=point_list, pm_point_list=pm_point_list)
+d = dict(sky_point_list=sky_point_list, pm_point_list=pm_point_list)
 d
 ~~~
 {: .language-python}
 
 ~~~
-{'point_list': '135.306, 8.39862, 126.51, 13.4449, 163.017, 54.2424, 172.933, 46.4726, 135.306, 8.39862',
+{'sky_point_list': '135.306, 8.39862, 126.51, 13.4449, 163.017, 54.2424, 172.933, 46.4726, 135.306, 8.39862',
  'pm_point_list': ' -4.05037121,-14.75623261, -3.41981085,-14.72365546, -3.03521988,-14.44357135, -2.26847919,-13.7140236 , -2.61172203,-13.24797471, -2.73471401,-13.09054471, -3.19923146,-12.5942653 , -3.34082546,-12.47611926, -5.67489413,-11.16083338, -5.95159272,-11.10547884, -6.42394023,-11.05981295, -7.09631023,-11.95187806, -7.30641519,-12.24559977, -7.04016696,-12.88580702, -6.00347705,-13.75912098, -4.42442296,-14.74641176'}
 ~~~
 {: .output}
 
-And use it to initialize a `Series.`
+And use this `Dictionary` to initialize a `Series`.
 
 ~~~
 point_series = pd.Series(d)
@@ -605,13 +571,13 @@ point_series
 {: .language-python}
 
 ~~~
-point_list       135.306, 8.39862, 126.51, 13.4449, 163.017, 54...
+sky_point_list       135.306, 8.39862, 126.51, 13.4449, 163.017, 54...
 pm_point_list     -4.05037121,-14.75623261, -3.41981085,-14.723...
 dtype: object
 ~~~
 {: .output}
 
-Now we can save it in the usual way.
+Now we can save our `Series` using `to_hdf()`.
 
 ~~~
 filename = 'gd1_data.hdf'
@@ -621,11 +587,11 @@ point_series.to_hdf(filename, 'point_series')
 
 ## Plotting one more time
 
-Let's see what the results look like.
+Now we can examine the results:
 
 ~~~
-x = candidate_table['ra']
-y = candidate_table['dec']
+x = candidate_gaia_table['ra']
+y = candidate_gaia_table['dec']
 plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
 
 plt.xlabel('ra (degree ICRS)')
@@ -638,63 +604,25 @@ plt.ylabel('dec (degree ICRS)');
 ~~~
 {: .output}
     
-![png](../fig/04-select_files/04-select_66_0.png)
+![Scatter plot of right ascension and declination of selected stars in ICRS frame.](../fig/04-select_files/04-select_66_0.png)
 
-Here we can see why it was useful to transform these coordinates.  In
+This plot shows why it was useful to transform these coordinates to the GD-1 frame.  In
 ICRS, it is more difficult to identity the stars near the centerline
 of GD-1.
 
-So let's transform the results back to the GD-1 frame.
-Here's the code we used to transform the coordinates and make a Pandas
-`DataFrame`, wrapped in a function.
+We can use our `make_dataframe` function from episode 3 to transform the results back
+to the GD-1 frame. In addition to doing the coordinate transformation and reflex correction
+for us, this function also compiles everything into a single object (a `DataFrame`) to make it easier to use. Note that because we put this code into a function, we can do all of this with a single line of code!
 
 ~~~
-from gala.coordinates import reflex_correct
-
-def make_dataframe(table):
-    """Transform coordinates from ICRS to GD-1 frame.
-    
-    table: Astropy Table
-    
-    returns: Pandas DataFrame
-    """
-    skycoord = SkyCoord(
-               ra=table['ra'], 
-               dec=table['dec'],
-               pm_ra_cosdec=table['pmra'],
-               pm_dec=table['pmdec'], 
-               distance=8*u.kpc, 
-               radial_velocity=0*u.km/u.s)
-
-    gd1_frame = GD1Koposov10()
-    transformed = skycoord.transform_to(gd1_frame)
-    skycoord_gd1 = reflex_correct(transformed)
-
-    df = table.to_pandas()
-    df['phi1'] = skycoord_gd1.phi1
-    df['phi2'] = skycoord_gd1.phi2
-    df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
-    df['pm_phi2'] = skycoord_gd1.pm_phi2
-    return df
+candidate_gaia_df = make_dataframe(candidate_gaia_table)
 ~~~
 {: .language-python}
 
-Here's how we use it:
+We can check the results using the `plot_pm_selection` function we wrote in episode 3.
 
 ~~~
-candidate_df = make_dataframe(candidate_table)
-~~~
-{: .language-python}
-
-And let's see the results.
-
-~~~
-x = candidate_df['phi1']
-y = candidate_df['phi2']
-plt.plot(x, y, 'ko', markersize=0.5, alpha=0.5)
-
-plt.xlabel('phi1 (degree GD1)')
-plt.ylabel('phi2 (degree GD1)');
+plot_pm_selection(candidate_gaia_df)
 ~~~
 {: .language-python}
 
@@ -703,42 +631,42 @@ plt.ylabel('phi2 (degree GD1)');
 ~~~
 {: .output}
   
-![png](../fig/04-select_files/04-select_72_0.png)
+![Scatter plot of phi1 versus phi2 in GD-1 frame after selecting on proper motion.](../fig/04-select_files/04-select_72_0.png)
 
-We're starting to see GD-1 more clearly.
+We are starting to see GD-1 more clearly.
 We can compare this figure with this panel from Figure 1 from the
 original paper:
 
 <img height="150"
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-2.png">
+src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-2.png" alt="Figure from Price-Whelan and Bonaca paper showing phi1 vs phi2 in GD-1 after selecting on proper motion.">
 
 This panel shows stars selected based on proper motion only, so it is
-comparable to our figure (although notice that it covers a wider
+comparable to our figure (although notice that the original figure covers a wider
 region).
 
-In the next lesson, we will use photometry data from Pan-STARRS to do
+In the next episode, we will use photometry data from Pan-STARRS to do
 a second round of filtering, and see if we can replicate this panel.
 
 <img height="150"
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png">
+src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png" alt="Figure from Price-Whelan and Bonaca paper showing phi1 vs phi2 in GD-1 after selecting on proper motion and photometry.">
 
-Later we'll see how to add annotations like the ones in the figure and
+Later we will learn how to add annotations like the ones in the figure and
 customize the style of the figure to present the results clearly and
 compellingly.
 
 ## Summary
 
-In the previous lesson we downloaded data for a large number of stars
+In the previous episode we downloaded data for a large number of stars
 and then selected a small fraction of them based on proper motion.
 
-In this lesson, we improved this process by writing a more complex
+In this episode, we improved this process by writing a more complex
 query that uses the database to select stars based on proper motion.
 This process requires more computation on the Gaia server, but then
-we're able to either:
+we are able to either:
 
 1. Search the same region and download less data, or
 
 2. Search a larger region while still downloading a manageable amount of data.
 
-In the next lesson, we'll learn about the database `JOIN` operation
-and use it to download photometry data from Pan-STARRS.
+In the next episode, we will learn about the database `JOIN` operation, which we will use 
+in later episodes to join our Gaia data with photometry data from Pan-STARRS.

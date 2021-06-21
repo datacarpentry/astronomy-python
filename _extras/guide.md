@@ -83,10 +83,16 @@ Because this lesson follows a single dataset throughout, its easy for learners (
 * The plot at the end of the reflex correction is a good example of an intermediate step to determining the best filter for GD-1 stars. You can imagine doing this data exploration yourself and trying first a purely spatial plot, then realizing that there are too many non-GD-1 stars included and that you need another way to filter out foreground stars. Proper motion!
 * This lesson takes a slight detour to introduce a few features of Pandas DataFrames. To keep this connected to the story, you can talk about how data exploration is an important part of prototyping your query and making sure you are getting the results you expect in the format you expect them in.
 * Starting with selecting the centerline, we do a series of filters on different data frames. Take a minute before you teach this section to make sure you understand what each one represents. We use results_df to build centerline_df. We use centerline_df to determine proper motion limits. We use the proper motion limits determined from centerline_df to select GD-1 stars from results_df. This is selected_df.
+
 * It is also worth noting that we are selecting stars close to the centerline to identify the proper motion cut, so its ok if we exclude some GD-1 stars here. In this case we prefer a more pure sample to a more complete sample. Once we have the proper motion limits from our pure sample (centerline_df), we'll include the full spatial region (results_df) and get all of the GD-1 stars (selected_df).
+
+* Learners may be concerned that we are writing a function for later that does not fill the full canvas (when we set `axis('equal')`). You can reassure them that in episode 7 we will take care of this by learning how to set the figure size, the subplot size, and we will be using a larger spatial area (that we define in episode 4).
 
 * Notice that the first time we use `DataFrame.to_hdf`, we use the `w` argument to indicate that we want to create a new, empty HDF Store.  For all subsequent uses, we should *not* use the `w` argument, so that we add new Datasets to the existing Store, rather than starting over.
 * At the end of Day 1, if a student is lost or struggled with the end of this lesson, point them to the static version of the HDF5 files (TODO: decide where this lives) so that they can read it in with everyone else on Day 2.
+
+* If a learner notices that there is a `/` in front of the keys at the end of the lesson here's what they mean: `/` indicates that the keys  are at the top level of the Dataset hierarchy, and not in a named "group". In future lessons we will add a few more Datasets to this file, but
+not so many that we need to organize them into groups.
 
 ### Lesson 4: Coordinate transformation and selection
 * This is likely the first lesson of Day 2. You should start by having learners start a new notebook. They will need to read in the data they saved yesterday to HDF5 files and the functions they wrote yesterday.
@@ -109,21 +115,27 @@ This idiom violates the recommendation not to repeat variables names, but since 
 
 * The use of ConvexHull in this lesson is a bit of a hack, but some learners will find the computation geometry functions in SciPy useful.
 
-* This lesson includes a NumPy trick for assigning columns of an array to variables:
-
-```
-pmra_poly, pmdec_poly = np.transpose(pm_vertices)
-```
-
-* Make sure to review the query from Lesson 2 and remind learners what each filter does and why we're using it
+* Make sure to review the query from Lesson 2 (this will happen naturally when you have to retype it) and remind learners what each filter does and why we're using it
 
 * Notice that the definitions of `phi1_min`, `phi1_max`, etc.  are different in this lesson.  Because we are adding more filters, we can select a bigger region without exceeding resource limits.  If learners don't get as many "candidates" as expected, they might be using the old values of these bounds.
 
-* Defining the new region is a good opportunity to go back to the figure and connect these coordinates to the physical picture of GD-1
+* Defining the new region is a good opportunity to go back to the figure and connect these coordinates to the physical picture of GD-1 (e.g. before we were only selecting from this region now we're expanding it to this whole region)
 
 * When you get to `make_dataframe`, you might want to copy and paste it from the notes, rather than retyping.
 
+* Learners may ask why we are using `dict(key1=value1, key2=value2)` rather than `{key1:value1, key2:value2}`. We are using the `dict` syntax so that the key value pairs look like keyword arguments. This may simplify the understanding for learners who are less familiar with dictionaries.
+
 * Recall that the first time we use `DataFrame.to_hdf`, we use the `w` argument to indicate that we want to create a new, empty HDF Store.  For all subsequent uses, we should *not* use the `w` argument, so that we add new Datasets to the existing Store, rather than starting over.
+
+* when writing the `point_series` object to an HDF5 file, learners may see the warning message like the following:
+    ```/Users/bostroem/opt/anaconda3/envs/AstronomicalData/lib/python3.8/site-packages/pandas/core/generic.py:2434: PerformanceWarning: 
+    your performance may suffer as PyTables will pickle object types that it cannot
+    map directly to c-types [inferred_type->mixed,key->values] [items->None]
+
+    pytables.to_hdf(
+    ```
+This warning is saying that pickle will be slow for large objects. We do not need to worry about this since the 
+objects we are saving are small.
 
 * If learners struggle with the query exercise - remind them that we are defining a polygon in the same way we did before (with the same syntax) but looking at proper motion instead of space.
 
@@ -132,15 +144,46 @@ pmra_poly, pmdec_poly = np.transpose(pm_vertices)
 
 * The early part of this lesson brings back a lot of best practices that learners learned in earlier lessons (e.g. exploring tables, returning the top 5 rows) this is a great opportunity to high-light these and remind learners that they've seen this before and why we're doing it.
 
+* Although we don't immediately use the column definitions in panstarrs1_best_neighbour, we will come back to them in the data exploration part of this lesson
+
+* Throughout this lesson continue to come back to the central theme of starting with a simple query and building up layers of complexity, testing each layer as you go
+
+* The Pan-STARRS join exercise is likely to feel scary to a lot of students - they have only seen one example. Emphasize the building blocks of a join e.g. FROM table1 JOIN table2 ON table1.common_column=table2.common_column. It is also worth pointing out that common_columns will not have the same names in this case
+
+* The `head` function is a Python version of the Unix `head` command. The Python version (which can be found in the episode_functions.py file) is used because it is platform independent so a single syntax can be used by all learners. You don't need to go through the function, but if someone asks, feel free to open the episode functions.py file and show them. 
+
+* In case a student asks about the extra `unnamed` column in the CSV section here's the explanation. You may notice that all Pandas `DataFrame`s have an index column which was not part of the original table definition. 
+This essentially numbers each row. When we write a `DataFrame` in any other format, the index gets treated like a bonafide column.
+For this reason when we write a CSV file and then read it back into a `DataFrame` the index column gets written as an `unnamed` column and then when it is read back in, another index column is created leading to two extraneous columns. 
+
+
 ### Lesson 6: Photometry
+* It is easy in this lesson to lose track of the main point: that we want to define a polygon around the main sequence of GD-1 so we can further hone our sample of candidate GD-1 stars. As we spend time on the isochrone, creating the polygon, etc make sure to come back to this big picture often.
 
-* The notes include code that uses `read_mist_models` to read the isochrone computed by MIST, clean the data, and get it into a `DataFrame`.  You *can* present this material, but you don't have to.  The alternative is to skip to the next section, which reads the cleaned isochrone data from `gd1_data` as a `DataFrame`.
+* The key take away from the CMD presentation is that GD-1 is a globular cluster which means all of the stars formed at the same time. Therefore we expect the stars in GD-1 to follow a single, tight isochrone, the main sequence of which we can easily identify.
 
-* In the original paper, they use an idiosyncratic function to define the boundaries of the isochrone filter.  You *can* present the original form, but it takes some explaining.  The alternative is to use the simpler boundaries in the notes.
+* If you (or someone in the class) are interested in how to calculate the Isochrone from the MIST models, the code can be found TODO: finish this sentence
 
-* learners might express concern that the polygon we use to select candidate stars is not closed.  That's ok; the `contains_points` method treats the polygon as if it is closed (by connecting the last point to the first).
+* In the original paper, they use an idiosyncratic function to define the boundaries of the isochrone filter. The intention is to define a polygon that gets wider as g increases, to reflect increasing uncertainty. For this exercise we will be using a simplified version which is a constant offset from the isochrone.
+
+* Turning the selection we've defined into a polygon (making a loop) can be challenging to explain verbally but fairly simple visually. This is a nice time to return to the slides or draw a picture
+
+* In the manipulation we do to create the polygon, it can get lost that left_color, right_color, and color_loop are all x values for the polygon (and that g and mag_loop are the y values). It is worth coming back to this over and over as you introduce each variable.
+
+* Learners might express concern that the polygon we use to select candidate stars is not closed.  That's ok; the `contains_points` method treats the polygon as if it is closed (by connecting the last point to the first).
+
+* Learners may notice that `contains_points` is not actually a Polygon property. Polygon inherits this method from Patch.
+
+* We mention usetex in the discussion of TeX markup in matplotlib. This option does not work for all operating system/backend combinations (in our first alpha pilot some notebooks required restarting after trying to use this option). But, one error that can be fixed is `LaTeX Error: File 'type1cm.sty' not found.` Learners with this error might have to install a package that contains the fonts LaTeX needs.  On some systems, the packages `texlive-latex-extra` or `cm-super` might be what they need.  [See here for more help with
+ this](https://stackoverflow.com/questions/11354149/python-unable-to-render-tex-in-matplotlib).
 
 
+* Learners may ask why we're initializing an empty array and then creating the columns on the fly. DataFrame initialize with arrays of rows rather than columns, so this is the easiest way without having to do some array manipulation. See https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html for more details.
 
 ### Lesson 7: Visualization
+
+* This lesson is largely about showing learners selected capabilities that will make their lives easier. Matplotlib is a huge package with infinite flexibility - this is in no way complete but hopefully gives them some barebones tools to work with and inspired them to explore further. 
+
+* In addition to the links provided in the lesson it is nice to show learners the [list of plotting commands](https://matplotlib.org/stable/api/pyplot_summary.html) and the [examples gallery](https://matplotlib.org/stable/gallery/index.html). 
+
 {% include links.md %}
