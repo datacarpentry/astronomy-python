@@ -70,7 +70,7 @@
 * [Writing mathematical expressions](https://matplotlib.org/stable/tutorials/text/mathtext.html)
 
 ## File Formats
-* [Comma-separated values (CSV) (Wikipedia)(https://en.wikipedia.org/wiki/Comma-separated_values)
+* [Comma-separated values (CSV) (Wikipedia)](https://en.wikipedia.org/wiki/Comma-separated_values)
 * [Flexible Image Transport System (FITS) (Wikipedia)](https://en.wikipedia.org/wiki/FITS)
 * [Hierarchical Data Format (HDF) (Wikipedia)](https://en.wikipedia.org/wiki/Hierarchical_Data_Format)
 * [Multi-Extension FITS File Format](https://www.stsci.edu/itt/review/dhb_2011/Intro/intro_ch23.html)
