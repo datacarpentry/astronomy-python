@@ -82,7 +82,7 @@
 * [Color-Magnitude and Color-Color plots Overview](https://coolwiki.ipac.caltech.edu/index.php/Color-Magnitude_and_Color-Color_plots_Overview)
 * [International Celestial Reference System (ICRS)](https://www.iers.org/IERS/EN/Science/ICRS/ICRS.html)
 * [International Celestial Reference System (ICRS) (Wikipedia)](https://en.wikipedia.org/wiki/International_Celestial_Reference_System)
-* [International Virtual Observatory Alliance (IVOA) Table Access Protocol (TAP)](http://www.ivoa.net/documents/TAP/]
+* [International Virtual Observatory Alliance (IVOA) Table Access Protocol (TAP)](http://www.ivoa.net/documents/TAP/)
 * [Isochrone interpolation](http://waps.cfa.harvard.edu/MIST/interp_isos.html)
 * [MESA Isochrones & Stellar Tracks](http://waps.cfa.harvard.edu/MIST/)
 * [Ordinary stars and HR diagrams](http://spiff.rit.edu/classes/ladder/lectures/ordinary_stars/ordinary.html)
