@@ -570,7 +570,7 @@ objects that match a Gaia object and `number_of_mates` tells us the number of Ga
 PanSTARRs object.
 
 ~~~
-column_list = ['gaia.source_id',
+column_list_neighbours = ['gaia.source_id',
                'gaia.ra',
                'gaia.dec',
                'gaia.pmra',
@@ -578,7 +578,7 @@ column_list = ['gaia.source_id',
                'best.best_neighbour_multiplicity',
                'best.number_of_mates',
               ]
-columns = ', '.join(column_list)
+columns = ', '.join(column_list_neighbours)
 
 neighbors_query = neighbors_base_query.format(columns=columns)
 print(neighbors_query)
