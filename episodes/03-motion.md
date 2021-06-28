@@ -666,7 +666,7 @@ def make_dataframe(table):
 Here is how we use the function:
 
 ~~~
-results_df = make_dataframe(results)
+results_df = make_dataframe(polygon_results)
 ~~~
 {: .language-python}
 

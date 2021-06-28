@@ -264,9 +264,9 @@ So we will select the part of the isochrone that lies in the overdense region.
 `g_mask` is a Boolean Series that is `True` where `g` is between 18.0 and 21.5.
 
 ~~~
-g = iso_df['mag_g']
+g_all = iso_df['mag_g']
 
-g_mask = (g > 18.0) & (g < 21.5)
+g_mask = (g_all > 18.0) & (g_all < 21.5)
 g_mask.sum()
 ~~~
 {: .language-python}
