@@ -11,9 +11,15 @@ successful.
 
 ## Data
 
+To start your installation process download this [zip file](https://zenodo.org/record/5035905/files/student_download.zip?download=1).
+Make sure to note where in your file system are are downloading the file to.
+If your file does not automatically unzip into a directory called `student_download`, you can unzip it with the following steps:
+* Mac: navigate in a finder window to where you downloaded the file and double click `student_download.zip`
+* Windows: navigate in a file explorer window to where you downloaded the file, right click the `student_download.zip` file, and select `Extract All`
+* Linux: open a terminal and navigate to where you downloaded the zip file. Type `unzip student_download.zip`
 
-
-
+You should now have a directory called `student_download`.
+In this directory you will find files that you will use during the workshop as well as files that you will use in the remainder of the set up process.
 
 ## Software
 
@@ -29,18 +35,9 @@ We will use Anaconda.
 Download and install [Anaconda](https://www.anaconda.com/products/individual#anaconda-installers).
 
 To create a new Conda environment, which includes the additional packages we will be using
-in this workshop, you will need to download an environment file from the lesson 
-repository.  On Mac or Linux, you can download it using `wget` on the command line: 
+in this workshop, you will need the environment file (`environment.yml`) you downloaded in the data section.
 
-```
-wget https://raw.githubusercontent.com/datacarpentry/astronomy-python/gh-pages/code/environment.yml
-```
-
-Or you can download the environment file by right-clicking 
-[this link](https://raw.githubusercontent.com/datacarpentry/astronomy-python/gh-pages/code/environment.yml) and 
-selecting "Save Link As". Make sure the file saves as `environment.yml`, not `environment.yml.txt`.
-
-In a Terminal or Jupyter Prompt, make sure you are in the folder where `environment.yml` is stored, and run:
+In a Terminal or Jupyter Prompt, make sure you are in the `student_download` directory, where `environment.yml` is stored, and run:
 
 ```
 conda env create -f environment.yml
@@ -54,17 +51,9 @@ conda activate AstronomicalData
 
 ### Jupyter
 
-We will test our environment setup using a test notebook. Before you launch Jupyter, download this 
-notebook. On Mac or Linux, you can download it using `wget` on the command line: 
+We will test our environment setup using a test notebook (`test_setup.ipynb`) that you downloaded in the data section.
 
-```
-wget https://raw.githubusercontent.com/datacarpentry/astronomy-python/gh-pages/code/test_setup.ipynb
-```
-
-Or you can download the test notebook by right-clicking 
-[this link](https://raw.githubusercontent.com/datacarpentry/astronomy-python/gh-pages/code/test_setup.ipynb) and 
-selecting "Save Link As". Make sure the file saves as `test_setup.ipynb`, not `test_setup.ipynb.txt`.
-
+In a Terminal or Jupyter Prompt, make sure you are in the `student_download` directory. 
 To start Jupyter, make sure you have activated your new conda environment, then run:
 
 ```
