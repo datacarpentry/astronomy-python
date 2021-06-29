@@ -45,38 +45,44 @@ main sequence of GD-1 from mostly younger background stars.
 > region in the color-magnitude diagram and select the stars inside of it.
 {: .checklist}
 
-## Starting from this episode
-
-In the previous episode, we selected stars in GD-1 based on proper motion and downloaded
-the spatial, proper motion, and photometry information by joining the Gaia and PanSTARRs
-datasets.
-We will use that data for this episode. 
-Whether you are working from a new notebook or coming back from a checkpoint, 
-reloading the data will save you from having to run the query again. 
-
-If you are starting this episode here or starting this episode in a new notebook,
-you will need run the following lines of code.
-
-This imports previously imported functions:
-~~~
-from os.path import getsize
-
-import pandas as pd
-import numpy as np
-
-from matplotlib import pyplot as plt
-
-from episode_functions import *
-~~~
-{: .language-python}
-
-This loads in the data (instructions for downloading data can be
-found in the [setup instructions](../setup.md)):
-~~~
-filename = 'gd1_data.hdf'
-candidate_df = pd.read_hdf(filename, 'candidate_df')
-~~~
-{: .language-python}
+> ## Starting from this episode
+>
+> If you are starting a new notebook for this episode, expand this section
+> for information you will need to get started.
+> 
+> > ## Read me
+> > In the previous episode, we selected stars in GD-1 based on proper motion and downloaded
+> > the spatial, proper motion, and photometry information by joining the Gaia and PanSTARRs
+> > datasets.
+> > We will use that data for this episode. 
+> > Whether you are working from a new notebook or coming back from a checkpoint, 
+> > reloading the data will save you from having to run the query again. 
+> > 
+> > If you are starting this episode here or starting this episode in a new notebook,
+> > you will need run the following lines of code.
+> > 
+> > This imports previously imported functions:
+> > ~~~
+> > from os.path import getsize
+> > 
+> > import pandas as pd
+> > import numpy as np
+> > 
+> > from matplotlib import pyplot as plt
+> > 
+> > from episode_functions import *
+> > ~~~
+> > {: .language-python}
+> > 
+> > This loads in the data (instructions for downloading data can be
+> > found in the [setup instructions](../setup)):
+> > ~~~
+> > filename = 'gd1_data.hdf'
+> > candidate_df = pd.read_hdf(filename, 'candidate_df')
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .discussion}
 
 ## Plotting photometry data
 
@@ -217,8 +223,8 @@ theoretical isochrone for GD-1 from the MESA Isochrones and Stellar Tracks and b
 ## Making a polygon
 The MIST isochrone files available on the website above can not be directly plotted over our data. 
 We have selected the relevant part of the isochrone, the filters we are interested in, and scaled the photometry to the distance of GD-1 
-([details here](../_extras/calculating_MIST_isochrone.md)).
-Now we can read in the results which you downloaded as part of the [setup instructions](../setup.md):
+([details here](../_extras/calculating_MIST_isochrone)).
+Now we can read in the results which you downloaded as part of the [setup instructions](../setup):
 
 ~~~
 filename = 'gd1_isochrone.hdf5'

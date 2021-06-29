@@ -46,35 +46,41 @@ main sequence of GD-1 from younger background stars.
 > 3. We will write the results to a file for use in the next episode.
 {: .checklist}
 
-## Starting from this episode
-
-In the previous episode, we define a rectangle around stars in GD-1 in spatial coordinates
-and in proper motion which we transformed into ICRS coordinates and created point
-lists of the polygon vertices.
-We will use that data for this episode. 
-Whether you are working from a new notebook or coming back from a checkpoint, 
-reloading the data will save you from having to run the query again. 
-
-If you are starting this episode here or starting this episode in a new notebook,
-you will need run the following lines of code.
-
-This imports previously imported functions:
-~~~
-from astroquery.gaia import Gaia
-import pandas as pd
-
-from episode_functions import *
-~~~
-{: .language-python}
-
-This loads in the data (instructions for downloading data can be
-found in the [setup instructions](../setup.md)):
-~~~
-filename = 'gd1_data.hdf'
-point_series = pd.read_hdf(filename, 'point_series')
-point_series
-~~~
-{: .language-python}
+> ## Starting from this episode
+>
+> If you are starting a new notebook for this episode, expand this section
+> for information you will need to get started.
+> 
+> > ## Read me
+> > In the previous episode, we define a rectangle around stars in GD-1 in spatial coordinates
+> > and in proper motion which we transformed into ICRS coordinates and created point
+> > lists of the polygon vertices.
+> > We will use that data for this episode. 
+> > Whether you are working from a new notebook or coming back from a checkpoint, 
+> > reloading the data will save you from having to run the query again. 
+> > 
+> > If you are starting this episode here or starting this episode in a new notebook,
+> > you will need run the following lines of code.
+> > 
+> > This imports previously imported functions:
+> > ~~~
+> > from astroquery.gaia import Gaia
+> > import pandas as pd
+> > 
+> > from episode_functions import *
+> > ~~~
+> > {: .language-python}
+> > 
+> > This loads in the data (instructions for downloading data can be
+> > found in the [setup instructions](../setup)):
+> > ~~~
+> > filename = 'gd1_data.hdf'
+> > point_series = pd.read_hdf(filename, 'point_series')
+> > point_series
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{. :discussion}
 
 ## Getting photometry data
 
