@@ -36,52 +36,57 @@ less data.
 {: .checklist}
 
 > ## Starting from this episode
+>
+> If you are starting a new notebook for this episode, expand this section
+> for information you will need to get started.
 > 
-> Previously, we ran a query on the Gaia server, downloaded data for roughly 140,000 stars,
-> and saved the data in a FITS file.
-> We then selected just the stars with the same proper motion as GD-1 and saved
-> the results to an HDF5 file. 
-> We will use that data for this episode. 
-> Whether you are working from a new notebook or coming back from a checkpoint, 
-> reloading the data will save you from having to run the query again. 
-> 
-> If you are starting this episode here or starting this episode in a new notebook,
-> you will need to run the following lines of code.
-> 
-> This imports previously imported functions:
-> ~~~
-> import astropy.units as u
-> from astropy.coordinates import SkyCoord
-> from astroquery.gaia import Gaia
-> from gala.coordinates import GD1Koposov10, GD1, reflex_correct
-> import matplotlib.pyplot as plt
-> import pandas as pd
-> 
-> from episode_functions import *
-> ~~~
-> {: .language-python}
-> 
-> This loads in the data (instructions for downloading data can be
-> found in the [setup instructions](../setup.md)):
-> ~~~
-> filename = 'gd1_data.hdf'
-> centerline_df = pd.read_hdf(filename, 'centerline_df')
-> selected_df = pd.read_hdf(filename, 'selected_df')
-> ~~~
-> {: .language-python}
-> 
-> This defines previously defined quantities:
-> ~~~
-> pm1_min = -8.9
-> pm1_max = -6.9
-> pm2_min = -2.2
-> pm2_max =  1.0
-> 
-> pm1_rect, pm2_rect = make_rectangle(
->     pm1_min, pm1_max, pm2_min, pm2_max)
-> ~~~
-> {: .language-python}
-{: .solution}
+> > ## Read me
+> > Previously, we ran a query on the Gaia server, downloaded data for roughly 140,000 stars,
+> > and saved the data in a FITS file.
+> > We then selected just the stars with the same proper motion as GD-1 and saved
+> > the results to an HDF5 file. 
+> > We will use that data for this episode. 
+> > Whether you are working from a new notebook or coming back from a checkpoint, 
+> > reloading the data will save you from having to run the query again. 
+> > 
+> > If you are starting this episode here or starting this episode in a new notebook,
+> > you will need to run the following lines of code.
+> > 
+> > This imports previously imported functions:
+> > ~~~
+> > import astropy.units as u
+> > from astropy.coordinates import SkyCoord
+> > from astroquery.gaia import Gaia
+> > from gala.coordinates import GD1Koposov10, GD1, reflex_correct
+> > import matplotlib.pyplot as plt
+> > import pandas as pd
+> > 
+> > from episode_functions import *
+> > ~~~
+> > {: .language-python}
+> > 
+> > This loads in the data (instructions for downloading data can be
+> > found in the [setup instructions](../setup.md)):
+> > ~~~
+> > filename = 'gd1_data.hdf'
+> > centerline_df = pd.read_hdf(filename, 'centerline_df')
+> > selected_df = pd.read_hdf(filename, 'selected_df')
+> > ~~~
+> > {: .language-python}
+> > 
+> > This defines previously defined quantities:
+> > ~~~
+> > pm1_min = -8.9
+> > pm1_max = -6.9
+> > pm2_min = -2.2
+> > pm2_max =  1.0
+> > 
+> > pm1_rect, pm2_rect = make_rectangle(
+> >     pm1_min, pm1_max, pm2_min, pm2_max)
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .discussion}
 
 ## Selection by proper motion
 
