@@ -72,7 +72,7 @@ main sequence of GD-1 from younger background stars.
 > > {: .language-python}
 > > 
 > > This loads in the data (instructions for downloading data can be
-> > found in the [setup instructions](../setup.md)):
+> > found in the [setup instructions](../setup)):
 > > ~~~
 > > filename = 'gd1_data.hdf'
 > > point_series = pd.read_hdf(filename, 'point_series')
