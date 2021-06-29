@@ -1,3 +1,6 @@
+---
+title: Link List
+---
 
 ## Journal articles
 * [Constraining the Milky Way Potential with a Six-Dimensional Phase-Space Map of the GD-1 Stellar Stream](https://ui.adsabs.harvard.edu/abs/2010ApJ...712..260K/abstract)
