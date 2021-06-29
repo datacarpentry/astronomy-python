@@ -48,7 +48,11 @@ analysis, identifying stars with the proper motion we expect for GD-1.
 {: .checklist}
 
 > ## Starting from this episode
+>
+> If you are starting a new notebook for this episode, expand this section
+> for information you will need to get started.
 > 
+> ## Read me
 > In the previous episode, we ran a query on the Gaia server,
 > downloaded data for roughly 140,000 stars, and saved the data in a FITS file. 
 > We will use that data for this episode. 
@@ -79,6 +83,7 @@ analysis, identifying stars with the proper motion we expect for GD-1.
 > ~~~
 > {: .language-python}
 {: .solution}
+{: .discussion}
 
 ## Selecting rows and columns
 In the previous episode, we selected spatial and proper motion information from the Gaia catalog for stars around a small part of GD-1. The output was returned as an Astropy `Table`. 
