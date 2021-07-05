@@ -83,6 +83,7 @@ less data.
 > > 
 > > pm1_rect, pm2_rect = make_rectangle(
 > >     pm1_min, pm1_max, pm2_min, pm2_max)
+> > gd1_frame = GD1Koposov10()
 > > ~~~
 > > {: .language-python}
 > {: .solution}
