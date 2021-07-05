@@ -217,7 +217,7 @@ Here is how we run it:
 ~~~
 from astroquery.gaia import Gaia
 
-cone_job = Gaia.launch_job(query_cone)
+cone_job = Gaia.launch_job(cone_query)
 cone_job
 ~~~
 {: .language-python}
