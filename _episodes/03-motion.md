@@ -511,6 +511,67 @@ provides different capabilities.  But working with multiple object
 types can be awkward. It will be more convenient to choose one object and get all of the
 data into it.  
 
+Now we can extract the columns we want from `skycoord_gd1` and add
+them as columns in the `Table`.  `phi1` and `phi2` contain the
+transformed coordinates.
+
+~~~
+results['phi1'] = skycoord_gd1.phi1
+results['phi2'] = skycoord_gd1.phi2
+results.info()
+~~~
+{: .language-python}
+
+~~~
+<Table length=140339>
+   name    dtype    unit                              description                            
+--------- ------- -------- ------------------------------------------------------------------
+source_id   int64          Unique source identifier (unique within a particular Data Release)
+       ra float64      deg                                                    Right ascension
+      dec float64      deg                                                        Declination
+     pmra float64 mas / yr                         Proper motion in right ascension direction
+    pmdec float64 mas / yr                             Proper motion in declination direction
+ parallax float64      mas                                                           Parallax
+     phi1 float64      deg                                                                   
+     phi2 float64      deg                                                                   
+~~~
+{: .output}
+
+`pm_phi1_cosphi2` and `pm_phi2` contain the components of proper
+motion in the transformed frame.
+
+~~~
+results['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
+results['pm_phi2'] = skycoord_gd1.pm_phi2
+results.info()
+~~~
+{: .language-python}
+
+~~~
+<Table length=140339>
+   name    dtype    unit                              description                            
+--------- ------- -------- ------------------------------------------------------------------
+source_id   int64          Unique source identifier (unique within a particular Data Release)
+       ra float64      deg                                                    Right ascension
+      dec float64      deg                                                        Declination
+     pmra float64 mas / yr                         Proper motion in right ascension direction
+    pmdec float64 mas / yr                             Proper motion in declination direction
+ parallax float64      mas                                                           Parallax
+     phi1 float64      deg                                                                   
+     phi2 float64      deg                                                                   
+  pm_phi1 float64 mas / yr                                                                   
+  pm_phi2 float64 mas / yr     
+~~~
+{: .output}
+
+> Detail
+> If you notice that `SkyCoord` has an attribute called
+> `proper_motion`, you might wonder why we are not using it.
+> 
+> We could have: `proper_motion` contains the same data as
+> `pm_phi1_cosphi2` and `pm_phi2`, but in a different format.
+{: .callout}
+
 > ## Pandas `DataFrame`s versus Astropy `Table`s
 > Two common choices are the Pandas `DataFrame` and Astropy `Table`.
 > Pandas `DataFrame`s and Astropy `Table`s share many of the same characteristics 
@@ -564,12 +625,13 @@ results_df.head()
 {: .language-python}
 
 ~~~
-            source_id          ra        dec       pmra      pmdec  parallax
-0  637987125186749568  142.483019  21.757716  -2.516838   2.941813 -0.257345
-1  638285195917112960  142.254529  22.476168   2.662702 -12.165984  0.422728
-2  638073505568978688  142.645286  22.166932  18.306747  -7.950660  0.103640
-3  638086386175786752  142.577394  22.227920   0.987786  -2.584105 -0.857327
-4  638049655615392384  142.589136  22.110783   0.244439  -4.941079  0.099625
+            source_id          ra        dec       pmra       pmdec   parallax        phi1       phi2    pm_phi1     pm_phi2
+0  637987125186749568  142.483019  21.757716  -2.516838    2.941813  -0.257345  -54.975623  -3.659349   6.429945    6.518157
+1  638285195917112960  142.254529  22.476168   2.662702  -12.165984   0.422728  -54.498247  -3.081524  -3.168637   -6.206795
+2  638073505568978688  142.645286  22.166932  18.306747   -7.950660   0.103640  -54.551634  -3.554229   9.129447  -16.819570
+3  638086386175786752  142.577394  22.227920   0.987786   -2.584105  -0.857327  -54.536457  -3.467966   3.837120    0.526461
+4  638049655615392384  142.589136  22.110783   0.244439   -4.941079   0.099625  -54.627448  -3.542738   1.466103   -0.185292
+
 ~~~
 {: .output}
 
@@ -581,51 +643,12 @@ results_df.head()
 > parentheses.
 {: .callout}
 
-Now we can extract the columns we want from `skycoord_gd1` and add
-them as columns in the `DataFrame`.  `phi1` and `phi2` contain the
-transformed coordinates.
-
-~~~
-results_df['phi1'] = skycoord_gd1.phi1
-results_df['phi2'] = skycoord_gd1.phi2
-results_df.shape
-~~~
-{: .language-python}
-
-~~~
-(140339, 8)
-~~~
-{: .output}
-
-`pm_phi1_cosphi2` and `pm_phi2` contain the components of proper
-motion in the transformed frame.
-
-~~~
-results_df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
-results_df['pm_phi2'] = skycoord_gd1.pm_phi2
-results_df.shape
-~~~
-{: .language-python}
-
-~~~
-(140339, 10)
-~~~
-{: .output}
-
-> Detail
-> If you notice that `SkyCoord` has an attribute called
-> `proper_motion`, you might wonder why we are not using it.
-> 
-> We could have: `proper_motion` contains the same data as
-> `pm_phi1_cosphi2` and `pm_phi2`, but in a different format.
-{: .callout}
-
 Before we go any further, we will take all of the steps that we have done 
 and consolidate them into a single function that we can use to take the
 coordinates and proper motion that we get as an Astropy `Table` from our 
-Gaia query, transform it into a 
-Pandas `DataFrame`, and add columns representing the reflex corrected 
-GD-1 coordinates and proper motions.
+Gaia query, add columns representing the reflex corrected 
+GD-1 coordinates and proper motions, and transform it into a 
+Pandas `DataFrame`.
 This is a general function that we will use multiple times as we build different
 queries so we want to write it once and then call the function rather than having 
 to copy and paste the code over and over again.
@@ -657,14 +680,15 @@ def make_dataframe(table):
     # Correct GD-1 coordinates for solar system motion around galactic center
     skycoord_gd1 = reflex_correct(transformed)
 
+    #Add GD-1 reference frame columns for coordinates and proper motions
+    table['phi1'] = skycoord_gd1.phi1
+    table['phi2'] = skycoord_gd1.phi2
+    table['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
+    table['pm_phi2'] = skycoord_gd1.pm_phi2
+
     # Create DataFrame
     df = table.to_pandas()
 
-    #Add GD-1 reference frame columns for coordinates and proper motions
-    df['phi1'] = skycoord_gd1.phi1
-    df['phi2'] = skycoord_gd1.phi2
-    df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
-    df['pm_phi2'] = skycoord_gd1.pm_phi2
     return df
 ~~~
 {: .language-python}

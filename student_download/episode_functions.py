@@ -53,14 +53,15 @@ def make_dataframe(table):
     # Correct GD-1 coordinates for solar system motion around galactic center
     skycoord_gd1 = reflex_correct(transformed)
 
+    #Add GD-1 reference frame columns for coordinates and proper motions
+    table['phi1'] = skycoord_gd1.phi1
+    table['phi2'] = skycoord_gd1.phi2
+    table['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
+    table['pm_phi2'] = skycoord_gd1.pm_phi2
+
     # Create DataFrame
     df = table.to_pandas()
 
-    #Add GD-1 reference frame columns for coordinates and proper motions
-    df['phi1'] = skycoord_gd1.phi1
-    df['phi2'] = skycoord_gd1.phi2
-    df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
-    df['pm_phi2'] = skycoord_gd1.pm_phi2
     return df
 
 def plot_proper_motion(df):
