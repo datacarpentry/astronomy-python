@@ -480,8 +480,8 @@ transformed back to the GD-1 frame, it is a rectangle again.
 
 ## Pandas DataFrame
 
-At this point we have two objects containing different subsets of the
-data.  `polygon_results` is the Astropy `Table` we downloaded from Gaia.
+At this point we have two objects containing different sets of the
+data relating to identifying stars in GD-1.  `polygon_results` is the Astropy `Table` we downloaded from Gaia.
 
 ~~~
 type(polygon_results)
