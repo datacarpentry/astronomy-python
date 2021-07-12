@@ -364,7 +364,7 @@ object.  In a previous episode, we created a `SkyCoord` object like
 this:
 
 ~~~
-skycoord = SkyCoord(ra=results['ra'], dec=results['dec'])
+skycoord = SkyCoord(ra=polygon_results['ra'], dec=polygon_results['dec'])
 ~~~
 {: .language-python}
 
