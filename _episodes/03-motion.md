@@ -512,13 +512,13 @@ types can be awkward. It will be more convenient to choose one object and get al
 data into it.  
 
 Now we can extract the columns we want from `skycoord_gd1` and add
-them as columns in the `Table`.  `phi1` and `phi2` contain the
+them as columns in the Astropy `Table` `polygon_results`.  `phi1` and `phi2` contain the
 transformed coordinates.
 
 ~~~
-results['phi1'] = skycoord_gd1.phi1
-results['phi2'] = skycoord_gd1.phi2
-results.info()
+polygon_results['phi1'] = skycoord_gd1.phi1
+polygon_results['phi2'] = skycoord_gd1.phi2
+polygon_results.info()
 ~~~
 {: .language-python}
 
@@ -541,9 +541,9 @@ source_id   int64          Unique source identifier (unique within a particular 
 motion in the transformed frame.
 
 ~~~
-results['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
-results['pm_phi2'] = skycoord_gd1.pm_phi2
-results.info()
+polygon_results['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
+polygon_results['pm_phi2'] = skycoord_gd1.pm_phi2
+polygon_results.info()
 ~~~
 {: .language-python}
 
