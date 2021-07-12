@@ -304,7 +304,7 @@ cone_results
 ## Getting GD-1 Data
 
 From the Price-Whelan and Bonaca paper, we will try to reproduce
-[http://www.astroexplorer.org/details/apjlaad7b5f1/eyJrZXlXb3JkcyI6IlByaWNlLVdoZWxhbiIsImF1dGhvciI6IlByaWNlLVdoZWxhbiIsImZyb21ZZWFyIjoyMDE4LCJ0b1llYXIiOjIwMTgsInBhZ2UiOjEsInNob3ciOiIyMDAifQ](Figure 1), which includes this representation of stars likely to belong
+[Figure 1](http://www.astroexplorer.org/details/apjlaad7b5f1/eyJrZXlXb3JkcyI6IlByaWNlLVdoZWxhbiIsImF1dGhvciI6IlByaWNlLVdoZWxhbiIsImZyb21ZZWFyIjoyMDE4LCJ0b1llYXIiOjIwMTgsInBhZ2UiOjEsInNob3ciOiIyMDAifQ), which includes this representation of stars likely to belong
 to GD-1:
 
 <img src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png" alt = "On-sky positions of likely GD-1 members in the GD-1 coordinate system, where selection by proper motion and photometry reveals the stream in great detail.">
