@@ -612,7 +612,7 @@ results_df.shape
 {: .language-python}
 
 ~~~
-(140339, 6)
+(140339, 10)
 ~~~
 {: .output}
 
