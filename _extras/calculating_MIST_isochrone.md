@@ -1,3 +1,6 @@
+---
+title: Making the Isochrone DataFrame
+---
 > ## Calculating Isochrone
 > In fact, we can use [MESA Isochrones & Stellar Tracks](http://waps.cfa.harvard.edu/MIST/) (MIST) 
 > to compute it for us.
