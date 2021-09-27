@@ -66,7 +66,7 @@ If you are running short on time, we recommend cutting or stream-lining parts of
 
 * Although learners should have seen functions in the SWC python episode, its always good to reiterate the process of prototyping what you want to do. Then if you find yourself wanting to do it over and over, make it into a function (a good rule of thumb is if you are copy and pasting, then think about whether you should be using a function).
 
-* Highlight throughout the episode what commands are ADQL specific and what are general SQL commands.
+* Highlight throughout the episode what commands are ADQL specific (`CONTAINS`, `POINTS`, `POLYGON`) and what are general SQL commands (everything else).
 
 * Errors will happen throughout the workshop. In an online setting it can be especially useful for learners to share their screen with the class while you troubleshoot together. This gives other learners the opportunity to see how you troubleshoot and to see common errors. However, be aware of the time and do not derail the entire episode if someone is having an edge case issue.
 
