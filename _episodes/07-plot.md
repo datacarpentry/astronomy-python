@@ -3,7 +3,8 @@ title: "Visualization"
 teaching: 55
 exercises: 30
 questions:
-- "How do we make a compelling visualization that tells a story?"
+- What elements make a compelling visualization that authentically reports scientific results ready for scientific presentation and publication?
+- What tools and techinques are available to save time on creating presentation and publication-worthy figures?
 
 objectives:
 - "Design a figure that tells a compelling story."
@@ -11,8 +12,8 @@ objectives:
 - "Generate a figure with multiple subplots."
 
 keypoints:
-- "The most effective figures focus on telling a single story clearly."
-- "Consider using annotations to guide the reader's attention to the most important elements of a figure."
+- "Effective figures focus on telling a single story clearly and authentically. The major decisions needed in creating an effective summary figure like this one can be done away from a computer and built up from low fidelity (hand drawn) to high (tweaking rcParams, etc.)."
+- "Consider using annotations to guide the reader’s attention to the most important elements of a figure, while keeping in mind accessiblity issues that such detail may introduce."
 - "The default Matplotlib style generates good quality figures, but there are several ways you can override the defaults."
 - "If you find yourself making the same customizations on several projects, you might want to create your own style sheet."
 ---
@@ -129,34 +130,19 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.pn
 >
 > > ## Solution
 > > 
-> > Some topics that might come up in this discussion:
-> > 
-> > 1. The primary result is that the multiple stages of selection 
-> > make it possible to separate likely candidates from the 
-> > background more effectively than in previous work, which makes 
-> > it possible to see the structure of GD-1 in "unprecedented detail".
-> > 
-> > 2. The figure documents the selection process as a sequence of 
-> > steps.  Reading right-to-left, top-to-bottom, we see selection 
-> > based on proper motion, the results of the first selection, 
-> > selection based on color and magnitude, and the results of the 
-> > second selection.  So this figure documents the methodology and 
-> > presents the primary result.
-> > 
-> > 3. The figure is mostly black and white, with minimal use of color, so 
-> > it will work well in print.  The annotations in the bottom 
-> > left panel guide the reader to the most important results.  
-> > It contains enough technical detail for a professional audience, 
-> > but most of it is also comprehensible to a more general audience.  
-> > The two left panels have the same dimensions and their axes are 
-> > aligned.
-> > 
-> > 4. Since the panels represent a sequence, it might be better to 
-> > arrange them left-to-right.  The placement and size of the axis 
-> > labels could be tweaked.  The entire figure could be a little 
-> > bigger to match the width and proportion of the caption.  
-> > The top left panel has unused white space (but that leaves 
-> > space for the annotations in the bottom left).
+> > No figure is perfect, and everyone can be a critic. Here are some topics that could come up in this discussion:
+> >
+> > 1. The primary result is that adding physical selection criteria makes it possible to separate likely candidates from the background more effectively than in previous work, which makes it possible to see the structure of GD-1 in “unprecedented detail,” allowing the authors to detect that the stream is larger than previously observed.
+> >
+> > 2. The figure documents the selection process as a sequence of reproducible steps, containing enough information for a skeptical reader to understand the authors' choices. Reading right-to-left, top-to-bottom, we see selection based on proper motion, the results of the first selection, selection based on stellar surface properties (color and magnitude), and the results of the second selection. So this figure documents the methodology, presents the primary result, and serves as reference for other parts of the paper (and presumably, talk, if this figure is reused for colloquia).
+> >
+> > 3. The figure is mostly black and white, with minimal use of color, and mostly uses large fonts. It will likely work well in print and only needs a few adjustments to be accessible to low vision readers and none to accomodate those with poor color vision. The annotations in the bottom left panel guide the reader to the results discussed in the text.
+> > The panels that can have the same units, dimensions, and their axes are aligned, do.
+> >
+> > 4. The on-sky positions likely do not need so much white space.
+> > Axes ticks for the on-sky position figures are not necessary since this is not in an intuitive coordinate system or a finder chart. Instead, we'd suggest size bar annotations for each dimension to give the reader the needed scale.
+> > The text annotations could be darker for more contract and only over white background to increase accessibility
+> > The legend in the bottom right panel has a font too small for low-vision readers. At the very least, those details (and the isochrone line) could be called out in the legend.
 > {: .solution}
 {: .challenge}
 
