@@ -16,7 +16,7 @@ If you are running short on time, we recommend cutting or stream-lining parts of
 * We explicitly recommend using Jupyter notebooks rather than Jupyter lab as we have found them more reliable across different platforms and they require less up front explanation.
 
 ### Introduction
-* Astronomical datasets are getting larger and larger. As a result, the days of downloading a raw image and performing the end to end analysis are numbered. Instead, already reduced data (and simulations) are being stored in databases. If you know how to ask these databases the right questions, they are an incredibly powerful tool. The ability to interact with these large databases is fundamental to the future of astronomy as well as a skill that is highly valued outside of the astronomical community.
+* Astronomical datasets are getting larger and larger. As a result, astronomical analysis is shifting away from working with raw imaging and towards analyzing already reduced data (and simulations) that are stored in large databases. If you know how to ask these databases the right questions, they are an incredibly powerful tool. The ability to interact with these large databases is fundamental to the future of astronomy as well as a skill that is highly valued outside of the astronomical community.
 
 * Motivate the skills taught in this curriculum with your science whether it is transients, exoplanets, or weak lensing (or something else).
 
