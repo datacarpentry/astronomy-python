@@ -29,7 +29,7 @@ showing the stars we previously selected based on proper motion:
 <img width="300"
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-3.png" alt="Color-magnitude diagram for the stars selected based on proper motion, from Price-Whelan and Bonaca paper.">
 
-In red is a theoretical isochrone, showing where we expect the stars
+In red is a [theoretical isochrone](https://en.wikipedia.org/wiki/Stellar_isochrone), showing where we expect the stars
 in GD-1 to fall based on the metallicity and age of their original
 globular cluster.
 
@@ -101,22 +101,26 @@ filter](https://en.wikipedia.org/wiki/Photometric_system).
 The x-axis shows the difference in apparent magnitude between the g
 and i filters, which indicates color.
 
-Stars with lower values of (g-i) are "bluer" since they are brighter in the g-band than in
-the i-band, compared to other stars. To a first order approximation, the color of a star is 
-related to the star's temperature, with bluer stars indicating higher temperatures and redder stars 
-indicating lower temperatures. An important second order effect involves 
-the metallicity, or the amount of metals (elements heavier than helium, in this case) 
-that are present in a star's atmosphere. 
-Higher metallicity leads to redder stars and lower metallicity leads to bluer stars. 
 
-Stars in the lower-left quadrant of this diagram are faintest and bluest suggesting 
-they are have lower metallicity than
-the other stars, which means they are [likely
-to be
-older](http://spiff.rit.edu/classes/ladder/lectures/ordinary_stars/ordinary.html).
-
-Since we expect the stars in GD-1 to be older than the foreground and background
-stars, and farther away, the stars in the lower-left are more likely to be in GD-1.
+> ## A slight detour for non-domain experts
+>
+> If you are wondering how (as a non-domain expert)
+> how to interpret this color-magnitude diagram, please expand the section below.
+> 
+> > ## The color magnitude diagram of GD-1 and foreground stars
+> > 
+> > As a pathologist can easily point to tumor on a biopsy slide, so too can many astronomers see two stellar populations in this color magnitude diagram, one from an old star cluster (presumably, GD-1), and the other, stars much closer, but at every distance between the Earth and the cluster ("foreground"). The color magnitude diagram was developed to separate these features out just as pathologists depend on H&E staining to contrast human tissue.
+> > The color of a star is primarily related to the star’s surface temperature, with bluer stars indicating higher temperatures and redder stars indicating lower temperatures. This logic isn't too far off from the color at the bottom of a match flame compared to the top. 
+> >
+> > Foreground Stars:
+> > To know the temperature of a star, you first need to know its distance and to account for the dust between us and the star. You can guess the effect of distance. A star farther away will be fainter (lower y-axis value) than the same star closer (think of car headlights as they approach). Dust will do remove light from the star's path to our telescopes, which makes the star seem like it has less energy than it otherwise would have, which makes it do two things on this diagram: 1) look fainter (lower y-axis value) and 2) look cooler (higher x-axis value). The stars spread throughout the diagram are all stars bright enough to be detected in our Milky Way between GD-1 and us but made fainter and redder (spread to the lower-right) by their spread in distance from us and the amount dust in the line of sight.
+> >
+> > GD-1:
+> > The pile up of stars in the lower-left quadrant of this diagram are interesting because it suggests something is at the same distance with the same amount of dust in the way. When we use our knowledge of theoretical astrophysics (independently calculated outside this work) to estimate how bright a population of old stars would be if it were at the distance of GD-1, we get that solid red line. The exact values of age and metallicity ([Fe/H] value) is a variable needed to reproduce the theoretical isochrone, but frankly, the choice could very a lot and still would fit the data well.
+> > 
+> > [More on color-magnitude diagrams and their theoretical counterpart, here.](http://spiff.rit.edu/classes/ladder/lectures/ordinary_stars/ordinary.html)
+> {: .solution}
+{: .discussion}
 
 With the photometry we downloaded from the PanSTARRS table into 
 `candidate_df` we can now recreate this plot. 
