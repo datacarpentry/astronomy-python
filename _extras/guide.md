@@ -70,7 +70,7 @@ If you are running short on time, we recommend cutting or stream-lining parts of
 
 * Errors will happen throughout the workshop. In an online setting it can be especially useful for learners to share their screen with the class while you troubleshoot together. This gives other learners the opportunity to see how you troubleshoot and to see common errors. However, be aware of the time and do not derail the entire episode if someone is having an edge case issue.
 
-* Think about how to communicate exercises to learners, especially in an on line setting. In our first beta workshop both instructors and learners were really happy with [hackmd](https://hackmd.io).
+* Think about how to communicate exercises to learners, especially in an online setting. In our first beta workshop both instructors and learners were really happy with [hackmd](https://hackmd.io).
 
 ### Episode 1: Queries
 
