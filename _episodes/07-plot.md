@@ -4,7 +4,7 @@ teaching: 55
 exercises: 30
 questions:
 - What elements make a compelling visualization that authentically reports scientific results ready for scientific presentation and publication?
-- What tools and techinques are available to save time on creating presentation and publication-worthy figures?
+- What tools and techinques are available to save time on creating presentation and publication-ready figures?
 
 objectives:
 - "Design a figure that tells a compelling story."
@@ -140,8 +140,8 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.pn
 > > The panels that can have the same units, dimensions, and their axes are aligned, do.
 > >
 > > 4. The on-sky positions likely do not need so much white space.
-> > Axes ticks for the on-sky position figures are not necessary since this is not in an intuitive coordinate system or a finder chart. Instead, we'd suggest size bar annotations for each dimension to give the reader the needed scale.
-> > The text annotations could be darker for more contract and only over white background to increase accessibility
+> > Axes ticks for the on-sky position figures are not necessary since this is not in an intuitive coordinate system or a finder chart. Instead, we would suggest size bar annotations for each dimension to give the reader the needed scale.
+> > The text annotations could be darker for more contrast and appear only over white background to increase accessibility
 > > The legend in the bottom right panel has a font too small for low-vision readers. At the very least, those details (and the isochrone line) could be called out in the legend.
 > {: .solution}
 {: .challenge}
