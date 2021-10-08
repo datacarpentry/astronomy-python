@@ -457,7 +457,7 @@ plt.tight_layout()
 ~~~
 {: .output}
    
-![Four paneled plot showing our first recreation of figure 1 from the Price-Whelan and Bonaca paper.](../fig/07-plot_files/07-plot_equal_size_fig1.png)
+![Four paneled plot showing our first recreation of figure 1 from the Price-Whelan and Bonaca paper.](../fig/08-plot_files/08-plot_equal_size_fig1.png)
 
 We use
 [`plt.tight_layout`](https://matplotlib.org/stable/tutorials/intermediate/tight_layout_guide.html)
@@ -517,7 +517,7 @@ plt.tight_layout()
 ~~~
 {: .output}
     
-![Four paneled plot we created above with two left-hand panels increased in width.](../fig/07-plot_files/07-plot_adjusted_size_fig1.png)
+![Four paneled plot we created above with two left-hand panels increased in width.](../fig/08-plot_files/08-plot_adjusted_size_fig1.png)
 
 This is looking more and more like the figure in the paper.
 
@@ -609,7 +609,7 @@ ax.set_ylim(-10, 10)
 ~~~
 {: .output}
 
-![An orange rectangle at the coordinates used to select stars based on proper motion.](../fig/07-plot_files/07-poly_example.png)
+![An orange rectangle at the coordinates used to select stars based on proper motion.](../fig/08-plot_files/08-poly_example.png)
 
 We can now call our plot_proper_motion function to plot the
 proper motion for each star, and the add a shaded `Polygon` to show the
@@ -630,7 +630,7 @@ ax.add_patch(poly)
 ~~~
 {: .output}
    
-![Proper motion with overlaid polygon showing our selected stars.](../fig/07-plot_files/07-plot_53_0.png)
+![Proper motion with overlaid polygon showing our selected stars.](../fig/08-plot_files/08-plot_53_0.png)
 
 > ## Exercise (5 minutes)
 > 
@@ -688,7 +688,7 @@ ax.add_patch(poly)
 > >  ~~~
 > >  {: .output}
 > >     
-> > ![Four paneled plot we created above with two left-hand panels increased in width.](../fig/07-plot_files/07-plot_72_0.png)
+> > ![Four paneled plot we created above with two left-hand panels increased in width.](../fig/08-plot_files/08-plot_72_0.png)
 > {.solution}
 {: .challenge}
 
