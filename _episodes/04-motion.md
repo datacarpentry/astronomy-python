@@ -4,19 +4,14 @@ teaching: 65
 exercises: 20
 
 questions:
-- "How do we make scatter plots in Matplotlib? How do we store data in a Pandas `DataFrame`?"
+- "How do efficiently explore our data and identify appropriate filters to produce a clean sample (in this case of GD-1 stars)?"
 
 objectives:
-- "Select rows and columns from an Astropy `Table`."
-- "Use Matplotlib to make a scatter plot."
-- "Use Gala to transform coordinates."
-- "Make a Pandas `DataFrame` and use a Boolean `Series` to select rows."
-- "Save a `DataFrame` in an HDF5 file."
+- "Use a Boolean Pandas `Series` to select rows in a `DataFrame`."
+- "Save multiple `DataFrame`s in an HDF5 file."
 
 keypoints:
-- "When you make a scatter plot, adjust the size of the markers and their transparency so the figure is not overplotted; otherwise it can misrepresent the data badly."
-- "For simple scatter plots in Matplotlib, `plot` is faster than `scatter`."
-- "An Astropy `Table` and a Pandas `DataFrame` are similar in many ways and they provide many of the same functions.  They have pros and cons, but for many projects, either one would be a reasonable choice."
+- "A workflow is often prototyped on a small set of data which can be explored more easily and used to identify ways to limit a dataset to exactly the data you want. "
 - "To store data from a Pandas `DataFrame`, a good option is an HDF5 file, which can contain multiple Datasets."
 ---
 
@@ -24,26 +19,19 @@ keypoints:
 
 In the previous episode, we wrote a query to select stars from the
 region of the sky where we expect GD-1 to be, and saved the results in
-a FITS file.
+a FITS and HDF5 file.
 
 Now we will read that data back in and implement the next step in the
 analysis, identifying stars with the proper motion we expect for GD-1.
 
 > ## Outline
-> 
-> 1. We will read back the results from the previous lesson, which we
-> saved in a FITS file.
-> 
-> 2. Then we will transform the coordinates and proper motion data from
-> ICRS back to the coordinate frame of GD-1.
-> 
-> 3. We will put those results into a Pandas `DataFrame`, which we will use
+> 1. We will put those results into a Pandas `DataFrame`, which we will use
 > to select stars near the centerline of GD-1.
 > 
-> 4. Plotting the proper motion of those stars, we will identify a region
+> 2. Plotting the proper motion of those stars, we will identify a region
 > of proper motion for stars that are likely to be in GD-1.
 > 
-> 5. Finally, we will select and plot the stars whose proper motion is in
+> 3. Finally, we will select and plot the stars whose proper motion is in
 > that region.
 {: .checklist}
 
@@ -53,8 +41,9 @@ analysis, identifying stars with the proper motion we expect for GD-1.
 > for information you will need to get started.
 > 
 > > ## Read me
-> > In the previous episode, we ran a query on the Gaia server,
-> > downloaded data for roughly 140,000 stars, and saved the data in a FITS file. 
+> > Previously, we ran a query on the Gaia server, downloaded data for roughly 140,000 
+> > stars, transformed the coordinates to the GD-1 reference frame,
+> > and saved the results in an HDF5 file (Dataset name `results_df`). 
 > > We will use that data for this episode. 
 > > Whether you are working from a new notebook or coming back from a checkpoint, 
 > > reloading the data will save you from having to run the query again. 
@@ -65,22 +54,19 @@ analysis, identifying stars with the proper motion we expect for GD-1.
 > > This imports previously imported functions:
 > > ~~~
 > > import astropy.units as u
-> > from astropy.coordinates import SkyCoord
-> > from gala.coordinates import GD1Koposov10
-> > from astropy.table import Table
+> > import matplotlib.pyplot as plt
+> > import pandas as pd
 > > 
 > > from episode_functions import *
 > > ~~~
 > > {: .language-python}
-> >
+> > 
 > > The following code loads in the data (instructions for downloading data can be
 > > found in the [setup instructions](../setup)). You may need to add a the path
-> > to the filename variable below (e.g. `filename = 'student_download/data/gd1_results.fits'`)
+> > to the filename variable below (e.g. `filename = 'student_download/data/gd1_data.hdf'`)
 > > ~~~
-> > filename = 'gd1_results.fits'
-> > polygon_results = Table.read(filename)
-> >
-> > gd1_frame = GD1Koposov10()
+> > filename = 'gd1_data.hdf'
+> > results_df = pd.read_hdf(filename, 'results_df')
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -584,55 +570,18 @@ plot_pm_selection(selected_df)
 
 At this point we have run a successful query and cleaned up the
 results. This is a good time to save the data.
+We have already started a results file called gd1_data.hdf which we wrote `results_df` to.
 
-To save a Pandas `DataFrame`, one option is to convert it to an
-Astropy `Table`, like this:
+Recall that we chose HDF5 because it is a binary format producing small files that are fast to read and write and are a cross-language standard.
+.
+Additionally, HDF5 files can contain more than one dataset and can store metadata associated with each dataset (such as column names or observatory information, like a FITS header).
 
-~~~
-from astropy.table import Table
-
-selected_table = Table.from_pandas(selected_df)
-type(selected_table)
-~~~
-{: .language-python}
-
-~~~
-astropy.table.table.Table
-~~~
-{: .output}
-
-Then we could write the `Table` to a FITS file, as we did in the
-previous lesson.
-
-But Pandas provides functions to write DataFrames in other formats; to
-see what they are [find the functions here that begin with
-`to_`](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html).
-
-One of the best options is HDF5, which is Version 5 of [Hierarchical
-Data Format](https://en.wikipedia.org/wiki/Hierarchical_Data_Format).
-
-HDF5 is a binary format, so files are small and fast to read and write
-(like FITS, but unlike XML).
-
-An HDF5 file is similar to an SQL database in the sense that it can
-contain more than one table, although in HDF5 vocabulary, a table is
-called a Dataset.  ([Multi-extension FITS
-files](https://www.stsci.edu/itt/review/dhb_2011/Intro/intro_ch23.html)
-can also contain more than one table.)
-
-And HDF5 stores the metadata associated with the table, including
-column names, row labels, and data types (like FITS).
-
-Finally, HDF5 is a cross-language standard, so if you write an HDF5
-file with Pandas, you can read it back with many other software tools
-(more than FITS).
-
-We can write a Pandas `DataFrame` to an HDF5 file like this:
+We can add to our existing Pandas `DataFrame` to an HDF5 file by omitting the `mode='w'` keyword like this:
 
 ~~~
 filename = 'gd1_data.hdf'
 
-selected_df.to_hdf(filename, 'selected_df', mode='w')
+selected_df.to_hdf(filename, 'selected_df')
 ~~~
 {: .language-python}
 
@@ -642,10 +591,6 @@ provide a name, or "key", that identifies the Dataset in the file.
 We could use any string as the key, but it is generally a good practice
 to use a descriptive name (just like your `DataFrame` variable name) so 
  we will give the Dataset in the file the same name (key) as the `DataFrame`.
-
-By default, writing a `DataFrame` appends a new dataset to an existing HDF5 file.
- We will use the argument `mode='w'` to overwrite the 
-file if it already exists rather than append another dataset to it.
 
 > ## Exercise (5 minutes)
 > 
@@ -705,13 +650,9 @@ in which Dataset.
 
 ## Summary
 
-In this episode, we re-loaded the Gaia data we saved from a previous query.
+In this episode, we re-loaded the transformed Gaia data we saved from a previous query.
 
-We transformed the coordinates and proper motion from ICRS to a frame
-aligned with the orbit of GD-1, and stored the results in a Pandas
-`DataFrame`.
-
-Then we replicated the selection process from the Price-Whelan and Bonaca paper:
+Then we prototyped the selection process from the Price-Whelan and Bonaca paper locally using data that we had already downloaded.:
 
 * We selected stars near the centerline of GD-1 and made a scatter
 plot of their proper motion.
@@ -722,6 +663,6 @@ to be in GD-1.
 * We used a Boolean `Series` as a mask to select stars whose proper
 motion is in that region.
 
-So far, we have used data from a relatively small region of the sky.
+So far, we have used data from a relatively small region of the sky so that our local dataset wasn't too big. 
 In the next lesson, we will write a query that selects stars based on
-proper motion, which will allow us to explore a larger region.
+the proper motion limits we identified in this lesson, which will allow us to explore a larger region.
