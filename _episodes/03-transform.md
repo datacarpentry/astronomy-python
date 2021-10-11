@@ -296,7 +296,7 @@ coordinates.
 
 However, this scatter plot has a problem.  It is
 "[overplotted](https://python-graph-gallery.com/134-how-to-avoid-overplotting-with-python/)",
-which means that there are so many overlapping points, we can't
+which means that there are so many overlapping points, we cannot
 distinguish between high and low density areas.
 
 To fix this, we can provide optional arguments to control the size and
@@ -577,7 +577,7 @@ source_id   int64          Unique source identifier (unique within a particular 
 > two data types. We will choose to use Pandas `DataFrame`, for two reasons:
 > 
 > 1. It provides capabilities that are (almost) a superset of the other data
-> structures, so it's the all-in-one solution.
+> structures, so it is the all-in-one solution.
 > 
 > 2. Pandas is a general-purpose tool that is useful in many domains,
 > especially data science.  If you are going to develop expertise in one

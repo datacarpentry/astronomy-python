@@ -118,7 +118,7 @@ max    7.974418e+17     152.777393      34.285481     104.319923
 > > causes like source confusion (high negative values) and the parallax 
 > > zero point with systematic errors (low negative values). 
 > > 
-> > Fortunately, we don't use the parallax measurements in
+> > Fortunately, we do not use the parallax measurements in
 > > the analysis (one of the reasons we used constant distance
 > > for reflex correction).
 > {: .solution}
@@ -140,7 +140,7 @@ in GD-1 because:
 stars in GD-1 to be along the axis of the stream; that is, we expect
 motion in the direction of `phi2` to be near 0.
 
-* In the direction of `phi1`, we don't have a prior expectation for
+* In the direction of `phi1`, we do not have a prior expectation for
 proper motion, except that it should form a cluster at a non-zero
 value.
 
@@ -194,7 +194,7 @@ plt.ylim(-10, 10)
 ![Zoomed in view of previous scatter plot showing overdense region.](../fig/04-motion_files/04-motion_69_0.png)
 
 There is a hint of an overdense region near (-7.5, 0), but if you
-didn't know where to look, you would miss it.
+did not know where to look, you would miss it.
 
 To see the cluster more clearly, we need a sample that contains a
 higher proportion of stars in GD-1.
@@ -260,7 +260,7 @@ Name: phi2, dtype: bool
 ~~~
 {: .output}
 
-To select values that fall between `phi2_min` and `phi2_max`, we'll
+To select values that fall between `phi2_min` and `phi2_max`, we will
 use the `&` operator, which computes "logical AND".
 The result is true where elements from both Boolean `Series` are true.
 
@@ -271,7 +271,7 @@ mask = (phi2 > phi2_min) & (phi2 < phi2_max)
 
 > ## Logical operators
 > Python's logical operators (`and`, `or`, and `not`)
-> don't work with NumPy or Pandas.  Both libraries use the bitwise
+> do not work with NumPy or Pandas.  Both libraries use the bitwise
 > operators (`&`, `|`, and `~`) to do elementwise logical operations
 > ([explanation here](https://stackoverflow.com/questions/21415661/logical-operators-for-boolean-indexing-in-pandas)).
 > 
@@ -377,7 +377,7 @@ plot_proper_motion(centerline_df)
 Now we can see more clearly that there is a cluster near (-7.5, 0).
 
 You might notice that our figure is less dense than the one in the
-paper.  That's because we started with a set of stars from a
+paper.  That is because we started with a set of stars from a
 relatively small region.  The figure in the paper is based on a region
 about 10 times bigger.
 
@@ -635,7 +635,7 @@ with pd.HDFStore(filename) as hdf:
 {: .language-python}
 
 ~~~
-['/centerline_df', '/selected_df']
+['/results_df', '/centerline_df', '/selected_df']
 ~~~
 {: .output}
 
@@ -663,6 +663,6 @@ to be in GD-1.
 * We used a Boolean `Series` as a mask to select stars whose proper
 motion is in that region.
 
-So far, we have used data from a relatively small region of the sky so that our local dataset wasn't too big. 
+So far, we have used data from a relatively small region of the sky so that our local dataset was not too big. 
 In the next lesson, we will write a query that selects stars based on
 the proper motion limits we identified in this lesson, which will allow us to explore a larger region.
