@@ -635,7 +635,7 @@ with pd.HDFStore(filename) as hdf:
 {: .language-python}
 
 ~~~
-['/results_df', '/centerline_df', '/selected_df']
+['/centerline_df', '/results_df', '/selected_df']
 ~~~
 {: .output}
 

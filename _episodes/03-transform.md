@@ -705,7 +705,7 @@ Astropy `Table`, like this:
 from astropy.table import Table
 
 results_table = Table.from_pandas(results_df)
-type(selected_table)
+type(results_table)
 ~~~
 {: .language-python}
 
