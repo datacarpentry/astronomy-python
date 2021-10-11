@@ -37,8 +37,7 @@ analysis, identifying stars with the proper motion we expect for GD-1.
 > 2. Then we will transform the coordinates and proper motion data from
 > ICRS back to the coordinate frame of GD-1.
 > 
-> 3. We will put those results into a Pandas `DataFrame`, which we will use
-> to select stars near the centerline of GD-1.
+> 3. We will put those results into a Pandas `DataFrame`.
 {: .checklist}
 
 > ## Starting from this episode
