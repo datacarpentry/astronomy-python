@@ -674,7 +674,7 @@ plot_cmd_selection(winner_df)
 ~~~
 {: .output}
 
-![png](../fig/07-plot_files/07-plot_13_0.png)
+![png](../fig/08-plot_files/08-plot_13_0.png)
 
 ## Write the data
 
