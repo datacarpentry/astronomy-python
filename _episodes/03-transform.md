@@ -1,10 +1,10 @@
 ---
-title: "Plotting and Pandas"
+title: "Plotting and Tabular Data"
 teaching: 65
 exercises: 20
 
 questions:
-- "How do we make scatter plots in Matplotlib? How do we store data in a Pandas `DataFrame`?"
+- "How do we manipulate Astropy `Tables`? How do we make scatter plots in Matplotlib? How do we store data in a Pandas `DataFrame`? How do we save a workflow into a reusable function?"
 
 objectives:
 - "Select rows and columns from an Astropy `Table`."
@@ -17,7 +17,7 @@ keypoints:
 - "When you make a scatter plot, adjust the size of the markers and their transparency so the figure is not overplotted; otherwise it can misrepresent the data badly."
 - "For simple scatter plots in Matplotlib, `plot` is faster than `scatter`."
 - "An Astropy `Table` and a Pandas `DataFrame` are similar in many ways and they provide many of the same functions.  They have pros and cons, but for many projects, either one would be a reasonable choice."
-- "To store data from a Pandas `DataFrame`, a good option is an HDF5 file, which can contain multiple Datasets."
+- "To store data from a Pandas `DataFrame`, a good option is an HDF5 file."
 ---
 
 {% include links.md %}
@@ -39,12 +39,6 @@ analysis, identifying stars with the proper motion we expect for GD-1.
 > 
 > 3. We will put those results into a Pandas `DataFrame`, which we will use
 > to select stars near the centerline of GD-1.
-> 
-> 4. Plotting the proper motion of those stars, we will identify a region
-> of proper motion for stars that are likely to be in GD-1.
-> 
-> 5. Finally, we will select and plot the stars whose proper motion is in
-> that region.
 {: .checklist}
 
 > ## Starting from this episode
@@ -703,8 +697,7 @@ results_df = make_dataframe(polygon_results)
 
 ## Saving the DataFrame
 
-At this point we have run a successful query and cleaned up the
-results. This is a good time to save the data.
+At this point we have run a successful query and combined the results into a single `DataFrame`. This is a good time to save the data.
 
 To save a Pandas `DataFrame`, one option is to convert it to an
 Astropy `Table`, like this:
@@ -712,7 +705,7 @@ Astropy `Table`, like this:
 ~~~
 from astropy.table import Table
 
-selected_table = Table.from_pandas(selected_df)
+results_table = Table.from_pandas(results_df)
 type(selected_table)
 ~~~
 {: .language-python}
@@ -725,7 +718,7 @@ astropy.table.table.Table
 Then we could write the `Table` to a FITS file, as we did in the
 previous lesson.
 
-But Pandas provides functions to write DataFrames in other formats; to
+But, like Astropy, Pandas provides functions to write DataFrames in other formats; to
 see what they are [find the functions here that begin with
 `to_`](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html).
 
@@ -753,7 +746,7 @@ We can write a Pandas `DataFrame` to an HDF5 file like this:
 ~~~
 filename = 'gd1_data.hdf'
 
-selected_df.to_hdf(filename, 'selected_df', mode='w')
+results_df.to_hdf(filename, 'results_df', mode='w')
 ~~~
 {: .language-python}
 
@@ -768,81 +761,14 @@ By default, writing a `DataFrame` appends a new dataset to an existing HDF5 file
  We will use the argument `mode='w'` to overwrite the 
 file if it already exists rather than append another dataset to it.
 
-> ## Exercise (5 minutes)
-> 
-> We are going to need `centerline_df` later as well.  Write a line of
-> code to add it as a second Dataset in the HDF5 file.
-> 
-> Hint: Since the file already exists, you should *not* use `mode='w'`.
->
-> > ## Solution
-> > 
-> > ~~~
-> > centerline_df.to_hdf(filename, 'centerline_df')
-> > ~~~
-> > {: .language-python}
-> {: .solution}
-{: .challenge}
-
-We can use `getsize` to confirm that the file exists and check the size.
-`getsize` returns a value in bytes. For the size files we're looking at, it will
-be useful to view their size in MegaBytes (MB), so we will divide by 1024*1024.
-
-~~~
-from os.path import getsize
-
-MB = 1024 * 1024
-getsize(filename) / MB
-~~~
-{: .language-python}
-
-~~~
-2.2084197998046875
-~~~
-{: .output}
-
-If you forget what the names of the Datasets in the file are, you can
-read them back like this:
-
-~~~
-with pd.HDFStore(filename) as hdf:
-    print(hdf.keys())
-~~~
-{: .language-python}
-
-~~~
-['/centerline_df', '/selected_df']
-~~~
-{: .output}
-
-> ## Context Managers
-> We use a `with` statement here to open the file
-> before the print statement and (automatically) close it after.  Read
-> more about [context managers](https://book.pythontips.com/en/latest/context_managers.html).
-{: .callout}
-
-The keys are the names of the Datasets which makes it easy for us to remember which `DataFrame` is
-in which Dataset.
-
 ## Summary
 
 In this episode, we re-loaded the Gaia data we saved from a previous query.
 
 We transformed the coordinates and proper motion from ICRS to a frame
-aligned with the orbit of GD-1, and stored the results in a Pandas
-`DataFrame`.
+aligned with the orbit of GD-1, stored the results in a Pandas
+`DataFrame`, and visualized them.
 
-Then we replicated the selection process from the Price-Whelan and Bonaca paper:
+We combined all of these steps into a single function that we can reuse in the future to go straight from the output of a query with object coordinates in the ICRS reference frame directly to a Pandas DataFrame that includes object coordinates in the GD-1 reference frame.
 
-* We selected stars near the centerline of GD-1 and made a scatter
-plot of their proper motion.
-
-* We identified a region of proper motion that contains stars likely
-to be in GD-1.
-
-* We used a Boolean `Series` as a mask to select stars whose proper
-motion is in that region.
-
-So far, we have used data from a relatively small region of the sky.
-In the next lesson, we will write a query that selects stars based on
-proper motion, which will allow us to explore a larger region.
+We saved our results to an HDF5 file which we can use to restart the analysis from this stage or verify our results at some future time.
