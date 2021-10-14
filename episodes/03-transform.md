@@ -1,10 +1,10 @@
 ---
-title: "Plotting and Pandas"
+title: "Plotting and Tabular Data"
 teaching: 65
 exercises: 20
 
 questions:
-- "How do we make scatter plots in Matplotlib? How do we store data in a Pandas `DataFrame`?"
+- "How do we manipulate Astropy `Tables`? How do we make scatter plots in Matplotlib? How do we store data in a Pandas `DataFrame`? How do we save a workflow into a reusable function?"
 
 objectives:
 - "Select rows and columns from an Astropy `Table`."
@@ -17,7 +17,7 @@ keypoints:
 - "When you make a scatter plot, adjust the size of the markers and their transparency so the figure is not overplotted; otherwise it can misrepresent the data badly."
 - "For simple scatter plots in Matplotlib, `plot` is faster than `scatter`."
 - "An Astropy `Table` and a Pandas `DataFrame` are similar in many ways and they provide many of the same functions.  They have pros and cons, but for many projects, either one would be a reasonable choice."
-- "To store data from a Pandas `DataFrame`, a good option is an HDF5 file, which can contain multiple Datasets."
+- "To store data from a Pandas `DataFrame`, a good option is an HDF5 file."
 ---
 
 {% include links.md %}
@@ -37,14 +37,7 @@ analysis, identifying stars with the proper motion we expect for GD-1.
 > 2. Then we will transform the coordinates and proper motion data from
 > ICRS back to the coordinate frame of GD-1.
 > 
-> 3. We will put those results into a Pandas `DataFrame`, which we will use
-> to select stars near the centerline of GD-1.
-> 
-> 4. Plotting the proper motion of those stars, we will identify a region
-> of proper motion for stars that are likely to be in GD-1.
-> 
-> 5. Finally, we will select and plot the stars whose proper motion is in
-> that region.
+> 3. We will put those results into a Pandas `DataFrame`.
 {: .checklist}
 
 > ## Starting from this episode
@@ -290,7 +283,7 @@ plt.ylabel('dec (degree ICRS)')
 ~~~
 {: .output}
     
-![Scatter plot of right ascension and declination in ICRS coordinates, demonstrating overplotting.](../fig/03-motion_files/03-motion_28_0.png)
+![Scatter plot of right ascension and declination in ICRS coordinates, demonstrating overplotting.](../fig/03-transform_files/03-transform_28_0.png)
     
 The arguments to `plt.plot` are `x`, `y`, and a string that specifies
 the style.  In this case, the letters `ko` indicate that we want a
@@ -303,7 +296,7 @@ coordinates.
 
 However, this scatter plot has a problem.  It is
 "[overplotted](https://python-graph-gallery.com/134-how-to-avoid-overplotting-with-python/)",
-which means that there are so many overlapping points, we can't
+which means that there are so many overlapping points, we cannot
 distinguish between high and low density areas.
 
 To fix this, we can provide optional arguments to control the size and
@@ -473,7 +466,7 @@ plt.ylabel('phi2 (degree GD1)')
 ~~~
 {: .output}
    
-![Scatter plot of phi1 versus phi2 in GD-1 coordinates, showing selected region is rectangular.](../fig/03-motion_files/03-motion_43_0.png)
+![Scatter plot of phi1 versus phi2 in GD-1 coordinates, showing selected region is rectangular.](../fig/03-transform_files/03-transform_43_0.png)
 
 We started with a rectangle in the GD-1 frame.  When
 transformed to the ICRS frame, it is a non-rectangular region.  Now,
@@ -584,7 +577,7 @@ source_id   int64          Unique source identifier (unique within a particular 
 > two data types. We will choose to use Pandas `DataFrame`, for two reasons:
 > 
 > 1. It provides capabilities that are (almost) a superset of the other data
-> structures, so it's the all-in-one solution.
+> structures, so it is the all-in-one solution.
 > 
 > 2. Pandas is a general-purpose tool that is useful in many domains,
 > especially data science.  If you are going to develop expertise in one
@@ -701,504 +694,9 @@ results_df = make_dataframe(polygon_results)
 ~~~
 {: .language-python}
 
-
-## Exploring data
-
-One benefit of using Pandas is that it provides functions for
-exploring the data and checking for problems.
-One of the most useful of these functions is `describe`, which
-computes summary statistics for each column.
-
-~~~
-results_df.describe()
-~~~
-{: .language-python}
-
-~~~
-          source_id             ra            dec           pmra  \
-count  1.403390e+05  140339.000000  140339.000000  140339.000000   
-mean   6.792399e+17     143.823122      26.780285      -2.484404   
-std    3.792177e+16       3.697850       3.052592       5.913939   
-min    6.214900e+17     135.425699      19.286617    -106.755260   
-25%    6.443517e+17     140.967966      24.592490      -5.038789   
-50%    6.888060e+17     143.734409      26.746261      -1.834943   
-75%    6.976579e+17     146.607350      28.990500       0.452893   
-max    7.974418e+17     152.777393      34.285481     104.319923   
-
-               pmdec       parallax           phi1           phi2  \
-[Output truncated]
-~~~
-{: .output}
-
-> ## Exercise (10 minutes)
-> 
-> Review the summary statistics in this table.
-> 
-> * Do the values make sense based on what you know about the context?
-> 
-> * Do you see any values that seem problematic, or evidence of other data issues?
->
-> > ## Solution
-> >
-> > The most noticeable issue is that some of the
-> > parallax values are negative, which seems non-physical.
-> > 
-> > Negative parallaxes in the Gaia database can arise from a number of
-> > causes like source confusion (high negative values) and the parallax 
-> > zero point with systematic errors (low negative values). 
-> > 
-> > Fortunately, we don't use the parallax measurements in
-> > the analysis (one of the reasons we used constant distance
-> > for reflex correction).
-> {: .solution}
-{: .challenge}
-
-## Plot proper motion
-
-Now we are ready to replicate one of the panels in Figure 1 of the
-Price-Whelan and Bonaca paper, the one that shows components of proper
-motion as a scatter plot:
-
-<img width="300"
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-1.png" alt="Scatter of proper motion phi1 versus phi2 showing overdensity in negative proper motions of GD-1 stars.">
-
-In this figure, the shaded area identifies stars that are likely to be
-in GD-1 because:
-
-* Due to the nature of tidal streams, we expect the proper motion for
-stars in GD-1 to be along the axis of the stream; that is, we expect
-motion in the direction of `phi2` to be near 0.
-
-* In the direction of `phi1`, we don't have a prior expectation for
-proper motion, except that it should form a cluster at a non-zero
-value.
-
-By plotting proper motion in the GD-1 frame, we hope to find this cluster.
-Then we will use the bounds of the cluster to select stars that are
-more likely to be in GD-1.
-
-The following figure is a scatter plot of proper motion, in the GD-1
-frame, for the stars in `results_df`.
-
-~~~
-x = results_df['pm_phi1']
-y = results_df['pm_phi2']
-plt.plot(x, y, 'ko', markersize=0.1, alpha=0.1)
-    
-plt.xlabel('Proper motion phi1 (mas/yr GD1 frame)')
-plt.ylabel('Proper motion phi2 (mas/yr GD1 frame)')
-~~~
-{: .language-python}
-
-~~~
-<Figure size 432x288 with 1 Axes>
-~~~
-{: .output}
- 
-![Scatter plot of proper motion in GD-1 frame of selected stars showing most are near the origin.](../fig/03-motion_files/03-motion_67_0.png)
-
-Most of the proper motions are near the origin, but there are a few
-extreme values.
-Following the example in the paper, we will use `xlim` and `ylim` to
-zoom in on the region near the origin.
-
-~~~
-x = results_df['pm_phi1']
-y = results_df['pm_phi2']
-plt.plot(x, y, 'ko', markersize=0.1, alpha=0.1)
-    
-plt.xlabel('Proper motion phi1 (mas/yr GD1 frame)')
-plt.ylabel('Proper motion phi2 (mas/yr GD1 frame)')
-
-plt.xlim(-12, 8)
-plt.ylim(-10, 10)
-~~~
-{: .language-python}
-
-~~~
-<Figure size 432x288 with 1 Axes>
-~~~
-{: .output}
-    
-![Zoomed in view of previous scatter plot showing overdense region.](../fig/03-motion_files/03-motion_69_0.png)
-
-There is a hint of an overdense region near (-7.5, 0), but if you
-didn't know where to look, you would miss it.
-
-To see the cluster more clearly, we need a sample that contains a
-higher proportion of stars in GD-1.
-We will do that by selecting stars close to the centerline.
-
-## Selecting the centerline
-
-As we can see in the following figure, many stars in GD-1 are less
-than 1 degree from the line `phi2=0`.
-
-![Scatter plot with selection on proper motion and photometry showing many stars in GD-1 are within 1 degree of phi2 = 0.](../fig/gd1-4.png)
-
-Stars near this line have the highest probability of being in GD-1.
-
-To select them, we will use a "Boolean mask".  We wil start by
-selecting the `phi2` column from the `DataFrame`:
-
-~~~
-phi2 = results_df['phi2']
-type(phi2)
-~~~
-{: .language-python}
-
-~~~
-pandas.core.series.Series
-~~~
-{: .output}
-
-The result is a `Series`, which is the structure Pandas uses to
-represent columns.
-
-We can use a comparison operator, `>`, to compare the values in a
-`Series` to a constant.
-
-~~~
-phi2_min = -1.0 * u.degree
-phi2_max = 1.0 * u.degree
-
-mask = (phi2 > phi2_min)
-type(mask)
-~~~
-{: .language-python}
-
-~~~
-pandas.core.series.Series
-~~~
-{: .output}
-
-The result is a `Series` of Boolean values, that is, `True` and `False`. 
-
-~~~
-mask.head()
-~~~
-{: .language-python}
-
-~~~
-0    False
-1    False
-2    False
-3    False
-4    False
-Name: phi2, dtype: bool
-~~~
-{: .output}
-
-To select values that fall between `phi2_min` and `phi2_max`, we'll
-use the `&` operator, which computes "logical AND".
-The result is true where elements from both Boolean `Series` are true.
-
-~~~
-mask = (phi2 > phi2_min) & (phi2 < phi2_max)
-~~~
-{: .language-python}
-
-> ## Logical operators
-> Python's logical operators (`and`, `or`, and `not`)
-> don't work with NumPy or Pandas.  Both libraries use the bitwise
-> operators (`&`, `|`, and `~`) to do elementwise logical operations
-> ([explanation here](https://stackoverflow.com/questions/21415661/logical-operators-for-boolean-indexing-in-pandas)).
-> 
-> Also, we need the parentheses around the conditions; otherwise the
-> order of operations is incorrect.
-{: .callout}
-
-The sum of a Boolean `Series` is the number of `True` values, so we
-can use `sum` to see how many stars are in the selected region.
-
-~~~
-mask.sum()
-~~~
-{: .language-python}
-
-~~~
-25084
-~~~
-{: .output}
-
-A Boolean `Series` is sometimes called a "mask" because we can use it
-to mask out some of the rows in a `DataFrame` and select the rest,
-like this:
-
-~~~
-centerline_df = results_df[mask]
-type(centerline_df)
-~~~
-{: .language-python}
-
-~~~
-pandas.core.frame.DataFrame
-~~~
-{: .output}
-
-`centerline_df` is a `DataFrame` that contains only the rows from
-`results_df` that correspond to `True` values in `mask`.
-So it contains the stars near the centerline of GD-1.
-
-We can use `len` to see how many rows are in `centerline_df`:
-
-~~~
-len(centerline_df)
-~~~
-{: .language-python}
-
-~~~
-25084
-~~~
-{: .output}
-
-And what fraction of the rows we have selected.
-
-~~~
-len(centerline_df) / len(results_df)
-~~~
-{: .language-python}
-
-~~~
-0.1787386257562046
-~~~
-{: .output}
-
-There are about 25,000 stars in this region, about 18% of the total.
-
-## Plotting proper motion
-
-This is the second time we are plotting proper motion, and we can imagine we might do it a few more times. Instead of copying
-and pasting the previous code, we will write a function that we can reuse on any dataframe.
-
-~~~
-def plot_proper_motion(df):
-    """Plot proper motion.
-    
-    df: DataFrame with `pm_phi1` and `pm_phi2`
-    """
-    x = df['pm_phi1']
-    y = df['pm_phi2']
-    plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
-
-    plt.xlabel('Proper motion phi1 (mas/yr)')
-    plt.ylabel('Proper motion phi2 (mas/yr)')
-
-    plt.xlim(-12, 8)
-    plt.ylim(-10, 10)
-~~~
-{: .language-python}
-
-And we can call it like this:
-
-~~~
-plot_proper_motion(centerline_df)
-~~~
-{: .language-python}
-
-~~~
-<Figure size 432x288 with 1 Axes>
-~~~
-{: .output}
-   
-![Scatter plot of proper motion of selected stars showing cluster near (-7.5, 0).](../fig/03-motion_files/03-motion_92_0.png)
-
-Now we can see more clearly that there is a cluster near (-7.5, 0).
-
-You might notice that our figure is less dense than the one in the
-paper.  That's because we started with a set of stars from a
-relatively small region.  The figure in the paper is based on a region
-about 10 times bigger.
-
-In the next episode we will go back and select stars from a larger
-region.  But first we will use the proper motion data to identify stars
-likely to be in GD-1.
-
-## Filtering based on proper motion
-
-The next step is to select stars in the "overdense" region of proper
-motion, which are candidates to be in GD-1.
-
-In the original paper, Price-Whelan and Bonaca used a polygon to cover
-this region, as shown in this figure.
-
-<img width="300"
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-1.png" alt="Scatter plot of proper motion with overlaid polygon showing overdense region selected for analysis in Price-Whelan and Bonaca paper.">
-
-We will use a simple rectangle for now, but in a later lesson we will see
-how to select a polygonal region as well.
-
-Here are bounds on proper motion we chose by eye:
-
-~~~
-pm1_min = -8.9
-pm1_max = -6.9
-pm2_min = -2.2
-pm2_max =  1.0
-~~~
-{: .language-python}
-
-To draw these bounds, we will use the `make_rectangle` function we wrote in episode 2 to make two lists containing the coordinates of the corners of the rectangle.
-
-~~~
-pm1_rect, pm2_rect = make_rectangle(
-    pm1_min, pm1_max, pm2_min, pm2_max)
-~~~
-{: .language-python}
-
-Here is what the plot looks like with the bounds we chose.
-
-~~~
-plot_proper_motion(centerline_df)
-plt.plot(pm1_rect, pm2_rect, '-')
-~~~
-{: .language-python}
-
-~~~
-<Figure size 432x288 with 1 Axes>
-~~~
-{: .output}
-   
-![Scatter plot of proper motion with blue box showing overdense region selected for our analysis.](../fig/03-motion_files/03-motion_100_0.png)
-
-Now that we have identified the bounds of the cluster in proper motion,
-we will use it to select rows from `results_df`.
-
-We will use the following function, which uses Pandas operators to make
-a mask that selects rows where `series` falls between `low` and
-`high`.
-
-~~~
-def between(series, low, high):
-    """Check whether values are between `low` and `high`."""
-    return (series > low) & (series < high)
-~~~
-{: .language-python}
-
-The following mask selects stars with proper motion in the region we chose.
-
-~~~
-pm1 = results_df['pm_phi1']
-pm2 = results_df['pm_phi2']
-
-pm_mask = (between(pm1, pm1_min, pm1_max) & 
-           between(pm2, pm2_min, pm2_max))
-~~~
-{: .language-python}
-
-Again, the sum of a Boolean series is the number of `TRUE` values.
-
-~~~
-pm_mask.sum()
-~~~
-{: .language-python}
-
-~~~
-1049
-~~~
-{: .output}
-
-Now we can use this mask to select rows from `results_df`.
-
-~~~
-selected_df = results_df[pm_mask]
-len(selected_df)
-~~~
-{: .language-python}
-
-~~~
-1049
-~~~
-{: .output}
-
-These are the stars we think are likely to be in GD-1.  We can 
-inspect these stars, plotting their coordinates (not their proper motion).
-
-~~~
-x = selected_df['phi1']
-y = selected_df['phi2']
-plt.plot(x, y, 'ko', markersize=1, alpha=1)
-
-plt.xlabel('phi1 (degree GD1)')
-plt.ylabel('phi2 (degree GD1)')
-~~~
-{: .language-python}
-
-~~~
-<Figure size 432x288 with 1 Axes>
-~~~
-{: .output}
-   
-![Scatter plot of coordinates of stars in selected region, showing tidal stream.](../fig/03-motion_files/03-motion_110_0.png)
-
-Now that is starting to look like a tidal stream!
-
-To clean up the plot a little bit we can add two new Matplotlib commands:
-* `axis` with the parameter `equal` sets up the axes so a unit is the
-same size along the `x` and `y` axes.
-
-* `title` puts the input string as a title at the top of the plot. The `fontsize` keyword 
-sets the `fontsize` to be `medium`, a little smaller than the default `large`.
-
-In an example like this, where `x` and `y` represent coordinates in
-space, equal axes ensures that the distance between points is
-represented accurately. Since we are now constraining the relative proportions
-of our axes, the data may not fill the entire figure.
-
-~~~
-x = selected_df['phi1']
-y = selected_df['phi2']
-
-plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
-
-plt.xlabel('phi1 [deg]')
-plt.ylabel('phi2 [deg]')
-plt.title('Proper motion selection', fontsize='medium')
-
-plt.axis('equal')
-~~~
-{: .language-python}
-
-~~~
-<Figure size 432x288 with 1 Axes>
-~~~
-{: .output}
-
-![Scatter plot of coordinates of stars in selected region, showing tidal stream with equally proportioned axes.](../fig/03-motion_files/03-motion_plot_pm_selection.png)
-
-Before we go any further, we will put the code we wrote to make one of the panel
-figures into a function that we will use in future episodes to recreate this 
-entire plot with a single line of code.
-
-~~~
-def plot_pm_selection(df):
-    """Plot in GD-1 spatial coordinates the location of the stars
-    selected by proper motion
-    """
-    x = df['phi1']
-    y = df['phi2']
-
-    plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
-
-    plt.xlabel('phi1 [deg]')
-    plt.ylabel('phi2 [deg]')
-    plt.title('Proper motion selection', fontsize='medium')
-
-    plt.axis('equal')
-~~~
-{: .language-python}
-
-Now our one line plot command is:
-~~~
-plot_pm_selection(selected_df)
-~~~
-{: .language-python}
-
-
 ## Saving the DataFrame
 
-At this point we have run a successful query and cleaned up the
-results. This is a good time to save the data.
+At this point we have run a successful query and combined the results into a single `DataFrame`. This is a good time to save the data.
 
 To save a Pandas `DataFrame`, one option is to convert it to an
 Astropy `Table`, like this:
@@ -1206,8 +704,8 @@ Astropy `Table`, like this:
 ~~~
 from astropy.table import Table
 
-selected_table = Table.from_pandas(selected_df)
-type(selected_table)
+results_table = Table.from_pandas(results_df)
+type(results_table)
 ~~~
 {: .language-python}
 
@@ -1219,7 +717,7 @@ astropy.table.table.Table
 Then we could write the `Table` to a FITS file, as we did in the
 previous lesson.
 
-But Pandas provides functions to write DataFrames in other formats; to
+But, like Astropy, Pandas provides functions to write DataFrames in other formats; to
 see what they are [find the functions here that begin with
 `to_`](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html).
 
@@ -1247,7 +745,7 @@ We can write a Pandas `DataFrame` to an HDF5 file like this:
 ~~~
 filename = 'gd1_data.hdf'
 
-selected_df.to_hdf(filename, 'selected_df', mode='w')
+results_df.to_hdf(filename, 'results_df', mode='w')
 ~~~
 {: .language-python}
 
@@ -1262,81 +760,14 @@ By default, writing a `DataFrame` appends a new dataset to an existing HDF5 file
  We will use the argument `mode='w'` to overwrite the 
 file if it already exists rather than append another dataset to it.
 
-> ## Exercise (5 minutes)
-> 
-> We are going to need `centerline_df` later as well.  Write a line of
-> code to add it as a second Dataset in the HDF5 file.
-> 
-> Hint: Since the file already exists, you should *not* use `mode='w'`.
->
-> > ## Solution
-> > 
-> > ~~~
-> > centerline_df.to_hdf(filename, 'centerline_df')
-> > ~~~
-> > {: .language-python}
-> {: .solution}
-{: .challenge}
-
-We can use `getsize` to confirm that the file exists and check the size.
-`getsize` returns a value in bytes. For the size files we're looking at, it will
-be useful to view their size in MegaBytes (MB), so we will divide by 1024*1024.
-
-~~~
-from os.path import getsize
-
-MB = 1024 * 1024
-getsize(filename) / MB
-~~~
-{: .language-python}
-
-~~~
-2.2084197998046875
-~~~
-{: .output}
-
-If you forget what the names of the Datasets in the file are, you can
-read them back like this:
-
-~~~
-with pd.HDFStore(filename) as hdf:
-    print(hdf.keys())
-~~~
-{: .language-python}
-
-~~~
-['/centerline_df', '/selected_df']
-~~~
-{: .output}
-
-> ## Context Managers
-> We use a `with` statement here to open the file
-> before the print statement and (automatically) close it after.  Read
-> more about [context managers](https://book.pythontips.com/en/latest/context_managers.html).
-{: .callout}
-
-The keys are the names of the Datasets which makes it easy for us to remember which `DataFrame` is
-in which Dataset.
-
 ## Summary
 
 In this episode, we re-loaded the Gaia data we saved from a previous query.
 
 We transformed the coordinates and proper motion from ICRS to a frame
-aligned with the orbit of GD-1, and stored the results in a Pandas
-`DataFrame`.
+aligned with the orbit of GD-1, stored the results in a Pandas
+`DataFrame`, and visualized them.
 
-Then we replicated the selection process from the Price-Whelan and Bonaca paper:
+We combined all of these steps into a single function that we can reuse in the future to go straight from the output of a query with object coordinates in the ICRS reference frame directly to a Pandas DataFrame that includes object coordinates in the GD-1 reference frame.
 
-* We selected stars near the centerline of GD-1 and made a scatter
-plot of their proper motion.
-
-* We identified a region of proper motion that contains stars likely
-to be in GD-1.
-
-* We used a Boolean `Series` as a mask to select stars whose proper
-motion is in that region.
-
-So far, we have used data from a relatively small region of the sky.
-In the next lesson, we will write a query that selects stars based on
-proper motion, which will allow us to explore a larger region.
+We saved our results to an HDF5 file which we can use to restart the analysis from this stage or verify our results at some future time.

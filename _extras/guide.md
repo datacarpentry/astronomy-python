@@ -5,15 +5,20 @@ title: "Instructor Notes"
 ## Instructor notes
 
 ### Overview
-This episode guides learners through analyzing data from a large database. Scientifically, we are identifying stars in GD-1, a stellar stream in the Milky Way (creating Figure 1 in "[Off the beaten path: Gaia reveals GD-1 stars outside of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian Price-Whelan and Ana Bonaca). The first part of this episode (1-5) shows learners how to prototype a query, starting by querying a subset of the sky we ultimately want and then building up stronger and stronger filters locally. With our filters in place, episode 6 performs the full query remote on the remote database, giving us a dataset to visualize in episode 7. Episode 7 demonstrates best practices and tips and tricks to efficiently and effectively visualize data.
+This episode guides learners through analyzing data from a large database. Scientifically, we are identifying stars in GD-1, a stellar stream in the Milky Way (creating Figure 1 in "[Off the beaten path: Gaia reveals GD-1 stars outside of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian Price-Whelan and Ana Bonaca). The first part of this episode (1-6) shows learners how to prototype a query, starting by querying a subset of the sky we ultimately want and then building up stronger and stronger filters locally. With our filters in place, episode 7 performs the full query remote on the remote database, giving us a dataset to visualize in episode 8. Episode 8 demonstrates best practices and tips and tricks to efficiently and effectively visualize data.
 
 Because this episode follows a single dataset throughout, its easy for learners (and instructors) to lose sight of the bigger picture and focus instead on the scientific goals or individual commands. At the beginning of each episode it is recommended that the instructor discuss both the scientific goal of the episode (with frequent references to Figure 1) and highlight the big picture skills that we hope each student takes away from the episode, beyond the specific science case. At the end of the episode the instructors should recap the same information, highlighting the best practices covered. TODO: reference slide show.
 
 **Timing** Unfortunately these episodes are incredibly cumulative and there is not much that can be cut along the way. 
-If you are running short on time, we recommend cutting or stream-lining parts of episode 7 about plotting. It is also possible to stream-line some of the CSV section at the end of episode 5, for instance skip the read back section which demonstrates how extra columns can slip into CSV files.
+If you are running short on time, we recommend eliminating or condensing these sections:
+* cutting or stream-lining parts of episode 8 about plotting. This is the most significant way you can make up time.
+* stream-line some of the CSV section at the end of episode 6, for instance skip the read back section which demonstrates how extra columns can slip into CSV files
+* cut the part where we check the size of the HDF5 file in episode 4
+* cut the brief discussion of context managers in episode 4
 
 ### Decisions Made
 * We explicitly recommend using Jupyter notebooks rather than Jupyter lab as we have found them more reliable across different platforms and they require less up front explanation.
+* As explained in the episodes, we think that it is valuable for learners to know a little bit about both Astropy `Tables` and Pandas `DataFrames` as they both have strengths and weaknesses as both an astronomy software standard and an industry standard.
 
 ### Introduction
 * Astronomical datasets are getting larger and larger. As a result, astronomical analysis is shifting away from working with raw imaging and towards analyzing already reduced data (and simulations) that are stored in large databases. If you know how to ask these databases the right questions, they are an incredibly powerful tool. The ability to interact with these large databases is fundamental to the future of astronomy as well as a skill that is highly valued outside of the astronomical community.
@@ -95,18 +100,19 @@ If you are running short on time, we recommend cutting or stream-lining parts of
 
 * When you define phi1_min, phi1_max, etc go back to Figure 1 and show learners the region you are defining, connecting the min and max values to the coordinates in the GD-1 frame. This is another place you can mention the benefit of using the GD-1 frame is that we can define a rectangle around the stream.
 
-### Episode 3: Proper motion 
-* This is a really long episode. But, by the end of it you will have prototyped making the first row of Figure 1. Make sure to keep your eyes on the prize. This is likely the last episode of Day 1
-
+### Episode 3: Tabular Data and Transformations 
 * Transforming back: the discussion about the motivation to transform back to GD-1 frame is a great time to have student build up some intuition about the proper motion selection and how this relates to the physical picture. Remind them again that GD-1 is a globular cluster that is being pulled into a stream along the phi1 direction. This means that GD-1 stars should have non-zero motion along the phi1 direction and motion close to 0 in the phi2 direction. 
 
 * Do not let learners get too hung up on setting the distance and radial velocity to constants. For distance, the parallax is so close to 0 that they are unreliable and as mentioned, the radial velocity is to avoid errors.
 
 * The plot at the end of the reflex correction is a good example of an intermediate step to determining the best filter for GD-1 stars. You can imagine doing this data exploration yourself and trying first a purely spatial plot, then realizing that there are too many non-GD-1 stars included and that you need another way to filter out foreground stars. Proper motion!
 
-* This episode takes a slight detour to introduce a few features of Pandas DataFrames. To keep this connected to the story, you can talk about how data exploration is an important part of prototyping your query and making sure you are getting the results you expect in the format you expect them in.
-
 * In this episode we are going to define a few functions that we will use in other episodes. This process of prototyping inline and then writing a function is very common. Especially with `make_dataframe` this is a good opportunity to show how the different steps you have performed over the last episode can be elegantly strung together. While defining these functions now takes a little longer, its good to do it when the code is still fresh in learn's minds and will be really useful later.
+
+### Episode 4: Proper motion 
+* This is likely the final episode of day 1 in a two day workshop.
+
+* This episode takes a slight detour to introduce a few features of Pandas DataFrames. To keep this connected to the story, you can talk about how data exploration is an important part of prototyping your query and making sure you are getting the results you expect in the format you expect them in.
 
 * Starting with selecting the centerline, we do a series of filters on different data frames. Take a minute before you teach this section to make sure you understand what each one represents. We use `results_df` to build `centerline_df`. We use `centerline_df` to determine proper motion limits. We use the proper motion limits determined from `centerline_df` to select GD-1 stars from `results_df`. This is `selected_df`.
 
@@ -124,13 +130,13 @@ This idiom violates the recommendation not to repeat variables names, but since 
 
 * Learners may be concerned that we are writing a function for later that does not fill the full canvas (when we set `axis('equal')` in the proper motion selected stars figure). You can reassure them that in episode 7 we will take care of this by learning how to set the figure size, the subplot size, and we will be using a larger spatial area (that we define in episode 4).
 
-* Notice that the first time we use `DataFrame.to_hdf`, we use the `w` argument to indicate that we want to create a new, empty HDF Store.  For all subsequent uses, we should *not* use the `w` argument, so that we add new Datasets to the existing Store, rather than starting over.
+* Notice that the previous episode when we used `DataFrame.to_hdf` included the `mode="w"` argument to indicate that we want to create a new, empty HDF Store.  For this (and subsequent) episode(s), we should *not* use the `mode="w"` argument, so that we add new Datasets to the existing Store, rather than starting over.
 
 * At the end of Day 1, if a student is lost or struggled with the end of this episode, point them to their local copy of the HDF5 files so that they can read it in with everyone else on Day 2. They will have downloaded this file as part of the set up in the `student_download/data directory/`.
 
 * If a learner notices that there is a `/` in front of the keys at the end of the episode here is what they mean: `/` indicates that the keys are at the top level of the Dataset hierarchy, and not in a named "group". In future episodes we will add a few more Datasets to this file, but not so many that we need to organize them into groups.
 
-### Episode 4: Coordinate transformation and selection
+### Episode 5: Coordinate transformation and selection
 * This is likely the first episode of Day 2. You should start by having learners start a new notebook. They will need to read in the data they saved yesterday to HDF5 files and the functions they wrote yesterday. You can follow the directions under the collapsable section at the beginning of this episode called "Starting from this episode". If you are using files from the `student_download` directory be sure to add the correct path `student_download/data/<filename>`.
 
 * This episode is faster than it looks because learners have seen much of the content already
@@ -147,7 +153,7 @@ This idiom violates the recommendation not to repeat variables names, but since 
 
 * Learners may ask why we are using `dict(key1=value1, key2=value2)` rather than `{key1:value1, key2:value2}`. We are using the `dict` syntax so that the key value pairs look like keyword arguments. This may simplify the understanding for learners who are less familiar with dictionaries.
 
-* Recall that the first time we used `DataFrame.to_hdf`, we used the `w` argument to indicate that we wanted to create a new, empty HDF Store.  In this episode we should *not* use the `w` argument, so that we add new Datasets to the existing Store, rather than starting over.
+* Again, in this episode we should *not* use the `mode="w"` argument, so that we add new Datasets to the existing Store, rather than starting over.
 
 * when writing the `point_series` object to an HDF5 file, learners may see the warning message like the following:
     ```/Users/bostroem/opt/anaconda3/envs/AstronomicalData/lib/python3.8/site-packages/pandas/core/generic.py:2434: PerformanceWarning: 
@@ -163,7 +169,7 @@ objects we are saving are small.
 
 * Learners should get the same number of candidates. If they get a different number it is likely they mistyped something.
 
-### Episode 5: Joining tables
+### Episode 6: Joining tables
 
 * The early part of this episode brings back a lot of best practices that learners learned in previous episodes (e.g. exploring tables, returning the top 5 rows) this is a great opportunity to highlight these and remind learners that they have seen this before and why we are doing it.
 
@@ -182,7 +188,7 @@ This essentially numbers each row. When we write a `DataFrame` in any other form
 For this reason when we write a CSV file and then read it back into a `DataFrame` the index column gets written as an `unnamed` column and then when it is read back in, another index column is created leading to two extraneous columns. 
 
 
-### Episode 6: Photometry
+### Episode 7: Photometry
 * It is easy in this episode to lose track of the main point: that we want to define a polygon around the main sequence of GD-1 so we can further hone our sample of candidate GD-1 stars. As we spend time on the isochrone, creating the polygon, etc make sure to come back to this big picture often.
 
 * The key take away from the CMD presentation is that GD-1 is a globular cluster which means all of the stars formed at the same time. Therefore we expect the stars in GD-1 to follow a single, tight isochrone, the main sequence of which we can easily identify.
@@ -204,7 +210,7 @@ For this reason when we write a CSV file and then read it back into a `DataFrame
 
 * Learners may ask why we are initializing an empty array and then creating the columns on the fly. DataFrame initializes with arrays of rows rather than columns, so this is the easiest way without having to do some array manipulation. See https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html for more details.
 
-### Episode 7: Visualization
+### Episode 8: Visualization
 
 * This episode is largely about showing learners selected capabilities that will make their lives easier. Matplotlib is a huge package with infinite flexibility - this is in no way complete but hopefully gives them some barebones tools to work with and inspired them to explore further. 
 
