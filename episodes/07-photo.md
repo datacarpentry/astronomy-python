@@ -224,7 +224,7 @@ theoretical isochrone for GD-1 from the MESA Isochrones and Stellar Tracks and b
 ## Making a polygon
 The MIST isochrone files available on the website above can not be directly plotted over our data. 
 We have selected the relevant part of the isochrone, the filters we are interested in, and scaled the photometry to the distance of GD-1 
-([details here](../_extras/calculating_MIST_isochrone)).
+([details here](../calculating_MIST_isochrone)).
 Now we can read in the results which you downloaded as part of the [setup instructions](../setup):
 
 ~~~
