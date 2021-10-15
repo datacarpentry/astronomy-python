@@ -193,7 +193,7 @@ For this reason when we write a CSV file and then read it back into a `DataFrame
 
 * The key take away from the CMD presentation is that GD-1 is a globular cluster which means all of the stars formed at the same time. Therefore we expect the stars in GD-1 to follow a single, tight isochrone, the main sequence of which we can easily identify.
 
-* We did have to manipulate the MIST isochrone to get it from what is available for download to what we read in. This is too much detail for the curriculum, but the process is detailed in the curriculum repository in _extras/calculating_MIST_isochrone.md if you or a learner is interested.
+* We did have to manipulate the MIST isochrone to get it from what is available for download to what we read in. This is too much detail for the curriculum, but the process is detailed in [Making the Isochrone Dataframe](/calculating_MIST_isochrone/) if you or a learner is interested.
 
 * In the original paper, they use an idiosyncratic function to define the boundaries of the isochrone filter. The intention is to define a polygon that gets wider as g increases, to reflect increasing uncertainty. For this exercise we will be using a simplified version which is a constant offset from the isochrone. 
 
