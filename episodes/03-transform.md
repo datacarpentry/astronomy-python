@@ -4,7 +4,8 @@ teaching: 65
 exercises: 20
 
 questions:
-- "How do we manipulate Astropy `Tables`? How do we make scatter plots in Matplotlib? How do we store data in a Pandas `DataFrame`? How do we save a workflow into a reusable function?"
+- "How do we make scatter plots in Matplotlib?"
+- "How do we store data in a Pandas `DataFrame`?"
 
 objectives:
 - "Select rows and columns from an Astropy `Table`."
@@ -17,7 +18,7 @@ keypoints:
 - "When you make a scatter plot, adjust the size of the markers and their transparency so the figure is not overplotted; otherwise it can misrepresent the data badly."
 - "For simple scatter plots in Matplotlib, `plot` is faster than `scatter`."
 - "An Astropy `Table` and a Pandas `DataFrame` are similar in many ways and they provide many of the same functions.  They have pros and cons, but for many projects, either one would be a reasonable choice."
-- "To store data from a Pandas `DataFrame`, a good option is an HDF5 file."
+- "To store data from a Pandas `DataFrame`, a good option is an HDF5 file, which can contain multiple Datasets (we'll dig in more in the Join lesson)."
 ---
 
 {% include links.md %}

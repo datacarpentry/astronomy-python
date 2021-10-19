@@ -3,7 +3,7 @@ title: "Coordinate Transformations"
 teaching: 75
 exercises: 18
 questions:
-- "How do we transform celestial coordinates from one frame to another and save results in files?"
+- "How do we transform celestial coordinates from one frame to another and save a subset of the results in files?"
 
 objectives:
 - "Use Python string formatting to compose more complex ADQL queries."
