@@ -137,12 +137,12 @@ src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.pn
 > > 2. The figure documents the selection process as a sequence of reproducible steps, containing enough information for a skeptical reader to understand the authors' choices. Reading right-to-left, top-to-bottom, we see selection based on proper motion, the results of the first selection, selection based on stellar surface properties (color and magnitude), and the results of the second selection. So this figure documents the methodology, presents the primary result, and serves as reference for other parts of the paper (and presumably, talk, if this figure is reused for colloquia).
 > >
 > > 3. The figure is mostly black and white, with minimal use of color, and mostly uses large fonts. It will likely work well in print and only needs a few adjustments to be accessible to low vision readers and none to accommodate those with poor color vision. The annotations in the bottom left panel guide the reader to the results discussed in the text.
-> > The panels that can have the same units, dimensions, and their axes are aligned, do.
+> > 4. The panels that can have the same units, dimensions, and their axes are aligned, do.
 > >
-> > 4. The on-sky positions likely do not need so much white space.
-> > Axes ticks for the on-sky position figures are not necessary since this is not in an intuitive coordinate system or a finder chart. Instead, we would suggest size bar annotations for each dimension to give the reader the needed scale.
-> > The text annotations could be darker for more contrast and appear only over white background to increase accessibility
-> > The legend in the bottom right panel has a font too small for low-vision readers. At the very least, those details (and the isochrone line) could be called out in the legend.
+> > 5. The on-sky positions likely do not need so much white space.
+> > 6. Axes ticks for the on-sky position figures are not necessary since this is not in an intuitive coordinate system or a finder chart. Instead, we would suggest size bar annotations for each dimension to give the reader the needed scale.
+> > 7. The text annotations could be darker for more contrast and appear only over white background to increase accessibility
+> > 8. The legend in the bottom right panel has a font too small for low-vision readers. At the very least, those details (and the isochrone line) could be called out in the legend.
 > {: .solution}
 {: .challenge}
 
