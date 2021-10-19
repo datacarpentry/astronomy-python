@@ -147,7 +147,7 @@ plt.plot(x, y, 'gx', markersize=0.3, alpha=0.3);
 ~~~
 {: .output}
  
-![Proper motion of stars in GD-1, showing selected region as blue box and stars within selection as green points.](../fig/04-select_files/04-select_14_0.png)
+![Proper motion of stars in GD-1, showing selected region as blue box and stars within selection as green points.](../fig/05-select_files/05-select_14_0.png)
 
 Now we will make the same plot using proper motions in the ICRS frame,
 which are stored in columns named `pmra` and `pmdec`.
@@ -174,7 +174,7 @@ plt.ylim([-20, 5]);
 ~~~
 {: .output}
   
-![Proper motion in ICRS frame, showing selected stars are more spread out in this frame.](../fig/04-select_files/04-select_16_0.png)
+![Proper motion in ICRS frame, showing selected stars are more spread out in this frame.](../fig/05-select_files/05-select_16_0.png)
 
 The proper motions of the selected stars are more spread out in this
 frame, which is why it was preferable to do the selection in the GD-1
@@ -313,7 +313,7 @@ plt.ylim([-20, 5]);
 ~~~
 {: .output}
     
-![Proper motion in ICRS, with convex hull shown as blue boundary and selected stars as green points.](../fig/04-select_files/04-select_29_0.png)
+![Proper motion in ICRS, with convex hull shown as blue boundary and selected stars as green points.](../fig/05-select_files/05-select_29_0.png)
 
 So `pm_vertices` represents the polygon we want to select.
 The next step is to use this polygon as part of an ADQL query.
@@ -613,7 +613,7 @@ plt.ylabel('dec (degree ICRS)');
 ~~~
 {: .output}
     
-![Scatter plot of right ascension and declination of selected stars in ICRS frame.](../fig/04-select_files/04-select_66_0.png)
+![Scatter plot of right ascension and declination of selected stars in ICRS frame.](../fig/05-select_files/05-select_66_0.png)
 
 This plot shows why it was useful to transform these coordinates to the GD-1 frame.  In
 ICRS, it is more difficult to identity the stars near the centerline
@@ -640,7 +640,7 @@ plot_pm_selection(candidate_gaia_df)
 ~~~
 {: .output}
   
-![Scatter plot of phi1 versus phi2 in GD-1 frame after selecting on proper motion.](../fig/04-select_files/04-select_72_0.png)
+![Scatter plot of phi1 versus phi2 in GD-1 frame after selecting on proper motion.](../fig/05-select_files/05-select_72_0.png)
 
 We are starting to see GD-1 more clearly.
 We can compare this figure with this panel from Figure 1 from the

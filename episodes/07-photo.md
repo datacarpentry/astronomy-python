@@ -135,7 +135,7 @@ plt.xlabel('Color (g-i)')
 ~~~
 {: .language python}
 
-![Color magnitude diagram of our selected stars showing all of the stars selected](../fig/06-photo_files/06-cmd_no_lims.png)
+![Color magnitude diagram of our selected stars showing all of the stars selected](../fig/07-photo_files/07-cmd_no_lims.png)
 
 We have assigned the color and magnitude to variables `x` and `y`, respectively.  
 We have done this out of convenience and to keep the code readable since the 
@@ -159,7 +159,7 @@ plt.ylim([22, 14])
 ~~~
 {: .language python}
 
-![Color magnitude diagram of our selected stars showing overdense region in lower left.](../fig/06-photo_files/06-cmd_lims.png)
+![Color magnitude diagram of our selected stars showing overdense region in lower left.](../fig/07-photo_files/07-cmd_lims.png)
 
 Our figure does not look exactly like the one in the paper because we
 are working with a smaller region of the sky, so we have fewer
@@ -202,7 +202,7 @@ plot_cmd(candidate_df)
 ~~~
 {: .output}
     
-![Color magnitude diagram of our selected stars showing overdense region in lower left.](../fig/06-photo_files/06-photo_12_0.png)
+![Color magnitude diagram of our selected stars showing overdense region in lower left.](../fig/07-photo_files/07-photo_12_0.png)
  
 In the next section we will use an isochrone to specify a polygon that
 contains this overdense region.
@@ -228,7 +228,7 @@ theoretical isochrone for GD-1 from the MESA Isochrones and Stellar Tracks and b
 ## Making a polygon
 The MIST isochrone files available on the website above can not be directly plotted over our data. 
 We have selected the relevant part of the isochrone, the filters we are interested in, and scaled the photometry to the distance of GD-1 
-([details here](../_extras/calculating_MIST_isochrone)).
+([details here](../calculating_MIST_isochrone)).
 Now we can read in the results which you downloaded as part of the [setup instructions](../setup):
 
 ~~~
@@ -261,7 +261,7 @@ plt.plot(iso_df['color_g_i'], iso_df['mag_g']);
 ~~~
 {: .output}
 
-![Color magnitude diagram of our selected stars with theoretical isochrone overlaid as blue curve.](../fig/06-photo_files/06-photo_52_0.png)
+![Color magnitude diagram of our selected stars with theoretical isochrone overlaid as blue curve.](../fig/07-photo_files/07-photo_52_0.png)
 
 In the bottom half of the figure, the isochrone passes through the
 overdense region where the stars are likely to belong to GD-1.
@@ -332,7 +332,7 @@ plt.legend();
 ~~~
 {: .output}
     
-![Color magnitude diagram of our selected stars showing left boundary as blue curve and right boundary as orange curve.](../fig/06-photo_files/06-photo_62_0.png)
+![Color magnitude diagram of our selected stars showing left boundary as blue curve and right boundary as orange curve.](../fig/07-photo_files/07-photo_62_0.png)
 
 ## Which points are in the polygon?
 
@@ -425,7 +425,7 @@ plt.plot(color_loop, mag_loop);
 ~~~
 {: .output}
     
-![Color magnitude diagram of our selected stars showing polygon defined by boundaries as blue curve.](../fig/06-photo_files/06-photo_70_0.png)
+![Color magnitude diagram of our selected stars showing polygon defined by boundaries as blue curve.](../fig/07-photo_files/07-photo_70_0.png)
 
 To make a `Polygon`, it will be useful to put `color_loop` and 
 `mag_loop` into a `DataFrame`. This is convenient for two reasons - first, `Polygon`
@@ -602,7 +602,7 @@ plt.plot(x, y, 'go', markersize=0.5, alpha=0.5);
 ~~~
 {: .output}
     
-![Color magnitude diagram showing our selected stars in green, inside our polygon.](../fig/06-photo_files/06-photo_91_0.png)
+![Color magnitude diagram showing our selected stars in green, inside our polygon.](../fig/07-photo_files/07-photo_91_0.png)
 
 The selected stars are, in fact, inside the polygon,
 which means they have photometry data consistent with GD-1.
@@ -630,7 +630,7 @@ plt.axis('equal');
 {: .output}
   
 
-![Right ascension and declination of selected stars in GD-1 frame after selecting for both proper motion and photometry.](../fig/06-photo_files/06-photo_93_0.png)
+![Right ascension and declination of selected stars in GD-1 frame after selecting for both proper motion and photometry.](../fig/07-photo_files/07-photo_93_0.png)
 
 This example includes the new Matplotlib command `figure`, which creates the larger canvas that the subplots are placed on.  In previous examples, we didn't have
 to use this function; the figure was created automatically.  But when
@@ -678,7 +678,7 @@ plot_cmd_selection(winner_df)
 ~~~
 {: .output}
 
-![png](../fig/07-plot_files/07-plot_13_0.png)
+![png](../fig/08-plot_files/08-plot_13_0.png)
 
 ## Write the data
 
