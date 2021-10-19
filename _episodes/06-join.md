@@ -4,6 +4,8 @@ teaching: 50
 exercises: 35
 questions:
 - "How do we use `JOIN` to combine information from multiple tables?"
+- "How can we make a selection within a joined table?"
+- "How should we save the result?"
 
 objectives:
 - "Write ADQL queries involving `JOIN` operations."

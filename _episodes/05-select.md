@@ -3,7 +3,8 @@ title: "Transform and Select"
 teaching: 60
 exercises: 15
 questions:
-- "How do we move the computation to the data?"
+- "When should we use the database server for computation?"
+- "When should we download the data from the database server and compute locally?"
 
 objectives:
 - "Transform proper motions from one frame to another."
