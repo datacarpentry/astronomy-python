@@ -196,7 +196,7 @@ plt.plot(color_g_i, mag_g);
 ~~~
 {: .output}
   
-![Color magnitude diagram of our selected stars with theoretical isochrone overlaid as blue curve.](../fig/06-photo_files/06-photo_42_0.png)
+![Color magnitude diagram of our selected stars with theoretical isochrone overlaid as blue curve.](../fig/07-photo_files/07-photo_42_0.png)
 
 The theoretical isochrone passes through the overdense region where we
 expect to find stars in GD-1.
