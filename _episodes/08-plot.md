@@ -689,7 +689,7 @@ ax.add_patch(poly)
 > >  {: .output}
 > >     
 > > ![Four paneled plot we created above with two left-hand panels increased in width.](../fig/08-plot_files/08-plot_72_0.png)
-> {.solution}
+> {: .solution}
 {: .challenge}
 
 ## Summary
