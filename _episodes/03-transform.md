@@ -1,7 +1,7 @@
 ---
 title: "Plotting and Tabular Data"
-teaching: 65
-exercises: 20
+teaching: 50
+exercises: 5
 
 questions:
 - "How do we make scatter plots in Matplotlib?"
@@ -101,8 +101,6 @@ source_id   int64          Unique source identifier (unique within a particular 
  parallax float64      mas                                                           Parallax
 ~~~
 {: .output}
-
-
 
 In this episode, we will see operations for selecting columns and rows
 from an Astropy `Table`.  You can find more information about these
