@@ -1,6 +1,6 @@
 ---
 title: "Transform and Select"
-teaching: 60
+teaching: 55
 exercises: 15
 questions:
 - "When should we use the database server for computation?"
