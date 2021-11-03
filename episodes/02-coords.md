@@ -1,7 +1,7 @@
 ---
 title: "Coordinate Transformations"
 teaching: 75
-exercises: 18
+exercises: 20
 questions:
 - "How do we transform celestial coordinates from one frame to another and save a subset of the results in files?"
 
@@ -157,7 +157,7 @@ angle + 5 * u.second
 
 causes a `UnitConversionError`.
 
-> ## Exercise (3 minutes)
+> ## Exercise (5 minutes)
 > 
 > Create a quantity that represents 5
 > [arcminutes](https://en.wikipedia.org/wiki/Minute_and_second_of_arc)
