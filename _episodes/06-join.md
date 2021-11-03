@@ -1,7 +1,7 @@
 ---
 title: "Join"
-teaching: 50
-exercises: 35
+teaching: 60
+exercises: 30
 questions:
 - "How do we use `JOIN` to combine information from multiple tables?"
 - "How can we make a selection within a joined table?"
@@ -651,7 +651,7 @@ here](https://www.geeksforgeeks.org/sql-join-set-1-inner-left-right-and-full-joi
 
 ## Adding the Pan-STARRS table
 
-> ## Exercise (10 minutes)
+> ## Exercise (15 minutes)
 > 
 > Now we are ready to bring in the Pan-STARRS table.  Starting with the
 > previous query, add a second `JOIN` clause that joins with
