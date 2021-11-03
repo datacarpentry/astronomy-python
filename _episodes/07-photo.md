@@ -1,6 +1,6 @@
 ---
 title: "Photometry"
-teaching: 55
+teaching: 40
 exercises: 0
 questions:
 - "How do we use Matplotlib to define a polygon and select points that fall inside it?"
