@@ -1,7 +1,7 @@
 ---
 title: "Visualization"
-teaching: 55
-exercises: 30
+teaching: 65
+exercises: 65
 questions:
 - What elements make a compelling visualization that authentically reports scientific results ready for scientific presentation and publication?
 - What tools and techinques are available to save time on creating presentation and publication-ready figures?
@@ -112,7 +112,7 @@ with the caption:
 <img style="max-width: 100%;"
 src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-5.png" alt="Figure 1 from Price-Whelan and Bonaca paper with four panels and caption. Caption reads: On-sky positions of likely GD-1 members in the GD-1 coordinate system. GD-1 is apparent as an overdensity in negative proper motions (top-right panel, orange box), so selecting on proper motion already reveals the stream in positions of individual stars (top-left panel). The stream also stands out in the color–magnitude diagram (bottom-right panel) as older and more metal-poor than the background. Selecting the main sequence of GD-1 (orange, shaded region in the bottom-right panel) along with proper motion cuts unveils the stream in unprecedented detail (bottom-left panel).">
 
-> ## Exercise (5 minutes)
+> ## Exercise (10 minutes)
 > 
 > Think about the following questions:
 > 
@@ -158,7 +158,7 @@ region of GD-1,
 
 * Several annotations that combine text and arrows to identify features of GD-1.
 
-> ## Exercise (15 minutes)
+> ## Exercise (20 minutes)
 > 
 > Plot the selected stars in `winner_df` using the `plot_cmd_function` and then
 > choose any or all of these features and add them to the figure:
@@ -296,7 +296,7 @@ plt.rcParams['font.size'] = 14
 ~~~
 {: .language-python}
 
-> ## Exercise
+> ## Exercise (5 minutes)
 > Plot the previous figure again, and see what font
 > sizes have changed.  Look up any other element of `rcParams`, change
 > its value, and check the effect on the figure.
@@ -365,7 +365,7 @@ The style sheet you choose will affect the appearance of all figures
 you plot after calling `use`, unless you override any of the options
 or call `use` again.
 
-> ## Exercise
+> ## Exercise (5 minutes)
 > Choose one of the styles on the list and select it by
 > calling `use`.  Then go back and plot one of the figures above and see
 > what changes in the figure's appearance.
@@ -452,7 +452,7 @@ titles and axis labels don't overlap. Notice how convenient it is that we have w
 This code is concise and readable: we can tell what is being plotted in each panel thanks to our explicit function names and
 we know what function to investigate if we want to see the mechanics of exactly how the plotting is done.
 
-> ## Exercise 
+> ## Exercise (5 minutes)
 > What happens if you leave out `tight_layout`?
 > 
 > > ## Solution
@@ -638,7 +638,7 @@ ax.add_patch(poly)
 > {: .solution}
 {: .challenge}
 
-> ## Exercise
+> ## Exercise (5 minutes)
 > 
 > Add the `Polygon` patches you just created to the right panels of the four panel figure.
 > 
