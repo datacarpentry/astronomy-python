@@ -157,7 +157,7 @@ angle + 5 * u.second
 
 causes a `UnitConversionError`.
 
-> ## Exercise (3 minutes)
+> ## Exercise (5 minutes)
 > 
 > Create a quantity that represents 5
 > [arcminutes](https://en.wikipedia.org/wiki/Minute_and_second_of_arc)
