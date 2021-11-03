@@ -1,7 +1,7 @@
 ---
 title: "Plotting and Pandas"
-teaching: 65
-exercises: 20
+teaching: 50
+exercises: 15
 
 questions:
 - "How do efficiently explore our data and identify appropriate filters to produce a clean sample (in this case of GD-1 stars)?"
