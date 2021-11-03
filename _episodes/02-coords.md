@@ -1,7 +1,7 @@
 ---
 title: "Coordinate Transformations"
 teaching: 75
-exercises: 18
+exercises: 20
 questions:
 - "How do we transform celestial coordinates from one frame to another and save a subset of the results in files?"
 
