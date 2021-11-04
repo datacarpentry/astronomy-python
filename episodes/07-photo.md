@@ -1,7 +1,7 @@
 ---
 title: "Photometry"
-teaching: 40
-exercises: 0
+teaching: 30
+exercises: 10
 questions:
 - "How do we use Matplotlib to define a polygon and select points that fall inside it?"
 
@@ -469,31 +469,35 @@ polygon
 The result is a `Polygon` object , which provides `contains_points`,
 which figures out which points are inside the polygon.
 
-When we encounter a new object, it is good to create a toy example to test 
-that it does what we think it does. We will create two points, one that we expect
-to be inside the polygon and one that we expect to be outside the polygon,
-and check that we get the results we expect from `contains_points`.
+> ## Exercise (5 minutes)
+> When we encounter a new object, it is good to create a toy example to test 
+> that it does what we think it does. Define an array of two points, one that should
+> be inside the polygon and one that should be outside the polygon. Use
+> `contains_points` to verify that the results are as expected.
+> 
+> > ## Solution
+> > ~~~
+> > test_points = [(0.4, 20), 
+> >            (0.4, 16)]
+> > ~~~
+> > {: .language-python}
+> >  
+> > ~~~
+> > test_inside_mask = polygon.contains_points(test_points)
+> > test_inside_mask
+> > ~~~
+> > {: .language-python}
+> > 
+> > ~~~
+> > array([ True, False])
+> > ~~~
+> > {: .output}
+> > 
+> > The result is an array of Boolean values, and is as expected.
+> {: .solution}
+{: .challenge}
 
-~~~
-test_points = [(0.4, 20), 
-          (0.4, 16)]
-~~~
-{: .language-python}
 
-Now we can make sure `contains_points` does what we expect.
-
-~~~
-test_inside_mask = polygon.contains_points(test_points)
-test_inside_mask
-~~~
-{: .language-python}
-
-~~~
-array([ True, False])
-~~~
-{: .output}
-
-The result is an array of Boolean values.
 
 We are almost ready to select stars whose photometry data falls in
 this polygon.  But first we need to do some data cleaning.
@@ -563,18 +567,25 @@ array([False, False, False, ..., False, False, False])
 ~~~
 {: .output}
 
-The result is a Boolean array.  We can use `sum` to see how many stars
-fall inside the polygon.
+The result is a Boolean array.  
 
-~~~
-inside_mask.sum()
-~~~
-{: .language-python}
-
-~~~
-454
-~~~
-{: .output}
+> ## Exercise (5 minutes)
+> 
+> Boolean values are stored as 0s and 1s. `FALSE` = 0 and `TRUE` = 1. Use this information 
+> to determine the number of stars that fall inside the polygon.
+> 
+> > ## Solution
+> > ~~~
+> > inside_mask.sum()
+> > ~~~
+> > {: .language-python}
+> > 
+> > ~~~
+> > 454
+> > ~~~
+> > {: .output}
+> {: .solution}
+{: .challenge}
 
 Now we can use `inside_mask` as a mask to select stars that fall inside the polygon.
 
