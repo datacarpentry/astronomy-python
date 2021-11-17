@@ -596,8 +596,8 @@ This is something we will need to do multiple times. We will write a function to
 The following function combines these steps. 
 
 ~~~
-def skycoord_to_string(skycoord):
-    """Convert SkyCoord to string."""
+def polygon_skycoord_to_gaia_string(skycoord):
+    """Convert a one-dimenstional list of SkyCoord to string for Gaia's query format."""
     corners_list_str = skycoord.to_string()
     corners_single_str = ' '.join(corners_list_str)
     return corners_single_str.replace(' ', ', ')
@@ -607,7 +607,7 @@ def skycoord_to_string(skycoord):
 Here is how we use this function:
 
 ~~~
-sky_point_list = skycoord_to_string(corners_icrs)
+sky_point_list = polygon_skycoord_to_gaia_string(corners_icrs)
 sky_point_list
 ~~~
 {: .language-python}
