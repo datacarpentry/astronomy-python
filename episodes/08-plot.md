@@ -171,7 +171,7 @@ region of GD-1,
 > * To add text, see
 > [`plt.text`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.text.html).
 > 
-> * To add an annotation with text and an arrow, see [plt.annotate]().
+> * To add an annotation with text and an arrow, see [plt.annotate](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.annotate.html).
 > 
 > Here is some [additional information about text and
 > arrows](https://matplotlib.org/stable/tutorials/text/annotations.html).
