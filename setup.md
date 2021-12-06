@@ -11,7 +11,7 @@ successful.
 
 ## Data
 
-To start your installation process download this [zip file](https://zenodo.org/record/5637441/files/student_download.zip?download=1).
+To start your installation process download this [zip file](https://zenodo.org/record/5762297/files/student_download.zip?download=1).
 Make sure to note where in your file system are are downloading the file to.
 If your file does not automatically unzip into a directory called `student_download`, you can unzip it with the following steps:
 * Mac: navigate in a finder window to where you downloaded the file and double click `student_download.zip`

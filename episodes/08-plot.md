@@ -66,7 +66,7 @@ them to make a figure that tells a compelling scientific story.
 > > 
 > > The following code loads in the data (instructions for downloading data can be
 > > found in the [setup instructions](../setup)).  You may need to add a the path
-> > to the filename variable below (e.g. `filename = 'student_download/data/gd1_data.hdf'`)
+> > to the filename variable below (e.g. `filename = 'student_download/backup-data/gd1_data.hdf'`)
 > > ~~~
 > > filename = 'gd1_data.hdf'
 > > winner_df = pd.read_hdf(filename, 'winner_df')
