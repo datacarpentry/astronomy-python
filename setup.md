@@ -66,6 +66,24 @@ Now open the notebook you downloaded, `test_setup.ipynb`, and read through the i
 Make sure to run the cells that contain `import` statements.
 If they work and you get no error messages, **you are ready for the workshop**.
 
+> ## Why didn't the imports work? 
+> Occasionally learners will need to take one additional step to make Jupyter run within the environnment we've created. 
+> If your imports fail, close Jupyter by closing its terminal, and try running the following from your Anaconda prompt (
+> Terminal or otherwise):
+> 
+> ~~~
+> python -m ipykernel install --user --name=AstroDataCarpentry
+> ~~~
+> Then start Jupyter up again:
+> ~~~
+> jupyter notebook
+> ~~~
+> This time, when you open your notebook, navigate to the Kernel menu --> Change Kernel --> select **AstroDataCarpentry** . 
+> This will ensure that the relevant packages are all available. 
+> You can seek installation help if this looks confusing!
+{: .callout}
+
+
 Please contact your instructors if you experience any problems with these installation instructions. If 
 you are working through these materials independently, let us know about any problems you encounter by 
 [filing an issue on the lesson's GitHub repository](https://github.com/datacarpentry/astronomy-python/issues) 
