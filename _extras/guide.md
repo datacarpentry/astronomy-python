@@ -9,10 +9,12 @@ This episode guides learners through analyzing data from a large database. Scien
 
 Because this episode follows a single dataset throughout, its easy for learners (and instructors) to lose sight of the bigger picture and focus instead on the scientific goals or individual commands. At the beginning of each episode it is recommended that the instructor discuss both the scientific goal of the episode (with frequent references to Figure 1) and highlight the big picture skills that we hope each student takes away from the episode, beyond the specific science case. At the end of the episode the instructors should recap the same information, highlighting the best practices covered. TODO: reference slide show.
 
-**Timing** Unfortunately these episodes are incredibly cumulative and there is not much that can be cut along the way. 
+### Timing 
+Unfortunately these episodes are incredibly cumulative and there is not much that can be cut along the way. 
 If you are running short on time, we recommend eliminating or condensing these sections:
 * cutting or stream-lining parts of episode 8 about plotting. This is the most significant way you can make up time.
 * stream-line some of the CSV section at the end of episode 6, for instance skip the read back section which demonstrates how extra columns can slip into CSV files
+* cut the "Checking the Match" section of episode 6
 * cut the part where we check the size of the HDF5 file in episode 4
 * cut the brief discussion of context managers in episode 4
 
