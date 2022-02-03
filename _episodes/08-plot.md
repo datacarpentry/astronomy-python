@@ -365,6 +365,14 @@ The style sheet you choose will affect the appearance of all figures
 you plot after calling `use`, unless you override any of the options
 or call `use` again.
 
+> ## Return to Default
+> To switch back to the default style use
+> ~~~
+> plt.style.use('default')
+> ~~~
+> {: .language-python}
+{: .callout}
+
 > ## Exercise (5 minutes)
 > Choose one of the styles on the list and select it by
 > calling `use`.  Then go back and plot one of the figures above and see
