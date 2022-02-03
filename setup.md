@@ -11,12 +11,11 @@ successful.
 
 ## Data
 
-To start your installation process download this [zip file](https://zenodo.org/record/5762297/files/student_download.zip?download=1).
-Make sure to note where in your file system are are downloading the file to.
+To start your installation process download this [zip file](https://zenodo.org/record/5762297/files/student_download.zip?download=1). Move the downloaded file to your Desktop.
 If your file does not automatically unzip into a directory called `student_download`, you can unzip it with the following steps:
-* Mac: navigate in a finder window to where you downloaded the file and double click `student_download.zip`
-* Windows: navigate in a file explorer window to where you downloaded the file, right click the `student_download.zip` file, and select `Extract All`
-* Linux: open a terminal and navigate to where you downloaded the zip file. Type `unzip student_download.zip`
+* Mac: navigate in a finder window to your Desktop and double click `student_download.zip`
+* Windows: navigate in a file explorer window to your Desktop, right click the `student_download.zip` file, and select `Extract All`
+* Linux: open a terminal and navigate to your Desktop. Type `unzip student_download.zip`
 
 You should now have a directory called `student_download`.
 In this directory you will find files that you will use during the workshop as well as files that you will use in the remainder of the set up process.
