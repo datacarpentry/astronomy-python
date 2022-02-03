@@ -576,6 +576,12 @@ explains](https://www.cosmos.esa.int/web/gaia/archive-tips#negative%20parallax),
 have "no physical meaning," but they can be a "useful diagnostic on
 the quality of the astrometric solution."
 
+> ## Different results
+> Your results for this query may differ from the Instructor's. This is because
+> `TOP 3000` returns 3000 results, but those results are not organised in any 
+> particular way.
+{: .callout}
+
 > ## Exercise (5 minutes)
 > 
 > The clauses in a query have to be in the right order.  Go back and
