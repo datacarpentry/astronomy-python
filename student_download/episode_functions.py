@@ -19,7 +19,7 @@ def make_rectangle(x1, x2, y1, y2):
     return xs, ys
 
 def skycoord_to_string(skycoord):
-    """Convert SkyCoord to string."""
+    """Convert a one-dimenstional list of SkyCoord to string for Gaia's query format."""
     t = skycoord.to_string()
     s = ' '.join(t)
     return s.replace(' ', ', ')
