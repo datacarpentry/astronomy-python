@@ -9,7 +9,7 @@ use in the workshop. Then, you need to set up your machine to use the required s
 download and run a Jupyter Notebook that contains test code to check that your installation was 
 successful.
 
-**Optional** - You may also be interested in reading the journal article that we will be exploring during the workshop - 
+**Optional** - You may also be interested in reading the journal article that we will explore during the workshop - 
 [Off the Beaten Path: *Gaia* Reveals GD-1 Stars outside of the Main Stream](https://iopscience.iop.org/article/10.3847/2041-8213/aad7b5) by 
 Adrian M. Price-Whelan and Ana Bonaca.
 
