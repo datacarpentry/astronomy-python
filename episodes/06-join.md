@@ -326,7 +326,7 @@ r_mean_psf_mag
 ~~~
 {: .output}
 
-Here is the [documentation for these variables]() .
+Here is the [documentation for these variables](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_external_catalogues/ssec_dm_panstarrs1_original_valid.html) .
 
 The ones we will use are:
 
