@@ -67,7 +67,7 @@ Make sure to run the cells that contain `import` statements.
 If they work and you get no error messages, **you are ready for the workshop**.
 
 > ## Why didn't the imports work? 
-> Occasionally learners will need to take one additional step to make Jupyter run within the environnment we've created. 
+> Occasionally learners will need to take one additional step to make Jupyter run within the environment we have created. 
 > If your imports fail, close Jupyter by closing its terminal, and try running the following from your Anaconda prompt (
 > Terminal or otherwise):
 > 
