@@ -3,17 +3,8 @@ layout: lesson
 root: .  # Is the only page that doesn't follow the pattern /:path/index.html
 permalink: index.html  # Is the only page that doesn't follow the pattern /:path/index.html
 ---
-The Foundations of Astronomical Data Science curriculum covers a range of core concepts aimed at efficient study of the 
-growing datasets facing the astronomical community. In particular, this curriculum teaches learners to work with 
-astronomy-specific packages (Astropy, Astroquery) and more general packages (Pandas) to perform database operations
-(SQL queries, joins, filtering) to create publication-quality data visualisations. These concepts are demonstrated on the
-large, all-sky, multi-dimensional dataset from the [Gaia satellite](https://sci.esa.int/web/gaia), which measures the 
-positions, motions, and distances of approximately a billion stars in our Milky Way galaxy with unprecedented accuracy and
-precision, and the [Pan-STARRS](https://panstarrs.stsci.edu/) photometric survey, which precisely measures light output and 
-distribution from many stars. Together, these datasets are used to reproduce part of the analysis from the article 
-[“Off the beaten path: Gaia reveals GD-1 stars outside of the main stream”](https://arxiv.org/abs/1805.00425) by Drs. Adrian
-M. Price-Whelan and Ana Bonaca. This lesson shows how to identify and visualize the GD-1 stellar stream, which is a globular
-cluster that has been tidally stretched by the Milky Way.
+The Foundations of Astronomical Data Science curriculum covers a range of core concepts necessary to efficiently study the ever-growing datasets developed in modern astronomy. In particular, this curriculum teaches learners to perform database operations (SQL queries, joins, filtering) and to create publication-quality data visualisations. Learners will use software packages common to the general and astronomy-specific data science communities ([Pandas](https://pandas.pydata.org), [Astropy](https://www.astropy.org), [Astroquery](https://astroquery.readthedocs.io/en/latest/) combined with two astronomical datasets: the large, all-sky, multi-dimensional dataset from the [Gaia satellite](https://sci.esa.int/web/gaia), which measures the positions, motions, and distances of approximately a billion stars in our Milky Way galaxy with unprecedented accuracy and precision; and the [Pan-STARRS photometric survey](https://panstarrs.stsci.edu/), which precisely measures light output and distribution from many stars. Together, the software and datasets are used to reproduce part of the analysis from the article [“Off the beaten path: Gaia reveals GD-1 stars outside of the main stream”](https://arxiv.org/abs/1805.00425) by Drs. Adrian M. Price-Whelan and Ana Bonaca. This lesson shows how to identify and visualize the GD-1 stellar stream, which is a globular cluster that has been tidally stretched by the Milky Way.
+
 
 This lesson can be taught in approximately 10 hours and covers the following topics:
 * Incremental creation of complex ADQL and SQL queries.
