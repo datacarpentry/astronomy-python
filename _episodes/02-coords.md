@@ -607,7 +607,7 @@ def skycoord_to_string(skycoord):
 Here is how we use this function:
 
 ~~~
-sky_point_list = polygon_skycoord_to_gaia_string(corners_icrs)
+sky_point_list = skycoord_to_string(corners_icrs)
 sky_point_list
 ~~~
 {: .language-python}
