@@ -307,7 +307,7 @@ From the Price-Whelan and Bonaca paper, we will try to reproduce
 [Figure 1](http://www.astroexplorer.org/details/apjlaad7b5f1/eyJrZXlXb3JkcyI6IlByaWNlLVdoZWxhbiIsImF1dGhvciI6IlByaWNlLVdoZWxhbiIsImZyb21ZZWFyIjoyMDE4LCJ0b1llYXIiOjIwMTgsInBhZ2UiOjEsInNob3ciOiIyMDAifQ), which includes this representation of stars likely to belong
 to GD-1:
 
-<img src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-4.png" alt = "On-sky positions of likely GD-1 members in the GD-1 coordinate system, where selection by proper motion and photometry reveals the stream in great detail.">
+<img src="../fig/gd1-4.png" alt = "On-sky positions of likely GD-1 members in the GD-1 coordinate system, where selection by proper motion and photometry reveals the stream in great detail.">
 
 The axes of this figure are defined so the x-axis is aligned with the
 stars in GD-1, and the y-axis is perpendicular.
