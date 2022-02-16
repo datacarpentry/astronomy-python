@@ -596,7 +596,7 @@ This is something we will need to do multiple times. We will write a function to
 The following function combines these steps. 
 
 ~~~
-def polygon_skycoord_to_gaia_string(skycoord):
+def skycoord_to_string(skycoord):
     """Convert a one-dimenstional list of SkyCoord to string for Gaia's query format."""
     corners_list_str = skycoord.to_string()
     corners_single_str = ' '.join(corners_list_str)
