@@ -9,14 +9,17 @@ use in the workshop. Then, you need to set up your machine to use the required s
 download and run a Jupyter Notebook that contains test code to check that your installation was 
 successful.
 
+**Optional** - You may also be interested in reading the journal article that we will explore during the workshop - 
+[Off the Beaten Path: *Gaia* Reveals GD-1 Stars outside of the Main Stream](https://iopscience.iop.org/article/10.3847/2041-8213/aad7b5) by 
+Adrian M. Price-Whelan and Ana Bonaca.
+
 ## Data
 
-To start your installation process download this [zip file](https://zenodo.org/record/5762297/files/student_download.zip?download=1).
-Make sure to note where in your file system are are downloading the file to.
+To start your installation process download this [zip file](https://zenodo.org/record/5762297/files/student_download.zip?download=1). Move the downloaded file to your Desktop.
 If your file does not automatically unzip into a directory called `student_download`, you can unzip it with the following steps:
-* Mac: navigate in a finder window to where you downloaded the file and double click `student_download.zip`
-* Windows: navigate in a file explorer window to where you downloaded the file, right click the `student_download.zip` file, and select `Extract All`
-* Linux: open a terminal and navigate to where you downloaded the zip file. Type `unzip student_download.zip`
+* Mac: navigate in a finder window to your Desktop and double click `student_download.zip`
+* Windows: navigate in a file explorer window to your Desktop, right click the `student_download.zip` file, and select `Extract All`
+* Linux: open a terminal and navigate to your Desktop. Type `unzip student_download.zip`
 
 You should now have a directory called `student_download`.
 In this directory you will find files that you will use during the workshop as well as files that you will use in the remainder of the set up process.
@@ -65,6 +68,24 @@ browser, open this link: [http://localhost:8888](http://localhost:8888).
 Now open the notebook you downloaded, `test_setup.ipynb`, and read through the instructions there. 
 Make sure to run the cells that contain `import` statements.
 If they work and you get no error messages, **you are ready for the workshop**.
+
+> ## Why didn't the imports work? 
+> Occasionally learners will need to take one additional step to make Jupyter run within the environment we have created. 
+> If your imports fail, close Jupyter by closing its terminal, and try running the following from your Anaconda prompt (
+> Terminal or otherwise):
+> 
+> ~~~
+> python -m ipykernel install --user --name=AstroDataCarpentry
+> ~~~
+> Then start Jupyter up again:
+> ~~~
+> jupyter notebook
+> ~~~
+> This time, when you open your notebook, navigate to the Kernel menu --> Change Kernel --> select **AstroDataCarpentry** . 
+> This will ensure that the relevant packages are all available. 
+> You can seek installation help if this looks confusing!
+{: .callout}
+
 
 Please contact your instructors if you experience any problems with these installation instructions. If 
 you are working through these materials independently, let us know about any problems you encounter by 

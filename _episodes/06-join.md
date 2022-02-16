@@ -25,7 +25,7 @@ The following figure from the Price-Whelan and Bonaca paper is a color-magnitude
 the stars selected based on proper motion:
 
 <img width="300"
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/gd1-3.png" alt="Color-magnitude diagram for the stars selected based on proper motion, from Price-Whelan and Bonaca paper.">
+src="../fig/gd1-3.png" alt="Color-magnitude diagram for the stars selected based on proper motion, from Price-Whelan and Bonaca paper.">
 
 In red is a [stellar
 isochrone](https://en.wikipedia.org/wiki/Stellar_isochrone), showing
@@ -326,7 +326,7 @@ r_mean_psf_mag
 ~~~
 {: .output}
 
-Here is the [documentation for these variables]() .
+Here is the [documentation for these variables](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_external_catalogues/ssec_dm_panstarrs1_original_valid.html) .
 
 The ones we will use are:
 
@@ -398,7 +398,7 @@ If you are curious, you can [read more about
 it](https://chartio.com/learn/databases/how-does-indexing-work/).
 
 <img
-src="https://github.com/datacarpentry/astronomy-python/raw/gh-pages/fig/join.png" alt="Diagram showing relationship between the gaia_source, panstarrs1_best_neighbor, and panstarrs1_original_valid tables and result table.">
+src="../fig/join.png" alt="Diagram showing relationship between the gaia_source, panstarrs1_best_neighbor, and panstarrs1_original_valid tables and result table.">
 
 Now we will get to the details of performing a `JOIN` operation.
 

@@ -16,6 +16,11 @@ This lesson can be taught in approximately 10 hours and covers the following top
 * Creating a reproducible workflow that brings the computation to the data.
 * Customising all elements of a plot and creating complex, multi-panel, publication-quality graphics.
 
+Interested in teaching these materials? We have an [onboarding video](https://www.youtube.com/watch?v=gfaNFaKIOrY) and accompanying 
+[slides](https://docs.google.com/presentation/d/1YosDXx1gBGpBxf6fCEaazFQwZ2dYTWgtYSdPEeD09yo/edit#slide=id.p) available to prepare Instructors to 
+teach this lesson. After watching this video, please contact team@carpentries.org so that we can record your status as an onboarded Instructor. Instructors who have completed onboarding will be given priority status for teaching at Centrally-Organised 
+Data Carpentry Foundations of Astronomical Data Science workshops.
+
 <!-- this is an html comment -->
 
 {% comment %} This is a comment in Liquid {% endcomment %}
