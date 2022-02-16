@@ -578,7 +578,7 @@ the quality of the astrometric solution."
 
 > ## Different results
 > Your results for this query may differ from the Instructor's. This is because
-> `TOP 3000` returns 3000 results, but those results are not organised in any 
+> `TOP 3000` returns 3000 results, but those results are not organized in any 
 > particular way.
 {: .callout}
 
