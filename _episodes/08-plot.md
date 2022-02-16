@@ -142,7 +142,7 @@ src="../fig/gd1-5.png" alt="Figure 1 from Price-Whelan and Bonaca paper with fou
 > > 5. The on-sky positions likely do not need so much white space.
 > > 6. Axes ticks for the on-sky position figures are not necessary since this is not in an intuitive coordinate system or a finder chart. Instead, we would suggest size bar annotations for each dimension to give the reader the needed scale.
 > > 7. The text annotations could be darker for more contrast and appear only over white background to increase accessibility
-> > 8. The legend in the bottom right panel has a font too small for low-vision readers. At the very least, those details (and the isochrone line) could be called out in the legend.
+> > 8. The legend in the bottom right panel has a font too small for low-vision readers. At the very least, those details (and the isochrone line) could be called out in the caption.
 > {: .solution}
 {: .challenge}
 
@@ -160,7 +160,7 @@ region of GD-1,
 
 > ## Exercise (20 minutes)
 > 
-> Plot the selected stars in `winner_df` using the `plot_cmd_function` and then
+> Plot the selected stars in `winner_df` using the `plot_cmd_selection` function and then
 > choose any or all of these features and add them to the figure:
 > 
 > * To draw vertical lines, see
@@ -364,6 +364,14 @@ plt.style.use('fivethirtyeight')
 The style sheet you choose will affect the appearance of all figures
 you plot after calling `use`, unless you override any of the options
 or call `use` again.
+
+> ## Return to Default
+> To switch back to the default style use
+> ~~~
+> plt.style.use('default')
+> ~~~
+> {: .language-python}
+{: .callout}
 
 > ## Exercise (5 minutes)
 > Choose one of the styles on the list and select it by

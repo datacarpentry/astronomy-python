@@ -5,14 +5,21 @@ title: "Instructor Notes"
 ## Instructor notes
 
 ### Overview
-This episode guides learners through analyzing data from a large database. Scientifically, we are identifying stars in GD-1, a stellar stream in the Milky Way (creating Figure 1 in "[Off the beaten path: Gaia reveals GD-1 stars outside of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian Price-Whelan and Ana Bonaca). The first part of this episode (1-6) shows learners how to prototype a query, starting by querying a subset of the sky we ultimately want and then building up stronger and stronger filters locally. With our filters in place, episode 7 performs the full query remote on the remote database, giving us a dataset to visualize in episode 8. Episode 8 demonstrates best practices and tips and tricks to efficiently and effectively visualize data.
+This lesson guides learners through analyzing data from a large database. Scientifically, we are identifying stars in GD-1, a stellar stream in the Milky Way (creating Figure 1 in "[Off the beaten path: Gaia reveals GD-1 stars outside of the main stream](https://arxiv.org/abs/1805.00425)" by Adrian Price-Whelan and Ana Bonaca). The first part of this lesson (episodes 1-6) shows learners how to prototype a query, starting by querying a subset of the sky we ultimately want and then building up stronger and stronger filters locally. With our filters in place, episode 7 performs the full query remote on the remote database, giving us a dataset to visualize in episode 8. Episode 8 demonstrates best practices and tips and tricks to efficiently and effectively visualize data.
 
-Because this episode follows a single dataset throughout, its easy for learners (and instructors) to lose sight of the bigger picture and focus instead on the scientific goals or individual commands. At the beginning of each episode it is recommended that the instructor discuss both the scientific goal of the episode (with frequent references to Figure 1) and highlight the big picture skills that we hope each student takes away from the episode, beyond the specific science case. At the end of the episode the instructors should recap the same information, highlighting the best practices covered. TODO: reference slide show.
+Because this episode follows a single dataset throughout, its easy for learners (and instructors) to lose sight of the bigger picture and focus instead on the scientific goals or individual commands. At the beginning of each episode it is recommended that the instructor discuss both the scientific goal of the episode (with frequent references to Figure 1) and highlight the big picture skills that we hope each student takes away from the episode, beyond the specific science case. At the end of the episode the instructors should recap the same information, highlighting the best practices covered.
 
-**Timing** Unfortunately these episodes are incredibly cumulative and there is not much that can be cut along the way. 
+We have an [onboarding video](https://www.youtube.com/watch?v=gfaNFaKIOrY) and accompanying 
+[slides](https://docs.google.com/presentation/d/1YosDXx1gBGpBxf6fCEaazFQwZ2dYTWgtYSdPEeD09yo/edit#slide=id.p) available to prepare Instructors to 
+teach this lesson. After watching this video, please contact team@carpentries.org so that we can record your status as an onboarded Instructor. Instructors who have completed onboarding will be given priority status for teaching at Centrally-Organised 
+Data Carpentry Foundations of Astronomical Data Science workshops.
+
+### Timing 
+Unfortunately these episodes are incredibly cumulative and there is not much that can be cut along the way. 
 If you are running short on time, we recommend eliminating or condensing these sections:
 * cutting or stream-lining parts of episode 8 about plotting. This is the most significant way you can make up time.
 * stream-line some of the CSV section at the end of episode 6, for instance skip the read back section which demonstrates how extra columns can slip into CSV files
+* cut the "Checking the Match" section of episode 6
 * cut the part where we check the size of the HDF5 file in episode 4
 * cut the brief discussion of context managers in episode 4
 
