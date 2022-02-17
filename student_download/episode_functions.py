@@ -20,15 +20,9 @@ def make_rectangle(x1, x2, y1, y2):
 
 def skycoord_to_string(skycoord):
     """Convert a one-dimenstional list of SkyCoord to string for Gaia's query format."""
-<<<<<<< HEAD
     corners_list_str = skycoord.to_string()
     corners_single_str = ' '.join(corners_list_str)
     return corners_single_str.replace(' ', ', ')
-=======
-    t = skycoord.to_string()
-    s = ' '.join(t)
-    return s.replace(' ', ', ')
->>>>>>> dabe173db8c55af250d1243c72eccbb43c457a6f
 
 ##########################
 # Episode 3
