@@ -129,19 +129,22 @@ from astroquery.gaia import Gaia
 ~~~
 {: .language-python}
 
-~~~
-Created TAP+ (v1.2.1) - Connection:
-	Host: gea.esac.esa.int
-	Use HTTPS: True
-	Port: 443
-	SSL Port: 443
-Created TAP+ (v1.2.1) - Connection:
-	Host: geadata.esac.esa.int
-	Use HTTPS: True
-	Port: 443
-	SSL Port: 443
-~~~
-{: .output}
+> ## Old versions of astroquery output
+> if you are using a version of astroquery that's older than v0.4.4, you may see this output
+> ~~~
+> Created TAP+ (v1.2.1) - Connection:
+> 	Host: gea.esac.esa.int
+> 	Use HTTPS: True
+> 	Port: 443
+> 	SSL Port: 443
+> Created TAP+ (v1.2.1) - Connection:
+> 	Host: geadata.esac.esa.int
+> 	Use HTTPS: True
+> 	Port: 443
+> 	SSL Port: 443
+> ~~~
+> {: .output}
+{: .callout}
 
 This import statement creates a
 [TAP+](http://www.ivoa.net/documents/TAP/) connection; TAP stands for
