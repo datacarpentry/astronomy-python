@@ -20,9 +20,9 @@ def make_rectangle(x1, x2, y1, y2):
 
 def skycoord_to_string(skycoord):
     """Convert a one-dimenstional list of SkyCoord to string for Gaia's query format."""
-    t = skycoord.to_string()
-    s = ' '.join(t)
-    return s.replace(' ', ', ')
+    corners_list_str = skycoord.to_string()
+    corners_single_str = ' '.join(corners_list_str)
+    return corners_single_str.replace(' ', ', ')
 
 ##########################
 # Episode 3
@@ -64,6 +64,9 @@ def make_dataframe(table):
 
     return df
 
+##########################
+# Episode 4
+##########################
 def plot_proper_motion(df):
     """Plot proper motion.
     
@@ -96,16 +99,7 @@ def plot_pm_selection(df):
     plt.axis('equal')
 
 ##########################
-# Episode 5
-##########################
-def head(filename, n=3):
-    """Print the first `n` lines of a file."""
-    with open(filename) as fp:
-        for i in range(n):
-            print(next(fp))
-
-##########################
-# Episode 6
+# Episode 7
 ##########################
 
 def plot_cmd(table):
@@ -119,11 +113,11 @@ def plot_cmd(table):
     plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
 
     plt.xlim([0, 1.5])
-    plt.ylim([14, 22])
-    plt.gca().invert_yaxis()
+    plt.ylim([22, 14])
 
-    plt.ylabel('$Magnitude (g)$')
-    plt.xlabel('$Color (g-i)$')
+    plt.ylabel('Magnitude (g)')
+    plt.xlabel('Color (g-i)')
+
 
 def front_to_back(first, second):
     """Join two arrays front to back."""

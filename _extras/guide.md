@@ -189,8 +189,6 @@ objects we are saving are small.
 
 * While CSV files are the most basic file format, if you are running short on time, this section can be skipped or abbreviated as learners have often likely encountered CSV files and writing them is not essential to the rest of the curriculum.
 
-* The `head` function is a Python version of the Unix `head` command. The Python version (which can be found in the `episode_functions.py` file) is used because it is platform independent so a single syntax can be used by all learners. You do not need to go through the function, but if someone asks, feel free to open the `episode functions.py` file and show them. 
-
 * In case a learner asks about the extra `unnamed` column in the CSV section here is the explanation. You may notice that all Pandas `DataFrame`s have an index column which was not part of the original table definition. 
 This essentially numbers each row. When we write a `DataFrame` in any other format, the index gets treated like a bonafide column.
 For this reason when we write a CSV file and then read it back into a `DataFrame` the index column gets written as an `unnamed` column and then when it is read back in, another index column is created leading to two extraneous columns. 
