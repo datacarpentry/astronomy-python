@@ -365,31 +365,10 @@ elements are selected.
 And `step` is `-1`, which means the elements are in reverse order.
 
 To combine the `left_color` and `right_color` arrays we will use the NumPy `append` function
-which takes two arrays as input, and outputs them combined into a single array. By writing the
-function we can use the same code to create the x-values for the loop (colors) and the y-values
-for the loop (g-band magnitudes).
+which takes two arrays as input, and outputs them combined into a single array.
 
 ~~~
-combined_array = np.append(left_color, reverse_right_color)
-~~~
-{:.language-python}
-
-We can combine these steps into the following function, which takes two arrays and joins
-them front-to-back:
-
-~~~
-def front_to_back(first, second):
-    """Join two arrays front to back."""
-    return np.append(first, second[::-1])
-~~~
-{: .language-python}
-
-
-We can use `front_to_back` to make a loop that includes the elements
-of `left_color` and `right_color`:
-
-~~~
-color_loop = front_to_back(left_color, right_color)
+color_loop = np.append(left_color, reverse_right_color)
 color_loop.shape
 ~~~
 {: .language-python}
@@ -399,10 +378,10 @@ color_loop.shape
 ~~~
 {: .output}
 
-And a corresponding loop with the elements of `g` in forward and reverse order.
+We can repeat combine these two lines of code into a single line to create a corresponding loop with the elements of `g` in forward and reverse order.
 
 ~~~
-mag_loop = front_to_back(g, g)
+mag_loop = np.append(g, g[::-1])
 mag_loop.shape
 ~~~
 {: .language-python}
