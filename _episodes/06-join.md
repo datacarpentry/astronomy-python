@@ -155,6 +155,12 @@ that we have already identified.
 in the `panstarrs1_original_valid` table using the` obj_ids` we just identified.
 
 Before we get to the `JOIN` operation, we will explore these tables.
+> ## British vs American Spelling of Neighbour
+> The Gaia database was created and is maintained by the European Space Astronomy Center.
+> For this reason, the table spellings use the British spelling of neighbour
+> (with a "u"). Do not forget to include it in your table names in the queries below.
+{: .callout}
+
 Here is the metadata for `panstarrs1_best_neighbour`.
 
 ~~~
@@ -903,6 +909,16 @@ dtype: float64
 
 In fact, `1` is the only value in the `Series`, so every candidate
 star has a single best match.
+
+> ## Numpy Mask Warning
+> You may see a warning that ends with the following phrase:
+> `site-packages/numpy/lib/function_base.py:4650: UserWarning: Warning: 'partition' will ignore the 'mask' of the MaskedColumn.`
+> `arr.partition(`
+> This is because astroquery is returning a table with masked columns (which are really fancy masked numpy arrays). 
+> When we turn this column into a pandas Series, it maintains its mask. Describe calls numpy functions to perform statistics.
+> Numpy recently implemented this warning to let you know that the mask is not being considered in the calculation 
+> its performing.
+{: .callout}
 
 Similarly, `number_of_mates` indicates the number of *other* stars in
 Gaia that match with the same star in Pan-STARRS.

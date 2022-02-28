@@ -151,7 +151,7 @@ If the units are not compatible, you get an error.
 For example:
 
 ```
-angle + 5 * u.second
+angle + 5 * u.kg
 ```
 {: .error}
 
