@@ -93,7 +93,7 @@ between the BP and RP bands).
 We use this variable to select stars with `bp_rp` between -0.75 and 2,
 which excludes many class M dwarf stars.
 
-But we can do better than. Assuming GD-1 is a globular cluster, all of the stars formed at the same
+But we can do better than that. Assuming GD-1 is a globular cluster, all of the stars formed at the same
 time from the same material, so the stars' photometric properties should be consistent with a single 
 isochrone in a color magnitude diagram. 
 We can use photometric color and apparent magnitude to select stars with the age and metal richness we expect in GD-1. 
