@@ -118,11 +118,6 @@ def plot_cmd(table):
     plt.ylabel('Magnitude (g)')
     plt.xlabel('Color (g-i)')
 
-
-def front_to_back(first, second):
-    """Join two arrays front to back."""
-    return np.append(first, second[::-1])
-
 def plot_cmd_selection(df):
     x = df['phi1']
     y = df['phi2']
