@@ -445,14 +445,17 @@ polygon
 ~~~
 {: .output}
 
-The result is a `Polygon` object , which provides `contains_points`,
-which figures out which points are inside the polygon.
+The result is a `Polygon` object which has a `contains_points` method.
+This allows us to pass `polygon.contains_points` a list of points and 
+for each point it will tell us if the point is contained within the polygon.
+A point is a tuple with two elements, x and y.
 
 > ## Exercise (5 minutes)
 > When we encounter a new object, it is good to create a toy example to test 
-> that it does what we think it does. Define an array of two points, one that should
-> be inside the polygon and one that should be outside the polygon. Use
-> `contains_points` to verify that the results are as expected.
+> that it does what we think it does. Define a list of two points (represented as two tuples), 
+> one that should be inside the polygon and one that should be outside the polygon. Call
+> `contains_points` on the polygon we just created, passing it the list of points you
+> defined, to verify that the results are as expected.
 > 
 > > ## Solution
 > > ~~~
