@@ -95,9 +95,9 @@ which excludes many class M dwarf stars.
 
 But we can do better than that. Assuming GD-1 is a globular cluster, all of the stars formed at the same
 time from the same material, so the stars' photometric properties should be consistent with a single 
-isochrone in a color magnitude diagram. Therefore, to select stars with the age and metal richness we
-expect in GD-1, we can use `g-i` color and apparent `g`-band magnitude, which
-are available from the Pan-STARRS survey.
+isochrone in a color magnitude diagram. 
+We can use photometric color and apparent magnitude to select stars with the age and metal richness we expect in GD-1. 
+However, the broad Gaia photometric bands (G, BP, RP) are not optimized for this task, instead we will use the more narrow photometric bands available from the Pan-STARRS survey to obtain the `g-i` color and apparent `g`-band magnitude.
 
 Conveniently, the Gaia server provides data from Pan-STARRS as a table
 in the same database we have been using, so we can access it by making
