@@ -15,7 +15,7 @@ Adrian M. Price-Whelan and Ana Bonaca.
 
 ## Data
 
-To start your installation process download this [zip file](https://zenodo.org/record/5762297/files/student_download.zip?download=1). Move the downloaded file to your Desktop.
+To start your installation process download this [zip file](https://figshare.com/ndownloader/files/34647941). Move the downloaded file to your Desktop.
 If your file does not automatically unzip into a directory called `student_download`, you can unzip it with the following steps:
 * Mac: navigate in a finder window to your Desktop and double click `student_download.zip`
 * Windows: navigate in a file explorer window to your Desktop, right click the `student_download.zip` file, and select `Extract All`
