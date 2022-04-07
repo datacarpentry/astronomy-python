@@ -83,7 +83,7 @@ main sequence of GD-1 from younger background stars.
 > > ~~~
 > > {: .language-python}
 > {: .solution}
-{: .discussion}
+{: .prereq}
 
 ## Getting photometry data
 
