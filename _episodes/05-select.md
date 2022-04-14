@@ -89,7 +89,7 @@ less data.
 > > ~~~
 > > {: .language-python}
 > {: .solution}
-{: .discussion}
+{: .prereq}
 
 ## Selection by proper motion
 

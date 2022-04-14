@@ -89,7 +89,7 @@ them to make a figure that tells a compelling scientific story.
 > > ~~~
 > > {: .language-python}
 > {: .solution}
-{: .discussion}
+{: .prereq}
 
 ## Making Figures That Tell a Story
 
