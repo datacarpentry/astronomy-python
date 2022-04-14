@@ -78,7 +78,7 @@ analysis, identifying stars with the proper motion we expect for GD-1.
 > > ~~~
 > > {: .language-python}
 > {: .solution}
-{: .discussion}
+{: .prereq}
 
 ## Selecting rows and columns
 In the previous episode, we selected spatial and proper motion information from the Gaia catalog for stars around a small part of GD-1. The output was returned as an Astropy `Table`. 

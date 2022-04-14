@@ -70,7 +70,7 @@ analysis, identifying stars with the proper motion we expect for GD-1.
 > > ~~~
 > > {: .language-python}
 > {: .solution}
-{: .discussion}
+{: .prereq}
 
 
 ## Exploring data
