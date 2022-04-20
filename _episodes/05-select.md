@@ -484,6 +484,7 @@ pm_point_list
 > {: .solution}
 {: .challenge}
 
+
 > ## Exercise (5 minutes)
 > 
 > Use `format` to format `candidate_coord_pm_query_base` and define `candidate_coord_pm_query`, filling in
@@ -495,6 +496,46 @@ pm_point_list
 > > candidate_coord_pm_query = candidate_coord_pm_query_base.format(columns=columns, 
 > >                             sky_point_list=sky_point_list,
 > >                             pm_point_list=pm_point_list)
+> > print(candidate_coord_pm_query)
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
+
+> ## ADQL POLYGON and Negative Signs
+> We recently discovered that the original use of POLYGON for proper motion is outside
+> the scope of its intended use for coordinates only. Recent changes that were made to ADQL to 
+> enforce this now result in an error when negative values are passed into the first argument.
+> As a work around, we will remove the negative sign from our input list and instead pass it to
+> the `POINT` argument. This is only possible because all `pmra` and `pmdec` values are negative.
+> The two work arounds below modify the last two exercise solutions to implement this quick fix.
+> We are working on finding a more permanent and generalizable solution.
+{: .callout}
+> > ## Work Around
+> > 
+> > ~~~
+> > candidate_coord_pm_query_base = """SELECT 
+> > {columns}
+> > FROM gaiadr2.gaia_source
+> > WHERE parallax < 1
+> >   AND bp_rp BETWEEN -0.75 AND 2 
+> >   AND 1 = CONTAINS(POINT(ra, dec), 
+> >                    POLYGON({sky_point_list}))
+> >   AND 1 = CONTAINS(POINT(-1*pmra, -1*pmdec),
+> >                    POLYGON({pm_point_list}))
+> > """
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
+
+> > ## Work Around
+> > 
+> > 
+> > ~~~
+> > candidate_coord_pm_query = candidate_coord_pm_query_base.format(columns=columns, 
+> >                             sky_point_list=sky_point_list,
+> >                             pm_point_list=pm_point_list.replace('-', ''))
 > > print(candidate_coord_pm_query)
 > > ~~~
 > > {: .language-python}
