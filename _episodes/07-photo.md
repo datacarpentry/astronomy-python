@@ -618,12 +618,11 @@ plt.axis('equal');
 {: .language-python}
 
 ~~~
-<Figure size 720x180 with 1 Axes>
+<Figure size 1000x250 with 1 Axes>
 ~~~
 {: .output}
-  
 
-![Right ascension and declination of selected stars in GD-1 frame after selecting for both proper motion and photometry.](../fig/07-photo_files/07-photo_93_0.png)
+![phi 1 and phi 2 of selected stars in the GD-1 frame after selecting for both proper motion and photometry.](../fig/08-plot_files/08-plot_13_0.png)
 
 This example includes the new Matplotlib command `figure`, which creates the larger canvas that the subplots are placed on.  In previous examples, we didn't have
 to use this function; the figure was created automatically.  But when
