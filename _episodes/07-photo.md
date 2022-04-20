@@ -670,7 +670,7 @@ plot_cmd_selection(winner_df)
 ~~~
 {: .output}
 
-![png](../fig/08-plot_files/08-plot_13_0.png)
+![phi 1 and phi 2 of selected stars in the GD-1 frame after selecting for both proper motion and photometry.](../fig/08-plot_files/08-plot_13_0.png)
 
 ## Write the data
 
