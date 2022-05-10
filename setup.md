@@ -56,7 +56,7 @@ conda activate AstronomicalData
 
 We will test our environment setup using a test notebook (`test_setup.ipynb`) that you downloaded in the data section.
 
-In a Terminal or Jupyter Prompt, make sure you are in the `student_download` directory. 
+In a Terminal, Jupyter Prompt or Anaconda Prompt, make sure you are in the `student_download` directory. 
 To start Jupyter, make sure you have activated your new conda environment, then run:
 
 ```
