@@ -698,7 +698,7 @@ shows the BP-RP color and luminosity of stars in the Gaia catalog
 Selecting stars with `bp-rp` less than 2 excludes many [class M dwarf
 stars](https://xkcd.com/2360/), which are low temperature, low
 luminosity.  A star like that at GD-1's distance would be hard to
-detect, so if it is detected, it it more likely to be in the
+detect, so if it is detected, it is more likely to be in the
 foreground.
 
 ## Formatting queries
