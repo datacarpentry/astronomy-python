@@ -209,7 +209,7 @@ than 1 degree from the line `phi2=0`.
 
 Stars near this line have the highest probability of being in GD-1.
 
-To select them, we will use a "Boolean mask".  We wil start by
+To select them, we will use a "Boolean mask".  We will start by
 selecting the `phi2` column from the `DataFrame`:
 
 ~~~
