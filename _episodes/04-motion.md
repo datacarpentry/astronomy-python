@@ -573,7 +573,7 @@ results. This is a good time to save the data.
 We have already started a results file called gd1_data.hdf which we wrote `results_df` to.
 
 Recall that we chose HDF5 because it is a binary format producing small files that are fast to read and write and are a cross-language standard.
-.
+
 Additionally, HDF5 files can contain more than one dataset and can store metadata associated with each dataset (such as column names or observatory information, like a FITS header).
 
 We can add to our existing Pandas `DataFrame` to an HDF5 file by omitting the `mode='w'` keyword like this:
