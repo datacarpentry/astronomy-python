@@ -66,7 +66,6 @@ main sequence of GD-1 from mostly younger background stars.
 > > from os.path import getsize
 > > 
 > > import pandas as pd
-> > import numpy as np
 > > 
 > > from matplotlib import pyplot as plt
 > > 
@@ -368,6 +367,7 @@ To combine the `left_color` and `right_color` arrays we will use the NumPy `appe
 which takes two arrays as input, and outputs them combined into a single array.
 
 ~~~
+import numpy as np
 color_loop = np.append(left_color, reverse_right_color)
 color_loop.shape
 ~~~
