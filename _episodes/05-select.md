@@ -195,7 +195,6 @@ In the following exercise, we will identify a rectangle that encompasses the maj
 > > pmra_max = -3
 > > pmdec_min = -14.31
 > > pmdec_max = -11.2
-> > """
 > > ~~~
 > > {: .language-python}
 > {: .solution}
