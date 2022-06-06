@@ -180,143 +180,26 @@ The proper motions of the selected stars are more spread out in this
 frame, which is why it was preferable to do the selection in the GD-1
 frame.
 
-But now we can define a polygon that encloses the proper motions of
-these stars in ICRS, and use that polygon as a selection criterion in
-an ADQL query.
+In the following exercise, we will identify a rectangle that encompasses the majority of the stars we identified as having proper motion consistent with that of GD-1 without including too many other stars.
 
-## Convex Hull
-
-SciPy provides a function that computes the [convex
-hull](https://en.wikipedia.org/wiki/Convex_hull) of a set of points,
-which is the smallest convex polygon that contains all of the points.
-
-To use this function, we will select the columns `pmra` and `pmdec` and convert them to
-a NumPy array.
-
-~~~
-import numpy as np
-
-points = selected_df[['pmra','pmdec']].to_numpy()
-points.shape
-~~~
-{: .language-python}
-
-~~~
-(1049, 2)
-~~~
-{: .output}
-
-> ## Older versions of Pandas
-> If you are using an older version of Pandas, you might not have
-> `to_numpy()`. You can use `values` instead, like this:
+> ## Exercise (5 minutes)
 > 
-> ~~~
-> points = selected_df[['pmra','pmdec']].values
-> ~~~
-> {: .language-python}
-{: .callout}
-
-We will pass the points to `ConvexHull`, which returns an object that
-contains the results.
-
-~~~
-from scipy.spatial import ConvexHull
-
-hull = ConvexHull(points)
-hull
-~~~
-{: .language-python}
-
-~~~
-<scipy.spatial.qhull.ConvexHull at 0x7ff6207866a0>
-~~~
-{: .output}
-
-`hull.vertices` contains the indices of the points that fall on the
-perimeter of the hull.
-
-~~~
-hull.vertices
-~~~
-{: .language-python}
-
-~~~
-array([ 692,  873,  141,  303,   42,  622,   45,   83,  127,  182, 1006,
-        971,  967, 1001,  969,  940], dtype=int32)
-~~~
-{: .output}
-
-We can use them as an index into the original array to select the
-corresponding ICRS frame proper motion data points.
-
-~~~
-pm_vertices = points[hull.vertices]
-pm_vertices
-~~~
-{: .language-python}
-
-~~~
-array([[ -4.05037121, -14.75623261],
-       [ -3.41981085, -14.72365546],
-       [ -3.03521988, -14.44357135],
-       [ -2.26847919, -13.7140236 ],
-       [ -2.61172203, -13.24797471],
-       [ -2.73471401, -13.09054471],
-       [ -3.19923146, -12.5942653 ],
-       [ -3.34082546, -12.47611926],
-       [ -5.67489413, -11.16083338],
-       [ -5.95159272, -11.10547884],
-       [ -6.42394023, -11.05981295],
-[Output truncated]
-~~~
-{: .output}
-
-To plot the resulting polygon, we have to pull out the x and y coordinates.
-
-~~~
-pmra_poly, pmdec_poly = np.transpose(pm_vertices)
-~~~
-{: .language-python}
-
-> ## Note
-> This use of `transpose` is a useful NumPy idiom to turn data that is listed as 
-> rows of (x,y) pairs into an array of x values and an array of y values. Because
-> `pm_vertices` has two columns, its [matrix
-> transpose](https://en.wikipedia.org/wiki/Transpose) has two rows,
-> which are assigned to the two variables `pmra_poly` and `pmdec_poly`.
-{: .callout}
-
-The following figure shows proper motion in ICRS again, along with the
-convex hull we just computed.
-
-~~~
-x = centerline_df['pmra']
-y = centerline_df['pmdec']
-plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
-
-x = selected_df['pmra']
-y = selected_df['pmdec']
-plt.plot(x, y, 'gx', markersize=0.3, alpha=0.3)
-
-plt.plot(pmra_poly, pmdec_poly)
-    
-plt.xlabel('Proper motion phi1 (ICRS frame)')
-plt.ylabel('Proper motion phi2 (ICRS frame)')
-
-plt.xlim([-10, 5])
-plt.ylim([-20, 5]);
-~~~
-{: .language-python}
-
-~~~
-<Figure size 432x288 with 1 Axes>
-~~~
-{: .output}
-    
-![Proper motion in ICRS, with convex hull shown as blue boundary and selected stars as green points.](../fig/05-select_files/05-select_29_0.png)
-
-So `pm_vertices` represents the polygon we want to select.
-The next step is to use this polygon as part of an ADQL query.
+> Looking at the proper motion of the stars we identified along the centerline of GD-1, in the ICRS reference frame
+> define a rectangle (`pmra_min`, `pmra_max`, `pmdec_min`, and `pmdec_max`)
+> that encompass the proper motion of the majority of the stars near the centerline of GD-1 without including to much contamination from other stars.
+>
+> > ## Solution
+> > 
+> > ~~~
+> > pmra_min = -6.70
+> > pmra_max = -3
+> > pmdec_min = -14.31
+> > pmdec_max = -11.2
+> > """
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
 
 ## Assembling the query
 
@@ -340,7 +223,7 @@ In this episode we will make two changes:
 1. We will select stars with coordinates in a larger region to include more of GD-1.
 
 2. We will add another clause to select stars whose proper motion is in
-the polygon we just computed, `pm_vertices`.
+the range we just defined in the previous exercise.
 
 The fact that we remove most contaminating stars with the proper 
 motion filter is what allows us to expand our query to include 
@@ -428,44 +311,15 @@ WHERE parallax < 1
 ## Selecting proper motion
 
 Now we are ready to add a `WHERE` clause to select stars whose proper
-motion falls in the polygon defined by `pm_vertices`.
-
-To use `pm_vertices` as part of an ADQL query, we have to convert it
-to a string.
-Using `flatten` to convert from a 2D array to a 1D array and `array2string` to convert the result from an array to a string, we can almost get the format we need.
-
-~~~
-s = np.array2string(pm_vertices.flatten(), 
-                    max_line_width=1000,
-                    separator=',')
-s
-~~~
-{: .language-python}
-
-~~~
-'[ -4.05037121,-14.75623261, -3.41981085,-14.72365546, -3.03521988,-14.44357135, -2.26847919,-13.7140236 , -2.61172203,-13.24797471, -2.73471401,-13.09054471, -3.19923146,-12.5942653 , -3.34082546,-12.47611926, -5.67489413,-11.16083338, -5.95159272,-11.10547884, -6.42394023,-11.05981295, -7.09631023,-11.95187806, -7.30641519,-12.24559977, -7.04016696,-12.88580702, -6.00347705,-13.75912098, -4.42442296,-14.74641176]'
-~~~
-{: .output}
-
-But we need to remove the brackets:
-
-~~~
-pm_point_list = s.strip('[]')
-pm_point_list
-~~~
-{: .language-python}
-
-~~~
-' -4.05037121,-14.75623261, -3.41981085,-14.72365546, -3.03521988,-14.44357135, -2.26847919,-13.7140236 , -2.61172203,-13.24797471, -2.73471401,-13.09054471, -3.19923146,-12.5942653 , -3.34082546,-12.47611926, -5.67489413,-11.16083338, -5.95159272,-11.10547884, -6.42394023,-11.05981295, -7.09631023,-11.95187806, -7.30641519,-12.24559977, -7.04016696,-12.88580702, -6.00347705,-13.75912098, -4.42442296,-14.74641176'
-~~~
-{: .output}
+motion falls range we defined in the last exercise.
 
 > ## Exercise (10 minutes)
 > 
-> Define `candidate_coord_pm_query_base`, starting with `candidate_coord_query_base` and adding a new
-> clause to select stars whose coordinates of proper motion, `pmra` and
-> `pmdec`, fall within the polygon defined by `pm_point_list`.
->
+> Define `candidate_coord_pm_query_base`, starting with `candidate_coord_query_base` and adding two new `BETWEEN`
+> clauses to select stars whose coordinates of proper motion, `pmra` and
+> `pmdec`, fall within the region defined by `pmra_min`, `pmra_max`, `pmdec_min`, and `pmdec_max`.
+> In the next exercise we will use the format statement to fill in the values we defined above.
+> 
 > > ## Solution
 > > 
 > > ~~~
@@ -476,8 +330,8 @@ pm_point_list
 > >   AND bp_rp BETWEEN -0.75 AND 2 
 > >   AND 1 = CONTAINS(POINT(ra, dec), 
 > >                    POLYGON({sky_point_list}))
-> >   AND 1 = CONTAINS(POINT(pmra, pmdec),
-> >                    POLYGON({pm_point_list}))
+> >   AND pmra BETWEEN {pmra_min} AND  {pmra_max}
+> >   AND pmdec BETWEEN {pmdec_min} AND {pmdec_max}
 > > """
 > > ~~~
 > > {: .language-python}
@@ -488,54 +342,17 @@ pm_point_list
 > ## Exercise (5 minutes)
 > 
 > Use `format` to format `candidate_coord_pm_query_base` and define `candidate_coord_pm_query`, filling in
-> the values of `columns`, `sky_point_list`, and `pm_point_list`.
+> the values of `columns`, `sky_point_list`, and `pmra_min`, `pmra_max`, `pmdec_min`, `pmdec_max`.
 >
 > > ## Solution
 > > 
 > > ~~~
 > > candidate_coord_pm_query = candidate_coord_pm_query_base.format(columns=columns, 
 > >                             sky_point_list=sky_point_list,
-> >                             pm_point_list=pm_point_list)
-> > print(candidate_coord_pm_query)
-> > ~~~
-> > {: .language-python}
-> {: .solution}
-{: .challenge}
-
-> ## ADQL POLYGON and Negative Signs
-> We recently discovered that the original use of POLYGON for proper motion is outside
-> the scope of its intended use for coordinates only. Recent changes that were made to ADQL to 
-> enforce this now result in an error when negative values are passed into the first argument.
-> As a work around, we will remove the negative sign from our input list and instead pass it to
-> the `POINT` argument. This is only possible because all `pmra` and `pmdec` values are negative.
-> The two work arounds below modify the last two exercise solutions to implement this quick fix.
-> We are working on finding a more permanent and generalizable solution.
-{: .callout}
-> > ## Work Around
-> > 
-> > ~~~
-> > candidate_coord_pm_query_base = """SELECT 
-> > {columns}
-> > FROM gaiadr2.gaia_source
-> > WHERE parallax < 1
-> >   AND bp_rp BETWEEN -0.75 AND 2 
-> >   AND 1 = CONTAINS(POINT(ra, dec), 
-> >                    POLYGON({sky_point_list}))
-> >   AND 1 = CONTAINS(POINT(-1*pmra, -1*pmdec),
-> >                    POLYGON({pm_point_list}))
-> > """
-> > ~~~
-> > {: .language-python}
-> {: .solution}
-{: .challenge}
-
-> > ## Work Around
-> > 
-> > 
-> > ~~~
-> > candidate_coord_pm_query = candidate_coord_pm_query_base.format(columns=columns, 
-> >                             sky_point_list=sky_point_list,
-> >                             pm_point_list=pm_point_list.replace('-', ''))
+> >                             pmra_min=pmra_min,
+> >                             pmra_max=pmra_max,
+> >                             pmdec_min=pmdec_min,
+> >                             pmdec_max=pmdec_max)
 > > print(candidate_coord_pm_query)
 > > ~~~
 > > {: .language-python}
@@ -552,7 +369,7 @@ print(candidate_coord_pm_job)
 
 ~~~
 INFO: Query finished. [astroquery.utils.tap.core]
-<Table length=7345>
+<Table length=8409>
    name    dtype    unit                              description                            
 --------- ------- -------- ------------------------------------------------------------------
 source_id   int64          Unique source identifier (unique within a particular Data Release)
@@ -575,16 +392,23 @@ len(candidate_gaia_table)
 {: .language-python}
 
 ~~~
-7345
+8409
 ~~~
 {: .output}
+
+> ## BETWEEN vs POLYGON
+> You may be wondering why we used `BETWEEN` for proper motion when we previously used `POLYGON` 
+> for coordinates. ADQL intends the `POLYGON` function to only be used on coordinates and not on proper motion.
+> To enforce this, it will produce an error when a negative value is passed into the first argument.
+{: .callout}
 
 We call the results `candidate_gaia_table` because it contains information from
 the Gaia table for stars that are good candidates for GD-1.
 
-Both `sky_point_list` and `pm_point_list` are a set of selection criteria that we
+`sky_point_list`, `pmra_min`, `pmra_max`, `pmdec_min`, and `pmdec_max` are a set of selection criteria that we
 derived from data downloaded from the Gaia Database. To make sure we can repeat
-our analysis at a later date we should save both lists to a file.
+our analysis at a later date we should save this information to a file.
+
 There are several ways we could do that, but since we are already
 storing data in an HDF5 file, we will do the same with these variables.
 
@@ -601,14 +425,17 @@ defining the row names with the dictionary keys and the row data with
 the dictionary values. 
 
 ~~~
-d = dict(sky_point_list=sky_point_list, pm_point_list=pm_point_list)
+d = dict(sky_point_list=sky_point_list, pmra_min=pmra_min, pmra_max=pmra_max, pmdec_min=pmdec_min, pmdec_max=pmdec_max)
 d
 ~~~
 {: .language-python}
 
 ~~~
 {'sky_point_list': '135.306, 8.39862, 126.51, 13.4449, 163.017, 54.2424, 172.933, 46.4726, 135.306, 8.39862',
- 'pm_point_list': ' -4.05037121,-14.75623261, -3.41981085,-14.72365546, -3.03521988,-14.44357135, -2.26847919,-13.7140236 , -2.61172203,-13.24797471, -2.73471401,-13.09054471, -3.19923146,-12.5942653 , -3.34082546,-12.47611926, -5.67489413,-11.16083338, -5.95159272,-11.10547884, -6.42394023,-11.05981295, -7.09631023,-11.95187806, -7.30641519,-12.24559977, -7.04016696,-12.88580702, -6.00347705,-13.75912098, -4.42442296,-14.74641176'}
+ 'pmra_min': -6.7,
+ 'pmra_max': -3,
+ 'pmdec_min': -14.31,
+ 'pmdec_max': -11.2}
 ~~~
 {: .output}
 
@@ -621,8 +448,11 @@ point_series
 {: .language-python}
 
 ~~~
-sky_point_list       135.306, 8.39862, 126.51, 13.4449, 163.017, 54...
-pm_point_list     -4.05037121,-14.75623261, -3.41981085,-14.723...
+sky_point_list    135.306, 8.39862, 126.51, 13.4449, 163.017, 54...
+pmra_min                                                       -6.7
+pmra_max                                                         -3
+pmdec_min                                                    -14.31
+pmdec_max                                                     -11.2
 dtype: object
 ~~~
 {: .output}
