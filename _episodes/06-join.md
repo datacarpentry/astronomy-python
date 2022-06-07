@@ -244,7 +244,7 @@ FROM gaiadr2.panstarrs1_best_neighbour
 {: .language-python}
 
 ~~~
-ps_best_neighbour_job = Gaia.launch_job_async(query=ps_best_neighbour_query)
+ps_best_neighbour_job = Gaia.launch_job_async(ps_best_neighbour_query)
 ~~~
 {: .language-python}
 
@@ -357,7 +357,7 @@ FROM gaiadr2.panstarrs1_original_valid
 {: .language-python}
 
 ~~~
-ps_valid_job = Gaia.launch_job_async(query=ps_valid_query)
+ps_valid_job = Gaia.launch_job_async(ps_valid_query)
 ~~~
 {: .language-python}
 
@@ -430,7 +430,7 @@ WHERE 1=CONTAINS(
 And we will run it, to make sure we have a working query to build on.
 
 ~~~
-test_cone_job = Gaia.launch_job(query=test_cone_query)
+test_cone_job = Gaia.launch_job(test_cone_query)
 ~~~
 {: .language-python}
 
@@ -499,7 +499,7 @@ WHERE 1=CONTAINS(
 We run the query again.
 
 ~~~
-cone_job = Gaia.launch_job_async(query=cone_query)
+cone_job = Gaia.launch_job_async(cone_query)
 ~~~
 {: .language-python}
 
@@ -786,7 +786,7 @@ WHERE parallax < 1
 We run it to make sure we are starting with a working query.
 
 ~~~
-candidate_coord_pm_job = Gaia.launch_job_async(query=candidate_coord_pm_query)
+candidate_coord_pm_job = Gaia.launch_job_async(candidate_coord_pm_query)
 ~~~
 {: .language-python}
 
@@ -857,7 +857,7 @@ candidate_coord_pm_results
 > > print(candidate_join_query)
 > > 
 > > 
-> > candidate_join_job = Gaia.launch_job_async(query=candidate_join_query)
+> > candidate_join_job = Gaia.launch_job_async(candidate_join_query)
 > > candidate_table = candidate_join_job.get_results()
 > > candidate_table
 > > ~~~
