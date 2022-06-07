@@ -166,7 +166,7 @@ Before we get to the `JOIN` operation, we will explore these tables.
 Here is the metadata for `panstarrs1_best_neighbour`.
 
 ~~~
-ps_best_neighbor_meta = Gaia.load_table('gaiadr2.panstarrs1_best_neighbour')
+ps_best_neighbour_meta = Gaia.load_table('gaiadr2.panstarrs1_best_neighbour')
 ~~~
 {: .language-python}
 
@@ -178,7 +178,7 @@ Done.
 {: .output}
 
 ~~~
-print(ps_best_neighbor_meta)
+print(ps_best_neighbour_meta)
 ~~~
 {: .language-python}
 
@@ -195,7 +195,7 @@ Num. columns: 7
 And here are the columns.
 
 ~~~
-for column in ps_best_neighbor_meta.columns:
+for column in ps_best_neighbour_meta.columns:
     print(column.name)
 ~~~
 {: .language-python}
@@ -235,7 +235,7 @@ source in Gaia and the corresponding source in Pan-STARRS.
 Here is a query that selects these columns and returns the first 5 rows.
 
 ~~~
-ps_best_neighbor_query = """SELECT 
+ps_best_neighbour_query = """SELECT 
 TOP 5
 source_id, best_neighbour_multiplicity, number_of_mates, original_ext_source_id
 FROM gaiadr2.panstarrs1_best_neighbour
@@ -244,7 +244,7 @@ FROM gaiadr2.panstarrs1_best_neighbour
 {: .language-python}
 
 ~~~
-ps_best_neighbor_job = Gaia.launch_job_async(query=ps_best_neighbor_query)
+ps_best_neighbour_job = Gaia.launch_job_async(query=ps_best_neighbour_query)
 ~~~
 {: .language-python}
 
@@ -254,8 +254,8 @@ INFO: Query finished. [astroquery.utils.tap.core]
 {: .output}
 
 ~~~
-ps_best_neighbor_results = ps_best_neighbor_job.get_results()
-ps_best_neighbor_results
+ps_best_neighbour_results = ps_best_neighbour_job.get_results()
+ps_best_neighbour_results
 ~~~
 {: .language-python}
 
@@ -406,7 +406,7 @@ If you are curious, you can [read more about
 it](https://chartio.com/learn/databases/how-does-indexing-work/).
 
 <img
-src="../fig/join.png" alt="Diagram showing relationship between the gaia_source, panstarrs1_best_neighbor, and panstarrs1_original_valid tables and result table.">
+src="../fig/join.png" alt="Diagram showing relationship between the gaia_source, panstarrs1_best_neighbour, and panstarrs1_original_valid tables and result table.">
 
 Now we will get to the details of performing a `JOIN` operation.
 
@@ -549,7 +549,7 @@ column from the Gaia table with the `source_id` column from the best
 neighbor table.
 
 ~~~
-neighbors_base_query = """SELECT 
+neighbours_base_query = """SELECT 
 {columns}
 FROM gaiadr2.gaia_source AS gaia
 JOIN gaiadr2.panstarrs1_best_neighbour AS best
@@ -597,8 +597,8 @@ column_list_neighbours = ['gaia.source_id',
               ]
 columns = ', '.join(column_list_neighbours)
 
-neighbors_query = neighbors_base_query.format(columns=columns)
-print(neighbors_query)
+neighbours_query = neighbours_base_query.format(columns=columns)
+print(neighbours_query)
 ~~~
 {: .language-python}
 
@@ -615,7 +615,7 @@ WHERE 1=CONTAINS(
 {: .output}
 
 ~~~
-neighbors_job = Gaia.launch_job_async(neighbors_query)
+neighbours_job = Gaia.launch_job_async(neighbours_query)
 ~~~
 {: .language-python}
 
@@ -625,8 +625,8 @@ INFO: Query finished. [astroquery.utils.tap.core]
 {: .output}
 
 ~~~
-neighbors_results = neighbors_job.get_results()
-neighbors_results
+neighbours_results = neighbours_job.get_results()
+neighbours_results
 ~~~
 {: .language-python}
 
@@ -958,7 +958,7 @@ All values in this column are `0`, which means that for each match we
 found in Pan-STARRS, there are no other stars in Gaia that also match.
 
 > ## Number of neighbors
-> The table also contains `number_of_neighbors` which is the
+> The table also contains `number_of_neighbours` which is the
 > number of stars in Pan-STARRS that match in terms of position, before
 > using other criteria to choose the most likely match.  But we are more
 > interested in the final match, using both criteria.
