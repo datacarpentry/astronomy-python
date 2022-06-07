@@ -1034,22 +1034,6 @@ getsize('gd1_data.csv') / MB
 ~~~
 {: .output}
 
-We can see the first few lines like this:
-
-~~~
-head('gd1_data.csv')
-~~~
-{: .language-python}
-
-~~~
-,source_id,ra,dec,pmra,pmdec,best_neighbour_multiplicity,number_of_mates,g_mean_psf_mag,i_mean_psf_mag,phi1,phi2,pm_phi1,pm_phi2 
-0,635860218726658176,138.5187065217173,19.09233926905897,-5.941679495793577,-11.346409129876392,1,0,17.8978004455566,17.5174007415771,-59.247329893833296,-2.016078400820631,-7.527126084640531,1.7487794924176672
-
-1,635674126383965568,138.8428741026386,19.031798198627634,-3.8970011609340207,-12.702779525389634,1,0,19.2873001098633,17.6781005859375,-59.13339098769217,-2.306900745179831,-7.560607655557415,-0.7417999555980248
-~~~
-{: .output}  
-The CSV file contains the names of the columns, but not the data types.
-
 We can read the CSV file back like this:
 
 ~~~
@@ -1101,7 +1085,8 @@ read_back_csv.head(3)
 ~~~
 {: .output}
 
-Notice that the index in `candidate_df` has become an unnamed column
+The CSV file contains the names of the columns, but not the data types.
+Additionally, notice that the index in `candidate_df` has become an unnamed column
 in `read_back_csv` and a new index has been created.  The Pandas functions for writing and reading CSV
 files provide options to avoid that problem, but this is an example of
 the kind of thing that can go wrong with CSV files.
