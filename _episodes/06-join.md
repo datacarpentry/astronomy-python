@@ -79,8 +79,11 @@ main sequence of GD-1 from younger background stars.
 > > ~~~
 > > filename = 'gd1_data.hdf'
 > > point_series = pd.read_hdf(filename, 'point_series')
-> > sky_point_list = point_series['sky_point_list'][0]
-> > pm_point_list = point_series['pm_point_list'][0]
+> > sky_point_list = point_series['sky_point_list']
+> > pmra_min = point_series['pmra_min']
+> > pmra_max = point_series['pmra_max']
+> > pmdec_min = point_series['pmdec_min']
+> > pmdec_max = point_series['pmdec_max']
 > > point_series
 > > ~~~
 > > {: .language-python}
@@ -733,16 +736,6 @@ proper motion.
 
 Here is `candidate_coord_pm_query_base` from the previous episode.
 
-> ## ADQL POLYGON and Negative Signs
-> We recently discovered that the original use of POLYGON for proper motion is outside
-> the scope of its intended use for coordinates only. Recent changes that were made to ADQL to 
-> enforce this now result in an error when negative values are passed into the first argument.
-> As a work around, we will remove the negative sign from our input list and instead pass it to
-> the `POINT` argument. This is only possible because all `pmra` and `pmdec` values are negative.
-> The work arounds below implement this quick fix.
-> We are working on finding a more permanent and generalizable solution.
-{: .callout}
-
 ~~~
 candidate_coord_pm_query_base = """SELECT 
 {columns}
@@ -751,20 +744,23 @@ WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
   AND 1 = CONTAINS(POINT(ra, dec), 
                    POLYGON({sky_point_list}))
-  AND 1 = CONTAINS(POINT(-1*pmra, -1*pmdec),
-                   POLYGON({pm_point_list}))
+  AND pmra BETWEEN {pmra_min} AND  {pmra_max}
+  AND pmdec BETWEEN {pmdec_min} AND {pmdec_max}
 """
 ~~~
 {: .language-python}
 
-Now we can assemble the query using the sky and proper motion point lists we compiled in episode 4.
+Now we can assemble the query using the sky point list and proper motion range we compiled in episode 5.
 
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec'
 
 candidate_coord_pm_query = candidate_coord_pm_query_base.format(columns=columns,
                             sky_point_list=sky_point_list,
-                            pm_point_list=pm_point_list.replace('-',''))
+                            pmra_min=pmra_min,
+                            pmra_max=pmra_max,
+                            pmdec_min=pmdec_min,
+                            pmdec_max=pmdec_max)
 
 print(candidate_coord_pm_query)
 ~~~
@@ -778,8 +774,8 @@ WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
   AND 1 = CONTAINS(POINT(ra, dec), 
                    POLYGON(135.306, 8.39862, 126.51, 13.4449, 163.017, 54.2424, 172.933, 46.4726, 135.306, 8.39862))
-  AND 1 = CONTAINS(POINT(-1*pmra, -1*pmdec),
-                   POLYGON( 4.05037121,14.75623261, 3.41981085,14.72365546, 3.03521988,14.44357135, 2.26847919,13.7140236 , 2.61172203,13.24797471, 2.73471401,13.09054471, 3.19923146,12.5942653 , 3.34082546,12.47611926, 5.67489413,11.16083338, 5.95159272,11.10547884, 6.42394023,11.05981295, 7.09631023,11.95187806, 7.30641519,12.24559977, 7.04016696,12.88580702, 6.00347705,13.75912098, 4.42442296,14.74641176))
+  AND pmra BETWEEN -6.70 AND -3
+  AND pmdec BETWEEN -14.31 AND -11.2
 ~~~
 {: .output}
 
@@ -845,15 +841,18 @@ candidate_coord_pm_results
 > >   AND bp_rp BETWEEN -0.75 AND 2 
 > >   AND 1 = CONTAINS(POINT(gaia.ra, gaia.dec), 
 > >                    POLYGON({sky_point_list}))
-> >   AND 1 = CONTAINS(POINT(-1*gaia.pmra, -1*gaia.pmdec),
-> >                    POLYGON({pm_point_list}))
+> >   AND gaia.pmra BETWEEN {pmra_min} AND  {pmra_max}
+> >   AND gaia.pmdec BETWEEN {pmdec_min} AND {pmdec_max}
 > > """
 > > 
 > > columns = ', '.join(column_list)
 > > 
 > > candidate_join_query = candidate_join_query_base.format(columns=columns,
 > >                             sky_point_list= sky_point_list,
-> >                             pm_point_list= pm_point_list.replace('-', ''))
+> >                             pmra_min=pmra_min,
+> >                             pmra_max=pmra_max,
+> >                             pmdec_min=pmdec_min,
+> >                             pmdec_max=pmdec_max)
 > > print(candidate_join_query)
 > > 
 > > 
@@ -877,7 +876,7 @@ candidate_table['best_neighbour_multiplicity']
 {: .language-python}
 
 ~~~
-<MaskedColumn name='best_neighbour_multiplicity' dtype='int16' description='Number of neighbours with same probability as best neighbour' length=3725>
+<MaskedColumn name='best_neighbour_multiplicity' dtype='int16' description='Number of neighbours with same probability as best neighbour' length=4300>
   1
   1
   1
@@ -907,7 +906,7 @@ multiplicity.describe()
 {: .language-python}
 
 ~~~
-count    3725.0
+count    4300.0
 mean        1.0
 std         0.0
 min         1.0
@@ -942,7 +941,7 @@ mates.describe()
 {: .language-python}
 
 ~~~
-count    3725.0
+count    4300.0
 mean        0.0
 std         0.0
 min         0.0
