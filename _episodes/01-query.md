@@ -1,5 +1,5 @@
 ---
-title: "Basic queries"
+title: "Basic Queries"
 teaching: 65
 exercises: 25
 questions:
