@@ -21,6 +21,12 @@ title: Link List
 * [SQL JOIN](https://www.geeksforgeeks.org/sql-join-set-1-inner-left-right-and-full-joins/)
 * [SQL operators](https://www.w3schools.com/sql/sql_operators.asp)
 * [SQL USING](https://docs.oracle.com/javadb/10.8.3.0/ref/rrefsqljusing.html)
+* [MySQL in Windows 10](https://www.scaler.com/topics/how-to-install-mysql-in-windows-10/)
+* [Equi join in SQL](https://www.scaler.com/topics/equi-join-in-sql/)
+* [Equi join and non equi join in SQL](https://www.scaler.com/topics/sql-equi-join-and-non-equi-join/)
+* [Difference between delete drop and truncate in SQL](https://www.scaler.com/topics/difference-between-delete-drop-and-truncate/)
+* [Length in SQL](https://www.scaler.com/topics/length-in-sql/)
+* [Grant in SQL](https://www.scaler.com/topics/grant-command-in-sql/)
 
 ## GAIA
 * [Crossmatch with external catalogues](https://gea.esac.esa.int/archive/documentation/GDR2/Catalogue_consolidation/chap_cu9val_cu9val/ssec_cu9xma/)
