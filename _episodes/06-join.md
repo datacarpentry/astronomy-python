@@ -1029,7 +1029,7 @@ getsize('gd1_data.csv') / MB
 {: .language-python}
 
 ~~~
-0.7606849670410156
+0.8787498474121094
 ~~~
 {: .output}
 
