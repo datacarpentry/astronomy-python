@@ -563,7 +563,7 @@ The result is a Boolean array.
 > > {: .language-python}
 > > 
 > > ~~~
-> > 454
+> > 486
 > > ~~~
 > > {: .output}
 > {: .solution}
@@ -689,7 +689,7 @@ getsize(filename) / MB
 {: .language-python}
 
 ~~~
-3.6441001892089844
+15.486198425292969
 ~~~
 {: .output}
 
