@@ -798,7 +798,7 @@ candidate_coord_pm_results
 {: .language-python}
 
 ~~~
-<Table length=7345>
+<Table length=8409>
     source_id              ra         ...        pmdec       
                           deg         ...       mas / yr     
       int64             float64       ...       float64      
@@ -992,7 +992,7 @@ getsize(filename) / MB
 {: .language-python}
 
 ~~~
-3.5835609436035156
+15.422508239746094
 ~~~
 {: .output}
 
@@ -1029,7 +1029,7 @@ getsize('gd1_data.csv') / MB
 {: .language-python}
 
 ~~~
-0.7606849670410156
+0.8787498474121094
 ~~~
 {: .output}
 

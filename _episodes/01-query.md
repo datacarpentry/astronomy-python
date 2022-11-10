@@ -247,7 +247,7 @@ Main Database accumulating catalogue version from which the catalogue
 release has been generated. It contains the basic source parameters,
 that is only final data (no epoch data) and no spectra (neither final
 nor epoch).
-Num. columns: 96
+Num. columns: 95
 ~~~
 {: .output}
 
@@ -557,7 +557,7 @@ results2
 {: .language-python}
 
 ~~~
-<Table length=10>
+<Table length=3000>
      source_id              ra         ...       parallax       radial_velocity
                            deg         ...         mas               km / s    
        int64             float64       ...       float64            float64    
