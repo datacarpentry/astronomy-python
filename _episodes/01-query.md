@@ -760,7 +760,7 @@ query3
 {: .language-python}
 
 ~~~
-'SELECT \nTOP 10 \nsource_id, ra, dec, pmra, pmdec\nFROM gaiadr2.gaia_source\nWHERE parallax < 1\n  AND bp_rp BETWEEN -0.75 AND 2\n'
+'SELECT \nTOP 10 \nsource_id, ra, dec, pmra, pmdec, parallax\nFROM gaiadr2.gaia_source\nWHERE parallax < 1\n  AND bp_rp BETWEEN -0.75 AND 2\n'
 ~~~
 {: .output}
 
@@ -774,7 +774,7 @@ print(query3)
 ~~~
 SELECT 
 TOP 10 
-source_id, ra, dec, pmra, pmdec
+source_id, ra, dec, pmra, pmdec, parallax
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2
@@ -800,6 +800,7 @@ source_id   int64          Unique source identifier (unique within a particular 
       dec float64      deg                                                        Declination
      pmra float64 mas / yr                         Proper motion in right ascension direction
     pmdec float64 mas / yr                             Proper motion in declination direction
+ parallax float64      mas                                                           Parallax
 Jobid: None
 Phase: COMPLETED
 Owner: None
@@ -815,16 +816,15 @@ results3
 
 ~~~
 <Table length=10>
-     source_id              ra         ...        pmdec        
-                           deg         ...       mas / yr      
-       int64             float64       ...       float64       
-------------------- ------------------ ... --------------------
-5895272561481374080  213.2606587905109 ...   1.2299266281737415
-5895261875598904576  213.5508930114549 ...   -4.672602679543312
-5895247444506644992 213.33215109206796 ...   -3.538080792097856
-5895259470417635968 213.78815034206346 ...  -0.8163762113468646
-5895265925746051584 213.17082359534547 ...  -4.8585444120179595
-5895260913525974528 213.66936020541976 ...  -1.5566420086447643
+     source_id              ra         ...       parallax     
+                           deg         ...         mas        
+------------------- ------------------ ... -------------------
+3031147124474711552 110.10540720349103 ... 0.47255775887968876
+3031114276567648256 110.92831846731636 ... 0.41817219481822415
+3031130872315906048 110.61072654450903 ...   0.178490206751036
+3031128162192428544 110.78664993513391 ...  0.8412331482786942
+3031140497346996736  110.0617759777779 ... 0.16993569795437397
+3031111910043832576 110.84459425332385 ...  0.4668864606089576
 [Output truncated]
 ~~~
 {: .output}
