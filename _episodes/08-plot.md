@@ -221,6 +221,14 @@ As a simple example, notice that Matplotlib puts ticks on the outside
 of the figures by default, and only on the left and bottom sides of
 the axes.
 
+> ## Note on Accessibility {.callout}
+>
+> Customization offers a high degree of personalization for creating scientific visualizations. 
+> It is important to also create accessible visualizations for a broad audience 
+> that may include low-vision or color-blind individuals. The AAS Journals provide a Graphics Guide 
+> for authors with tips and external links that can help you produce more accessible graphics: 
+> https://journals.aas.org/graphics-guide/ 
+
 So far, everything we have wanted to do we could call directly from 
 the pyplot module with `plt.`. As you do more and more customization
 you may need to run some methods on plotting objects themselves. To use the 
