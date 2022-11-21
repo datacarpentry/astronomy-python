@@ -66,7 +66,6 @@ main sequence of GD-1 from mostly younger background stars.
 > > from os.path import getsize
 > > 
 > > import pandas as pd
-> > import numpy as np
 > > 
 > > from matplotlib import pyplot as plt
 > > 
@@ -83,7 +82,7 @@ main sequence of GD-1 from mostly younger background stars.
 > > ~~~
 > > {: .language-python}
 > {: .solution}
-{: .discussion}
+{: .prereq}
 
 ## Plotting photometry data
 
@@ -368,6 +367,7 @@ To combine the `left_color` and `right_color` arrays we will use the NumPy `appe
 which takes two arrays as input, and outputs them combined into a single array.
 
 ~~~
+import numpy as np
 color_loop = np.append(left_color, reverse_right_color)
 color_loop.shape
 ~~~
@@ -445,14 +445,17 @@ polygon
 ~~~
 {: .output}
 
-The result is a `Polygon` object , which provides `contains_points`,
-which figures out which points are inside the polygon.
+The result is a `Polygon` object which has a `contains_points` method.
+This allows us to pass `polygon.contains_points` a list of points and 
+for each point it will tell us if the point is contained within the polygon.
+A point is a tuple with two elements, x and y.
 
 > ## Exercise (5 minutes)
 > When we encounter a new object, it is good to create a toy example to test 
-> that it does what we think it does. Define an array of two points, one that should
-> be inside the polygon and one that should be outside the polygon. Use
-> `contains_points` to verify that the results are as expected.
+> that it does what we think it does. Define a list of two points (represented as two tuples), 
+> one that should be inside the polygon and one that should be outside the polygon. Call
+> `contains_points` on the polygon we just created, passing it the list of points you
+> defined, to verify that the results are as expected.
 > 
 > > ## Solution
 > > ~~~
@@ -560,7 +563,7 @@ The result is a Boolean array.
 > > {: .language-python}
 > > 
 > > ~~~
-> > 454
+> > 486
 > > ~~~
 > > {: .output}
 > {: .solution}
@@ -606,7 +609,7 @@ x = winner_df['phi1']
 y = winner_df['phi2']
 plt.plot(x, y, 'ko', markersize=0.7, alpha=0.9)
 
-plt.xlabel('$\phi_1$ [deg]]')
+plt.xlabel('$\phi_1$ [deg]')
 plt.ylabel('$\phi_2$ [deg]')
 plt.title('Proper motion + photometry selection', fontsize='medium')
 
@@ -615,12 +618,11 @@ plt.axis('equal');
 {: .language-python}
 
 ~~~
-<Figure size 720x180 with 1 Axes>
+<Figure size 1000x250 with 1 Axes>
 ~~~
 {: .output}
-  
 
-![Right ascension and declination of selected stars in GD-1 frame after selecting for both proper motion and photometry.](../fig/07-photo_files/07-photo_93_0.png)
+![phi 1 and phi 2 of selected stars in the GD-1 frame after selecting for both proper motion and photometry.](../fig/08-plot_files/08-plot_13_0.png)
 
 This example includes the new Matplotlib command `figure`, which creates the larger canvas that the subplots are placed on.  In previous examples, we didn't have
 to use this function; the figure was created automatically.  But when
@@ -668,7 +670,7 @@ plot_cmd_selection(winner_df)
 ~~~
 {: .output}
 
-![png](../fig/08-plot_files/08-plot_13_0.png)
+![phi 1 and phi 2 of selected stars in the GD-1 frame after selecting for both proper motion and photometry.](../fig/08-plot_files/08-plot_13_0.png)
 
 ## Write the data
 
@@ -687,7 +689,7 @@ getsize(filename) / MB
 {: .language-python}
 
 ~~~
-3.6441001892089844
+15.486198425292969
 ~~~
 {: .output}
 

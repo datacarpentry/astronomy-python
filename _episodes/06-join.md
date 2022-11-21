@@ -79,11 +79,16 @@ main sequence of GD-1 from younger background stars.
 > > ~~~
 > > filename = 'gd1_data.hdf'
 > > point_series = pd.read_hdf(filename, 'point_series')
+> > sky_point_list = point_series['sky_point_list']
+> > pmra_min = point_series['pmra_min']
+> > pmra_max = point_series['pmra_max']
+> > pmdec_min = point_series['pmdec_min']
+> > pmdec_max = point_series['pmdec_max']
 > > point_series
 > > ~~~
 > > {: .language-python}
 > {: .solution}
-{: .discussion}
+{: .prereq}
 
 ## Getting photometry data
 
@@ -164,7 +169,7 @@ Before we get to the `JOIN` operation, we will explore these tables.
 Here is the metadata for `panstarrs1_best_neighbour`.
 
 ~~~
-ps_best_neighbor_meta = Gaia.load_table('gaiadr2.panstarrs1_best_neighbour')
+ps_best_neighbour_meta = Gaia.load_table('gaiadr2.panstarrs1_best_neighbour')
 ~~~
 {: .language-python}
 
@@ -176,7 +181,7 @@ Done.
 {: .output}
 
 ~~~
-print(ps_best_neighbor_meta)
+print(ps_best_neighbour_meta)
 ~~~
 {: .language-python}
 
@@ -193,7 +198,7 @@ Num. columns: 7
 And here are the columns.
 
 ~~~
-for column in ps_best_neighbor_meta.columns:
+for column in ps_best_neighbour_meta.columns:
     print(column.name)
 ~~~
 {: .language-python}
@@ -233,7 +238,7 @@ source in Gaia and the corresponding source in Pan-STARRS.
 Here is a query that selects these columns and returns the first 5 rows.
 
 ~~~
-ps_best_neighbor_query = """SELECT 
+ps_best_neighbour_query = """SELECT 
 TOP 5
 source_id, best_neighbour_multiplicity, number_of_mates, original_ext_source_id
 FROM gaiadr2.panstarrs1_best_neighbour
@@ -242,7 +247,7 @@ FROM gaiadr2.panstarrs1_best_neighbour
 {: .language-python}
 
 ~~~
-ps_best_neighbor_job = Gaia.launch_job_async(query=ps_best_neighbor_query)
+ps_best_neighbour_job = Gaia.launch_job_async(ps_best_neighbour_query)
 ~~~
 {: .language-python}
 
@@ -252,8 +257,8 @@ INFO: Query finished. [astroquery.utils.tap.core]
 {: .output}
 
 ~~~
-ps_best_neighbor_results = ps_best_neighbor_job.get_results()
-ps_best_neighbor_results
+ps_best_neighbour_results = ps_best_neighbour_job.get_results()
+ps_best_neighbour_results
 ~~~
 {: .language-python}
 
@@ -355,7 +360,7 @@ FROM gaiadr2.panstarrs1_original_valid
 {: .language-python}
 
 ~~~
-ps_valid_job = Gaia.launch_job_async(query=ps_valid_query)
+ps_valid_job = Gaia.launch_job_async(ps_valid_query)
 ~~~
 {: .language-python}
 
@@ -404,7 +409,7 @@ If you are curious, you can [read more about
 it](https://chartio.com/learn/databases/how-does-indexing-work/).
 
 <img
-src="../fig/join.png" alt="Diagram showing relationship between the gaia_source, panstarrs1_best_neighbor, and panstarrs1_original_valid tables and result table.">
+src="../fig/join.png" alt="Diagram showing relationship between the gaia_source, panstarrs1_best_neighbour, and panstarrs1_original_valid tables and result table.">
 
 Now we will get to the details of performing a `JOIN` operation.
 
@@ -428,7 +433,7 @@ WHERE 1=CONTAINS(
 And we will run it, to make sure we have a working query to build on.
 
 ~~~
-test_cone_job = Gaia.launch_job(query=test_cone_query)
+test_cone_job = Gaia.launch_job(test_cone_query)
 ~~~
 {: .language-python}
 
@@ -497,7 +502,7 @@ WHERE 1=CONTAINS(
 We run the query again.
 
 ~~~
-cone_job = Gaia.launch_job_async(query=cone_query)
+cone_job = Gaia.launch_job_async(cone_query)
 ~~~
 {: .language-python}
 
@@ -547,7 +552,7 @@ column from the Gaia table with the `source_id` column from the best
 neighbor table.
 
 ~~~
-neighbors_base_query = """SELECT 
+neighbours_base_query = """SELECT 
 {columns}
 FROM gaiadr2.gaia_source AS gaia
 JOIN gaiadr2.panstarrs1_best_neighbour AS best
@@ -595,8 +600,8 @@ column_list_neighbours = ['gaia.source_id',
               ]
 columns = ', '.join(column_list_neighbours)
 
-neighbors_query = neighbors_base_query.format(columns=columns)
-print(neighbors_query)
+neighbours_query = neighbours_base_query.format(columns=columns)
+print(neighbours_query)
 ~~~
 {: .language-python}
 
@@ -613,7 +618,7 @@ WHERE 1=CONTAINS(
 {: .output}
 
 ~~~
-neighbors_job = Gaia.launch_job_async(neighbors_query)
+neighbours_job = Gaia.launch_job_async(neighbours_query)
 ~~~
 {: .language-python}
 
@@ -623,8 +628,8 @@ INFO: Query finished. [astroquery.utils.tap.core]
 {: .output}
 
 ~~~
-neighbors_results = neighbors_job.get_results()
-neighbors_results
+neighbours_results = neighbours_job.get_results()
+neighbours_results
 ~~~
 {: .language-python}
 
@@ -739,20 +744,23 @@ WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
   AND 1 = CONTAINS(POINT(ra, dec), 
                    POLYGON({sky_point_list}))
-  AND 1 = CONTAINS(POINT(pmra, pmdec),
-                   POLYGON({pm_point_list}))
+  AND pmra BETWEEN {pmra_min} AND  {pmra_max}
+  AND pmdec BETWEEN {pmdec_min} AND {pmdec_max}
 """
 ~~~
 {: .language-python}
 
-Now we can assemble the query using the sky and proper motion point lists we compiled in episode 4.
+Now we can assemble the query using the sky point list and proper motion range we compiled in episode 5.
 
 ~~~
 columns = 'source_id, ra, dec, pmra, pmdec'
 
 candidate_coord_pm_query = candidate_coord_pm_query_base.format(columns=columns,
-                            sky_point_list=point_series['sky_point_list'],
-                            pm_point_list=point_series['pm_point_list'])
+                            sky_point_list=sky_point_list,
+                            pmra_min=pmra_min,
+                            pmra_max=pmra_max,
+                            pmdec_min=pmdec_min,
+                            pmdec_max=pmdec_max)
 
 print(candidate_coord_pm_query)
 ~~~
@@ -766,15 +774,15 @@ WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
   AND 1 = CONTAINS(POINT(ra, dec), 
                    POLYGON(135.306, 8.39862, 126.51, 13.4449, 163.017, 54.2424, 172.933, 46.4726, 135.306, 8.39862))
-  AND 1 = CONTAINS(POINT(pmra, pmdec),
-                   POLYGON( -4.05037121,-14.75623261, -3.41981085,-14.72365546, -3.03521988,-14.44357135, -2.26847919,-13.7140236 , -2.61172203,-13.24797471, -2.73471401,-13.09054471, -3.19923146,-12.5942653 , -3.34082546,-12.47611926, -5.67489413,-11.16083338, -5.95159272,-11.10547884, -6.42394023,-11.05981295, -7.09631023,-11.95187806, -7.30641519,-12.24559977, -7.04016696,-12.88580702, -6.00347705,-13.75912098, -4.42442296,-14.74641176))
+  AND pmra BETWEEN -6.70 AND -3
+  AND pmdec BETWEEN -14.31 AND -11.2
 ~~~
 {: .output}
 
 We run it to make sure we are starting with a working query.
 
 ~~~
-candidate_coord_pm_job = Gaia.launch_job_async(query=candidate_coord_pm_query)
+candidate_coord_pm_job = Gaia.launch_job_async(candidate_coord_pm_query)
 ~~~
 {: .language-python}
 
@@ -790,7 +798,7 @@ candidate_coord_pm_results
 {: .language-python}
 
 ~~~
-<Table length=7345>
+<Table length=8409>
     source_id              ra         ...        pmdec       
                           deg         ...       mas / yr     
       int64             float64       ...       float64      
@@ -833,19 +841,22 @@ candidate_coord_pm_results
 > >   AND bp_rp BETWEEN -0.75 AND 2 
 > >   AND 1 = CONTAINS(POINT(gaia.ra, gaia.dec), 
 > >                    POLYGON({sky_point_list}))
-> >   AND 1 = CONTAINS(POINT(gaia.pmra, gaia.pmdec),
-> >                    POLYGON({pm_point_list}))
+> >   AND gaia.pmra BETWEEN {pmra_min} AND  {pmra_max}
+> >   AND gaia.pmdec BETWEEN {pmdec_min} AND {pmdec_max}
 > > """
 > > 
 > > columns = ', '.join(column_list)
 > > 
 > > candidate_join_query = candidate_join_query_base.format(columns=columns,
-> >                             sky_point_list=point_series['sky_point_list'],
-> >                             pm_point_list=point_series['pm_point_list'])
+> >                             sky_point_list= sky_point_list,
+> >                             pmra_min=pmra_min,
+> >                             pmra_max=pmra_max,
+> >                             pmdec_min=pmdec_min,
+> >                             pmdec_max=pmdec_max)
 > > print(candidate_join_query)
 > > 
 > > 
-> > candidate_join_job = Gaia.launch_job_async(query=candidate_join_query)
+> > candidate_join_job = Gaia.launch_job_async(candidate_join_query)
 > > candidate_table = candidate_join_job.get_results()
 > > candidate_table
 > > ~~~
@@ -865,7 +876,7 @@ candidate_table['best_neighbour_multiplicity']
 {: .language-python}
 
 ~~~
-<MaskedColumn name='best_neighbour_multiplicity' dtype='int16' description='Number of neighbours with same probability as best neighbour' length=3725>
+<MaskedColumn name='best_neighbour_multiplicity' dtype='int16' description='Number of neighbours with same probability as best neighbour' length=4300>
   1
   1
   1
@@ -895,7 +906,7 @@ multiplicity.describe()
 {: .language-python}
 
 ~~~
-count    3725.0
+count    4300.0
 mean        1.0
 std         0.0
 min         1.0
@@ -930,7 +941,7 @@ mates.describe()
 {: .language-python}
 
 ~~~
-count    3725.0
+count    4300.0
 mean        0.0
 std         0.0
 min         0.0
@@ -946,7 +957,7 @@ All values in this column are `0`, which means that for each match we
 found in Pan-STARRS, there are no other stars in Gaia that also match.
 
 > ## Number of neighbors
-> The table also contains `number_of_neighbors` which is the
+> The table also contains `number_of_neighbours` which is the
 > number of stars in Pan-STARRS that match in terms of position, before
 > using other criteria to choose the most likely match.  But we are more
 > interested in the final match, using both criteria.
@@ -981,7 +992,7 @@ getsize(filename) / MB
 {: .language-python}
 
 ~~~
-3.5835609436035156
+15.422508239746094
 ~~~
 {: .output}
 
@@ -1018,25 +1029,9 @@ getsize('gd1_data.csv') / MB
 {: .language-python}
 
 ~~~
-0.7606849670410156
+0.8787498474121094
 ~~~
 {: .output}
-
-We can see the first few lines like this:
-
-~~~
-head('gd1_data.csv')
-~~~
-{: .language-python}
-
-~~~
-,source_id,ra,dec,pmra,pmdec,best_neighbour_multiplicity,number_of_mates,g_mean_psf_mag,i_mean_psf_mag,phi1,phi2,pm_phi1,pm_phi2 
-0,635860218726658176,138.5187065217173,19.09233926905897,-5.941679495793577,-11.346409129876392,1,0,17.8978004455566,17.5174007415771,-59.247329893833296,-2.016078400820631,-7.527126084640531,1.7487794924176672
-
-1,635674126383965568,138.8428741026386,19.031798198627634,-3.8970011609340207,-12.702779525389634,1,0,19.2873001098633,17.6781005859375,-59.13339098769217,-2.306900745179831,-7.560607655557415,-0.7417999555980248
-~~~
-{: .output}  
-The CSV file contains the names of the columns, but not the data types.
 
 We can read the CSV file back like this:
 
@@ -1089,7 +1084,8 @@ read_back_csv.head(3)
 ~~~
 {: .output}
 
-Notice that the index in `candidate_df` has become an unnamed column
+The CSV file contains the names of the columns, but not the data types.
+Additionally, notice that the index in `candidate_df` has become an unnamed column
 in `read_back_csv` and a new index has been created.  The Pandas functions for writing and reading CSV
 files provide options to avoid that problem, but this is an example of
 the kind of thing that can go wrong with CSV files.

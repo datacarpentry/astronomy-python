@@ -1,5 +1,5 @@
 ---
-title: "Basic queries"
+title: "Basic Queries"
 teaching: 65
 exercises: 25
 questions:
@@ -247,7 +247,7 @@ Main Database accumulating catalogue version from which the catalogue
 release has been generated. It contains the basic source parameters,
 that is only final data (no epoch data) and no spectra (neither final
 nor epoch).
-Num. columns: 96
+Num. columns: 95
 ~~~
 {: .output}
 
@@ -557,7 +557,7 @@ results2
 {: .language-python}
 
 ~~~
-<Table length=10>
+<Table length=3000>
      source_id              ra         ...       parallax       radial_velocity
                            deg         ...         mas               km / s    
        int64             float64       ...       float64            float64    
@@ -698,7 +698,7 @@ shows the BP-RP color and luminosity of stars in the Gaia catalog
 Selecting stars with `bp-rp` less than 2 excludes many [class M dwarf
 stars](https://xkcd.com/2360/), which are low temperature, low
 luminosity.  A star like that at GD-1's distance would be hard to
-detect, so if it is detected, it it more likely to be in the
+detect, so if it is detected, it is more likely to be in the
 foreground.
 
 ## Formatting queries

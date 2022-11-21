@@ -1,8 +1,7 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6419749.svg)](https://doi.org/10.5281/zenodo.6419749)
+
 # Astronomy
 
-[![Create a Slack Account with us](https://img.shields.io/badge/Create_Slack_Account-The_Carpentries-071159.svg)](https://swc-slack-invite.herokuapp.com/)
-
-This repository generates the corresponding lesson website from [The Carpentries](https://carpentries.org/) repertoire of lessons. 
 
 ## Contributing
 
@@ -24,7 +23,6 @@ Look for the tag ![good_first_issue](https://img.shields.io/badge/-good%20first%
 
 Current maintainers of this lesson are 
 
-* [Allen Downey](https://github.com/AllenDowney)
 * [Azalee Bostroem](https://github.com/abostroem)
 * [Rodolfo Montez Jr.](https://github.com/rudyphd)
 

@@ -70,7 +70,7 @@ analysis, identifying stars with the proper motion we expect for GD-1.
 > > ~~~
 > > {: .language-python}
 > {: .solution}
-{: .discussion}
+{: .prereq}
 
 
 ## Exploring data
@@ -209,7 +209,7 @@ than 1 degree from the line `phi2=0`.
 
 Stars near this line have the highest probability of being in GD-1.
 
-To select them, we will use a "Boolean mask".  We wil start by
+To select them, we will use a "Boolean mask".  We will start by
 selecting the `phi2` column from the `DataFrame`:
 
 ~~~
@@ -573,7 +573,7 @@ results. This is a good time to save the data.
 We have already started a results file called gd1_data.hdf which we wrote `results_df` to.
 
 Recall that we chose HDF5 because it is a binary format producing small files that are fast to read and write and are a cross-language standard.
-.
+
 Additionally, HDF5 files can contain more than one dataset and can store metadata associated with each dataset (such as column names or observatory information, like a FITS header).
 
 We can add to our existing Pandas `DataFrame` to an HDF5 file by omitting the `mode='w'` keyword like this:
@@ -621,7 +621,7 @@ getsize(filename) / MB
 {: .language-python}
 
 ~~~
-2.2084197998046875
+13.992530822753906
 ~~~
 {: .output}
 
