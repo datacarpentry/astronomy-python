@@ -25,6 +25,7 @@ Current maintainers of this lesson are
 
 * [Azalee Bostroem](https://github.com/abostroem)
 * [Rodolfo Montez Jr.](https://github.com/rudyphd)
+* [Ralf Kotulla](https://github.com/rkotulla)
 
 
 ## Authors
