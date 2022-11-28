@@ -184,7 +184,7 @@ region of GD-1,
 > > plt.axvline(-55, ls='--', color='gray', 
 > >             alpha=0.4, dashes=(6,4), lw=2)
 > > plt.text(-60, 5.5, 'Previously\nundetected', 
-> >          fontsize='small', ha='right', va='top');
+> >          fontsize='small', ha='right', va='top')
 > > 
 > > arrowprops=dict(color='gray', shrink=0.05, width=1.5, 
 > >                 headwidth=6, headlength=8, alpha=0.4)
