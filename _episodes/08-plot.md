@@ -428,6 +428,8 @@ column 0, which is the upper-left panel.
 Here is how we use this function to draw the four panels.
 
 ~~~
+plt.style.use('default')
+
 fig = plt.figure()
 shape = (2, 2)
 ax1 = plt.subplot2grid(shape, (0, 0))
