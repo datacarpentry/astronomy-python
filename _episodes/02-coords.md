@@ -672,7 +672,7 @@ print(polygon_top10query)
 ~~~
 SELECT
 TOP 10
-source_id, ra, dec, pmra, pmdec
+source_id, ra, dec, pmra, pmdec, parallax
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
@@ -701,6 +701,7 @@ source_id   int64          Unique source identifier (unique within a particular 
       dec float64      deg                                                        Declination
      pmra float64 mas / yr                         Proper motion in right ascension direction
     pmdec float64 mas / yr                             Proper motion in declination direction
+ parallax float64      mas                                                           Parallax
 Jobid: 1615815873808O
 Phase: COMPLETED
 [Output truncated]
@@ -717,16 +718,15 @@ polygon_top10query_results
 
 ~~~
 <Table length=10>
-    source_id              ra         ...        pmdec       
-                          deg         ...       mas / yr     
-      int64             float64       ...       float64      
------------------- ------------------ ... -------------------
-637987125186749568 142.48301935991023 ...   2.941813096629439
-638285195917112960 142.25452941346344 ... -12.165984395577347
-638073505568978688 142.64528557468074 ...  -7.950659620550862
-638086386175786752 142.57739430926034 ...  -2.584105480335548
-638049655615392384 142.58913564478618 ...  -4.941079187010136
-638267565075964032 141.81762228999614 ...  1.8838892877285924
+    source_id              ra         ...       parallax      
+                          deg         ...         mas         
+------------------ ------------------ ... --------------------
+637987125186749568 142.48301935991023 ...  -0.2573448962333354
+638285195917112960 142.25452941346344 ...   0.4227283465319491
+638073505568978688 142.64528557468074 ...  0.10363972229362585
+638086386175786752 142.57739430926034 ...  -0.8573270355079308
+638049655615392384 142.58913564478618 ...    0.099624729200593
+638267565075964032 141.81762228999614 ... -0.07271215219283075
 [Output truncated]
 ~~~
 {: .output}
@@ -756,7 +756,7 @@ print(polygon_query)
 
 ~~~
 SELECT
-source_id, ra, dec, pmra, pmdec
+source_id, ra, dec, pmra, pmdec, parallax
 FROM gaiadr2.gaia_source
 WHERE parallax < 1
   AND bp_rp BETWEEN -0.75 AND 2 
@@ -781,6 +781,7 @@ source_id   int64          Unique source identifier (unique within a particular 
       dec float64      deg                                                        Declination
      pmra float64 mas / yr                         Proper motion in right ascension direction
     pmdec float64 mas / yr                             Proper motion in declination direction
+ parallax float64      mas                                                           Parallax
 Jobid: 1615815886707O
 Phase: COMPLETED
 [Output truncated]
