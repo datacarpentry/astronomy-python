@@ -529,8 +529,21 @@ the Astropy `Table` by Astroquery.
 > > source_id, ra, dec, parallax, radial_velocity
 > > FROM gaiadr2.gaia_source
 > > """
+> > job1_with_rv = Gaia.launch_job(query1_with_rv)
+> > results1_with_rv = job1_with_rv.get_results()
+> > results1_with_rv
 > > ~~~
 > > {: .language-python}
+> > ~~~
+> >      source_id              ra         ...       parallax       radial_velocity
+> >                            deg         ...         mas               km / s    
+> > ------------------- ------------------ ... -------------------- ---------------
+> > 5800603716991968256 225.13905251174302 ...   0.5419737483675161              --
+> > 5800592790577127552 224.30113911598448 ...  -0.6369101209622813              --
+> > 5800601273129497856 225.03260084885449 ...  0.27554460953986526              --
+> > [Output truncated]
+> > ~~~
+> > {: .output}
 > {: .solution}
 {: .challenge}
 
