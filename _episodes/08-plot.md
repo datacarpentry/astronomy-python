@@ -598,7 +598,8 @@ In episode 4 we defined a rectangle in proper motion space around the stars in G
 We stored the x-values of the vertices of this rectangle in `pm1_rect` and 
 the y-values as `pm2_rect`.
 
-To plot this rectangle, we will use the Matplotlib `Polygon` object.
+To plot this rectangle, we will use the Matplotlib `Polygon` object which we used in episode 7 to check which
+points were inside the polygon. However, this time we will be plotting the `Polygon`.
 
 To create a `Polygon`, we have to put the coordinates of the rectangle in an array with
 `x` values in the first column and `y` values in the second column. 
@@ -674,7 +675,7 @@ ax.add_patch(poly)
 > Add a few lines to be run after the `plot_cmd` function to show the polygon we selected as a
 > shaded area.
 > 
-> Hint: pass `loop_df` as an argument to `Polygon` as we did in episode 6 and then plot it using `add_patch`.
+> Hint: pass `loop_df` as an argument to `Polygon` as we did in episode 7 and then plot it using `add_patch`.
 >
 > > ## Solution
 > > 
