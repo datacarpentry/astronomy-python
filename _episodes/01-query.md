@@ -294,11 +294,60 @@ documentation](https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/
 > > ~~~
 > > panstarrs_metadata = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
 > > print(panstarrs_metadata)
+> > ~~~
+> > {: .language-python}
+> >
+> > ~~~
+> > Retrieving table 'gaiadr2.panstarrs1_original_valid'
+> > TAP Table name: gaiadr2.gaiadr2.panstarrs1_original_valid
+> > Description: The Panoramic Survey Telescope and Rapid Response System (Pan-STARRS) is
+> > a system for wide-field astronomical imaging developed and operated by
+> > the Institute for Astronomy at the University of Hawaii. Pan-STARRS1
 > > 
+> > [Output truncated]
+> > 
+> > Catalogue curator:
+> > SSDC - ASI Space Science Data Center
+> > https://www.ssdc.asi.it/
+> > Num. columns: 26
+> > ~~~
+> > {: .output}
+> > 
+> > ~~~
 > > for column in panstarrs_metadata.columns:
 > >     print(column.name)
 > > ~~~
 > > {: .language-python}
+> >
+> > ~~~
+> > obj_name
+> > obj_id
+> > ra
+> > dec
+> > ra_error
+> > dec_error
+> > epoch_mean
+> > g_mean_psf_mag
+> > g_mean_psf_mag_error
+> > g_flags
+> > r_mean_psf_mag
+> > r_mean_psf_mag_error
+> > r_flags
+> > i_mean_psf_mag
+> > i_mean_psf_mag_error
+> > i_flags
+> > z_mean_psf_mag
+> > z_mean_psf_mag_error
+> > z_flags
+> > y_mean_psf_mag
+> > y_mean_psf_mag_error
+> > y_flags
+> > n_detections
+> > zone_id
+> > obj_info_flag
+> > quality_flag
+> > ~~~
+> > {: .output}
 > {: .solution}
 {: .challenge}
 
