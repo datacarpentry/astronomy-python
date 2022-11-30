@@ -184,7 +184,7 @@ region of GD-1,
 > > plt.axvline(-55, ls='--', color='gray', 
 > >             alpha=0.4, dashes=(6,4), lw=2)
 > > plt.text(-60, 5.5, 'Previously\nundetected', 
-> >          fontsize='small', ha='right', va='top');
+> >          fontsize='small', ha='right', va='top')
 > > 
 > > arrowprops=dict(color='gray', shrink=0.05, width=1.5, 
 > >                 headwidth=6, headlength=8, alpha=0.4)
@@ -195,7 +195,7 @@ region of GD-1,
 > > 
 > > plt.annotate('Gap', xy=(-22, -1), xytext=(-25, -5.5),
 > >              arrowprops=arrowprops,
-> >              fontsize='small')
+> >              fontsize='small');
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -472,6 +472,8 @@ column 0, which is the upper-left panel.
 Here is how we use this function to draw the four panels.
 
 ~~~
+plt.style.use('default')
+
 fig = plt.figure()
 shape = (2, 2)
 ax1 = plt.subplot2grid(shape, (0, 0))
