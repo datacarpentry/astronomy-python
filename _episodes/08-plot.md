@@ -195,7 +195,7 @@ region of GD-1,
 > > 
 > > plt.annotate('Gap', xy=(-22, -1), xytext=(-25, -5.5),
 > >              arrowprops=arrowprops,
-> >              fontsize='small')
+> >              fontsize='small');
 > > ~~~
 > > {: .language-python}
 > {: .solution}
