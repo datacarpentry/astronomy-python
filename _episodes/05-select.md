@@ -415,7 +415,7 @@ To save them to an HDF5 file we first need to put them in a Pandas object.
 We have seen how to create a `Series` from a column in a `DataFrame`.
 Now we will build a `Series` from scratch. 
 We do not need the full `DataFrame` format with multiple rows and columns 
-because we are only storing two strings (`sky_point_list` and `pm_point_list`).
+because we are only storing one string (`sky_point_list`).
 We can store each string as a row in the `Series` and save it. One aspect that
 is nice about `Series` is that we can label each row. 
 To do this we need an object that can define both the name of each row and 
