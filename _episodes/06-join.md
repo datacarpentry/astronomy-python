@@ -923,8 +923,12 @@ star has a single best match.
 
 > ## Numpy Mask Warning
 > You may see a warning that ends with the following phrase:
-> `site-packages/numpy/lib/function_base.py:4650: UserWarning: Warning: 'partition' will ignore the 'mask' of the MaskedColumn.`
+>
+> `site-packages/numpy/lib/function_base.py:4650:`
+>
+> `UserWarning: Warning: 'partition' will ignore the 'mask' of the MaskedColumn.`
 > `arr.partition(`
+>
 > This is because astroquery is returning a table with masked columns (which are really fancy masked numpy arrays). 
 > When we turn this column into a pandas Series, it maintains its mask. Describe calls numpy functions to perform statistics.
 > Numpy recently implemented this warning to let you know that the mask is not being considered in the calculation 
