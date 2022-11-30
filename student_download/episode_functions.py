@@ -105,7 +105,7 @@ def plot_pm_selection(df):
 def plot_cmd(dataframe):
     """Plot a color magnitude diagram.
     
-    df: DataFrame or Table with photometry data
+    dataframe: DataFrame or Table with photometry data
     """
     y = dataframe['g_mean_psf_mag']
     x = dataframe['g_mean_psf_mag'] - dataframe['i_mean_psf_mag']
