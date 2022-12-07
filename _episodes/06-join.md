@@ -824,7 +824,7 @@ candidate_coord_pm_results
 > Hint: Make sure you use qualified column names everywhere!
 > 
 > Run your query and download the results.  The table you get should
-> have 3725 rows and 9 columns.
+> have 4300 rows and 9 columns.
 >
 > > ## Solution
 > > 
