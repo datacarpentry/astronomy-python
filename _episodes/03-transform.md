@@ -517,16 +517,16 @@ polygon_results.info()
 
 ~~~
 <Table length=140339>
-   name    dtype    unit                              description                            
---------- ------- -------- ------------------------------------------------------------------
-source_id   int64          Unique source identifier (unique within a particular Data Release)
-       ra float64      deg                                                    Right ascension
-      dec float64      deg                                                        Declination
-     pmra float64 mas / yr                         Proper motion in right ascension direction
-    pmdec float64 mas / yr                             Proper motion in declination direction
- parallax float64      mas                                                           Parallax
-     phi1 float64      deg                                                                   
-     phi2 float64      deg                                                                   
+   name    dtype    unit                              description                                class    
+--------- ------- -------- ------------------------------------------------------------------ ------------
+source_id   int64          Unique source identifier (unique within a particular Data Release) MaskedColumn
+       ra float64      deg                                                    Right ascension MaskedColumn
+      dec float64      deg                                                        Declination MaskedColumn
+     pmra float64 mas / yr                         Proper motion in right ascension direction MaskedColumn
+    pmdec float64 mas / yr                             Proper motion in declination direction MaskedColumn
+ parallax float64      mas                                                           Parallax MaskedColumn
+     phi1 float64      deg                                                                          Column
+     phi2 float64      deg                                                                          Column
 ~~~
 {: .output}
 
@@ -542,18 +542,18 @@ polygon_results.info()
 
 ~~~
 <Table length=140339>
-   name    dtype    unit                              description                            
---------- ------- -------- ------------------------------------------------------------------
-source_id   int64          Unique source identifier (unique within a particular Data Release)
-       ra float64      deg                                                    Right ascension
-      dec float64      deg                                                        Declination
-     pmra float64 mas / yr                         Proper motion in right ascension direction
-    pmdec float64 mas / yr                             Proper motion in declination direction
- parallax float64      mas                                                           Parallax
-     phi1 float64      deg                                                                   
-     phi2 float64      deg                                                                   
-  pm_phi1 float64 mas / yr                                                                   
-  pm_phi2 float64 mas / yr     
+   name    dtype    unit                              description                                class    
+--------- ------- -------- ------------------------------------------------------------------ ------------
+source_id   int64          Unique source identifier (unique within a particular Data Release) MaskedColumn
+       ra float64      deg                                                    Right ascension MaskedColumn
+      dec float64      deg                                                        Declination MaskedColumn
+     pmra float64 mas / yr                         Proper motion in right ascension direction MaskedColumn
+    pmdec float64 mas / yr                             Proper motion in declination direction MaskedColumn
+ parallax float64      mas                                                           Parallax MaskedColumn
+     phi1 float64      deg                                                                          Column
+     phi2 float64      deg                                                                          Column
+  pm_phi1 float64 mas / yr                                                                          Column
+  pm_phi2 float64 mas / yr                                                                          Column
 ~~~
 {: .output}
 
