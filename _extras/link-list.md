@@ -93,7 +93,7 @@ title: Link List
 * [Stellar isochrone (Wikipedia)](https://en.wikipedia.org/wiki/Stellar_isochrone)
 
 ## Other background information
-* [Convex hull (Wikipedia)](https://en.wikipedia.org/wiki/Convex_hull)
+* [Figure Accessibility Guidelines](https://journals.aas.org/graphics-guide/)
 * [Floating point arithmetic (Wikipedia)](https://en.wikipedia.org/wiki/Floating-point_arithmetic)
 * [Indexing](https://chartio.com/learn/databases/how-does-indexing-work/)
 * [Markdown guide](https://www.markdownguide.org/)
