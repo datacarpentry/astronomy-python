@@ -75,13 +75,13 @@ If they work and you get no error messages, **you are ready for the workshop**.
 > Terminal or otherwise):
 > 
 > ~~~
-> python -m ipykernel install --user --name=AstroDataCarpentry
+> python -m ipykernel install --user --name=AstronomicalData
 > ~~~
 > Then start Jupyter up again:
 > ~~~
 > jupyter notebook
 > ~~~
-> This time, when you open your notebook, navigate to the Kernel menu --> Change Kernel --> select **AstroDataCarpentry** . 
+> This time, when you open your notebook, navigate to the Kernel menu --> Change Kernel --> select **AstronomicalData** . 
 > This will ensure that the relevant packages are all available. 
 > You can seek installation help if this looks confusing!
 {: .callout}
