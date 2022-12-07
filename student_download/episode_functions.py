@@ -102,13 +102,13 @@ def plot_pm_selection(df):
 # Episode 7
 ##########################
 
-def plot_cmd(table):
+def plot_cmd(dataframe):
     """Plot a color magnitude diagram.
     
-    table: Table or DataFrame with photometry data
+    dataframe: DataFrame or Table with photometry data
     """
-    y = table['g_mean_psf_mag']
-    x = table['g_mean_psf_mag'] - table['i_mean_psf_mag']
+    y = dataframe['g_mean_psf_mag']
+    x = dataframe['g_mean_psf_mag'] - dataframe['i_mean_psf_mag']
 
     plt.plot(x, y, 'ko', markersize=0.3, alpha=0.3)
 
