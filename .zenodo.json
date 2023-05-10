@@ -1,0 +1,50 @@
+{
+  "contributors": [
+    {
+      "type": "Editor",
+      "name": "K. Azalee Bostroem",
+      "orcid": "0000-0002-4924-444X"
+    },
+    {
+      "type": "Editor",
+      "name": "Rodolfo Montez Jr.",
+      "orcid": "0000-0002-6752-2909"
+    },
+    {
+      "type": "Editor",
+      "name": "David DeMuth"
+    },
+    {
+      "type": "Editor",
+      "name": "Ralf Kotulla",
+      "orcid": "0000-0002-4460-9892"
+    }
+  ],
+  "creators": [
+    {
+      "name": "K. Azalee Bostroem",
+      "orcid": "0000-0002-4924-444X"
+    },
+    {
+      "name": "Ralf Kotulla",
+      "orcid": "0000-0002-4460-9892"
+    },
+    {
+      "name": "Adam Hughes"
+    },
+    {
+      "name": "Rodolfo Montez Jr.",
+      "orcid": "0000-0002-6752-2909"
+    },
+    {
+      "name": "Catherine Martlin",
+      "orcid": "0000-0002-3300-4185"
+    },
+    {
+      "name": "rlucas-scninet"
+    }
+  ],
+  "license": {
+    "id": "CC-BY-4.0"
+  }
+}
