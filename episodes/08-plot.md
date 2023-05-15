@@ -122,7 +122,7 @@ the individual panels, but now we will look at the whole figure, along
 with the caption:
 
 <img style="max-width: 100%;"
-src="../fig/gd1-5.png" alt="Figure 1 from Price-Whelan and Bonaca paper with four panels and caption. Caption reads: On-sky positions of likely GD-1 members in the GD-1 coordinate system. GD-1 is apparent as an overdensity in negative proper motions (top-right panel, orange box), so selecting on proper motion already reveals the stream in positions of individual stars (top-left panel). The stream also stands out in the color–magnitude diagram (bottom-right panel) as older and more metal-poor than the background. Selecting the main sequence of GD-1 (orange, shaded region in the bottom-right panel) along with proper motion cuts unveils the stream in unprecedented detail (bottom-left panel).">
+src="fig/gd1-5.png" alt="Figure 1 from Price-Whelan and Bonaca paper with four panels and caption. Caption reads: On-sky positions of likely GD-1 members in the GD-1 coordinate system. GD-1 is apparent as an overdensity in negative proper motions (top-right panel, orange box), so selecting on proper motion already reveals the stream in positions of individual stars (top-left panel). The stream also stands out in the color–magnitude diagram (bottom-right panel) as older and more metal-poor than the background. Selecting the main sequence of GD-1 (orange, shaded region in the bottom-right panel) along with proper motion cuts unveils the stream in unprecedented detail (bottom-left panel).">
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 

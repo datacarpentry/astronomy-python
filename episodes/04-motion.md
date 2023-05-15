@@ -150,7 +150,7 @@ Price-Whelan and Bonaca paper, the one that shows components of proper
 motion as a scatter plot:
 
 <img width="300"
-src="../fig/gd1-1.png" alt="Scatter of proper motion phi1 versus phi2 showing overdensity in negative proper motions of GD-1 stars.">
+src="fig/gd1-1.png" alt="Scatter of proper motion phi1 versus phi2 showing overdensity in negative proper motions of GD-1 stars.">
 
 In this figure, the shaded area identifies stars that are likely to be
 in GD-1 because:
@@ -396,7 +396,7 @@ In the original paper, Price-Whelan and Bonaca used a polygon to cover
 this region, as shown in this figure.
 
 <img width="300"
-src="../fig/gd1-1.png" alt="Scatter plot of proper motion with overlaid polygon showing overdense region selected for analysis in Price-Whelan and Bonaca paper.">
+src="fig/gd1-1.png" alt="Scatter plot of proper motion with overlaid polygon showing overdense region selected for analysis in Price-Whelan and Bonaca paper.">
 
 We will use a simple rectangle for now, but in a later lesson we will see
 how to select a polygonal region as well.

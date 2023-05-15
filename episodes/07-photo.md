@@ -29,7 +29,7 @@ The following figure from the paper is a color-magnitude diagram
 showing the stars we previously selected based on proper motion:
 
 <img width="300"
-src="../fig/gd1-3.png" alt="Color-magnitude diagram for the stars selected based on proper motion, from Price-Whelan and Bonaca paper.">
+src="fig/gd1-3.png" alt="Color-magnitude diagram for the stars selected based on proper motion, from Price-Whelan and Bonaca paper.">
 
 In red is a [theoretical isochrone](https://en.wikipedia.org/wiki/Stellar_isochrone), showing where we expect the stars
 in GD-1 to fall based on the metallicity and age of their original
@@ -105,7 +105,7 @@ diagram](https://coolwiki.ipac.caltech.edu/index.php/Color-Magnitude_and_Color-C
 to replicate the diagram from the original paper:
 
 <img width="300"
-src="../fig/gd1-3.png" alt="Color-magnitude diagram for the stars selected based on proper motion, from Price-Whelan and Bonaca paper.">
+src="fig/gd1-3.png" alt="Color-magnitude diagram for the stars selected based on proper motion, from Price-Whelan and Bonaca paper.">
 
 The y-axis shows the apparent magnitude of each source with the [g
 filter](https://en.wikipedia.org/wiki/Photometric_system).

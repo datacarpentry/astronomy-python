@@ -546,7 +546,7 @@ We can compare this figure with this panel from Figure 1 from the
 original paper:
 
 <img height="150"
-src="../fig/gd1-2.png" alt="Figure from Price-Whelan and Bonaca paper showing phi1 vs phi2 in GD-1 after selecting on proper motion.">
+src="fig/gd1-2.png" alt="Figure from Price-Whelan and Bonaca paper showing phi1 vs phi2 in GD-1 after selecting on proper motion.">
 
 This panel shows stars selected based on proper motion only, so it is
 comparable to our figure (although notice that the original figure covers a wider
@@ -556,7 +556,7 @@ In the next episode, we will use photometry data from Pan-STARRS to do
 a second round of filtering, and see if we can replicate this panel.
 
 <img height="150"
-src="../fig/gd1-4.png" alt="Figure from Price-Whelan and Bonaca paper showing phi1 vs phi2 in GD-1 after selecting on proper motion and photometry.">
+src="fig/gd1-4.png" alt="Figure from Price-Whelan and Bonaca paper showing phi1 vs phi2 in GD-1 after selecting on proper motion and photometry.">
 
 Later we will learn how to add annotations like the ones in the figure and
 customize the style of the figure to present the results clearly and
