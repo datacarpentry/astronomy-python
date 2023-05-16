@@ -34,10 +34,16 @@
     <loc>https://datacarpentry.github.io/astronomy-python/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://datacarpentry.github.io/astronomy-python/aio.html</loc>
+  </url>
+  <url>
     <loc>https://datacarpentry.github.io/astronomy-python/calculating_MIST_isochrone.html</loc>
   </url>
   <url>
     <loc>https://datacarpentry.github.io/astronomy-python/discuss.html</loc>
+  </url>
+  <url>
+    <loc>https://datacarpentry.github.io/astronomy-python/images.html</loc>
   </url>
   <url>
     <loc>https://datacarpentry.github.io/astronomy-python/index.html</loc>
@@ -76,13 +82,25 @@
     <loc>https://datacarpentry.github.io/astronomy-python/instructor/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://datacarpentry.github.io/astronomy-python/instructor/aio.html</loc>
+  </url>
+  <url>
     <loc>https://datacarpentry.github.io/astronomy-python/instructor/calculating_MIST_isochrone.html</loc>
   </url>
   <url>
     <loc>https://datacarpentry.github.io/astronomy-python/instructor/discuss.html</loc>
   </url>
   <url>
+    <loc>https://datacarpentry.github.io/astronomy-python/instructor/images.html</loc>
+  </url>
+  <url>
     <loc>https://datacarpentry.github.io/astronomy-python/instructor/index.html</loc>
+  </url>
+  <url>
+    <loc>https://datacarpentry.github.io/astronomy-python/instructor/instructor-notes.html</loc>
+  </url>
+  <url>
+    <loc>https://datacarpentry.github.io/astronomy-python/instructor/key-points.html</loc>
   </url>
   <url>
     <loc>https://datacarpentry.github.io/astronomy-python/instructor/link-list.html</loc>
@@ -95,6 +113,12 @@
   </url>
   <url>
     <loc>https://datacarpentry.github.io/astronomy-python/instructor/reference.html</loc>
+  </url>
+  <url>
+    <loc>https://datacarpentry.github.io/astronomy-python/instructor-notes.html</loc>
+  </url>
+  <url>
+    <loc>https://datacarpentry.github.io/astronomy-python/key-points.html</loc>
   </url>
   <url>
     <loc>https://datacarpentry.github.io/astronomy-python/link-list.html</loc>
