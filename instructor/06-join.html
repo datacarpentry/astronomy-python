@@ -326,12 +326,12 @@ isochrone</a>, showing where we expect the stars in GD-1 to fall based
 on the metallicity and age of their original globular cluster.</p>
 <p>By selecting stars in the shaded area, we can further distinguish the
 main sequence of GD-1 from younger background stars.</p>
-<div id="checklist1" class="callout checklist">
+<div id="outline" class="callout checklist">
 <div class="callout-square">
 <i class="callout-icon" data-feather="check-square"></i>
 </div>
 <div id="outline" class="callout-inner">
-<h3 class="callout-title">Outline<a class="anchor" aria-label="anchor" href="#checklist1"></a>
+<h3 class="callout-title">Outline<a class="anchor" aria-label="anchor" href="#outline"></a>
 </h3>
 <div class="callout-content">
 <ol style="list-style-type: decimal"><li><p>We will reload the candidate stars we identified in the previous
@@ -344,12 +344,12 @@ episode.</p></li>
 </ol></div>
 </div>
 </div>
-<div id="prereq1" class="callout prereq">
+<div id="starting-from-this-episode" class="callout prereq">
 <div class="callout-square">
 <i class="callout-icon" data-feather="check"></i>
 </div>
 <div id="starting-from-this-episode" class="callout-inner">
-<h3 class="callout-title">Starting from this episode<a class="anchor" aria-label="anchor" href="#prereq1"></a>
+<h3 class="callout-title">Starting from this episode<a class="anchor" aria-label="anchor" href="#starting-from-this-episode"></a>
 </h3>
 <div class="callout-content">
 <p>If you are starting a new notebook for this episode, expand this
@@ -422,13 +422,13 @@ photometric bands available from the Pan-STARRS survey to obtain the
 <p>Conveniently, the Gaia server provides data from Pan-STARRS as a
 table in the same database we have been using, so we can access it by
 making ADQL queries.</p>
-<div id="callout1" class="callout callout">
+<div id="a-caveat-about-matching-stars-between-catalogs" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="a-caveat-about-matching-stars-between-catalogs" class="callout-inner">
 <h3 class="callout-title">A caveat about matching stars between
-catalogs<a class="anchor" aria-label="anchor" href="#callout1"></a>
+catalogs<a class="anchor" aria-label="anchor" href="#a-caveat-about-matching-stars-between-catalogs"></a>
 </h3>
 <div class="callout-content">
 <p>In general, choosing a star from the Gaia catalog and finding the
@@ -478,12 +478,12 @@ Pan-STARRS photometry for these stars in the
 the<code>obj_ids</code> we just identified.</p></li>
 </ol><p>Before we get to the <code>JOIN</code> operation, we will explore
 these tables.</p>
-<div id="callout2" class="callout callout">
+<div id="british-vs-american-spelling-of-neighbour" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="british-vs-american-spelling-of-neighbour" class="callout-inner">
-<h3 class="callout-title">British vs American Spelling of Neighbour<a class="anchor" aria-label="anchor" href="#callout2"></a>
+<h3 class="callout-title">British vs American Spelling of Neighbour<a class="anchor" aria-label="anchor" href="#british-vs-american-spelling-of-neighbour"></a>
 </h3>
 <div class="callout-content">
 <p>The Gaia database was created and is maintained by the European Space
@@ -876,12 +876,12 @@ abbreviated name <code>gaia</code>.</p>
 <span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="st">  CIRCLE(88.8, 7.4, 0.08333333))</span></span>
 <span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
 </div>
-<div id="callout3" class="callout callout">
+<div id="sql-detail" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="sql-detail" class="callout-inner">
-<h3 class="callout-title">SQL detail<a class="anchor" aria-label="anchor" href="#callout3"></a>
+<h3 class="callout-title">SQL detail<a class="anchor" aria-label="anchor" href="#sql-detail"></a>
 </h3>
 <div class="callout-content">
 <p>In this example, the <code>ON</code> column has the same name in both
@@ -983,12 +983,12 @@ two tables. <a href="https://www.geeksforgeeks.org/sql-join-set-1-inner-left-rig
 can read about the other kinds of join here</a>.</p>
 </section><section id="adding-the-pan-starrs-table"><h2 class="section-heading">Adding the Pan-STARRS table<a class="anchor" aria-label="anchor" href="#adding-the-pan-starrs-table"></a>
 </h2>
-<hr class="half-width"><div id="challenge1" class="callout challenge">
+<hr class="half-width"><div id="exercise-15-minutes" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="exercise-15-minutes" class="callout-inner">
-<h3 class="callout-title">Exercise (15 minutes)<a class="anchor" aria-label="anchor" href="#challenge1"></a>
+<h3 class="callout-title">Exercise (15 minutes)<a class="anchor" aria-label="anchor" href="#exercise-15-minutes"></a>
 </h3>
 <div class="callout-content">
 <p>Now we are ready to bring in the Pan-STARRS table. Starting with the
@@ -1152,12 +1152,12 @@ WHERE parallax &lt; 1
 635614168640132864 139.59219748145836 ... -13.708904908478631
 [Output truncated]</code></pre>
 </div>
-<div id="challenge2" class="callout challenge">
+<div id="exercise-15-minutes-1" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="exercise-15-minutes-1" class="callout-inner">
-<h3 class="callout-title">Exercise (15 minutes)<a class="anchor" aria-label="anchor" href="#challenge2"></a>
+<h3 class="callout-title">Exercise (15 minutes)<a class="anchor" aria-label="anchor" href="#exercise-15-minutes-1"></a>
 </h3>
 <div class="callout-content">
 <p>Create a new query base called <code>candidate_join_query_base</code>
@@ -1272,12 +1272,12 @@ dtype: float64</code></pre>
 </div>
 <p>In fact, <code>1</code> is the only value in the <code>Series</code>,
 so every candidate star has a single best match.</p>
-<div id="callout4" class="callout callout">
+<div id="numpy-mask-warning" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="numpy-mask-warning" class="callout-inner">
-<h3 class="callout-title">Numpy Mask Warning<a class="anchor" aria-label="anchor" href="#callout4"></a>
+<h3 class="callout-title">Numpy Mask Warning<a class="anchor" aria-label="anchor" href="#numpy-mask-warning"></a>
 </h3>
 <div class="callout-content">
 <p>You may see a warning that ends with the following phrase:</p>
@@ -1318,12 +1318,12 @@ dtype: float64</code></pre>
 <p>All values in this column are <code>0</code>, which means that for
 each match we found in Pan-STARRS, there are no other stars in Gaia that
 also match.</p>
-<div id="callout5" class="callout callout">
+<div id="number-of-neighbors" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="number-of-neighbors" class="callout-inner">
-<h3 class="callout-title">Number of neighbors<a class="anchor" aria-label="anchor" href="#callout5"></a>
+<h3 class="callout-title">Number of neighbors<a class="anchor" aria-label="anchor" href="#number-of-neighbors"></a>
 </h3>
 <div class="callout-content">
 <p>The table also contains <code>number_of_neighbours</code> which is
@@ -1516,7 +1516,7 @@ data.</li>
         <p>Materials licensed under <a href="../LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.11.16" class="external-link">sandpaper (0.11.16)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.0" class="external-link">sandpaper (0.12.0)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.16" class="external-link">varnish (0.2.16)</a>.</p>
 			</div>
@@ -1540,7 +1540,7 @@ data.</li>
   "identifier": "https://datacarpentry.github.io/astronomy-python/instructor/06-join.html",
   "dateCreated": "2020-05-11",
   "dateModified": "2023-05-15",
-  "datePublished": "2023-05-16"
+  "datePublished": "2023-05-23"
 }
 
   </script><script>

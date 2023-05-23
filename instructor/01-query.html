@@ -320,12 +320,12 @@ server?</li>
 paper, “<a href="https://arxiv.org/abs/1805.00425" class="external-link">Off the beaten path:
 Gaia reveals GD-1 stars outside of the main stream</a>” by Adrian
 Price-Whelan and Ana Bonaca.</p>
-<div id="checklist1" class="callout checklist">
+<div id="outline" class="callout checklist">
 <div class="callout-square">
 <i class="callout-icon" data-feather="check-square"></i>
 </div>
 <div id="outline" class="callout-inner">
-<h3 class="callout-title">Outline<a class="anchor" aria-label="anchor" href="#checklist1"></a>
+<h3 class="callout-title">Outline<a class="anchor" aria-label="anchor" href="#outline"></a>
 </h3>
 <div class="callout-content">
 <p>This episode demonstrates the steps for selecting and downloading
@@ -399,12 +399,12 @@ that represents a connection to the Gaia database</a>.</p>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astroquery.gaia <span class="im">import</span> Gaia</span></code></pre>
 </div>
-<div id="callout1" class="callout callout">
+<div id="old-versions-of-astroquery-output" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="old-versions-of-astroquery-output" class="callout-inner">
-<h3 class="callout-title">Old versions of astroquery output<a class="anchor" aria-label="anchor" href="#callout1"></a>
+<h3 class="callout-title">Old versions of astroquery output<a class="anchor" aria-label="anchor" href="#old-versions-of-astroquery-output"></a>
 </h3>
 <div class="callout-content">
 <p>if you are using a version of astroquery that’s older than v0.4.4,
@@ -552,12 +552,12 @@ parallax_error
 the names, but you should resist the temptation to guess. To find out
 what the columns mean, <a href="https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html" class="external-link">read
 the documentation</a>.</p>
-<div id="challenge1" class="callout challenge">
+<div id="exercise-2-minutes" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="exercise-2-minutes" class="callout-inner">
-<h3 class="callout-title">Exercise (2 minutes)<a class="anchor" aria-label="anchor" href="#challenge1"></a>
+<h3 class="callout-title">Exercise (2 minutes)<a class="anchor" aria-label="anchor" href="#exercise-2-minutes"></a>
 </h3>
 <div class="callout-content">
 <p>One of the other tables we will use is
@@ -574,7 +574,7 @@ columns are there and what are their names?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -655,12 +655,12 @@ Gaia database, the query language is a dialect of SQL called ADQL.</p>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="st">FROM gaiadr2.gaia_source</span></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
 </div>
-<div id="callout2" class="callout callout">
+<div id="triple-quotes-strings" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="triple-quotes-strings" class="callout-inner">
-<h3 class="callout-title">Triple-quotes strings<a class="anchor" aria-label="anchor" href="#callout2"></a>
+<h3 class="callout-title">Triple-quotes strings<a class="anchor" aria-label="anchor" href="#triple-quotes-strings"></a>
 </h3>
 <div class="callout-content">
 <p>We use a <a href="https://docs.python.org/3/tutorial/introduction.html#strings" class="external-link">triple-quoted
@@ -740,12 +740,12 @@ complete, so we can get the results like this:</p>
 <pre class="output" tabindex="0"><code><span><span class="va">astropy.table.table.Table</span></span></code></pre>
 </div>
 <p>The <code>type</code> function indicates that the result is an <a href="https://docs.astropy.org/en/stable/table/" class="external-link">Astropy Table</a>.</p>
-<div id="callout3" class="callout callout">
+<div id="repetition" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="repetition" class="callout-inner">
-<h3 class="callout-title">Repetition<a class="anchor" aria-label="anchor" href="#callout3"></a>
+<h3 class="callout-title">Repetition<a class="anchor" aria-label="anchor" href="#repetition"></a>
 </h3>
 <div class="callout-content">
 <p>Why is <code>table</code> repeated three times? The first is the name
@@ -796,12 +796,12 @@ degrees, and their data type is <code>float64</code>, which is a 64-bit
 number</a>, used to store measurements with a fraction part.</p>
 <p>This information comes from the Gaia database, and has been stored in
 the Astropy <code>Table</code> by Astroquery.</p>
-<div id="challenge2" class="callout challenge">
+<div id="exercise-3-minutes" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="exercise-3-minutes" class="callout-inner">
-<h3 class="callout-title">Exercise (3 minutes)<a class="anchor" aria-label="anchor" href="#challenge2"></a>
+<h3 class="callout-title">Exercise (3 minutes)<a class="anchor" aria-label="anchor" href="#exercise-3-minutes"></a>
 </h3>
 <div class="callout-content">
 <p>Read <a href="https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html" class="external-link">the
@@ -819,7 +819,7 @@ type?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>For example, we can add radial_velocity : Radial velocity (double,
 Velocity[km/s] ) - Spectroscopic radial velocity in the solar
@@ -935,12 +935,12 @@ negative. As <a href="https://www.cosmos.esa.int/web/gaia/archive-tips#negative%
 FAQ explains</a>, “Negative parallaxes are caused by errors in the
 observations.” They have “no physical meaning,” but they can be a
 “useful diagnostic on the quality of the astrometric solution.”</p>
-<div id="callout4" class="callout callout">
+<div id="different-results" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="different-results" class="callout-inner">
-<h3 class="callout-title">Different results<a class="anchor" aria-label="anchor" href="#callout4"></a>
+<h3 class="callout-title">Different results<a class="anchor" aria-label="anchor" href="#different-results"></a>
 </h3>
 <div class="callout-content">
 <p>Your results for this query may differ from the Instructor’s. This is
@@ -949,12 +949,12 @@ are not organized in any particular way.</p>
 </div>
 </div>
 </div>
-<div id="challenge3" class="callout challenge">
+<div id="exercise-5-minutes" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="exercise-5-minutes" class="callout-inner">
-<h3 class="callout-title">Exercise (5 minutes)<a class="anchor" aria-label="anchor" href="#challenge3"></a>
+<h3 class="callout-title">Exercise (5 minutes)<a class="anchor" aria-label="anchor" href="#exercise-5-minutes"></a>
 </h3>
 <div class="callout-content">
 <p>The clauses in a query have to be in the right order. Go back and
@@ -982,7 +982,7 @@ faster, too.</p></li>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <p>In this example, the WHERE clause is in the wrong place.</p>
 <div class="codewrapper">
@@ -1027,12 +1027,12 @@ particular, notice that the equality operator is <code>=</code>, not
 <li>OR: true if either or both comparisons are true</li>
 </ul><p>Finally, you can use <code>NOT</code> to invert the result of a
 comparison.</p>
-<div id="challenge4" class="callout challenge">
+<div id="exercise-5-minutes-1" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="exercise-5-minutes-1" class="callout-inner">
-<h3 class="callout-title">Exercise (5 minutes)<a class="anchor" aria-label="anchor" href="#challenge4"></a>
+<h3 class="callout-title">Exercise (5 minutes)<a class="anchor" aria-label="anchor" href="#exercise-5-minutes-1"></a>
 </h3>
 <div class="callout-content">
 <p><a href="https://www.w3schools.com/sql/sql_operators.asp" class="external-link">Read about
@@ -1049,7 +1049,7 @@ where <code>bp_rp</code> is between <code>-0.75</code> and
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <p>Here is a solution using <code>&gt;</code> and <code>&lt;</code>
 operators:</p>
@@ -1210,12 +1210,12 @@ Owner: None
 3031111910043832576 110.84459425332385 ...  0.4668864606089576
 [Output truncated]</code></pre>
 </div>
-<div id="challenge5" class="callout challenge">
+<div id="exercise-10-minutes" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="exercise-10-minutes" class="callout-inner">
-<h3 class="callout-title">Exercise (10 minutes)<a class="anchor" aria-label="anchor" href="#challenge5"></a>
+<h3 class="callout-title">Exercise (10 minutes)<a class="anchor" aria-label="anchor" href="#exercise-10-minutes"></a>
 </h3>
 <div class="callout-content">
 <p>This query always selects sources with <code>parallax</code> less
@@ -1235,7 +1235,7 @@ replaced with the value you provide.</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb47">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1328,7 +1328,7 @@ analysis into phases with one notebook per phase.</li>
         <p>Materials licensed under <a href="../LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.11.16" class="external-link">sandpaper (0.11.16)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.0" class="external-link">sandpaper (0.12.0)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.16" class="external-link">varnish (0.2.16)</a>.</p>
 			</div>
@@ -1352,7 +1352,7 @@ analysis into phases with one notebook per phase.</li>
   "identifier": "https://datacarpentry.github.io/astronomy-python/instructor/01-query.html",
   "dateCreated": "2020-05-11",
   "dateModified": "2023-05-15",
-  "datePublished": "2023-05-16"
+  "datePublished": "2023-05-23"
 }
 
   </script><script>

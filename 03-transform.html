@@ -319,12 +319,12 @@ FITS file.</p>
 <p>Now we will read that data back in and implement the next step in the
 analysis, identifying stars with the proper motion we expect for
 GD-1.</p>
-<div id="checklist1" class="callout checklist">
+<div id="outline" class="callout checklist">
 <div class="callout-square">
 <i class="callout-icon" data-feather="check-square"></i>
 </div>
 <div id="outline" class="callout-inner">
-<h3 class="callout-title">Outline<a class="anchor" aria-label="anchor" href="#checklist1"></a>
+<h3 class="callout-title">Outline<a class="anchor" aria-label="anchor" href="#outline"></a>
 </h3>
 <div class="callout-content">
 <ol style="list-style-type: decimal"><li><p>We will read back the results from the previous lesson, which we
@@ -336,12 +336,12 @@ from ICRS back to the coordinate frame of GD-1.</p></li>
 </ol></div>
 </div>
 </div>
-<div id="prereq1" class="callout prereq">
+<div id="starting-from-this-episode" class="callout prereq">
 <div class="callout-square">
 <i class="callout-icon" data-feather="check"></i>
 </div>
 <div id="starting-from-this-episode" class="callout-inner">
-<h3 class="callout-title">Starting from this episode<a class="anchor" aria-label="anchor" href="#prereq1"></a>
+<h3 class="callout-title">Starting from this episode<a class="anchor" aria-label="anchor" href="#starting-from-this-episode"></a>
 </h3>
 <div class="callout-content">
 <p>If you are starting a new notebook for this episode, expand this
@@ -353,7 +353,7 @@ section for information you will need to get started.</p>
   Read me
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>In the previous episode, we ran a query on the Gaia server,
 downloaded data for roughly 140,000 stars, and saved the data in a FITS
@@ -537,12 +537,12 @@ MATLAB, some of it will be familiar.</p>
 </div>
 <p>Pyplot is part of the Matplotlib library. It is conventional to
 import it using the shortened name <code>plt</code>.</p>
-<div id="callout1" class="callout callout">
+<div id="keeping-plots-in-the-notebook" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="keeping-plots-in-the-notebook" class="callout-inner">
-<h3 class="callout-title">Keeping plots in the notebook<a class="anchor" aria-label="anchor" href="#callout1"></a>
+<h3 class="callout-title">Keeping plots in the notebook<a class="anchor" aria-label="anchor" href="#keeping-plots-in-the-notebook"></a>
 </h3>
 <div class="callout-content">
 <p>In recent versions of Jupyter, plots appear “inline”; that is, they
@@ -600,12 +600,12 @@ which means that there are so many overlapping points, we cannot
 distinguish between high and low density areas.</p>
 <p>To fix this, we can provide optional arguments to control the size
 and transparency of the points.</p>
-<div id="challenge1" class="callout challenge">
+<div id="exercise-5-minutes" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="exercise-5-minutes" class="callout-inner">
-<h3 class="callout-title">Exercise (5 minutes)<a class="anchor" aria-label="anchor" href="#challenge1"></a>
+<h3 class="callout-title">Exercise (5 minutes)<a class="anchor" aria-label="anchor" href="#exercise-5-minutes"></a>
 </h3>
 <div class="callout-content">
 <p>In the call to <code>plt.plot</code>, use the keyword argument
@@ -630,7 +630,7 @@ sky were scanned more than others.</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb23">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -868,13 +868,13 @@ different format.</p>
 </div>
 </div>
 </div>
-<div id="callout3" class="callout callout">
+<div id="pandas-dataframes-versus-astropy-tables" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="pandas-dataframes-versus-astropy-tables" class="callout-inner">
 <h3 class="callout-title">Pandas <code>DataFrame</code>s versus Astropy
-<code>Table</code>s<a class="anchor" aria-label="anchor" href="#callout3"></a>
+<code>Table</code>s<a class="anchor" aria-label="anchor" href="#pandas-dataframes-versus-astropy-tables"></a>
 </h3>
 <div class="callout-content">
 <p>Two common choices are the Pandas <code>DataFrame</code> and Astropy
@@ -940,12 +940,12 @@ go along.</p>
 4  638049655615392384  142.589136  22.110783   0.244439   -4.941079   0.099625  -54.627448  -3.542738   1.466103   -0.185292
 </code></pre>
 </div>
-<div id="callout4" class="callout callout">
+<div id="attributes-vs-functions" class="callout callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="attributes-vs-functions" class="callout-inner">
-<h3 class="callout-title">Attributes vs functions<a class="anchor" aria-label="anchor" href="#callout4"></a>
+<h3 class="callout-title">Attributes vs functions<a class="anchor" aria-label="anchor" href="#attributes-vs-functions"></a>
 </h3>
 <div class="callout-content">
 <p><code>shape</code> is an attribute, so we display its value without
@@ -1133,7 +1133,7 @@ the Join lesson).</li>
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.11.16" class="external-link">sandpaper (0.11.16)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.0" class="external-link">sandpaper (0.12.0)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.16" class="external-link">varnish (0.2.16)</a>.</p>
 			</div>
@@ -1157,7 +1157,7 @@ the Join lesson).</li>
   "identifier": "https://datacarpentry.github.io/astronomy-python/03-transform.html",
   "dateCreated": "2020-05-11",
   "dateModified": "2023-05-15",
-  "datePublished": "2023-05-16"
+  "datePublished": "2023-05-23"
 }
 
   </script><script>
