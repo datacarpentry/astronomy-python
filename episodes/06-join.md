@@ -253,6 +253,17 @@ Ideally, `best_neighbour_multiplicity` should be 1 and `number_of_mates`
 should be 0; in that case, there is a one-to-one match between the
 source in Gaia and the corresponding source in Pan-STARRS.
 
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+## Number of neighbors
+
+The table also contains `number_of_neighbours` which is the
+number of stars in Pan-STARRS that match in terms of position, before
+using other criteria to choose the most likely match.  But we are more
+interested in the final match, using both criteria.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
 Here is a query that selects these columns and returns the first 5 rows.
 
 ```python
@@ -946,18 +957,6 @@ dtype: float64
 
 All values in this column are `0`, which means that for each match we
 found in Pan-STARRS, there are no other stars in Gaia that also match.
-
-:::::::::::::::::::::::::::::::::::::::::  callout
-
-## Number of neighbors
-
-The table also contains `number_of_neighbours` which is the
-number of stars in Pan-STARRS that match in terms of position, before
-using other criteria to choose the most likely match.  But we are more
-interested in the final match, using both criteria.
-
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Saving the DataFrame
 
