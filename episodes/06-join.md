@@ -1071,6 +1071,10 @@ read_back_csv.head(3)
 ```
 
 The CSV file contains the names of the columns, but not the data types.
+A keen observer may note that the `dataframe` that we wrote to the CSV file did not contain data types, so it is unsurprising that 
+the CSV file also does not. 
+However, even if we had written a CSV file from an astropy `Table`, which does contain data type, 
+data type would not appear in the CSV file, highlighting a limitation of this format.
 Additionally, notice that the index in `candidate_df` has become an unnamed column
 in `read_back_csv` and a new index has been created.  The Pandas functions for writing and reading CSV
 files provide options to avoid that problem, but this is an example of
