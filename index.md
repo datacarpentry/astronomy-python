@@ -23,10 +23,6 @@ Interested in teaching these materials? We have an [onboarding video](https://ww
 teach this lesson. After watching this video, please contact [team@carpentries.org](mailto:team@carpentries.org) so that we can record your status as an onboarded Instructor. Instructors who have completed onboarding will be given priority status for teaching at Centrally-Organised
 Data Carpentry Foundations of Astronomical Data Science workshops.
 
-<!-- this is an html comment -->
-
-{% comment %} This is a comment in Liquid {% endcomment %}
-
 ::::::::::::::::::::::::::::::::::::::::::  prereq
 
 ## Prerequisites
