@@ -360,7 +360,7 @@ section for information you will need to get started.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Read me</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>In the previous episode, we selected stars in GD-1 based on proper
 motion and downloaded the spatial, proper motion, and photometry
@@ -374,12 +374,12 @@ new notebook, you will need to run the following lines of code.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Polygon</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> episode_functions <span class="im">import</span> <span class="op">*</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Polygon</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="im">from</span> episode_functions <span class="im">import</span> <span class="op">*</span></span></code></pre>
 </div>
 <p>The following code loads in the data (instructions for downloading
 data can be found in the <a href="index.html#setup">setup instructions</a>).
@@ -388,24 +388,24 @@ You may need to add a the path to the filename variable below
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">'gd1_data.hdf'</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>winner_df <span class="op">=</span> pd.read_hdf(filename, <span class="st">'winner_df'</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>centerline_df <span class="op">=</span> pd.read_hdf(filename, <span class="st">'centerline_df'</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>candidate_df <span class="op">=</span> pd.read_hdf(filename, <span class="st">'candidate_df'</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>loop_df <span class="op">=</span> pd.read_hdf(filename, <span class="st">'loop_df'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">'gd1_data.hdf'</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>winner_df <span class="op">=</span> pd.read_hdf(filename, <span class="st">'winner_df'</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>centerline_df <span class="op">=</span> pd.read_hdf(filename, <span class="st">'centerline_df'</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>candidate_df <span class="op">=</span> pd.read_hdf(filename, <span class="st">'candidate_df'</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>loop_df <span class="op">=</span> pd.read_hdf(filename, <span class="st">'loop_df'</span>)</span></code></pre>
 </div>
 <p>This defines previously defined quantities:</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pm1_min <span class="op">=</span> <span class="op">-</span><span class="fl">8.9</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pm1_max <span class="op">=</span> <span class="op">-</span><span class="fl">6.9</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>pm2_min <span class="op">=</span> <span class="op">-</span><span class="fl">2.2</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>pm2_max <span class="op">=</span>  <span class="fl">1.0</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>pm1_rect, pm2_rect <span class="op">=</span> make_rectangle(</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    pm1_min, pm1_max, pm2_min, pm2_max)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>pm1_min <span class="op">=</span> <span class="op">-</span><span class="fl">8.9</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>pm1_max <span class="op">=</span> <span class="op">-</span><span class="fl">6.9</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>pm2_min <span class="op">=</span> <span class="op">-</span><span class="fl">2.2</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>pm2_max <span class="op">=</span>  <span class="fl">1.0</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>pm1_rect, pm2_rect <span class="op">=</span> make_rectangle(</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>    pm1_min, pm1_max, pm2_min, pm2_max)</span></code></pre>
 </div>
 </div>
 </div>
@@ -454,7 +454,7 @@ you might have done differently?</p></li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2">Show me the solution</h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>No figure is perfect, and everyone can be a critic. Here are some
 topics that could come up in this discussion:</p>
@@ -529,28 +529,28 @@ information about text and arrows</a>.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3">Show me the solution</h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="fl">2.5</span>))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>plot_cmd_selection(winner_df)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="op">-</span><span class="dv">55</span>, ls<span class="op">=</span><span class="st">'--'</span>, color<span class="op">=</span><span class="st">'gray'</span>, </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            alpha<span class="op">=</span><span class="fl">0.4</span>, dashes<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>), lw<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>plt.text(<span class="op">-</span><span class="dv">60</span>, <span class="fl">5.5</span>, <span class="st">'Previously</span><span class="ch">\n</span><span class="st">undetected'</span>, </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>         fontsize<span class="op">=</span><span class="st">'small'</span>, ha<span class="op">=</span><span class="st">'right'</span>, va<span class="op">=</span><span class="st">'top'</span>)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>arrowprops<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'gray'</span>, shrink<span class="op">=</span><span class="fl">0.05</span>, width<span class="op">=</span><span class="fl">1.5</span>, </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                headwidth<span class="op">=</span><span class="dv">6</span>, headlength<span class="op">=</span><span class="dv">8</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>plt.annotate(<span class="st">'Spur'</span>, xy<span class="op">=</span>(<span class="op">-</span><span class="dv">33</span>, <span class="dv">2</span>), xytext<span class="op">=</span>(<span class="op">-</span><span class="dv">35</span>, <span class="fl">5.5</span>),</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>             arrowprops<span class="op">=</span>arrowprops,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>             fontsize<span class="op">=</span><span class="st">'small'</span>)</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>plt.annotate(<span class="st">'Gap'</span>, xy<span class="op">=</span>(<span class="op">-</span><span class="dv">22</span>, <span class="op">-</span><span class="dv">1</span>), xytext<span class="op">=</span>(<span class="op">-</span><span class="dv">25</span>, <span class="op">-</span><span class="fl">5.5</span>),</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>             arrowprops<span class="op">=</span>arrowprops,</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>             fontsize<span class="op">=</span><span class="st">'small'</span>)<span class="op">;</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="fl">2.5</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>plot_cmd_selection(winner_df)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>plt.axvline(<span class="op">-</span><span class="dv">55</span>, ls<span class="op">=</span><span class="st">'--'</span>, color<span class="op">=</span><span class="st">'gray'</span>, </span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>            alpha<span class="op">=</span><span class="fl">0.4</span>, dashes<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>), lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>plt.text(<span class="op">-</span><span class="dv">60</span>, <span class="fl">5.5</span>, <span class="st">'Previously</span><span class="ch">\n</span><span class="st">undetected'</span>, </span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>         fontsize<span class="op">=</span><span class="st">'small'</span>, ha<span class="op">=</span><span class="st">'right'</span>, va<span class="op">=</span><span class="st">'top'</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>arrowprops<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'gray'</span>, shrink<span class="op">=</span><span class="fl">0.05</span>, width<span class="op">=</span><span class="fl">1.5</span>, </span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>                headwidth<span class="op">=</span><span class="dv">6</span>, headlength<span class="op">=</span><span class="dv">8</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>plt.annotate(<span class="st">'Spur'</span>, xy<span class="op">=</span>(<span class="op">-</span><span class="dv">33</span>, <span class="dv">2</span>), xytext<span class="op">=</span>(<span class="op">-</span><span class="dv">35</span>, <span class="fl">5.5</span>),</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>             arrowprops<span class="op">=</span>arrowprops,</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>             fontsize<span class="op">=</span><span class="st">'small'</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>plt.annotate(<span class="st">'Gap'</span>, xy<span class="op">=</span>(<span class="op">-</span><span class="dv">22</span>, <span class="op">-</span><span class="dv">1</span>), xytext<span class="op">=</span>(<span class="op">-</span><span class="dv">25</span>, <span class="op">-</span><span class="fl">5.5</span>),</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>             arrowprops<span class="op">=</span>arrowprops,</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>             fontsize<span class="op">=</span><span class="st">'small'</span>)<span class="op">;</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -572,13 +572,12 @@ use a style sheet.</p></li>
 </ul><p>As a simple example, notice that Matplotlib puts ticks on the outside
 of the figures by default, and only on the left and bottom sides of the
 axes.</p>
-<div id="note-on-accessibility" class="callout callout">
+<div id="callout1" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="note-on-accessibility" class="callout-inner">
-<h3 class="callout-title">Note on Accessibility<a class="anchor" aria-label="anchor" href="#note-on-accessibility"></a>
-</h3>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title" id="note-on-accessibility">Note on Accessibility<a class="anchor" aria-label="anchor" href="#note-on-accessibility"></a></h3>
 <div class="callout-content">
 <p>Customization offers a high degree of personalization for creating
 scientific visualizations. It is important to also create accessible
@@ -601,17 +600,18 @@ we can first create our <code>figure</code> object and then add an
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="fl">2.5</span>))</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="fl">2.5</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span></code></pre>
 </div>
-<div id="subplot-and-axes" class="callout callout">
+<div id="callout2" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="subplot-and-axes" class="callout-inner">
-<h3 class="callout-title">
-<code>subplot</code>and<code>axes</code><a class="anchor" aria-label="anchor" href="#subplot-and-axes"></a>
-</h3>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title" id="subplot-and-axes">
+<code>subplot</code> and
+<code>axes</code>
+<a class="anchor" aria-label="anchor" href="#subplot-and-axes"></a></h3>
 <div class="callout-content">
 <p>Confusingly, in Matplotlib the objects <code>subplot</code> and
 <code>axes</code> are often used interchangeably. This is because a
@@ -633,9 +633,9 @@ of the axes using our new axes object.</p>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="fl">2.5</span>))</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ax.tick_params(direction<span class="op">=</span><span class="st">'in'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="fl">2.5</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>ax.tick_params(direction<span class="op">=</span><span class="st">'in'</span>)</span></code></pre>
 </div>
 <div id="exercise-5-minutes" class="callout challenge">
 <div class="callout-square">
@@ -655,14 +655,14 @@ and use it to put ticks on the top and right sides of the axes.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4">Show me the solution</h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="fl">2.5</span>))</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ax.tick_params(top<span class="op">=</span><span class="va">True</span>, right<span class="op">=</span><span class="va">True</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="fl">2.5</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>ax.tick_params(top<span class="op">=</span><span class="va">True</span>, right<span class="op">=</span><span class="va">True</span>)</span></code></pre>
 </div>
 </div>
 </div>
@@ -680,7 +680,7 @@ change about your plot. This is what you are overriding with
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'font.size'</span>]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>plt.rcParams[<span class="st">'font.size'</span>]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -691,7 +691,7 @@ change about your plot. This is what you are overriding with
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'font.size'</span>] <span class="op">=</span> <span class="dv">14</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>plt.rcParams[<span class="st">'font.size'</span>] <span class="op">=</span> <span class="dv">14</span></span></code></pre>
 </div>
 <div id="exercise-5-minutes-1" class="callout challenge">
 <div class="callout-square">
@@ -712,26 +712,26 @@ and check the effect on the figure.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5">Show me the solution</h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="fl">2.5</span>))</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>ax.tick_params(top<span class="op">=</span><span class="va">True</span>, right<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Looking up the 'axes.edgecolor' rcParams value</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(plt.rcParams[<span class="st">'axes.edgecolor'</span>])</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'axis.edgecolor'</span>] <span class="op">=</span> <span class="st">'red'</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="fl">2.5</span>))</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>ax.tick_params(top<span class="op">=</span><span class="va">True</span>, right<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co"># changing the rcParams value back to its original value</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'axes.edgecolor'</span>] <span class="op">=</span> <span class="st">'black'</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="fl">2.5</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>ax.tick_params(top<span class="op">=</span><span class="va">True</span>, right<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co"># Looking up the 'axes.edgecolor' rcParams value</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="bu">print</span>(plt.rcParams[<span class="st">'axes.edgecolor'</span>])</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>plt.rcParams[<span class="st">'axis.edgecolor'</span>] <span class="op">=</span> <span class="st">'red'</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="fl">2.5</span>))</span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a>ax.tick_params(top<span class="op">=</span><span class="va">True</span>, right<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co"># changing the rcParams value back to its original value</span></span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a>plt.rcParams[<span class="st">'axes.edgecolor'</span>] <span class="op">=</span> <span class="st">'black'</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -744,8 +744,8 @@ find out where your matplotlibrc file lives type:</p>
 <div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>mpl.matplotlib_fname()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>mpl.matplotlib_fname()</span></code></pre>
 </div>
 <p>If the file doesn’t exist, you can download <a href="https://matplotlib.org/stable/tutorials/introductory/customizing.html#matplotlibrc-sample" class="external-link">a
 sample matplotlibrc file</a> to modify.</p>
@@ -766,7 +766,7 @@ sheets.</p>
 <div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>plt.style.available</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>plt.style.available</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -793,24 +793,23 @@ this:</p>
 <div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'fivethirtyeight'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>plt.style.use(<span class="st">'fivethirtyeight'</span>)</span></code></pre>
 </div>
 <p>The style sheet you choose will affect the appearance of all figures
 you plot after calling <code>use</code>, unless you override any of the
 options or call <code>use</code> again.</p>
-<div id="return-to-default" class="callout callout">
+<div id="callout3" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="return-to-default" class="callout-inner">
-<h3 class="callout-title">Return to Default<a class="anchor" aria-label="anchor" href="#return-to-default"></a>
-</h3>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title" id="return-to-default">Return to Default<a class="anchor" aria-label="anchor" href="#return-to-default"></a></h3>
 <div class="callout-content">
 <p>To switch back to the default style use</p>
 <div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'default'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>plt.style.use(<span class="st">'default'</span>)</span></code></pre>
 </div>
 </div>
 </div>
@@ -834,18 +833,18 @@ see what changes in the figure’s appearance.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
   <h4 class="accordion-header" id="headingSolution6">Show me the solution</h4>
 </button>
-<div id="collapseSolution6" class="accordion-collapse collapse" data-bs-parent="#accordionSolution6" aria-labelledby="headingSolution6">
+<div id="collapseSolution6" class="accordion-collapse collapse" aria-labelledby="headingSolution6" data-bs-parent="#accordionSolution6">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'seaborn-bright'</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>plot_cmd(candidate_df)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>plt.plot(left_color, g, label<span class="op">=</span><span class="st">'left color'</span>)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>plt.plot(right_color, g, label<span class="op">=</span><span class="st">'right color'</span>)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>plt.style.use(<span class="st">'seaborn-bright'</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>plot_cmd(candidate_df)</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>plt.plot(left_color, g, label<span class="op">=</span><span class="st">'left color'</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>plt.plot(right_color, g, label<span class="op">=</span><span class="st">'right color'</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>plt.legend()<span class="op">;</span></span></code></pre>
 </div>
 <p>If you cannot find a style sheet that is exactly what you want, you
 can make your own. This repository includes a style sheet called
@@ -859,14 +858,14 @@ Azalee Bostroem for publication in astronomy journals.</p>
 <div class="codewrapper sourceCode" id="cb18">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'./az-paper-twocol.mplstyle'</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>plot_cmd(candidate_df)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>plt.plot(left_color, g, label<span class="op">=</span><span class="st">'left color'</span>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>plt.plot(right_color, g, label<span class="op">=</span><span class="st">'right color'</span>)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>plt.style.use(<span class="st">'./az-paper-twocol.mplstyle'</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>plot_cmd(candidate_df)</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>plt.plot(left_color, g, label<span class="op">=</span><span class="st">'left color'</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>plt.plot(right_color, g, label<span class="op">=</span><span class="st">'right color'</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>plt.legend()<span class="op">;</span></span></code></pre>
 </div>
 <p>The prefix <code>./</code> tells Matplotlib to look for the file in
 the current directory.</p>
@@ -878,7 +877,7 @@ the following command:</p>
 <div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>mpl.get_configdir()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>mpl.get_configdir()</span></code></pre>
 </div>
 </section><section id="multiple-panels"><h2 class="section-heading">Multiple panels<a class="anchor" aria-label="anchor" href="#multiple-panels"></a>
 </h2>
@@ -906,23 +905,23 @@ indicates row 0 and column 0, which is the upper-left panel.</p>
 <div class="codewrapper sourceCode" id="cb20">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'default'</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>shape <span class="op">=</span> (<span class="dv">2</span>, <span class="dv">2</span>)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">0</span>))</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>plot_pm_selection(candidate_df)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">1</span>))</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>plot_proper_motion(centerline_df)</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>ax3 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">0</span>))</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>plot_cmd_selection(winner_df)</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>ax4 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">1</span>))</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>plot_cmd(candidate_df)</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>plt.style.use(<span class="st">'default'</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>shape <span class="op">=</span> (<span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>ax1 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a>plot_pm_selection(candidate_df)</span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a>ax2 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>plot_proper_motion(centerline_df)</span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a>ax3 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a>plot_cmd_selection(winner_df)</span>
+<span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a>ax4 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb20-15"><a href="#cb20-15" tabindex="-1"></a>plot_cmd(candidate_df)</span>
+<span id="cb20-16"><a href="#cb20-16" tabindex="-1"></a></span>
+<span id="cb20-17"><a href="#cb20-17" tabindex="-1"></a>plt.tight_layout()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -953,7 +952,7 @@ want to see the mechanics of exactly how the plotting is done.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution7" aria-expanded="false" aria-controls="collapseSolution7">
   <h4 class="accordion-header" id="headingSolution7">Show me the solution</h4>
 </button>
-<div id="collapseSolution7" class="accordion-collapse collapse" data-bs-parent="#accordionSolution7" aria-labelledby="headingSolution7">
+<div id="collapseSolution7" class="accordion-collapse collapse" aria-labelledby="headingSolution7" data-bs-parent="#accordionSolution7">
 <div class="accordion-body">
 <p>Without <code>tight_layout</code> the space between the panels is too
 small. In this situation, the titles from the lower plots overlap with
@@ -979,22 +978,22 @@ ratio of the whole figure.</p>
 <div class="codewrapper sourceCode" id="cb22">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.5</span>))</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>shape <span class="op">=</span> (<span class="dv">2</span>, <span class="dv">4</span>)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">0</span>), colspan<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>plot_pm_selection(candidate_df)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">3</span>))</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>plot_proper_motion(centerline_df)</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>ax3 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">0</span>), colspan<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>plot_cmd_selection(winner_df)</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>ax4 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">3</span>))</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>plot_cmd(candidate_df)</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.5</span>))</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>shape <span class="op">=</span> (<span class="dv">2</span>, <span class="dv">4</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>ax1 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">0</span>), colspan<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>plot_pm_selection(candidate_df)</span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>ax2 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">3</span>))</span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a>plot_proper_motion(centerline_df)</span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a>ax3 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">0</span>), colspan<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a>plot_cmd_selection(winner_df)</span>
+<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a></span>
+<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a>ax4 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb22-14"><a href="#cb22-14" tabindex="-1"></a>plot_cmd(candidate_df)</span>
+<span id="cb22-15"><a href="#cb22-15" tabindex="-1"></a></span>
+<span id="cb22-16"><a href="#cb22-16" tabindex="-1"></a>plt.tight_layout()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1020,28 +1019,28 @@ would you adjust it if you wanted the ratio to be 3:2?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution8" aria-expanded="false" aria-controls="collapseSolution8">
   <h4 class="accordion-header" id="headingSolution8">Show me the solution</h4>
 </button>
-<div id="collapseSolution8" class="accordion-collapse collapse" data-bs-parent="#accordionSolution8" aria-labelledby="headingSolution8">
+<div id="collapseSolution8" class="accordion-collapse collapse" aria-labelledby="headingSolution8" data-bs-parent="#accordionSolution8">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb24">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.5</span>))</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>shape <span class="op">=</span> (<span class="dv">2</span>, <span class="dv">5</span>)                                   <span class="co"># CHANGED</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">0</span>), colspan<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>plot_pm_selection(candidate_df)</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">3</span>), colspan<span class="op">=</span><span class="dv">2</span>)       <span class="co"># CHANGED</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>plot_proper_motion(centerline_df)</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>ax3 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">0</span>), colspan<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>plot_cmd_selection(winner_df)</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>ax4 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">3</span>), colspan<span class="op">=</span><span class="dv">2</span>)       <span class="co"># CHANGED</span></span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>plot_cmd(candidate_df)</span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a></span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.5</span>))</span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>shape <span class="op">=</span> (<span class="dv">2</span>, <span class="dv">5</span>)                                   <span class="co"># CHANGED</span></span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>ax1 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">0</span>), colspan<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>plot_pm_selection(candidate_df)</span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a>ax2 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">3</span>), colspan<span class="op">=</span><span class="dv">2</span>)       <span class="co"># CHANGED</span></span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a>plot_proper_motion(centerline_df)</span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a>ax3 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">0</span>), colspan<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>plot_cmd_selection(winner_df)</span>
+<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a>ax4 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">3</span>), colspan<span class="op">=</span><span class="dv">2</span>)       <span class="co"># CHANGED</span></span>
+<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a>plot_cmd(candidate_df)</span>
+<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" tabindex="-1"></a>plt.tight_layout()</span></code></pre>
 </div>
 </div>
 </div>
@@ -1065,8 +1064,8 @@ and <code>y</code> values in the second column.</p>
 <div class="codewrapper sourceCode" id="cb25">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>vertices <span class="op">=</span> np.transpose([pm1_rect, pm2_rect])</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>vertices</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>vertices <span class="op">=</span> np.transpose([pm1_rect, pm2_rect])</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>vertices</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1085,8 +1084,8 @@ properties which will be used when it is plotted. We will specify
 <div class="codewrapper sourceCode" id="cb27">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>poly <span class="op">=</span> Polygon(vertices, closed<span class="op">=</span><span class="va">True</span>, </span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                   facecolor<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a>poly <span class="op">=</span> Polygon(vertices, closed<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a>                   facecolor<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span></code></pre>
 </div>
 <p>Then to plot the <code>Polygon</code> we call the
 <code>add_patch</code> method. <code>add_patch</code> like
@@ -1096,13 +1095,13 @@ and then add the <code>Patch</code> to the <code>subplot</code>.</p>
 <div class="codewrapper sourceCode" id="cb28">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>poly <span class="op">=</span> Polygon(vertices, closed<span class="op">=</span><span class="va">True</span>, </span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>                   facecolor<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>ax.add_patch(poly)</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="dv">10</span>, <span class="fl">7.5</span>)</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">10</span>, <span class="dv">10</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>poly <span class="op">=</span> Polygon(vertices, closed<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a>                   facecolor<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a>ax.add_patch(poly)</span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="dv">10</span>, <span class="fl">7.5</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">10</span>, <span class="dv">10</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1115,12 +1114,12 @@ the region we selected.</p>
 <div class="codewrapper sourceCode" id="cb30">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>plot_proper_motion(centerline_df)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>poly <span class="op">=</span> Polygon(vertices, closed<span class="op">=</span><span class="va">True</span>, </span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>               facecolor<span class="op">=</span><span class="st">'C1'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>ax.add_patch(poly)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>plot_proper_motion(centerline_df)</span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a>poly <span class="op">=</span> Polygon(vertices, closed<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a>               facecolor<span class="op">=</span><span class="st">'C1'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a>ax.add_patch(poly)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1148,16 +1147,16 @@ show the polygon we selected as a shaded area.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution9" aria-expanded="false" aria-controls="collapseSolution9">
   <h4 class="accordion-header" id="headingSolution9">Show me the solution</h4>
 </button>
-<div id="collapseSolution9" class="accordion-collapse collapse" data-bs-parent="#accordionSolution9" aria-labelledby="headingSolution9">
+<div id="collapseSolution9" class="accordion-collapse collapse" aria-labelledby="headingSolution9" data-bs-parent="#accordionSolution9">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb32">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>poly_cmd <span class="op">=</span> Polygon(loop_df, closed<span class="op">=</span><span class="va">True</span>, </span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>              facecolor<span class="op">=</span><span class="st">'C1'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>ax.add_patch(poly_cmd)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>poly_cmd <span class="op">=</span> Polygon(loop_df, closed<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a>              facecolor<span class="op">=</span><span class="st">'C1'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a>ax.add_patch(poly_cmd)</span></code></pre>
 </div>
 </div>
 </div>
@@ -1181,33 +1180,33 @@ panels of the four panel figure.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution10" aria-expanded="false" aria-controls="collapseSolution10">
   <h4 class="accordion-header" id="headingSolution10">Show me the solution</h4>
 </button>
-<div id="collapseSolution10" class="accordion-collapse collapse" data-bs-parent="#accordionSolution10" aria-labelledby="headingSolution10">
+<div id="collapseSolution10" class="accordion-collapse collapse" aria-labelledby="headingSolution10" data-bs-parent="#accordionSolution10">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb33">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.5</span>))</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>shape <span class="op">=</span> (<span class="dv">2</span>, <span class="dv">4</span>)</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">0</span>), colspan<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>plot_pm_selection(candidate_df)</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">3</span>))</span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>plot_proper_motion(centerline_df)</span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>poly <span class="op">=</span> Polygon(vertices, closed<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>               facecolor<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>ax2.add_patch(poly)</span>
-<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>ax3 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">0</span>), colspan<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>plot_cmd_selection(winner_df)</span>
-<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>ax4 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">3</span>))</span>
-<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>plot_cmd(candidate_df)</span>
-<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>poly_cmd <span class="op">=</span> Polygon(loop_df, closed<span class="op">=</span><span class="va">True</span>, </span>
-<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>               facecolor<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
-<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>ax4.add_patch(poly_cmd)</span>
-<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.5</span>))</span>
+<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" tabindex="-1"></a>shape <span class="op">=</span> (<span class="dv">2</span>, <span class="dv">4</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" tabindex="-1"></a>ax1 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">0</span>), colspan<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" tabindex="-1"></a>plot_pm_selection(candidate_df)</span>
+<span id="cb33-6"><a href="#cb33-6" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" tabindex="-1"></a>ax2 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">0</span>, <span class="dv">3</span>))</span>
+<span id="cb33-8"><a href="#cb33-8" tabindex="-1"></a>plot_proper_motion(centerline_df)</span>
+<span id="cb33-9"><a href="#cb33-9" tabindex="-1"></a>poly <span class="op">=</span> Polygon(vertices, closed<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb33-10"><a href="#cb33-10" tabindex="-1"></a>               facecolor<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb33-11"><a href="#cb33-11" tabindex="-1"></a>ax2.add_patch(poly)</span>
+<span id="cb33-12"><a href="#cb33-12" tabindex="-1"></a></span>
+<span id="cb33-13"><a href="#cb33-13" tabindex="-1"></a>ax3 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">0</span>), colspan<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb33-14"><a href="#cb33-14" tabindex="-1"></a>plot_cmd_selection(winner_df)</span>
+<span id="cb33-15"><a href="#cb33-15" tabindex="-1"></a></span>
+<span id="cb33-16"><a href="#cb33-16" tabindex="-1"></a>ax4 <span class="op">=</span> plt.subplot2grid(shape, (<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb33-17"><a href="#cb33-17" tabindex="-1"></a>plot_cmd(candidate_df)</span>
+<span id="cb33-18"><a href="#cb33-18" tabindex="-1"></a>poly_cmd <span class="op">=</span> Polygon(loop_df, closed<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb33-19"><a href="#cb33-19" tabindex="-1"></a>               facecolor<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb33-20"><a href="#cb33-20" tabindex="-1"></a>ax4.add_patch(poly_cmd)</span>
+<span id="cb33-21"><a href="#cb33-21" tabindex="-1"></a></span>
+<span id="cb33-22"><a href="#cb33-22" tabindex="-1"></a>plt.tight_layout()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1309,7 +1308,7 @@ projects, you might want to create your own style sheet.</li>
   "identifier": "https://datacarpentry.github.io/astronomy-python/08-plot.html",
   "dateCreated": "2020-05-11",
   "dateModified": "2023-05-15",
-  "datePublished": "2024-02-27"
+  "datePublished": "2024-03-05"
 }
 
   </script><script>

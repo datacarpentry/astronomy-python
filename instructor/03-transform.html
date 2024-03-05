@@ -375,12 +375,12 @@ new notebook, you will need to run the following lines of code.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> astropy.units <span class="im">as</span> u</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astropy.coordinates <span class="im">import</span> SkyCoord</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gala.coordinates <span class="im">import</span> GD1Koposov10</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astropy.table <span class="im">import</span> Table</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> episode_functions <span class="im">import</span> <span class="op">*</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">import</span> astropy.units <span class="im">as</span> u</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="im">from</span> astropy.coordinates <span class="im">import</span> SkyCoord</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">from</span> gala.coordinates <span class="im">import</span> GD1Koposov10</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="im">from</span> astropy.table <span class="im">import</span> Table</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="im">from</span> episode_functions <span class="im">import</span> <span class="op">*</span></span></code></pre>
 </div>
 <p>The following code loads in the data (instructions for downloading
 data can be found in the <a href="index.html#setup">setup instructions</a>).
@@ -389,10 +389,10 @@ You may need to add a the path to the filename variable below
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">'gd1_results.fits'</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>polygon_results <span class="op">=</span> Table.read(filename)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>gd1_frame <span class="op">=</span> GD1Koposov10()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">'gd1_results.fits'</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>polygon_results <span class="op">=</span> Table.read(filename)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>gd1_frame <span class="op">=</span> GD1Koposov10()</span></code></pre>
 </div>
 </div>
 </div>
@@ -410,7 +410,7 @@ The output was returned as an Astropy <code>Table</code>. We can use
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>polygon_results.info()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>polygon_results.info()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -433,7 +433,7 @@ documentation</a>.</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>polygon_results.colnames</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>polygon_results.colnames</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -444,7 +444,7 @@ documentation</a>.</p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>polygon_results[<span class="st">'ra'</span>]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>polygon_results[<span class="st">'ra'</span>]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -467,7 +467,7 @@ and also the data type, units, and name of the column.</p>
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(polygon_results[<span class="st">'ra'</span>])</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="bu">type</span>(polygon_results[<span class="st">'ra'</span>])</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -480,7 +480,7 @@ select the first row like this:</p>
 <div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>polygon_results[<span class="dv">0</span>]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>polygon_results[<span class="dv">0</span>]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -496,7 +496,7 @@ select the first row like this:</p>
 <div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(polygon_results[<span class="dv">0</span>])</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="bu">type</span>(polygon_results[<span class="dv">0</span>])</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -512,7 +512,7 @@ then an element from the column.</p>
 <div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>polygon_results[<span class="st">'ra'</span>][<span class="dv">0</span>]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>polygon_results[<span class="st">'ra'</span>][<span class="dv">0</span>]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -523,7 +523,7 @@ then an element from the column.</p>
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>polygon_results[<span class="dv">0</span>][<span class="st">'ra'</span>]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>polygon_results[<span class="dv">0</span>][<span class="st">'ra'</span>]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -542,17 +542,16 @@ MATLAB, some of it will be familiar.</p>
 <div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre>
 </div>
 <p>Pyplot is part of the Matplotlib library. It is conventional to
 import it using the shortened name <code>plt</code>.</p>
-<div id="keeping-plots-in-the-notebook" class="callout callout">
+<div id="callout1" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="keeping-plots-in-the-notebook" class="callout-inner">
-<h3 class="callout-title">Keeping plots in the notebook<a class="anchor" aria-label="anchor" href="#keeping-plots-in-the-notebook"></a>
-</h3>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title" id="keeping-plots-in-the-notebook">Keeping plots in the notebook<a class="anchor" aria-label="anchor" href="#keeping-plots-in-the-notebook"></a></h3>
 <div class="callout-content">
 <p>In recent versions of Jupyter, plots appear “inline”; that is, they
 are part of the notebook. In some older versions, plots appear in a new
@@ -562,7 +561,7 @@ command</a> in a notebook cell:</p>
 <div class="codewrapper sourceCode" id="cb20">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span></code></pre>
 </div>
 </div>
 </div>
@@ -583,12 +582,12 @@ ICRS coordinates in degrees.</p>
 <div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> polygon_results[<span class="st">'ra'</span>]</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> polygon_results[<span class="st">'dec'</span>]</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>plt.plot(x, y, <span class="st">'ko'</span>)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'ra (degree ICRS)'</span>)</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'dec (degree ICRS)'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>x <span class="op">=</span> polygon_results[<span class="st">'ra'</span>]</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>y <span class="op">=</span> polygon_results[<span class="st">'dec'</span>]</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>plt.plot(x, y, <span class="st">'ko'</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a>plt.xlabel(<span class="st">'ra (degree ICRS)'</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a>plt.ylabel(<span class="st">'dec (degree ICRS)'</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -642,12 +641,12 @@ sky were scanned more than others.</p>
 <div class="codewrapper sourceCode" id="cb23">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> polygon_results[<span class="st">'ra'</span>]</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> polygon_results[<span class="st">'dec'</span>]</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>plt.plot(x, y, <span class="st">'ko'</span>, markersize<span class="op">=</span><span class="fl">0.1</span>, alpha<span class="op">=</span><span class="fl">0.1</span>)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'ra (degree ICRS)'</span>)</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'dec (degree ICRS)'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>x <span class="op">=</span> polygon_results[<span class="st">'ra'</span>]</span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>y <span class="op">=</span> polygon_results[<span class="st">'dec'</span>]</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>plt.plot(x, y, <span class="st">'ko'</span>, markersize<span class="op">=</span><span class="fl">0.1</span>, alpha<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a>plt.xlabel(<span class="st">'ra (degree ICRS)'</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a>plt.ylabel(<span class="st">'dec (degree ICRS)'</span>)</span></code></pre>
 </div>
 </div>
 </div>
@@ -673,7 +672,7 @@ be part of GD-1.</p></li>
 <div class="codewrapper sourceCode" id="cb24">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>skycoord <span class="op">=</span> SkyCoord(ra<span class="op">=</span>polygon_results[<span class="st">'ra'</span>], dec<span class="op">=</span>polygon_results[<span class="st">'dec'</span>])</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>skycoord <span class="op">=</span> SkyCoord(ra<span class="op">=</span>polygon_results[<span class="st">'ra'</span>], dec<span class="op">=</span>polygon_results[<span class="st">'dec'</span>])</span></code></pre>
 </div>
 <p>Notice that we did not specify the reference frame. That is because
 when using <code>ra</code> and <code>dec</code> in
@@ -695,15 +694,15 @@ section.</p></li>
 </ul><div class="codewrapper sourceCode" id="cb25">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>distance <span class="op">=</span> <span class="dv">8</span> <span class="op">*</span> u.kpc</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>radial_velocity<span class="op">=</span> <span class="dv">0</span> <span class="op">*</span> u.km<span class="op">/</span>u.s</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>skycoord <span class="op">=</span> SkyCoord(ra<span class="op">=</span>polygon_results[<span class="st">'ra'</span>], </span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>                    dec<span class="op">=</span>polygon_results[<span class="st">'dec'</span>],</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>                    pm_ra_cosdec<span class="op">=</span>polygon_results[<span class="st">'pmra'</span>],</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>                    pm_dec<span class="op">=</span>polygon_results[<span class="st">'pmdec'</span>], </span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>                    distance<span class="op">=</span>distance, </span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>                    radial_velocity<span class="op">=</span>radial_velocity)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>distance <span class="op">=</span> <span class="dv">8</span> <span class="op">*</span> u.kpc</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>radial_velocity<span class="op">=</span> <span class="dv">0</span> <span class="op">*</span> u.km<span class="op">/</span>u.s</span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>skycoord <span class="op">=</span> SkyCoord(ra<span class="op">=</span>polygon_results[<span class="st">'ra'</span>], </span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>                    dec<span class="op">=</span>polygon_results[<span class="st">'dec'</span>],</span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a>                    pm_ra_cosdec<span class="op">=</span>polygon_results[<span class="st">'pmra'</span>],</span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a>                    pm_dec<span class="op">=</span>polygon_results[<span class="st">'pmdec'</span>], </span>
+<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a>                    distance<span class="op">=</span>distance, </span>
+<span id="cb25-9"><a href="#cb25-9" tabindex="-1"></a>                    radial_velocity<span class="op">=</span>radial_velocity)</span></code></pre>
 </div>
 <p>For the first four arguments, we use columns from
 <code>polygon_results</code>.</p>
@@ -714,7 +713,7 @@ transform to the GD-1 frame.</p>
 <div class="codewrapper sourceCode" id="cb26">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>transformed <span class="op">=</span> skycoord.transform_to(gd1_frame)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>transformed <span class="op">=</span> skycoord.transform_to(gd1_frame)</span></code></pre>
 </div>
 <p>The result is another <code>SkyCoord</code> object, now in the GD-1
 frame.</p>
@@ -746,9 +745,9 @@ here</a>) to correct for the motion of the solar system.</p>
 <div class="codewrapper sourceCode" id="cb27">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gala.coordinates <span class="im">import</span> reflex_correct</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>skycoord_gd1 <span class="op">=</span> reflex_correct(transformed)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="im">from</span> gala.coordinates <span class="im">import</span> reflex_correct</span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a>skycoord_gd1 <span class="op">=</span> reflex_correct(transformed)</span></code></pre>
 </div>
 <p>The result is a <code>SkyCoord</code> object that contains</p>
 <ul><li><p><code>phi1</code> and <code>phi2</code>, which represent the
@@ -760,12 +759,12 @@ the motion of the solar system around the Galactic center.</p></li>
 <div class="codewrapper sourceCode" id="cb28">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> skycoord_gd1.phi1</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> skycoord_gd1.phi2</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>plt.plot(x, y, <span class="st">'ko'</span>, markersize<span class="op">=</span><span class="fl">0.1</span>, alpha<span class="op">=</span><span class="fl">0.1</span>)</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'phi1 (degree GD1)'</span>)</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'phi2 (degree GD1)'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>x <span class="op">=</span> skycoord_gd1.phi1</span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>y <span class="op">=</span> skycoord_gd1.phi2</span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>plt.plot(x, y, <span class="st">'ko'</span>, markersize<span class="op">=</span><span class="fl">0.1</span>, alpha<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a>plt.xlabel(<span class="st">'phi1 (degree GD1)'</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a>plt.ylabel(<span class="st">'phi2 (degree GD1)'</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -783,7 +782,7 @@ is the Astropy <code>Table</code> we downloaded from Gaia.</p>
 <div class="codewrapper sourceCode" id="cb30">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(polygon_results)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="bu">type</span>(polygon_results)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -795,7 +794,7 @@ contains the transformed coordinates and proper motions.</p>
 <div class="codewrapper sourceCode" id="cb32">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(skycoord_gd1)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="bu">type</span>(skycoord_gd1)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -813,9 +812,9 @@ contain the transformed coordinates.</p>
 <div class="codewrapper sourceCode" id="cb34">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>polygon_results[<span class="st">'phi1'</span>] <span class="op">=</span> skycoord_gd1.phi1</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>polygon_results[<span class="st">'phi2'</span>] <span class="op">=</span> skycoord_gd1.phi2</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>polygon_results.info()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>polygon_results[<span class="st">'phi1'</span>] <span class="op">=</span> skycoord_gd1.phi1</span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a>polygon_results[<span class="st">'phi2'</span>] <span class="op">=</span> skycoord_gd1.phi2</span>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a>polygon_results.info()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -837,9 +836,9 @@ components of proper motion in the transformed frame.</p>
 <div class="codewrapper sourceCode" id="cb36">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>polygon_results[<span class="st">'pm_phi1'</span>] <span class="op">=</span> skycoord_gd1.pm_phi1_cosphi2</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>polygon_results[<span class="st">'pm_phi2'</span>] <span class="op">=</span> skycoord_gd1.pm_phi2</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>polygon_results.info()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a>polygon_results[<span class="st">'pm_phi1'</span>] <span class="op">=</span> skycoord_gd1.pm_phi1_cosphi2</span>
+<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a>polygon_results[<span class="st">'pm_phi2'</span>] <span class="op">=</span> skycoord_gd1.pm_phi2</span>
+<span id="cb36-3"><a href="#cb36-3" tabindex="-1"></a>polygon_results.info()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -858,13 +857,12 @@ source_id   int64          Unique source identifier (unique within a particular 
   pm_phi1 float64 mas / yr                                                                          Column
   pm_phi2 float64 mas / yr                                                                          Column</code></pre>
 </div>
-<div id="callout2" class="callout callout">
+<div id="callout2" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="callout-inner">
-<h3 class="callout-title">Callout<a class="anchor" aria-label="anchor" href="#callout2"></a>
-</h3>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title">Callout</h3>
 <div class="callout-content">
 <p>Detail If you notice that <code>SkyCoord</code> has an attribute
 called <code>proper_motion</code>, you might wonder why we are not using
@@ -875,13 +873,13 @@ different format.</p>
 </div>
 </div>
 </div>
-<div id="pandas-dataframes-versus-astropy-tables" class="callout callout">
+<div id="callout3" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="pandas-dataframes-versus-astropy-tables" class="callout-inner">
-<h3 class="callout-title">Pandas<code>DataFrame</code>s versus Astropy<code>Table</code>s<a class="anchor" aria-label="anchor" href="#pandas-dataframes-versus-astropy-tables"></a>
-</h3>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title" id="pandas-dataframes-versus-astropy-tables">Pandas <code>DataFrame</code>s versus Astropy
+<code>Table</code>s<a class="anchor" aria-label="anchor" href="#pandas-dataframes-versus-astropy-tables"></a></h3>
 <div class="callout-content">
 <p>Two common choices are the Pandas <code>DataFrame</code> and Astropy
 <code>Table</code>. Pandas <code>DataFrame</code>s and Astropy
@@ -911,16 +909,16 @@ Pandas <code>DataFrame</code>.</p>
 <div class="codewrapper sourceCode" id="cb38">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> polygon_results.to_pandas()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a>results_df <span class="op">=</span> polygon_results.to_pandas()</span></code></pre>
 </div>
 <p><code>DataFrame</code> provides <code>shape</code>, which shows the
 number of rows and columns.</p>
 <div class="codewrapper sourceCode" id="cb39">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>results_df.shape</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>results_df.shape</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -933,7 +931,7 @@ go along.</p>
 <div class="codewrapper sourceCode" id="cb41">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>results_df.head()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>results_df.head()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -946,13 +944,12 @@ go along.</p>
 4  638049655615392384  142.589136  22.110783   0.244439   -4.941079   0.099625  -54.627448  -3.542738   1.466103   -0.185292
 </code></pre>
 </div>
-<div id="attributes-vs-functions" class="callout callout">
+<div id="callout4" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="attributes-vs-functions" class="callout-inner">
-<h3 class="callout-title">Attributes vs functions<a class="anchor" aria-label="anchor" href="#attributes-vs-functions"></a>
-</h3>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title" id="attributes-vs-functions">Attributes vs functions<a class="anchor" aria-label="anchor" href="#attributes-vs-functions"></a></h3>
 <div class="callout-content">
 <p><code>shape</code> is an attribute, so we display its value without
 calling it as a function.</p>
@@ -972,48 +969,48 @@ paste the code over and over again.</p>
 <div class="codewrapper sourceCode" id="cb43">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_dataframe(table):</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Transform coordinates from ICRS to GD-1 frame.</span></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="co">    table: Astropy Table</span></span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="co">    returns: Pandas DataFrame</span></span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Create a SkyCoord object with the coordinates and proper motions</span></span>
-<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># in the input table</span></span>
-<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>    skycoord <span class="op">=</span> SkyCoord(</span>
-<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>               ra<span class="op">=</span>table[<span class="st">'ra'</span>], </span>
-<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>               dec<span class="op">=</span>table[<span class="st">'dec'</span>],</span>
-<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>               pm_ra_cosdec<span class="op">=</span>table[<span class="st">'pmra'</span>],</span>
-<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>               pm_dec<span class="op">=</span>table[<span class="st">'pmdec'</span>], </span>
-<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a>               distance<span class="op">=</span><span class="dv">8</span><span class="op">*</span>u.kpc, </span>
-<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>               radial_velocity<span class="op">=</span><span class="dv">0</span><span class="op">*</span>u.km<span class="op">/</span>u.s)</span>
-<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the GD-1 reference frame</span></span>
-<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>    gd1_frame <span class="op">=</span> GD1Koposov10()</span>
-<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Transform input coordinates to the GD-1 reference frame</span></span>
-<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a>    transformed <span class="op">=</span> skycoord.transform_to(gd1_frame)</span>
-<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Correct GD-1 coordinates for solar system motion around galactic center</span></span>
-<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>    skycoord_gd1 <span class="op">=</span> reflex_correct(transformed)</span>
-<span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Add GD-1 reference frame columns for coordinates and proper motions</span></span>
-<span id="cb43-28"><a href="#cb43-28" aria-hidden="true" tabindex="-1"></a>    table[<span class="st">'phi1'</span>] <span class="op">=</span> skycoord_gd1.phi1</span>
-<span id="cb43-29"><a href="#cb43-29" aria-hidden="true" tabindex="-1"></a>    table[<span class="st">'phi2'</span>] <span class="op">=</span> skycoord_gd1.phi2</span>
-<span id="cb43-30"><a href="#cb43-30" aria-hidden="true" tabindex="-1"></a>    table[<span class="st">'pm_phi1'</span>] <span class="op">=</span> skycoord_gd1.pm_phi1_cosphi2</span>
-<span id="cb43-31"><a href="#cb43-31" aria-hidden="true" tabindex="-1"></a>    table[<span class="st">'pm_phi2'</span>] <span class="op">=</span> skycoord_gd1.pm_phi2</span>
-<span id="cb43-32"><a href="#cb43-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-33"><a href="#cb43-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create DataFrame</span></span>
-<span id="cb43-34"><a href="#cb43-34" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> table.to_pandas()</span>
-<span id="cb43-35"><a href="#cb43-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-36"><a href="#cb43-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="kw">def</span> make_dataframe(table):</span>
+<span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a>    <span class="co">"""Transform coordinates from ICRS to GD-1 frame.</span></span>
+<span id="cb43-3"><a href="#cb43-3" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb43-4"><a href="#cb43-4" tabindex="-1"></a><span class="co">    table: Astropy Table</span></span>
+<span id="cb43-5"><a href="#cb43-5" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb43-6"><a href="#cb43-6" tabindex="-1"></a><span class="co">    returns: Pandas DataFrame</span></span>
+<span id="cb43-7"><a href="#cb43-7" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb43-8"><a href="#cb43-8" tabindex="-1"></a>    <span class="co">#Create a SkyCoord object with the coordinates and proper motions</span></span>
+<span id="cb43-9"><a href="#cb43-9" tabindex="-1"></a>    <span class="co"># in the input table</span></span>
+<span id="cb43-10"><a href="#cb43-10" tabindex="-1"></a>    skycoord <span class="op">=</span> SkyCoord(</span>
+<span id="cb43-11"><a href="#cb43-11" tabindex="-1"></a>               ra<span class="op">=</span>table[<span class="st">'ra'</span>], </span>
+<span id="cb43-12"><a href="#cb43-12" tabindex="-1"></a>               dec<span class="op">=</span>table[<span class="st">'dec'</span>],</span>
+<span id="cb43-13"><a href="#cb43-13" tabindex="-1"></a>               pm_ra_cosdec<span class="op">=</span>table[<span class="st">'pmra'</span>],</span>
+<span id="cb43-14"><a href="#cb43-14" tabindex="-1"></a>               pm_dec<span class="op">=</span>table[<span class="st">'pmdec'</span>], </span>
+<span id="cb43-15"><a href="#cb43-15" tabindex="-1"></a>               distance<span class="op">=</span><span class="dv">8</span><span class="op">*</span>u.kpc, </span>
+<span id="cb43-16"><a href="#cb43-16" tabindex="-1"></a>               radial_velocity<span class="op">=</span><span class="dv">0</span><span class="op">*</span>u.km<span class="op">/</span>u.s)</span>
+<span id="cb43-17"><a href="#cb43-17" tabindex="-1"></a></span>
+<span id="cb43-18"><a href="#cb43-18" tabindex="-1"></a>    <span class="co"># Define the GD-1 reference frame</span></span>
+<span id="cb43-19"><a href="#cb43-19" tabindex="-1"></a>    gd1_frame <span class="op">=</span> GD1Koposov10()</span>
+<span id="cb43-20"><a href="#cb43-20" tabindex="-1"></a></span>
+<span id="cb43-21"><a href="#cb43-21" tabindex="-1"></a>    <span class="co"># Transform input coordinates to the GD-1 reference frame</span></span>
+<span id="cb43-22"><a href="#cb43-22" tabindex="-1"></a>    transformed <span class="op">=</span> skycoord.transform_to(gd1_frame)</span>
+<span id="cb43-23"><a href="#cb43-23" tabindex="-1"></a></span>
+<span id="cb43-24"><a href="#cb43-24" tabindex="-1"></a>    <span class="co"># Correct GD-1 coordinates for solar system motion around galactic center</span></span>
+<span id="cb43-25"><a href="#cb43-25" tabindex="-1"></a>    skycoord_gd1 <span class="op">=</span> reflex_correct(transformed)</span>
+<span id="cb43-26"><a href="#cb43-26" tabindex="-1"></a></span>
+<span id="cb43-27"><a href="#cb43-27" tabindex="-1"></a>    <span class="co">#Add GD-1 reference frame columns for coordinates and proper motions</span></span>
+<span id="cb43-28"><a href="#cb43-28" tabindex="-1"></a>    table[<span class="st">'phi1'</span>] <span class="op">=</span> skycoord_gd1.phi1</span>
+<span id="cb43-29"><a href="#cb43-29" tabindex="-1"></a>    table[<span class="st">'phi2'</span>] <span class="op">=</span> skycoord_gd1.phi2</span>
+<span id="cb43-30"><a href="#cb43-30" tabindex="-1"></a>    table[<span class="st">'pm_phi1'</span>] <span class="op">=</span> skycoord_gd1.pm_phi1_cosphi2</span>
+<span id="cb43-31"><a href="#cb43-31" tabindex="-1"></a>    table[<span class="st">'pm_phi2'</span>] <span class="op">=</span> skycoord_gd1.pm_phi2</span>
+<span id="cb43-32"><a href="#cb43-32" tabindex="-1"></a></span>
+<span id="cb43-33"><a href="#cb43-33" tabindex="-1"></a>    <span class="co"># Create DataFrame</span></span>
+<span id="cb43-34"><a href="#cb43-34" tabindex="-1"></a>    df <span class="op">=</span> table.to_pandas()</span>
+<span id="cb43-35"><a href="#cb43-35" tabindex="-1"></a></span>
+<span id="cb43-36"><a href="#cb43-36" tabindex="-1"></a>    <span class="cf">return</span> df</span></code></pre>
 </div>
 <p>Here is how we use the function:</p>
 <div class="codewrapper sourceCode" id="cb44">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> make_dataframe(polygon_results)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a>results_df <span class="op">=</span> make_dataframe(polygon_results)</span></code></pre>
 </div>
 </section><section id="saving-the-dataframe"><h2 class="section-heading">Saving the DataFrame<a class="anchor" aria-label="anchor" href="#saving-the-dataframe"></a>
 </h2>
@@ -1025,10 +1022,10 @@ to an Astropy <code>Table</code>, like this:</p>
 <div class="codewrapper sourceCode" id="cb45">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astropy.table <span class="im">import</span> Table</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>results_table <span class="op">=</span> Table.from_pandas(results_df)</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(results_table)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a><span class="im">from</span> astropy.table <span class="im">import</span> Table</span>
+<span id="cb45-2"><a href="#cb45-2" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" tabindex="-1"></a>results_table <span class="op">=</span> Table.from_pandas(results_df)</span>
+<span id="cb45-4"><a href="#cb45-4" tabindex="-1"></a><span class="bu">type</span>(results_table)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1058,9 +1055,9 @@ this:</p>
 <div class="codewrapper sourceCode" id="cb47">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">'gd1_data.hdf'</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>results_df.to_hdf(filename, <span class="st">'results_df'</span>, mode<span class="op">=</span><span class="st">'w'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">'gd1_data.hdf'</span></span>
+<span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" tabindex="-1"></a>results_df.to_hdf(filename, <span class="st">'results_df'</span>, mode<span class="op">=</span><span class="st">'w'</span>)</span></code></pre>
 </div>
 <p>Because an HDF5 file can contain more than one Dataset, we have to
 provide a name, or “key”, that identifies the Dataset in the file.</p>
@@ -1168,7 +1165,7 @@ the Join lesson).</li>
   "identifier": "https://datacarpentry.github.io/astronomy-python/instructor/03-transform.html",
   "dateCreated": "2020-05-11",
   "dateModified": "2023-05-15",
-  "datePublished": "2024-02-27"
+  "datePublished": "2024-03-05"
 }
 
   </script><script>
