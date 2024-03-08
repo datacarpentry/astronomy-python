@@ -400,8 +400,8 @@ The following figure shows how these tables are related.
   value of `source_id` in the best neighbor table.
 
 - The blue circles and arrows represent the second `JOIN` operation,
-  which takes each `original_ext_source_id` in the Gaia table and finds
-  the same value of `obj_id` in the best neighbor table.
+  which takes each `original_ext_source_id` in the best neighbor table and finds
+  the same value of `obj_id` in the PanSTARRS photometry table.
 
 There is no guarantee that the corresponding rows of these tables are
 in the same order, so the `JOIN` operation involves some searching.
