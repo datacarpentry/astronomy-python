@@ -49,7 +49,7 @@ them to make a figure that tells a compelling scientific story.
 If you are starting a new notebook for this episode, expand this section
 for information you will need to get started.
 
-:::::::::::::::  solution
+:::::::::::::::  spoiler
 
 ## Read me
 

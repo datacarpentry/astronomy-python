@@ -58,7 +58,7 @@ main sequence of GD-1 from mostly younger background stars.
 If you are starting a new notebook for this episode, expand this section
 for information you will need to get started.
 
-:::::::::::::::  solution
+:::::::::::::::  spoiler
 
 ## Read me
 
@@ -120,7 +120,7 @@ and i filters, which indicates color.
 If you are wondering (as a non-domain expert)
 how to interpret this color-magnitude diagram, please expand the section below.
 
-:::::::::::::::  solution
+:::::::::::::::  spoiler
 
 ## The color magnitude diagram of GD-1 and foreground stars
 
