@@ -37,7 +37,7 @@ We will use Anaconda.
 
 ### Anaconda
 
-Download and install [Anaconda](https://www.anaconda.com/products/individual#anaconda-installers).
+Download and install [Anaconda](https://www.anaconda.com/download).
 
 To create a new Conda environment, which includes the additional packages we will be using
 in this workshop, you will need the environment file (`environment.yml`) you downloaded in the data section.
