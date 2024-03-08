@@ -560,6 +560,20 @@ Pan-STARRS.</p></li>
 <code>number_of_mates</code> should be 0; in that case, there is a
 one-to-one match between the source in Gaia and the corresponding source
 in Pan-STARRS.</p>
+<div id="callout3" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title" id="number-of-neighbors">Number of neighbors<a class="anchor" aria-label="anchor" href="#number-of-neighbors"></a></h3>
+<div class="callout-content">
+<p>The table also contains <code>number_of_neighbours</code> which is
+the number of stars in Pan-STARRS that match in terms of position,
+before using other criteria to choose the most likely match. But we are
+more interested in the final match, using both criteria.</p>
+</div>
+</div>
+</div>
 <p>Here is a query that selects these columns and returns the first 5
 rows.</p>
 <div class="codewrapper sourceCode" id="cb9">
@@ -881,7 +895,7 @@ abbreviated name <code>gaia</code>.</p>
 <span id="cb37-8"><a href="#cb37-8" tabindex="-1"></a><span class="st">  CIRCLE(88.8, 7.4, 0.08333333))</span></span>
 <span id="cb37-9"><a href="#cb37-9" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
 </div>
-<div id="callout3" class="callout">
+<div id="callout4" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
@@ -1272,7 +1286,7 @@ dtype: float64</code></pre>
 </div>
 <p>In fact, <code>1</code> is the only value in the <code>Series</code>,
 so every candidate star has a single best match.</p>
-<div id="callout4" class="callout">
+<div id="callout5" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
@@ -1317,20 +1331,6 @@ dtype: float64</code></pre>
 <p>All values in this column are <code>0</code>, which means that for
 each match we found in Pan-STARRS, there are no other stars in Gaia that
 also match.</p>
-<div id="callout5" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="number-of-neighbors">Number of neighbors<a class="anchor" aria-label="anchor" href="#number-of-neighbors"></a></h3>
-<div class="callout-content">
-<p>The table also contains <code>number_of_neighbours</code> which is
-the number of stars in Pan-STARRS that match in terms of position,
-before using other criteria to choose the most likely match. But we are
-more interested in the final match, using both criteria.</p>
-</div>
-</div>
-</div>
 </section><section id="saving-the-dataframe"><h2 class="section-heading">Saving the DataFrame<a class="anchor" aria-label="anchor" href="#saving-the-dataframe"></a>
 </h2>
 <hr class="half-width"><p>We can make a <code>DataFrame</code> from our Astropy
