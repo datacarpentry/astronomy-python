@@ -25,8 +25,6 @@ Data Carpentry Foundations of Astronomical Data Science workshops.
 
 <!-- this is an html comment -->
 
-{% comment %} This is a comment in Liquid {% endcomment %}
-
 ::::::::::::::::::::::::::::::::::::::::::  prereq
 
 ## Prerequisites
