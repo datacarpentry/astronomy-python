@@ -17,5 +17,5 @@
 "instructors/prereqs.md" "23b74549b6aafaefff36a4b07472b4f9" "site/built/prereqs.md" "2023-05-15"
 "learners/discuss.md" "2758e2e5abd231d82d25c6453d8abbc6" "site/built/discuss.md" "2023-05-15"
 "learners/reference.md" "71e85f5a0a8e3557a56c931138742265" "site/built/reference.md" "2023-05-15"
-"learners/setup.md" "f4184e511fb1066db3e1fb989aadbc36" "site/built/setup.md" "2023-05-15"
+"learners/setup.md" "ffba26b9065b98c7737604ae264a18b4" "site/built/setup.md" "2024-03-08"
 "profiles/learner-profiles.md" "60b93493cf1da06dfd63255d73854461" "site/built/learner-profiles.md" "2023-05-15"
