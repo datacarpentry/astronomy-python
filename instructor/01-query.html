@@ -408,12 +408,13 @@ that represents a connection to the Gaia database</a>.</p>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">from</span> astroquery.gaia <span class="im">import</span> Gaia</span></code></pre>
 </div>
-<div id="callout1" class="callout">
+<div id="old-versions-of-astroquery-output" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="old-versions-of-astroquery-output">Old versions of astroquery output<a class="anchor" aria-label="anchor" href="#old-versions-of-astroquery-output"></a></h3>
+<div id="old-versions-of-astroquery-output" class="callout-inner">
+<h3 class="callout-title">Old versions of astroquery output<a class="anchor" aria-label="anchor" href="#old-versions-of-astroquery-output"></a>
+</h3>
 <div class="callout-content">
 <p>if you are using a version of astroquery that’s older than v0.4.4,
 you may see this output</p>
@@ -580,7 +581,7 @@ columns are there and what are their names?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -661,12 +662,13 @@ Gaia database, the query language is a dialect of SQL called ADQL.</p>
 <span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="st">FROM gaiadr2.gaia_source</span></span>
 <span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
 </div>
-<div id="callout2" class="callout">
+<div id="triple-quotes-strings" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="triple-quotes-strings">Triple-quotes strings<a class="anchor" aria-label="anchor" href="#triple-quotes-strings"></a></h3>
+<div id="triple-quotes-strings" class="callout-inner">
+<h3 class="callout-title">Triple-quotes strings<a class="anchor" aria-label="anchor" href="#triple-quotes-strings"></a>
+</h3>
 <div class="callout-content">
 <p>We use a <a href="https://docs.python.org/3/tutorial/introduction.html#strings" class="external-link">triple-quoted
 string</a> here so we can include line breaks in the query, which makes
@@ -745,12 +747,13 @@ complete, so we can get the results like this:</p>
 <pre class="output" tabindex="0"><code><span><span class="va">astropy.table.table.Table</span></span></code></pre>
 </div>
 <p>The <code>type</code> function indicates that the result is an <a href="https://docs.astropy.org/en/stable/table/" class="external-link">Astropy Table</a>.</p>
-<div id="callout3" class="callout">
+<div id="repetition" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="repetition">Repetition<a class="anchor" aria-label="anchor" href="#repetition"></a></h3>
+<div id="repetition" class="callout-inner">
+<h3 class="callout-title">Repetition<a class="anchor" aria-label="anchor" href="#repetition"></a>
+</h3>
 <div class="callout-content">
 <p>Why is <code>table</code> repeated three times? The first is the name
 of the module, the second is the name of the submodule, and the third is
@@ -821,7 +824,7 @@ type?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2">Show me the solution</h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>For example, we can add radial_velocity : Radial velocity (double,
 Velocity[km/s] ) - Spectroscopic radial velocity in the solar
@@ -937,12 +940,13 @@ negative. As <a href="https://www.cosmos.esa.int/web/gaia/archive-tips#negative%
 FAQ explains</a>, “Negative parallaxes are caused by errors in the
 observations.” They have “no physical meaning,” but they can be a
 “useful diagnostic on the quality of the astrometric solution.”</p>
-<div id="callout4" class="callout">
+<div id="different-results" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="different-results">Different results<a class="anchor" aria-label="anchor" href="#different-results"></a></h3>
+<div id="different-results" class="callout-inner">
+<h3 class="callout-title">Different results<a class="anchor" aria-label="anchor" href="#different-results"></a>
+</h3>
 <div class="callout-content">
 <p>Your results for this query may differ from the Instructor’s. This is
 because <code>TOP 3000</code> returns 3000 results, but those results
@@ -981,7 +985,7 @@ faster, too.</p></li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3">Show me the solution</h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <p>In this example, the WHERE clause is in the wrong place.</p>
 <div class="codewrapper">
@@ -1046,7 +1050,7 @@ where <code>bp_rp</code> is between <code>-0.75</code> and
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4">Show me the solution</h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <p>Here is a solution using <code>&gt;</code> and <code>&lt;</code>
 operators:</p>
@@ -1230,7 +1234,7 @@ replaced with the value you provide.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5">Show me the solution</h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb47">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1329,7 +1333,7 @@ analysis into phases with one notebook per phase.</li>
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.2" class="external-link">sandpaper (0.16.2)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.4" class="external-link">pegboard (0.7.4)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.1" class="external-link">varnish (1.0.1)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.3" class="external-link">sandpaper (0.16.3)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.4" class="external-link">pegboard (0.7.4)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.1" class="external-link">varnish (1.0.1)</a></p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -1352,7 +1356,7 @@ analysis into phases with one notebook per phase.</li>
   "identifier": "https://datacarpentry.github.io/astronomy-python/instructor/01-query.html",
   "dateCreated": "2020-05-11",
   "dateModified": "2023-05-15",
-  "datePublished": "2024-03-12"
+  "datePublished": "2024-03-19"
 }
 
   </script><script>

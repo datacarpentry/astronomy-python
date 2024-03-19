@@ -430,13 +430,14 @@ photometric bands available from the Pan-STARRS survey to obtain the
 <p>Conveniently, the Gaia server provides data from Pan-STARRS as a
 table in the same database we have been using, so we can access it by
 making ADQL queries.</p>
-<div id="callout1" class="callout">
+<div id="a-caveat-about-matching-stars-between-catalogs" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="a-caveat-about-matching-stars-between-catalogs">A caveat about matching stars between
-catalogs<a class="anchor" aria-label="anchor" href="#a-caveat-about-matching-stars-between-catalogs"></a></h3>
+<div id="a-caveat-about-matching-stars-between-catalogs" class="callout-inner">
+<h3 class="callout-title">A caveat about matching stars between
+catalogs<a class="anchor" aria-label="anchor" href="#a-caveat-about-matching-stars-between-catalogs"></a>
+</h3>
 <div class="callout-content">
 <p>In general, choosing a star from the Gaia catalog and finding the
 corresponding star in the Pan-STARRS catalog is not easy. This kind of
@@ -485,12 +486,13 @@ Pan-STARRS photometry for these stars in the
 the<code>obj_ids</code> we just identified.</p></li>
 </ol><p>Before we get to the <code>JOIN</code> operation, we will explore
 these tables.</p>
-<div id="callout2" class="callout">
+<div id="british-vs-american-spelling-of-neighbour" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="british-vs-american-spelling-of-neighbour">British vs American Spelling of Neighbour<a class="anchor" aria-label="anchor" href="#british-vs-american-spelling-of-neighbour"></a></h3>
+<div id="british-vs-american-spelling-of-neighbour" class="callout-inner">
+<h3 class="callout-title">British vs American Spelling of Neighbour<a class="anchor" aria-label="anchor" href="#british-vs-american-spelling-of-neighbour"></a>
+</h3>
 <div class="callout-content">
 <p>The Gaia database was created and is maintained by the European Space
 Astronomy Center. For this reason, the table spellings use the British
@@ -562,12 +564,13 @@ Pan-STARRS.</p></li>
 <code>number_of_mates</code> should be 0; in that case, there is a
 one-to-one match between the source in Gaia and the corresponding source
 in Pan-STARRS.</p>
-<div id="callout3" class="callout">
+<div id="number-of-neighbors" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="number-of-neighbors">Number of neighbors<a class="anchor" aria-label="anchor" href="#number-of-neighbors"></a></h3>
+<div id="number-of-neighbors" class="callout-inner">
+<h3 class="callout-title">Number of neighbors<a class="anchor" aria-label="anchor" href="#number-of-neighbors"></a>
+</h3>
 <div class="callout-content">
 <p>The table also contains <code>number_of_neighbours</code> which is
 the number of stars in Pan-STARRS that match in terms of position,
@@ -897,12 +900,13 @@ abbreviated name <code>gaia</code>.</p>
 <span id="cb37-8"><a href="#cb37-8" tabindex="-1"></a><span class="st">  CIRCLE(88.8, 7.4, 0.08333333))</span></span>
 <span id="cb37-9"><a href="#cb37-9" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
 </div>
-<div id="callout4" class="callout">
+<div id="sql-detail" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="sql-detail">SQL detail<a class="anchor" aria-label="anchor" href="#sql-detail"></a></h3>
+<div id="sql-detail" class="callout-inner">
+<h3 class="callout-title">SQL detail<a class="anchor" aria-label="anchor" href="#sql-detail"></a>
+</h3>
 <div class="callout-content">
 <p>In this example, the <code>ON</code> column has the same name in both
 tables, so we could replace the <code>ON</code> clause with a simpler <a href="https://docs.oracle.com/javadb/10.8.3.0/ref/rrefsqljusing.html" class="external-link"><code>USING</code>clause</a>:</p>
@@ -1288,12 +1292,13 @@ dtype: float64</code></pre>
 </div>
 <p>In fact, <code>1</code> is the only value in the <code>Series</code>,
 so every candidate star has a single best match.</p>
-<div id="callout5" class="callout">
+<div id="numpy-mask-warning" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="numpy-mask-warning">Numpy Mask Warning<a class="anchor" aria-label="anchor" href="#numpy-mask-warning"></a></h3>
+<div id="numpy-mask-warning" class="callout-inner">
+<h3 class="callout-title">Numpy Mask Warning<a class="anchor" aria-label="anchor" href="#numpy-mask-warning"></a>
+</h3>
 <div class="callout-content">
 <p>You may see a warning that ends with the following phrase:</p>
 <p><code>site-packages/numpy/lib/function_base.py:4650:</code></p>
@@ -1528,7 +1533,7 @@ data.</li>
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.2" class="external-link">sandpaper (0.16.2)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.4" class="external-link">pegboard (0.7.4)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.1" class="external-link">varnish (1.0.1)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.3" class="external-link">sandpaper (0.16.3)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.4" class="external-link">pegboard (0.7.4)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.1" class="external-link">varnish (1.0.1)</a></p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -1551,7 +1556,7 @@ data.</li>
   "identifier": "https://datacarpentry.github.io/astronomy-python/instructor/06-join.html",
   "dateCreated": "2020-05-11",
   "dateModified": "2024-03-08",
-  "datePublished": "2024-03-12"
+  "datePublished": "2024-03-19"
 }
 
   </script><script>

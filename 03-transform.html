@@ -361,7 +361,7 @@ section for information you will need to get started.</p>
   <h3 class="accordion-header" id="headingSpoiler1">
 <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div>Read me</h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <p>In the previous episode, we ran a query on the Gaia server,
 downloaded data for roughly 140,000 stars, and saved the data in a FITS
@@ -545,12 +545,13 @@ MATLAB, some of it will be familiar.</p>
 </div>
 <p>Pyplot is part of the Matplotlib library. It is conventional to
 import it using the shortened name <code>plt</code>.</p>
-<div id="callout1" class="callout">
+<div id="keeping-plots-in-the-notebook" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="keeping-plots-in-the-notebook">Keeping plots in the notebook<a class="anchor" aria-label="anchor" href="#keeping-plots-in-the-notebook"></a></h3>
+<div id="keeping-plots-in-the-notebook" class="callout-inner">
+<h3 class="callout-title">Keeping plots in the notebook<a class="anchor" aria-label="anchor" href="#keeping-plots-in-the-notebook"></a>
+</h3>
 <div class="callout-content">
 <p>In recent versions of Jupyter, plots appear “inline”; that is, they
 are part of the notebook. In some older versions, plots appear in a new
@@ -635,7 +636,7 @@ sky were scanned more than others.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb23">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -860,8 +861,9 @@ source_id   int64          Unique source identifier (unique within a particular 
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title">Callout</h3>
+<div class="callout-inner">
+<h3 class="callout-title">Callout<a class="anchor" aria-label="anchor" href="#callout2"></a>
+</h3>
 <div class="callout-content">
 <p>Detail If you notice that <code>SkyCoord</code> has an attribute
 called <code>proper_motion</code>, you might wonder why we are not using
@@ -872,13 +874,13 @@ different format.</p>
 </div>
 </div>
 </div>
-<div id="callout3" class="callout">
+<div id="pandas-dataframes-versus-astropy-tables" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="pandas-dataframes-versus-astropy-tables">Pandas <code>DataFrame</code>s versus Astropy
-<code>Table</code>s<a class="anchor" aria-label="anchor" href="#pandas-dataframes-versus-astropy-tables"></a></h3>
+<div id="pandas-dataframes-versus-astropy-tables" class="callout-inner">
+<h3 class="callout-title">Pandas<code>DataFrame</code>s versus Astropy<code>Table</code>s<a class="anchor" aria-label="anchor" href="#pandas-dataframes-versus-astropy-tables"></a>
+</h3>
 <div class="callout-content">
 <p>Two common choices are the Pandas <code>DataFrame</code> and Astropy
 <code>Table</code>. Pandas <code>DataFrame</code>s and Astropy
@@ -943,12 +945,13 @@ go along.</p>
 4  638049655615392384  142.589136  22.110783   0.244439   -4.941079   0.099625  -54.627448  -3.542738   1.466103   -0.185292
 </code></pre>
 </div>
-<div id="callout4" class="callout">
+<div id="attributes-vs-functions" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="section level3 callout-title callout-inner">
-<h3 class="callout-title" id="attributes-vs-functions">Attributes vs functions<a class="anchor" aria-label="anchor" href="#attributes-vs-functions"></a></h3>
+<div id="attributes-vs-functions" class="callout-inner">
+<h3 class="callout-title">Attributes vs functions<a class="anchor" aria-label="anchor" href="#attributes-vs-functions"></a>
+</h3>
 <div class="callout-content">
 <p><code>shape</code> is an attribute, so we display its value without
 calling it as a function.</p>
@@ -1141,7 +1144,7 @@ the Join lesson).</li>
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.2" class="external-link">sandpaper (0.16.2)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.4" class="external-link">pegboard (0.7.4)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.1" class="external-link">varnish (1.0.1)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.3" class="external-link">sandpaper (0.16.3)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.4" class="external-link">pegboard (0.7.4)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.1" class="external-link">varnish (1.0.1)</a></p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -1164,7 +1167,7 @@ the Join lesson).</li>
   "identifier": "https://datacarpentry.github.io/astronomy-python/03-transform.html",
   "dateCreated": "2020-05-11",
   "dateModified": "2024-03-08",
-  "datePublished": "2024-03-12"
+  "datePublished": "2024-03-19"
 }
 
   </script><script>
