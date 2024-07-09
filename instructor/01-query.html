@@ -46,7 +46,7 @@
             </li>
           </ul></li>
       </div>
-      
+
       <div class="dropdown" id="instructor-dropdown">
         <button class="btn btn-secondary dropdown-toggle bordered-button" type="button" id="dropdownMenu1" data-bs-toggle="dropdown" aria-expanded="false">
           <i aria-hidden="true" class="icon" data-feather="eye"></i> Instructor View <i data-feather="chevron-down"></i>
@@ -170,7 +170,7 @@
                 </div><!--/div.accordion-flush-->
               </div><!--div.sidenav-view-selector -->
             </div><!--/div.col -->
-      
+
             <hr></div><!--/div.mobile-row -->
 
           <div class="accordion accordion-flush" id="accordionFlush11">
@@ -189,7 +189,7 @@
     <div class="accordion-header" id="flush-heading1">
         <a href="index.html">Summary and Schedule</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -203,7 +203,7 @@
         </span>
       </button>
     </div><!--/div.accordion-header-->
-        
+
     <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
       <div class="accordion-body">
         <ul><li><a href="#query-language">Query Language</a></li>
@@ -218,7 +218,7 @@
 <li><a href="#summary">Summary</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -227,7 +227,7 @@
     <div class="accordion-header" id="flush-heading3">
         <a href="02-coords.html">2. Coordinate Transformations</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -236,7 +236,7 @@
     <div class="accordion-header" id="flush-heading4">
         <a href="03-transform.html">3. Plotting and Tabular Data</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -245,7 +245,7 @@
     <div class="accordion-header" id="flush-heading5">
         <a href="04-motion.html">4. Plotting and Pandas</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -254,7 +254,7 @@
     <div class="accordion-header" id="flush-heading6">
         <a href="05-select.html">5. Transform and Select</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -263,7 +263,7 @@
     <div class="accordion-header" id="flush-heading7">
         <a href="06-join.html">6. Join</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -272,7 +272,7 @@
     <div class="accordion-header" id="flush-heading8">
         <a href="07-photo.html">7. Photometry</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -281,7 +281,7 @@
     <div class="accordion-header" id="flush-heading9">
         <a href="08-plot.html">8. Visualization</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -313,10 +313,10 @@
               </div>
             </div>
             <hr class="half-width resources"><a href="../instructor/aio.html">See all in one page</a>
-            
+
 
             <hr class="d-none d-sm-block d-md-none"><div class="d-grid gap-1">
-            
+
             </div>
           </div><!-- /div.accordion -->
         </div><!-- /div.sidebar-inner -->
@@ -337,20 +337,20 @@
           Home
         </a>
         <a class="chapter-link float-end" href="../instructor/02-coords.html" rel="next">
-          Next: Coordinate... 
+          Next: Coordinate...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Basic Queries</h1>
         <p>Last updated on 2023-05-15 |
-        
+
         <a href="https://github.com/datacarpentry/astronomy-python/edit/main/episodes/01-query.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-        
-        
-        
+
+
+
         <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 90 minutes</p>
-        
+
         <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
@@ -405,8 +405,8 @@ finally</p></li>
 </ol></div>
 </div>
 </div>
-<section id="query-language"><h2 class="section-heading">Query Language<a class="anchor" aria-label="anchor" href="#query-language"></a>
-</h2>
+<section><h2 class="section-heading" id="query-language">Query Language<a class="anchor" aria-label="anchor" href="#query-language"></a>
+<a class="anchor" aria-label="anchor" href="#query-language"></a></h2>
 <hr class="half-width"><p>In order to select data from a database, you need to compose a query,
 which is a program written in a “query language”. The query language we
 will use is ADQL, which stands for “Astronomical Data Query
@@ -418,8 +418,8 @@ everything you will learn about ADQL also works in SQL.</p>
 reference manual for ADQL is here</a>. But you might find it easier to
 learn from <a href="https://www.gaia.ac.uk/data/gaia-data-release-1/adql-cookbook" class="external-link">this
 ADQL Cookbook</a>.</p>
-</section><section id="using-jupyter"><h2 class="section-heading">Using Jupyter<a class="anchor" aria-label="anchor" href="#using-jupyter"></a>
-</h2>
+</section><section><h2 class="section-heading" id="using-jupyter">Using Jupyter<a class="anchor" aria-label="anchor" href="#using-jupyter"></a>
+<a class="anchor" aria-label="anchor" href="#using-jupyter"></a></h2>
 <hr class="half-width"><p>If you have not worked with Jupyter notebooks before, you might start
 with <a href="https://jupyter.org/try" class="external-link">the tutorial on from Jupyter.org
 called “Try Classic Notebook”</a>, or <a href="https://www.dataquest.io/blog/jupyter-notebook-tutorial/" class="external-link">this
@@ -454,8 +454,8 @@ menu and select “Restart and Run All”.</p></li>
 “Restart Kernel and Run All Cells”.</p></li>
 </ul><p>Before you continue with this lesson, you might want to explore the
 other menus and the toolbar to see what else you can do.</p>
-</section><section id="connecting-to-gaia"><h2 class="section-heading">Connecting to Gaia<a class="anchor" aria-label="anchor" href="#connecting-to-gaia"></a>
-</h2>
+</section><section><h2 class="section-heading" id="connecting-to-gaia">Connecting to Gaia<a class="anchor" aria-label="anchor" href="#connecting-to-gaia"></a>
+<a class="anchor" aria-label="anchor" href="#connecting-to-gaia"></a></h2>
 <hr class="half-width"><p>The library we will use to get Gaia data is <a href="https://astroquery.readthedocs.io/en/latest/" class="external-link">Astroquery</a>.
 Astroquery provides <code>Gaia</code>, which is an <a href="https://astroquery.readthedocs.io/en/latest/gaia/gaia.html" class="external-link">object
 that represents a connection to the Gaia database</a>.</p>
@@ -495,8 +495,8 @@ Created TAP+ (v1.2.1) - Connection:
 <p>This import statement creates a <a href="https://www.ivoa.net/documents/TAP/" class="external-link">TAP+</a> connection; TAP
 stands for “Table Access Protocol”, which is a network protocol for
 sending queries to the database and getting back the results.</p>
-</section><section id="databases-and-tables"><h2 class="section-heading">Databases and Tables<a class="anchor" aria-label="anchor" href="#databases-and-tables"></a>
-</h2>
+</section><section><h2 class="section-heading" id="databases-and-tables">Databases and Tables<a class="anchor" aria-label="anchor" href="#databases-and-tables"></a>
+<a class="anchor" aria-label="anchor" href="#databases-and-tables"></a></h2>
 <hr class="half-width"><p>What is a database? Most generally, it can be any collection of data,
 but when we are talking about ADQL or SQL:</p>
 <ul><li><p>A database is a collection of one or more named tables.</p></li>
@@ -589,8 +589,8 @@ that is only final data (no epoch data) and no spectra (neither final
 nor epoch).
 Num. columns: 95</code></pre>
 </div>
-</section><section id="columns"><h2 class="section-heading">Columns<a class="anchor" aria-label="anchor" href="#columns"></a>
-</h2>
+</section><section><h2 class="section-heading" id="columns">Columns<a class="anchor" aria-label="anchor" href="#columns"></a>
+<a class="anchor" aria-label="anchor" href="#columns"></a></h2>
 <hr class="half-width"><p>The following loop prints the names of the columns in the table.</p>
 <div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -702,8 +702,8 @@ Num. columns: 26</code></pre>
 </div>
 </div>
 </div>
-</section><section id="writing-queries"><h2 class="section-heading">Writing queries<a class="anchor" aria-label="anchor" href="#writing-queries"></a>
-</h2>
+</section><section><h2 class="section-heading" id="writing-queries">Writing queries<a class="anchor" aria-label="anchor" href="#writing-queries"></a>
+<a class="anchor" aria-label="anchor" href="#writing-queries"></a></h2>
 <hr class="half-width"><p>You might be wondering how we download these tables. With tables this
 big, you generally don’t. Instead, you use queries to select only the
 data you want.</p>
@@ -841,9 +841,9 @@ SQL.</p></li>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>&lt;Table length=10&gt;
-     source_id              ra                 dec               parallax      
-                           deg                 deg                 mas         
-       int64             float64             float64             float64       
+     source_id              ra                 dec               parallax
+                           deg                 deg                 mas
+       int64             float64             float64             float64
 ------------------- ------------------ ------------------- --------------------
 5887983246081387776   227.978818386372  -53.64996962450103   1.0493172163332998
 5887971250213117952 228.32280834041364  -53.66270726203726  0.29455652682279093
@@ -903,7 +903,7 @@ value of the radial velocity measurements at all epochs.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>     source_id              ra         ...       parallax       radial_velocity
-                           deg         ...         mas               km / s    
+                           deg         ...         mas               km / s
 ------------------- ------------------ ... -------------------- ---------------
 5800603716991968256 225.13905251174302 ...   0.5419737483675161              --
 5800592790577127552 224.30113911598448 ...  -0.6369101209622813              --
@@ -914,8 +914,8 @@ value of the radial velocity measurements at all epochs.</p>
 </div>
 </div>
 </div>
-</section><section id="asynchronous-queries"><h2 class="section-heading">Asynchronous queries<a class="anchor" aria-label="anchor" href="#asynchronous-queries"></a>
-</h2>
+</section><section><h2 class="section-heading" id="asynchronous-queries">Asynchronous queries<a class="anchor" aria-label="anchor" href="#asynchronous-queries"></a>
+<a class="anchor" aria-label="anchor" href="#asynchronous-queries"></a></h2>
 <hr class="half-width"><p><code>launch_job</code> asks the server to run the job
 “synchronously”, which normally means it runs immediately. But
 synchronous jobs are limited to 2000 rows. For queries that return more
@@ -981,8 +981,8 @@ query.</p>
 </h3>
 <pre class="output" tabindex="0"><code>&lt;Table length=3000&gt;
      source_id              ra         ...       parallax       radial_velocity
-                           deg         ...         mas               km / s    
-       int64             float64       ...       float64            float64    
+                           deg         ...         mas               km / s
+       int64             float64       ...       float64            float64
 ------------------- ------------------ ... -------------------- ---------------
 5895270396817359872 213.08433715252883 ...    2.041947005434917              --
 5895272561481374080  213.2606587905109 ...  0.15693467895110133              --
@@ -1048,7 +1048,7 @@ faster, too.</p></li>
 <div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>query2_erroneous = """SELECT 
+<pre class="error" tabindex="0"><code>query2_erroneous = """SELECT
 TOP 3000
 WHERE parallax &lt; 1
 source_id, ref_epoch, ra, dec, parallax
@@ -1059,8 +1059,8 @@ FROM gaiadr2.gaia_source
 </div>
 </div>
 </div>
-</section><section id="operators"><h2 class="section-heading">Operators<a class="anchor" aria-label="anchor" href="#operators"></a>
-</h2>
+</section><section><h2 class="section-heading" id="operators">Operators<a class="anchor" aria-label="anchor" href="#operators"></a>
+<a class="anchor" aria-label="anchor" href="#operators"></a></h2>
 <hr class="half-width"><p>In a <code>WHERE</code> clause, you can use any of the <a href="https://www.w3schools.com/sql/sql_operators.asp" class="external-link">SQL comparison
 operators</a>; here are the most common ones:</p>
 <table class="table"><thead><tr class="header"><th>Symbol</th>
@@ -1149,8 +1149,8 @@ catalog (Copyright: ESA/Gaia/DPAC, CC BY-SA 3.0 IGO).</p>
 temperature, low luminosity. A star like that at GD-1’s distance would
 be hard to detect, so if it is detected, it is more likely to be in the
 foreground.</p>
-</section><section id="formatting-queries"><h2 class="section-heading">Formatting queries<a class="anchor" aria-label="anchor" href="#formatting-queries"></a>
-</h2>
+</section><section><h2 class="section-heading" id="formatting-queries">Formatting queries<a class="anchor" aria-label="anchor" href="#formatting-queries"></a>
+<a class="anchor" aria-label="anchor" href="#formatting-queries"></a></h2>
 <hr class="half-width"><p>The queries we have written so far are string “literals”, meaning
 that the entire string is part of the program. But writing queries
 yourself can be slow, repetitive, and error-prone.</p>
@@ -1214,8 +1214,8 @@ breaks appear as <code>\n</code>.</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>SELECT 
-TOP 10 
+<pre class="output" tabindex="0"><code>SELECT
+TOP 10
 source_id, ra, dec, pmra, pmdec, parallax
 FROM gaiadr2.gaia_source
 WHERE parallax &lt; 1
@@ -1234,7 +1234,7 @@ WHERE parallax &lt; 1
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>&lt;Table length=10&gt;
-   name    dtype    unit                              description                            
+   name    dtype    unit                              description
 --------- ------- -------- ------------------------------------------------------------------
 source_id   int64          Unique source identifier (unique within a particular Data Release)
        ra float64      deg                                                    Right ascension
@@ -1257,8 +1257,8 @@ Owner: None
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>&lt;Table length=10&gt;
-     source_id              ra         ...       parallax     
-                           deg         ...         mas        
+     source_id              ra         ...       parallax
+                           deg         ...         mas
 ------------------- ------------------ ... -------------------
 3031147124474711552 110.10540720349103 ... 0.47255775887968876
 3031114276567648256 110.92831846731636 ... 0.41817219481822415
@@ -1312,8 +1312,8 @@ replaced with the value you provide.</p>
 </div>
 </div>
 </div>
-</section><section id="summary"><h2 class="section-heading">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
-</h2>
+</section><section><h2 class="section-heading" id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+<a class="anchor" aria-label="anchor" href="#summary"></a></h2>
 <hr class="half-width"><p>This episode has demonstrated the following steps:</p>
 <ol style="list-style-type: decimal"><li><p>Making a connection to the Gaia server,</p></li>
 <li><p>Exploring information about the database and the tables it
@@ -1366,7 +1366,7 @@ analysis into phases with one notebook per phase.</li>
           Home
         </a>
         <a class="chapter-link float-end" href="../instructor/02-coords.html" rel="next">
-          Next: Coordinate... 
+          Next: Coordinate...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
       </div>
@@ -1377,18 +1377,18 @@ analysis into phases with one notebook per phase.</li>
       		<footer class="row footer mx-md-3"><hr><div class="col-md-6">
         <p>This lesson is subject to the <a href="CODE_OF_CONDUCT.html">Code of Conduct</a></p>
         <p>
-        
+
         <a href="https://github.com/datacarpentry/astronomy-python/edit/main/episodes/01-query.md" class="external-link">Edit on GitHub</a>
-        
+
 	
         | <a href="https://github.com/datacarpentry/astronomy-python/blob/main/CONTRIBUTING.md" class="external-link">Contributing</a>
         | <a href="https://github.com/datacarpentry/astronomy-python/" class="external-link">Source</a></p>
 				<p><a href="https://github.com/datacarpentry/astronomy-python/blob/main/CITATION" class="external-link">Cite</a> | <a href="mailto:team@carpentries.org">Contact</a> | <a href="https://carpentries.org/about/" class="external-link">About</a></p>
 			</div>
 			<div class="col-md-6">
-        
+
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
-        
+
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
         <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.5" class="external-link">sandpaper (0.16.5)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.6" class="external-link">pegboard (0.7.6)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.3" class="external-link">varnish (1.0.3)</a></p>
 			</div>
@@ -1413,7 +1413,7 @@ analysis into phases with one notebook per phase.</li>
   "identifier": "https://datacarpentry.github.io/astronomy-python/instructor/01-query.html",
   "dateCreated": "2020-05-11",
   "dateModified": "2023-05-15",
-  "datePublished": "2024-07-02"
+  "datePublished": "2024-07-09"
 }
 
   </script><script>
