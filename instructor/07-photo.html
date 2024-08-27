@@ -287,10 +287,10 @@
               </div>
             </div>
 
-            <hr class="half-width"><div class="accordion accordion-flush resources" id="accordionFlush12">
+            <hr class="half-width"><div class="accordion accordion-flush lesson-resources" id="accordionFlush12">
               <div class="accordion-item">
                 <h2 class="accordion-header" id="flush-headingTwelve">
-                  <button class="accordion-button collapsed" id="resources" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwelve" aria-expanded="false" aria-controls="flush-collapseTwelve">
+                  <button class="accordion-button collapsed" id="lesson-resources" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwelve" aria-expanded="false" aria-controls="flush-collapseTwelve">
                     RESOURCES
                   </button>
                 </h2>
@@ -310,7 +310,7 @@
                 </div>
               </div>
             </div>
-            <hr class="half-width resources"><a href="../instructor/aio.html">See all in one page</a>
+            <hr class="half-width lesson-resources"><a href="../instructor/aio.html">See all in one page</a>
 
 
             <hr class="d-none d-sm-block d-md-none"><div class="d-grid gap-1">
@@ -396,8 +396,7 @@ main sequence of GD-1 from mostly younger background stars.</p>
 <i class="callout-icon" data-feather="check-square"></i>
 </div>
 <div id="outline" class="callout-inner">
-<h3 class="callout-title">Outline<a class="anchor" aria-label="anchor" href="#outline"></a>
-</h3>
+<h3 class="callout-title">Outline</h3>
 <div class="callout-content">
 <ol style="list-style-type: decimal"><li><p>We will reload the data from the previous episode and make a
 color-magnitude diagram.</p></li>
@@ -412,8 +411,7 @@ it.</p></li>
 <i class="callout-icon" data-feather="check"></i>
 </div>
 <div id="starting-from-this-episode" class="callout-inner">
-<h3 class="callout-title">Starting from this episode<a class="anchor" aria-label="anchor" href="#starting-from-this-episode"></a>
-</h3>
+<h3 class="callout-title">Starting from this episode</h3>
 <div class="callout-content">
 <p>If you are starting a new notebook for this episode, expand this
 section for information you will need to get started.</p>
@@ -461,8 +459,7 @@ You may need to add a the path to the filename variable below
 </div>
 </div>
 </div>
-<section><h2 class="section-heading" id="plotting-photometry-data">Plotting photometry data<a class="anchor" aria-label="anchor" href="#plotting-photometry-data"></a>
-<a class="anchor" aria-label="anchor" href="#plotting-photometry-data"></a></h2>
+<section><h2 class="section-heading" id="plotting-photometry-data">Plotting photometry data<a class="anchor" aria-label="anchor" href="#plotting-photometry-data"></a></h2>
 <hr class="half-width"><p>Now that we have photometry data from Pan-STARRS, we can produce a <a href="https://coolwiki.ipac.caltech.edu/index.php/Color-Magnitude_and_Color-Color_plots_Overview" class="external-link">color-magnitude
 diagram</a> to replicate the diagram from the original paper:</p>
 <figure><img width="300" src="../fig/gd1-3.png" alt="Color-magnitude diagram for the stars selected based on proper motion, from Price-Whelan and Bonaca paper." class="figure mx-auto d-block"></figure><p>The y-axis shows the apparent magnitude of each source with the <a href="https://en.wikipedia.org/wiki/Photometric_system" class="external-link">g
@@ -474,8 +471,7 @@ and i filters, which indicates color.</p>
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
 <div id="a-slight-detour-for-non-domain-experts" class="callout-inner">
-<h3 class="callout-title">A slight detour for non-domain experts<a class="anchor" aria-label="anchor" href="#a-slight-detour-for-non-domain-experts"></a>
-</h3>
+<h3 class="callout-title">A slight detour for non-domain experts</h3>
 <div class="callout-content">
 <p>If you are wondering (as a non-domain expert) how to interpret this
 color-magnitude diagram, please expand the section below.</p>
@@ -607,8 +603,7 @@ more generic <code>dataframe</code>.</p>
 </div>
 <figure><img src="../fig/07-photo_files/07-photo_12_0.png" alt="Color magnitude diagram of our selected stars showing overdense region in lower left." class="figure mx-auto d-block"></figure><p>In the next section we will use an isochrone to specify a polygon
 that contains this overdense region.</p>
-</section><section><h2 class="section-heading" id="isochrone">Isochrone<a class="anchor" aria-label="anchor" href="#isochrone"></a>
-<a class="anchor" aria-label="anchor" href="#isochrone"></a></h2>
+</section><section><h2 class="section-heading" id="isochrone">Isochrone<a class="anchor" aria-label="anchor" href="#isochrone"></a></h2>
 <hr class="half-width"><p>Given our understanding of the age, metallicity, and distance to GD-1
 we can overlay a theoretical isochrone for GD-1 from the MESA Isochrones
 and Stellar Tracks and better identify the main sequence of GD-1.</p>
@@ -617,8 +612,7 @@ and Stellar Tracks and better identify the main sequence of GD-1.</p>
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="calculating-isochrone" class="callout-inner">
-<h3 class="callout-title">Calculating Isochrone<a class="anchor" aria-label="anchor" href="#calculating-isochrone"></a>
-</h3>
+<h3 class="callout-title">Calculating Isochrone</h3>
 <div class="callout-content">
 <p>In fact, we can use <a href="https://waps.cfa.harvard.edu/MIST/" class="external-link">MESA
 Isochrones &amp; Stellar Tracks</a> (MIST) to compute it for us. Using
@@ -633,8 +627,7 @@ following parameters:</p>
 </ul></div>
 </div>
 </div>
-</section><section><h2 class="section-heading" id="making-a-polygon">Making a polygon<a class="anchor" aria-label="anchor" href="#making-a-polygon"></a>
-<a class="anchor" aria-label="anchor" href="#making-a-polygon"></a></h2>
+</section><section><h2 class="section-heading" id="making-a-polygon">Making a polygon<a class="anchor" aria-label="anchor" href="#making-a-polygon"></a></h2>
 <hr class="half-width"><p>The MIST isochrone files available on the website above can not be
 directly plotted over our data. We have selected the relevant part of
 the isochrone, the filters we are interested in, and scaled the
@@ -737,8 +730,7 @@ polygon that includes stars near the isochrone.</p>
 </h3>
 <pre class="output" tabindex="0"><code>&lt;Figure size 432x288 with 1 Axes&gt;</code></pre>
 </div>
-<figure><img src="../fig/07-photo_files/07-photo_62_0.png" alt="Color magnitude diagram of our selected stars showing left boundary as blue curve and right boundary as orange curve." class="figure mx-auto d-block"></figure></section><section><h2 class="section-heading" id="which-points-are-in-the-polygon">Which points are in the polygon?<a class="anchor" aria-label="anchor" href="#which-points-are-in-the-polygon"></a>
-<a class="anchor" aria-label="anchor" href="#which-points-are-in-the-polygon"></a></h2>
+<figure><img src="../fig/07-photo_files/07-photo_62_0.png" alt="Color magnitude diagram of our selected stars showing left boundary as blue curve and right boundary as orange curve." class="figure mx-auto d-block"></figure></section><section><h2 class="section-heading" id="which-points-are-in-the-polygon">Which points are in the polygon?<a class="anchor" aria-label="anchor" href="#which-points-are-in-the-polygon"></a></h2>
 <hr class="half-width"><p>Matplotlib provides a <code>Polygon</code> object that we can use to
 check which points fall in the polygon we just constructed.</p>
 <p>To make a <code>Polygon</code>, we need to assemble <code>g</code>,
@@ -852,8 +844,7 @@ a tuple with two elements, x and y.</p>
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="exercise-5-minutes" class="callout-inner">
-<h3 class="callout-title">Exercise (5 minutes)<a class="anchor" aria-label="anchor" href="#exercise-5-minutes"></a>
-</h3>
+<h3 class="callout-title">Exercise (5 minutes)</h3>
 <div class="callout-content">
 <p>When we encounter a new object, it is good to create a toy example to
 test that it does what we think it does. Define a list of two points
@@ -896,8 +887,7 @@ expected.</p>
 </div>
 <p>We are almost ready to select stars whose photometry data falls in
 this polygon. But first we need to do some data cleaning.</p>
-</section><section><h2 class="section-heading" id="save-the-polygon">Save the polygon<a class="anchor" aria-label="anchor" href="#save-the-polygon"></a>
-<a class="anchor" aria-label="anchor" href="#save-the-polygon"></a></h2>
+</section><section><h2 class="section-heading" id="save-the-polygon">Save the polygon<a class="anchor" aria-label="anchor" href="#save-the-polygon"></a></h2>
 <hr class="half-width"><p><a href="https://en.wikipedia.org/wiki/Reproducibility#Reproducible_research" class="external-link">Reproducibile
 research</a> is “the idea that … the full computational environment used
 to produce the results in the paper such as the code, data, etc. can be
@@ -916,8 +906,7 @@ the polygon as part of the data analysis pipeline.</p>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">'gd1_data.hdf'</span></span>
 <span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a>loop_df.to_hdf(filename, <span class="st">'loop_df'</span>)</span></code></pre>
 </div>
-</section><section><h2 class="section-heading" id="selecting-based-on-photometry">Selecting based on photometry<a class="anchor" aria-label="anchor" href="#selecting-based-on-photometry"></a>
-<a class="anchor" aria-label="anchor" href="#selecting-based-on-photometry"></a></h2>
+</section><section><h2 class="section-heading" id="selecting-based-on-photometry">Selecting based on photometry<a class="anchor" aria-label="anchor" href="#selecting-based-on-photometry"></a></h2>
 <hr class="half-width"><p>Now we will check how many of the candidate stars are inside the
 polygon we chose. <code>contains_points</code> expects a list of (x,y)
 pairs. As with creating the <code>Polygon</code>,
@@ -964,8 +953,7 @@ will start by putting color and magnitude data from
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="exercise-5-minutes-1" class="callout-inner">
-<h3 class="callout-title">Exercise (5 minutes)<a class="anchor" aria-label="anchor" href="#exercise-5-minutes-1"></a>
-</h3>
+<h3 class="callout-title">Exercise (5 minutes)</h3>
 <div class="callout-content">
 <p>Boolean values are stored as 0s and 1s. <code>FALSE</code> = 0 and
 <code>TRUE</code> = 1. Use this information to determine the number of
@@ -1090,8 +1078,7 @@ the specific variable <code>winner_df</code> with the more generic
 </h3>
 <pre class="output" tabindex="0"><code>&lt;Figure size 1000x250 with 1 Axes&gt;</code></pre>
 </div>
-<figure><img src="../fig/08-plot_files/08-plot_13_0.png" alt="phi 1 and phi 2 of selected stars in the GD-1 frame after selecting for both proper motion and photometry." class="figure mx-auto d-block"></figure></section><section><h2 class="section-heading" id="write-the-data">Write the data<a class="anchor" aria-label="anchor" href="#write-the-data"></a>
-<a class="anchor" aria-label="anchor" href="#write-the-data"></a></h2>
+<figure><img src="../fig/08-plot_files/08-plot_13_0.png" alt="phi 1 and phi 2 of selected stars in the GD-1 frame after selecting for both proper motion and photometry." class="figure mx-auto d-block"></figure></section><section><h2 class="section-heading" id="write-the-data">Write the data<a class="anchor" aria-label="anchor" href="#write-the-data"></a></h2>
 <hr class="half-width"><p>Finally, we will write the selected stars to a file.</p>
 <div class="codewrapper sourceCode" id="cb48">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1110,8 +1097,7 @@ the specific variable <code>winner_df</code> with the more generic
 </h3>
 <pre class="output" tabindex="0"><code><span><span class="fl">15.486198425292969</span></span></code></pre>
 </div>
-</section><section><h2 class="section-heading" id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
-<a class="anchor" aria-label="anchor" href="#summary"></a></h2>
+</section><section><h2 class="section-heading" id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a></h2>
 <hr class="half-width"><p>In this episode, we used photometry data from Pan-STARRS to draw a
 color-magnitude diagram. We used an isochrone to define a polygon and
 select stars we think are likely to be in GD-1. Plotting the results, we
@@ -1122,8 +1108,7 @@ paper.</p>
 <i class="callout-icon" data-feather="key"></i>
 </div>
 <div class="callout-inner">
-<h3 class="callout-title">Key Points<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
-</h3>
+<h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul><li>Matplotlib provides operations for working with points, polygons,
 and other geometric entities, so it is not just for making figures.</li>
@@ -1170,7 +1155,7 @@ needed to replicate the results.</li>
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.5" class="external-link">sandpaper (0.16.5)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.6" class="external-link">pegboard (0.7.6)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.3" class="external-link">varnish (1.0.3)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.6" class="external-link">sandpaper (0.16.6)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.6" class="external-link">pegboard (0.7.6)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.4" class="external-link">varnish (1.0.4)</a></p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -1193,7 +1178,7 @@ needed to replicate the results.</li>
   "identifier": "https://datacarpentry.github.io/astronomy-python/instructor/07-photo.html",
   "dateCreated": "2020-05-11",
   "dateModified": "2024-03-08",
-  "datePublished": "2024-08-20"
+  "datePublished": "2024-08-27"
 }
 
   </script><script>
