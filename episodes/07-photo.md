@@ -58,7 +58,7 @@ main sequence of GD-1 from mostly younger background stars.
 If you are starting a new notebook for this episode, expand this section
 for information you will need to get started.
 
-:::::::::::::::  solution
+:::::::::::::::  spoiler
 
 ## Read me
 
@@ -120,7 +120,7 @@ and i filters, which indicates color.
 If you are wondering (as a non-domain expert)
 how to interpret this color-magnitude diagram, please expand the section below.
 
-:::::::::::::::  solution
+:::::::::::::::  spoiler
 
 ## The color magnitude diagram of GD-1 and foreground stars
 
@@ -128,7 +128,7 @@ As a pathologist can easily point to tumor on a biopsy slide, so too can astrono
 The color of a star is primarily related to the star's surface temperature, with bluer stars indicating higher temperatures and redder stars indicating lower temperatures. This logic is not too far off from the color at the bottom of a match flame compared to the top.
 
 Foreground Stars:
-To know the temperature of a star, you first need to know its distance and to account for the dust between us and the star. You can guess the effect of distance. A star farther away will be fainter (lower y-axis value) than the same star closer (think of car headlights as they approach). Dust will remove light from the star's path to our telescopes, which makes the star seem like it has less energy than it otherwise would have, which makes it do two things on this diagram: 1) look fainter (lower y-axis value) and 2) look cooler (higher x-axis value). The stars spread throughout the diagram are all stars bright enough to be detected in our Milky Way between GD-1 and us but made fainter and redder (spread to the lower-right) by their spread in distance from us and the amount dust in the line of sight.
+To know the temperature of a star, you first need to know its distance and to account for the dust between us and the star. You can guess the effect of distance. A star farther away will be fainter (lower y-axis value) than the same star closer (think of car headlights as they approach). Dust will remove light from the star's path to our telescopes, which makes the star seem like it has less energy than it otherwise would have, which makes it do two things on this diagram: 1) look fainter (lower on the y-axis; larger magnitude value) and 2) look cooler (higher x-axis value). The stars spread throughout the diagram are all stars bright enough to be detected in our Milky Way between GD-1 and us but made fainter and redder (spread to the lower-right) by their spread in distance from us and the amount dust in the line of sight.
 
 GD-1:
 The pile up of stars in the lower-left quadrant of this diagram are interesting because it suggests something is at the same distance with the same amount of dust in the way. When we use our knowledge of theoretical astrophysics (independently calculated outside this work) to estimate how bright a population of old stars would be if it were at the distance of GD-1, we get that solid red line. The exact values of age and metallicity ([Fe/H] value) is a variable needed to reproduce the theoretical isochrone, but frankly, the choice could vary a lot and still would fit the data well.
@@ -187,7 +187,7 @@ We want to be able to make this plot again, with any selection of PanSTARRs phot
 so this is a natural time to put it into a function that accepts as input
 an Astropy `Table` or Pandas `DataFrame`, as long as
 it has columns named `g_mean_psf_mag` and `i_mean_psf_mag`. To do this we will change
-our variable name from `candidate_df` to the more generic `table`.
+our variable name from `candidate_df` to the more generic `dataframe`.
 
 ```python
 def plot_cmd(dataframe):

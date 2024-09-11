@@ -61,7 +61,7 @@ main sequence of GD-1 from younger background stars.
 If you are starting a new notebook for this episode, expand this section
 for information you will need to get started.
 
-:::::::::::::::  solution
+:::::::::::::::  spoiler
 
 ## Read me
 
@@ -253,6 +253,17 @@ Ideally, `best_neighbour_multiplicity` should be 1 and `number_of_mates`
 should be 0; in that case, there is a one-to-one match between the
 source in Gaia and the corresponding source in Pan-STARRS.
 
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+## Number of neighbors
+
+The table also contains `number_of_neighbours` which is the
+number of stars in Pan-STARRS that match in terms of position, before
+using other criteria to choose the most likely match.  But we are more
+interested in the final match, using both criteria.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
 Here is a query that selects these columns and returns the first 5 rows.
 
 ```python
@@ -400,8 +411,8 @@ The following figure shows how these tables are related.
   value of `source_id` in the best neighbor table.
 
 - The blue circles and arrows represent the second `JOIN` operation,
-  which takes each `original_ext_source_id` in the Gaia table and finds
-  the same value of `obj_id` in the best neighbor table.
+  which takes each `original_ext_source_id` in the best neighbor table and finds
+  the same value of `obj_id` in the PanSTARRS photometry table.
 
 There is no guarantee that the corresponding rows of these tables are
 in the same order, so the `JOIN` operation involves some searching.
@@ -947,18 +958,6 @@ dtype: float64
 All values in this column are `0`, which means that for each match we
 found in Pan-STARRS, there are no other stars in Gaia that also match.
 
-:::::::::::::::::::::::::::::::::::::::::  callout
-
-## Number of neighbors
-
-The table also contains `number_of_neighbours` which is the
-number of stars in Pan-STARRS that match in terms of position, before
-using other criteria to choose the most likely match.  But we are more
-interested in the final match, using both criteria.
-
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
 ## Saving the DataFrame
 
 We can make a `DataFrame` from our Astropy `Table` and save our results so we can pick up where we left off
@@ -1071,6 +1070,10 @@ read_back_csv.head(3)
 ```
 
 The CSV file contains the names of the columns, but not the data types.
+A keen observer may note that the `dataframe` that we wrote to the CSV file did not contain data types, so it is unsurprising that 
+the CSV file also does not. 
+However, even if we had written a CSV file from an astropy `Table`, which does contain data type, 
+data type would not appear in the CSV file, highlighting a limitation of this format.
 Additionally, notice that the index in `candidate_df` has become an unnamed column
 in `read_back_csv` and a new index has been created.  The Pandas functions for writing and reading CSV
 files provide options to avoid that problem, but this is an example of

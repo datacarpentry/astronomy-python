@@ -49,7 +49,7 @@ them to make a figure that tells a compelling scientific story.
 If you are starting a new notebook for this episode, expand this section
 for information you will need to get started.
 
-:::::::::::::::  solution
+:::::::::::::::  spoiler
 
 ## Read me
 
@@ -364,7 +364,7 @@ ax.tick_params(top=True, right=True)
 # Looking up the 'axes.edgecolor' rcParams value
 print(plt.rcParams['axes.edgecolor'])
 
-plt.rcParams['axis.edgecolor'] = 'red'
+plt.rcParams['axes.edgecolor'] = 'red'
 
 fig = plt.figure(figsize=(10,2.5))
 ax = fig.add_subplot(1,1,1)
