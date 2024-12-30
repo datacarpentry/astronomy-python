@@ -390,7 +390,7 @@ Gala provides
 [`GD1Koposov10`](https://gala-astro.readthedocs.io/en/latest/_modules/gala/coordinates/gd1.html),
 which is "a Heliocentric spherical coordinate system defined by the
 orbit of the GD-1 stream". In this coordinate system, one axis is defined along
-the direction of the steam (the x-axis in Figure 1) and one axis is defined
+the direction of the stream (the x-axis in Figure 1) and one axis is defined
 perpendicular to the direction of the stream (the y-axis in Figure 1).
 These are called the φ<sub>1</sub> and φ<sub>2</sub> coordinates, respectively.
 
