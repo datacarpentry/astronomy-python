@@ -31,13 +31,12 @@ You will need to install Python, Jupyter, and some additional libraries.
 [Python](https://python.org) is a popular language for
 scientific computing, and great for general-purpose programming as
 well. For this workshop we use Python version 3.x.
-Installing all of its scientific packages individually can be
-a bit difficult, so we recommend an all-in-one installer.
-We will use Anaconda.
+Installing all of its scientific packages individually can be a bit difficult, so we provide an environment file to help you take care of them all together.
+We will use the _Miniforge_ distribution of Python.
 
 ### Anaconda
 
-Download and install [Anaconda](https://www.anaconda.com/download).
+Download and install [MiniForge](https://conda-forge.org/download/).
 
 To create a new Conda environment, which includes the additional packages we will be using
 in this workshop, you will need the environment file (`environment.yml`) you downloaded in the data section.
