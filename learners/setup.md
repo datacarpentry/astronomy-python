@@ -34,7 +34,7 @@ well. For this workshop we use Python version 3.x.
 Installing all of its scientific packages individually can be a bit difficult, so we provide an environment file to help you take care of them all together.
 We will use the _Miniforge_ distribution of Python.
 
-### Anaconda
+### Python
 
 Download and install [MiniForge](https://conda-forge.org/download/).
 
@@ -57,7 +57,7 @@ conda activate AstronomicalData
 
 We will test our environment setup using a test notebook (`test_setup.ipynb`) that you downloaded in the data section.
 
-In a Terminal, Jupyter Prompt or Anaconda Prompt, make sure you are in the `student_download` directory.
+In a Terminal, Jupyter Prompt or MiniForge Prompt, make sure you are in the `student_download` directory.
 To start Jupyter, make sure you have activated your new conda environment, then run:
 
 ```
@@ -76,7 +76,7 @@ If they work and you get no error messages, **you are ready for the workshop**.
 ## Why didn't the imports work?
 
 Occasionally learners will need to take one additional step to make Jupyter run within the environment we have created.
-If your imports fail, close Jupyter by closing its terminal, and try running the following from your Anaconda prompt (
+If your imports fail, close Jupyter by closing its terminal, and try running the following from your MiniForge Prompt (
 Terminal or otherwise):
 
 ```
