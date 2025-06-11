@@ -675,9 +675,9 @@ In this example, the WHERE clause is in the wrong place.
 ```error
 query2_erroneous = """SELECT 
 TOP 3000
-WHERE parallax < 1
-source_id, ref_epoch, ra, dec, parallax
+source_id, ra, dec, pmra, pmdec, parallax
 FROM gaiadr2.gaia_source
+WHERE parallax < 1
 """
 ```
 
