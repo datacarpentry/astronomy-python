@@ -344,7 +344,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Join</h1>
-        <p>Last updated on 2024-03-08 |
+        <p>Last updated on 2025-07-16 |
 
         <a href="https://github.com/datacarpentry/astronomy-python/edit/main/episodes/06-join.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -423,7 +423,7 @@ section for information you will need to get started.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Read me </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <p>In the previous episode, we define a rectangle around stars in GD-1
 in spatial coordinates and in proper motion which we transformed into
@@ -527,13 +527,13 @@ that is common to both tables, usually some kind of ID code.</p>
 the same star in the Pan-STARRS catalog.</p>
 <p>To do that we will:</p>
 <ol style="list-style-type: decimal"><li><p>Use the <code>JOIN</code> operator to look up each Pan-STARRS
-<code>obj_id</code> for the stars we are interested in in
-the<code>panstarrs1_best_neighbour</code> table using the
-<code>source_id</code>s that we have already identified.</p></li>
+<code>obj_id</code> for the stars we are interested in the
+<code>panstarrs1_best_neighbour</code> table using the
+<code>source_ids</code> that we have already identified.</p></li>
 <li><p>Use the <code>JOIN</code> operator again to look up the
 Pan-STARRS photometry for these stars in the
-<code>panstarrs1_original_valid</code> table using
-the<code>obj_ids</code> we just identified.</p></li>
+<code>panstarrs1_original_valid</code> table using the
+<code>obj_ids</code> we just identified.</p></li>
 </ol><p>Before we get to the <code>JOIN</code> operation, we will explore
 these tables.</p>
 <div id="british-vs-american-spelling-of-neighbour" class="callout">
@@ -1074,7 +1074,7 @@ and 9 columns.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb45">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1239,7 +1239,7 @@ have 4300 rows and 9 columns.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb54">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1589,8 +1589,8 @@ data.</li>
   "url": "https://datacarpentry.github.io/astronomy-python/instructor/06-join.html",
   "identifier": "https://datacarpentry.github.io/astronomy-python/instructor/06-join.html",
   "dateCreated": "2020-05-11",
-  "dateModified": "2024-03-08",
-  "datePublished": "2025-07-15"
+  "dateModified": "2025-07-16",
+  "datePublished": "2025-07-16"
 }
 
   </script><script>
