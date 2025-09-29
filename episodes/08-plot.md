@@ -15,7 +15,7 @@ exercises: 65
 :::::::::::::::::::::::::::::::::::::::: questions
 
 - What elements make a compelling visualization that authentically reports scientific results ready for scientific presentation and publication?
-- What tools and techinques are available to save time on creating presentation and publication-ready figures?
+- What tools and techniques are available to save time on creating presentation and publication-ready figures?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -823,7 +823,7 @@ create figures that contain multiple panels.
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
 - Effective figures focus on telling a single story clearly and authentically. The major decisions needed in creating an effective summary figure like this one can be done away from a computer and built up from low fidelity (hand drawn) to high (tweaking rcParams, etc.).
-- Consider using annotations to guide the reader’s attention to the most important elements of a figure, while keeping in mind accessiblity issues that such detail may introduce.
+- Consider using annotations to guide the reader’s attention to the most important elements of a figure, while keeping in mind accessibility issues that such detail may introduce.
 - The default Matplotlib style generates good quality figures, but there are several ways you can override the defaults.
 - If you find yourself making the same customizations on several projects, you might want to create your own style sheet.
 
