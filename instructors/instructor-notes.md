@@ -160,7 +160,7 @@ This idiom violates the recommendation not to repeat variables names, but since 
 
 ### Episode 5: Coordinate transformation and selection
 
-- This is likely the first episode of Day 2. You should start by having learners start a new notebook. They will need to read in the data they saved yesterday to HDF5 files and the functions they wrote yesterday. You can follow the directions under the collapsable section at the beginning of this episode called "Starting from this episode". If you are using files from the `student_download` directory be sure to add the correct path `student_download/backup-data/<filename>`.
+- This is likely the first episode of Day 2. You should start by having learners start a new notebook. They will need to read in the data they saved yesterday to HDF5 files and the functions they wrote yesterday. You can follow the directions under the collapsible section at the beginning of this episode called "Starting from this episode". If you are using files from the `student_download` directory be sure to add the correct path `student_download/backup-data/<filename>`.
 
 - This episode is faster than it looks because learners have seen much of the content already
 
