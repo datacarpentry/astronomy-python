@@ -1,10 +1,9 @@
 name: AstronomicalData
 channels:
-  - default
   - conda-forge
   - astropy
 dependencies:
-  - python>=3.6
+  - python>=3.11
   - jupyter
   - numpy
   - matplotlib
@@ -14,4 +13,3 @@ dependencies:
   - scipy
   - astropy
   - astroquery
-  - gala
