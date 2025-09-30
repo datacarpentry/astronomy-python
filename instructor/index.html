@@ -539,11 +539,12 @@ up process.</p>
 libraries. <a href="https://python.org" class="external-link">Python</a> is a popular language
 for scientific computing, and great for general-purpose programming as
 well. For this workshop we use Python version 3.x. Installing all of its
-scientific packages individually can be a bit difficult, so we recommend
-an all-in-one installer. We will use Anaconda.</p>
+scientific packages individually can be a bit difficult, so we provide
+an environment file to help you take care of them all together. We will
+use the <em>Miniforge</em> distribution of Python.</p>
 <div class="section level3">
-<h3 id="anaconda">Anaconda<a class="anchor" aria-label="anchor" href="#anaconda"></a></h3>
-<p>Download and install <a href="https://www.anaconda.com/download" class="external-link">Anaconda</a>.</p>
+<h3 id="python">Python<a class="anchor" aria-label="anchor" href="#python"></a></h3>
+<p>Download and install <a href="https://conda-forge.org/download/" class="external-link">MiniForge</a>.</p>
 <p>To create a new Conda environment, which includes the additional
 packages we will be using in this workshop, you will need the
 environment file (<code>environment.yml</code>) you downloaded in the
@@ -560,7 +561,7 @@ data section.</p>
 <p>We will test our environment setup using a test notebook
 (<code>test_setup.ipynb</code>) that you downloaded in the data
 section.</p>
-<p>In a Terminal, Jupyter Prompt or Anaconda Prompt, make sure you are
+<p>In a Terminal, Jupyter Prompt or MiniForge Prompt, make sure you are
 in the <code>student_download</code> directory. To start Jupyter, make
 sure you have activated your new conda environment, then run:</p>
 <pre><code>jupyter notebook</code></pre>
@@ -581,7 +582,7 @@ error messages, <strong>you are ready for the workshop</strong>.</p>
 <p>Occasionally learners will need to take one additional step to make
 Jupyter run within the environment we have created. If your imports
 fail, close Jupyter by closing its terminal, and try running the
-following from your Anaconda prompt ( Terminal or otherwise):</p>
+following from your MiniForge Prompt ( Terminal or otherwise):</p>
 <pre><code>python -m ipykernel install --user --name=AstronomicalData</code></pre>
 <p>Then start Jupyter up again:</p>
 <pre><code>jupyter notebook</code></pre>
