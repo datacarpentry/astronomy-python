@@ -287,7 +287,7 @@ black, round marker (`k` is for black because `b` is for blue).
 The functions `xlabel` and `ylabel` put labels on the axes.
 
 Looking at this plot, we can see that the region we selected, which is
-a rectangle in GD-1 coordinates, is a non-rectanglar region in ICRS
+a rectangle in GD-1 coordinates, is a non-rectangular region in ICRS
 coordinates.
 
 However, this scatter plot has a problem.  It is

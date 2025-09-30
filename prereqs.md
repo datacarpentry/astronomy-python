@@ -46,7 +46,7 @@ The following skills are useful, but not required:
 - Apply a function to an entire Numpy array or to a single array axis.
 - Write a user-defined function.
 
-If you are signed up, or considering signing up for a workshop, and aren't sure whether you meet these reqirements, please
+If you are signed up, or considering signing up for a workshop, and aren't sure whether you meet these requirements, please
 get in touch with the workshop instructors or host.
 
 
