@@ -469,7 +469,7 @@ phi2_max = 4 * u.degree
 Throughout this lesson we are going to be defining a rectangle often.
 Rather than copy and paste multiple lines of code, we will write a function to build the rectangle for us.
 By having the code contained in a single location, we can easily fix bugs or update our implementation as needed.
-By choosing an explicit function name our code is also self documenting, meaning its easy for us to
+By choosing an explicit function name our code is also self documenting, meaning it's easy for us to
 understand that we are building a rectangle when we call this function.
 
 To create a rectangle, we will use the following function, which takes the lower and upper bounds as parameters and returns a list of x and y coordinates of the corners of a rectangle starting with the lower left corner and working clockwise.
@@ -490,7 +490,7 @@ phi1_rect, phi2_rect = make_rectangle(
     phi1_min, phi1_max, phi2_min, phi2_max)
 ```
 
-`phi1_rect` and `phi2_rect` contains the coordinates of the corners of
+`phi1_rect` and `phi2_rect` contain the coordinates of the corners of
 a rectangle in the GD-1 frame.
 
 While it is easier to visualize the regions we want to define in the GD-1 frame, the coordinates in the Gaia catalog are in the ICRS frame.

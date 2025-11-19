@@ -199,7 +199,7 @@ In the following exercise, we will identify a rectangle that encompasses the maj
 
 Looking at the proper motion of the stars we identified along the centerline of GD-1, in the ICRS reference frame
 define a rectangle (`pmra_min`, `pmra_max`, `pmdec_min`, and `pmdec_max`)
-that encompass the proper motion of the majority of the stars near the centerline of GD-1 without including to much contamination from other stars.
+that encompass the proper motion of the majority of the stars near the centerline of GD-1 without including too much contamination from other stars.
 
 :::::::::::::::  solution
 
@@ -518,7 +518,7 @@ plt.ylabel('dec (degree ICRS)');
 ![](fig/05-select_files/05-select_66_0.png){alt='Scatter plot of right ascension and declination of selected stars in ICRS frame.'}
 
 This plot shows why it was useful to transform these coordinates to the GD-1 frame.  In
-ICRS, it is more difficult to identity the stars near the centerline
+ICRS, it is more difficult to identify the stars near the centerline
 of GD-1.
 
 We can use our `make_dataframe` function from episode 3 to transform the results back

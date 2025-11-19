@@ -492,7 +492,7 @@ this polygon.  But first we need to do some data cleaning.
 
 ## Save the polygon
 
-[Reproducibile
+[Reproducible
 research](https://en.wikipedia.org/wiki/Reproducibility#Reproducible_research)
 is "the idea that ... the full computational environment used to
 produce the results in the paper such as the code, data, etc. can be
