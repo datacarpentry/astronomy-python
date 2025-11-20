@@ -309,9 +309,9 @@ to GD-1:
 The axes of this figure are defined so the x-axis is aligned with the
 stars in GD-1, and the y-axis is perpendicular.
 
-- Along the x-axis (φ<sub>1</sub>) the figure extends from -100 to 20 degrees.
+- Along the x-axis ($\phi_1$) the figure extends from -100 to 20 degrees.
 
-- Along the y-axis (φ<sub>2</sub>) the figure extends from about -8 to 4 degrees.
+- Along the y-axis ($\phi_2$) the figure extends from about -8 to 4 degrees.
 
 Ideally, we would select all stars from this rectangle, but there are
 more than 10 million of them. This would be difficult to work with, and as
@@ -320,7 +320,7 @@ single query. While we are developing and testing code, it will be faster to wor
 with a smaller dataset.
 
 So we will start by selecting stars in a smaller rectangle near the
-center of GD-1, from -55 to -45 degrees φ<sub>1</sub> and -8 to 4 degrees φ<sub>2</sub>.
+center of GD-1, from -55 to -45 degrees $\phi_1$ and -8 to 4 degrees $\phi_2$.
 First we will learn how to represent these coordinates with Astropy.
 
 ## Transforming coordinates
@@ -392,7 +392,7 @@ which is "a Heliocentric spherical coordinate system defined by the
 orbit of the GD-1 stream". In this coordinate system, one axis is defined along
 the direction of the stream (the x-axis in Figure 1) and one axis is defined
 perpendicular to the direction of the stream (the y-axis in Figure 1).
-These are called the φ<sub>1</sub> and φ<sub>2</sub> coordinates, respectively.
+These are called the $\phi_1$ and $\phi_2$ coordinates, respectively.
 
 ```python
 from gala.coordinates import GD1Koposov10
@@ -457,7 +457,7 @@ rectangle that encompasses a small part of GD-1.
 This is easiest to define in GD-1 coordinates.
 
 The following variables define the boundaries of the rectangle in
-φ<sub>1</sub> and φ<sub>2</sub>.
+$\phi_1$ and $\phi_2$.
 
 ```python
 phi1_min = -55 * u.degree 
@@ -482,8 +482,8 @@ def make_rectangle(x1, x2, y1, y2):
     return xs, ys
 ```
 
-The return value is a tuple containing a list of coordinates in φ<sub>1</sub>
-followed by a list of coordinates in φ<sub>2</sub>.
+The return value is a tuple containing a list of coordinates in $\phi_1$
+followed by a list of coordinates in $\phi_2$.
 
 ```python
 phi1_rect, phi2_rect = make_rectangle(
