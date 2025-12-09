@@ -341,7 +341,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Plotting and Pandas</h1>
-        <p>Last updated on 2024-03-08 |
+        <p>Last updated on 2025-12-09 |
 
         <a href="https://github.com/datacarpentry/astronomy-python/edit/main/episodes/04-motion.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -937,7 +937,7 @@ file by omitting the <code>mode='w'</code> keyword like this:</p>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">'gd1_data.hdf'</span></span>
 <span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a></span>
-<span id="cb43-3"><a href="#cb43-3" tabindex="-1"></a>selected_df.to_hdf(filename, <span class="st">'selected_df'</span>)</span></code></pre>
+<span id="cb43-3"><a href="#cb43-3" tabindex="-1"></a>selected_df.to_hdf(filename, key<span class="op">=</span><span class="st">'selected_df'</span>)</span></code></pre>
 </div>
 <p>Because an HDF5 file can contain more than one Dataset, we have to
 provide a name, or “key”, that identifies the Dataset in the file.</p>
@@ -970,7 +970,7 @@ a line of code to add it as a second Dataset in the HDF5 file.</p>
 <div class="codewrapper sourceCode" id="cb44">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a>centerline_df.to_hdf(filename, <span class="st">'centerline_df'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a>centerline_df.to_hdf(filename, key<span class="op">=</span><span class="st">'centerline_df'</span>)</span></code></pre>
 </div>
 </div>
 </div>
@@ -1113,7 +1113,7 @@ an HDF5 file, which can contain multiple Datasets.</li>
   "url": "https://datacarpentry.github.io/astronomy-python/instructor/04-motion.html",
   "identifier": "https://datacarpentry.github.io/astronomy-python/instructor/04-motion.html",
   "dateCreated": "2020-05-11",
-  "dateModified": "2024-03-08",
+  "dateModified": "2025-12-09",
   "datePublished": "2025-12-09"
 }
 
