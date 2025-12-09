@@ -170,8 +170,8 @@ in the Pan-STARRS catalog.
 
 To do that we will:
 
-1. Use the `JOIN` operator to look up each Pan-STARRS `obj_id` for the stars
-  we are interested in the `panstarrs1_best_neighbour` table using the `source_ids`
+1. Use the `JOIN` operator to look up each Pan-STARRS `obj_id`, for the stars
+  we are interested in, in the `panstarrs1_best_neighbour` table using the `source_ids`
   that we have already identified.
 
 2. Use the `JOIN` operator again to look up the Pan-STARRS photometry for these stars
