@@ -348,10 +348,10 @@ which is useful for two reasons:
 
 - By transforming the coordinates, we can identify stars that are
   likely to be in GD-1 by selecting stars near the centerline of the
-  stream, where φ<sub>2</sub> is close to 0.
+  stream, where $\phi_2$ is close to 0.
 
 - By transforming the proper motions, we can identify stars with
-  non-zero proper motion along the φ<sub>1</sub> axis, which are likely to be part of GD-1.
+  non-zero proper motion along the $\phi_1$ axis, which are likely to be part of GD-1.
 
 To do the transformation, we will put the results into a `SkyCoord`
 object.  In a previous episode, we created a `SkyCoord` object like
