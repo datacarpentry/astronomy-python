@@ -719,7 +719,7 @@ ax.set_ylim(-10, 10)
 ![](fig/08-plot_files/08-poly_example.png){alt='An orange rectangle at the coordinates used to select stars based on proper motion.'}
 
 We can now call our plot\_proper\_motion function to plot the
-proper motion for each star, and the add a shaded `Polygon` to show the
+proper motion for each star, and then add a shaded `Polygon` to show the
 region we selected.
 
 ```python

@@ -578,7 +578,7 @@ two data types. We will choose to use Pandas `DataFrame`, for two reasons:
 
 However, compared to an Astropy `Table`, Pandas has one big drawback:
 it does not keep the metadata associated with the table, including the
-units for the columns.  Nevertheless, we think its a useful data type
+units for the columns.  Nevertheless, we think it's a useful data type
 to be familiar with.
 
 

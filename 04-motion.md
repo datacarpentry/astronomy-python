@@ -13,7 +13,7 @@ exercises: 15
 
 :::::::::::::::::::::::::::::::::::::::: questions
 
-- How do efficiently explore our data and identify appropriate filters to produce a clean sample (in this case of GD-1 stars)?
+- How to efficiently explore our data and identify appropriate filters to produce a clean sample (in this case of GD-1 stars)?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -503,7 +503,7 @@ To clean up the plot a little bit we can add two new Matplotlib commands:
   sets the `fontsize` to be `medium`, a little smaller than the default `large`.
 
 In an example like this, where `x` and `y` represent coordinates in
-space, equal axes ensures that the distance between points is
+space, equal axes ensure that the distance between points is
 represented accurately. Since we are now constraining the relative proportions
 of our axes, the data may not fill the entire figure.
 
