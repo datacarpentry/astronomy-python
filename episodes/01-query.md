@@ -64,7 +64,7 @@ Cookbook](https://www.gaia.ac.uk/data/gaia-data-release-1/adql-cookbook).
 ## Using Jupyter
 
 If you have not worked with Jupyter notebooks before, you might start
-with [the tutorial on from Jupyter.org called "Try Classic
+with [the tutorial from Jupyter.org called "Try Classic
 Notebook"](https://jupyter.org/try), or [this tutorial from
 DataQuest](https://www.dataquest.io/blog/jupyter-notebook-tutorial/).
 

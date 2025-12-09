@@ -893,7 +893,7 @@ that for each candidate star we have identified exactly one source in
 Pan-STARRS that is likely to be the same star.
 
 To check whether there are any values other than `1`, we can convert
-this column to a Pandas `Series` and use `describe`, which we saw in
+this column to a Pandas `Series` and use `describe`, which we saw
 in episode 3.
 
 ```python
