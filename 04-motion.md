@@ -568,7 +568,7 @@ We can add to our existing Pandas `DataFrame` to an HDF5 file by omitting the `m
 ```python
 filename = 'gd1_data.hdf'
 
-selected_df.to_hdf(filename, 'selected_df')
+selected_df.to_hdf(filename, key='selected_df')
 ```
 
 Because an HDF5 file can contain more than one Dataset, we have to
@@ -592,7 +592,7 @@ Hint: Since the file already exists, you should *not* use `mode='w'`.
 ## Solution
 
 ```python
-centerline_df.to_hdf(filename, 'centerline_df')
+centerline_df.to_hdf(filename, key='centerline_df')
 ```
 
 :::::::::::::::::::::::::
