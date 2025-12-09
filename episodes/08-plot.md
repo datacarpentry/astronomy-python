@@ -472,16 +472,14 @@ plt.plot(right_color, g, label='right color')
 plt.legend();
 ```
 
+:::::::::::::::::::::::::
 
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 If you cannot find a style sheet that is exactly what you want, you can
 make your own.  This repository includes a style sheet called
 `az-paper-twocol.mplstyle`, with customizations chosen by Azalee
 Bostroem for publication in astronomy journals.
-
-:::::::::::::::::::::::::
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
 
 You can use it like this:
 
