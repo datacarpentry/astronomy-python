@@ -198,7 +198,7 @@ polygon_results['ra'][0]
 ```
 
 ```output
-142.48301935991023
+np.float64(142.48301935991023)
 ```
 
 Or you can select a row and then an element from the row.
@@ -208,7 +208,7 @@ polygon_results[0]['ra']
 ```
 
 ```output
-142.48301935991023
+np.float64(142.48301935991023)
 ```
 
 You get the same result either way.
