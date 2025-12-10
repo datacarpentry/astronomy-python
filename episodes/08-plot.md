@@ -751,6 +751,7 @@ Hint: pass `loop_df` as an argument to `Polygon` as we did in episode 7 and then
 ```python
 fig = plt.figure()
 ax = fig.add_subplot(1,1,1)
+plot_cmd(candidate_df)
 poly_cmd = Polygon(loop_df, closed=True, 
               facecolor='C1', alpha=0.4)
 ax.add_patch(poly_cmd)
