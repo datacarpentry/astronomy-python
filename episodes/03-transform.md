@@ -63,17 +63,21 @@ Whether you are working from a new notebook or coming back from a checkpoint,
 reloading the data will save you from having to run the query again.
 
 If you are starting this episode here or starting this episode in a new notebook,
-you will need to run the following lines of code.
+you will need to run the following lines of code. The last two lines of the import
+statements assume your notebook is being run in the `student_download` directory. 
+If you are running it from a different directory you will need to add the path using 
+`sys.path.append(<path to student download>)` where `<path to student_download>` is 
+the path to your `student_download` directory ending with `student_download`.
 
 This imports previously imported functions:
 
 ```python
 import astropy.units as u
 from astropy.coordinates import SkyCoord
-from gala.coordinates import GD1Koposov10
 from astropy.table import Table
 
 from episode_functions import *
+from gd1 import GD1Koposov10
 ```
 
 The following code loads in the data (instructions for downloading data can be
