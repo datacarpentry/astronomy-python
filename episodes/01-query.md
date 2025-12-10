@@ -238,6 +238,7 @@ Main Database accumulating catalogue version from which the catalogue
 release has been generated. It contains the basic source parameters,
 that is only final data (no epoch data) and no spectra (neither final
 nor epoch).
+Size (bytes): 4906520690688
 Num. columns: 96
 ```
 
