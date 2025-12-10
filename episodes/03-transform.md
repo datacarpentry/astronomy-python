@@ -434,10 +434,11 @@ That might seem like a strange thing to do, but here is the motivation:
 With this preparation, we can use `reflex_correct` from Gala
 ([documentation
 here](https://gala-astro.readthedocs.io/en/latest/api/gala.coordinates.reflex_correct.html))
-to correct for the motion of the solar system.
+to correct for the motion of the solar system which we have included as a stand alone file
+in the `student_download`.
 
 ```python
-from gala.coordinates import reflex_correct
+from reflex import reflex_correct
 
 skycoord_gd1 = reflex_correct(transformed)
 ```
