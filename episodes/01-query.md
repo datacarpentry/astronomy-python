@@ -301,6 +301,7 @@ the Institute for Astronomy at the University of Hawaii. Pan-STARRS1
 Catalogue curator:
 SSDC - ASI Space Science Data Center
 https://www.ssdc.asi.it/
+Size (bytes): 933802426368
 Num. columns: 26
 ```
 
