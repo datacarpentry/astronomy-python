@@ -300,7 +300,7 @@ mask.sum()
 ```
 
 ```output
-25084
+np.int64(25084)
 ```
 
 A Boolean `Series` is sometimes called a "mask" because we can use it
@@ -460,7 +460,7 @@ pm_mask.sum()
 ```
 
 ```output
-1049
+np.int64(1049)
 ```
 
 Now we can use this mask to select rows from `results_df`.
