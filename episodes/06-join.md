@@ -961,7 +961,7 @@ The HDF5 file should already exist, so we'll add `candidate_df` to it.
 ```python
 filename = 'gd1_data.hdf'
 
-candidate_df.to_hdf(filename, 'candidate_df')
+candidate_df.to_hdf(filename, key='candidate_df')
 ```
 
 We can use `getsize` to confirm that the file exists and check the size:
