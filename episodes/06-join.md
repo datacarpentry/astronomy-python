@@ -206,6 +206,7 @@ Description: Pan-STARRS1 BestNeighbour table lists each matched Gaia object with
 best neighbour in the external catalogue.
 There are 1 327 157 objects in the filtered version of Pan-STARRS1 used
 to compute this cross-match that have too early epochMean.
+Size (bytes): 98462015488
 Num. columns: 7
 ```
 
