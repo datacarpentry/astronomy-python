@@ -468,9 +468,7 @@ defined, to verify that the results are as expected.
 ```python
 test_points = [(0.4, 20), 
            (0.4, 16)]
-```
 
-```python
 test_inside_mask = polygon.contains_points(test_points)
 test_inside_mask
 ```
