@@ -610,8 +610,8 @@ x = winner_df['phi1']
 y = winner_df['phi2']
 plt.plot(x, y, 'ko', markersize=0.7, alpha=0.9)
 
-plt.xlabel('$\phi_1$ [deg]')
-plt.ylabel('$\phi_2$ [deg]')
+plt.xlabel(r'$\phi_1$ [deg]')
+plt.ylabel(r'$\phi_2$ [deg]')
 plt.title('Proper motion + photometry selection', fontsize='medium')
 
 plt.axis('equal');
@@ -648,8 +648,8 @@ def plot_cmd_selection(df):
 
     plt.plot(x, y, 'ko', markersize=0.7, alpha=0.9)
 
-    plt.xlabel('$\phi_1$ [deg]')
-    plt.ylabel('$\phi_2$ [deg]')
+    plt.xlabel(r'$\phi_1$ [deg]')
+    plt.ylabel(r'$\phi_2$ [deg]')
     plt.title('Proper motion + photometry selection', fontsize='medium')
 
     plt.axis('equal')
