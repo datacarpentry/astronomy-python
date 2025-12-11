@@ -674,7 +674,7 @@ Finally, we will write the selected stars to a file.
 
 ```python
 filename = 'gd1_data.hdf'
-winner_df.to_hdf(filename, 'winner_df')
+winner_df.to_hdf(filename, key='winner_df')
 ```
 
 ```python
