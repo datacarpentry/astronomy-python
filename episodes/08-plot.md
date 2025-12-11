@@ -487,8 +487,7 @@ plt.style.use('./az-paper-twocol.mplstyle')
 
 plot_cmd(candidate_df)
 
-plt.plot(left_color, g, label='left color')
-plt.plot(right_color, g, label='right color')
+plt.plot(loop_df['color_loop'], loop_df['mag_loop'], g, label='GD1 Isochrone loop')
 
 plt.legend();
 ```
