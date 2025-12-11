@@ -196,12 +196,6 @@ Here is the metadata for `panstarrs1_best_neighbour`.
 ps_best_neighbour_meta = Gaia.load_table('gaiadr2.panstarrs1_best_neighbour')
 ```
 
-```output
-Retrieving table 'gaiadr2.panstarrs1_best_neighbour'
-Parsing table 'gaiadr2.panstarrs1_best_neighbour'...
-Done.
-```
-
 ```python
 print(ps_best_neighbour_meta)
 ```
