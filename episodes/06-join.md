@@ -303,12 +303,6 @@ Now that we know the Pan-STARRS `obj_id`, we are ready to match this to the phot
 ps_valid_meta = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
 ```
 
-```output
-Retrieving table 'gaiadr2.panstarrs1_original_valid'
-Parsing table 'gaiadr2.panstarrs1_original_valid'...
-Done.
-```
-
 ```python
 print(ps_valid_meta)
 ```
