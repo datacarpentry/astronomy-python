@@ -509,7 +509,7 @@ Here is how we can save it in an HDF5 file.
 
 ```python
 filename = 'gd1_data.hdf'
-loop_df.to_hdf(filename, 'loop_df')
+loop_df.to_hdf(filename, key='loop_df')
 ```
 
 ## Selecting based on photometry
