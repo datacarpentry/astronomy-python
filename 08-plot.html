@@ -343,7 +343,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Visualization</h1>
-        <p>Last updated on 2025-12-10 |
+        <p>Last updated on 2025-12-12 |
 
         <a href="https://github.com/datacarpentry/astronomy-python/edit/main/episodes/08-plot.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -897,10 +897,9 @@ see what changes in the figure’s appearance.</p>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>plt.style.use(<span class="st">'seaborn-bright'</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>plot_cmd(candidate_df)</span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>plt.plot(left_color, g, label<span class="op">=</span><span class="st">'left color'</span>)</span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>plt.plot(right_color, g, label<span class="op">=</span><span class="st">'right color'</span>)</span>
-<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>plt.legend()<span class="op">;</span></span></code></pre>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>plt.plot(loop_df[<span class="st">'color_loop'</span>], loop_df[<span class="st">'mag_loop'</span>], g, label<span class="op">=</span><span class="st">'GD1 Isochrone loop'</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>plt.legend()<span class="op">;</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -918,10 +917,9 @@ Azalee Bostroem for publication in astronomy journals.</p>
 <span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>plot_cmd(candidate_df)</span>
 <span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a></span>
-<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>plt.plot(left_color, g, label<span class="op">=</span><span class="st">'left color'</span>)</span>
-<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>plt.plot(right_color, g, label<span class="op">=</span><span class="st">'right color'</span>)</span>
-<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a></span>
-<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>plt.legend()<span class="op">;</span></span></code></pre>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>plt.plot(loop_df[<span class="st">'color_loop'</span>], loop_df[<span class="st">'mag_loop'</span>], g, label<span class="op">=</span><span class="st">'GD1 Isochrone loop'</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>plt.legend()<span class="op">;</span></span></code></pre>
 </div>
 <p>The prefix <code>./</code> tells Matplotlib to look for the file in
 the current directory.</p>
@@ -1361,7 +1359,7 @@ projects, you might want to create your own style sheet.</li>
   "url": "https://datacarpentry.github.io/astronomy-python/08-plot.html",
   "identifier": "https://datacarpentry.github.io/astronomy-python/08-plot.html",
   "dateCreated": "2020-05-11",
-  "dateModified": "2025-12-10",
+  "dateModified": "2025-12-12",
   "datePublished": "2025-12-12"
 }
 
