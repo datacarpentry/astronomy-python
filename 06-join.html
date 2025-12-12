@@ -345,7 +345,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Join</h1>
-        <p>Last updated on 2025-12-09 |
+        <p>Last updated on 2025-12-12 |
 
         <a href="https://github.com/datacarpentry/astronomy-python/edit/main/episodes/06-join.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -424,7 +424,7 @@ section for information you will need to get started.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Read me </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <p>In the previous episode, we define a rectangle around stars in GD-1
 in spatial coordinates and in proper motion which we transformed into
@@ -560,17 +560,10 @@ table names in the queries below.</p>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>ps_best_neighbour_meta <span class="op">=</span> Gaia.load_table(<span class="st">'gaiadr2.panstarrs1_best_neighbour'</span>)</span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code>Retrieving table 'gaiadr2.panstarrs1_best_neighbour'
-Parsing table 'gaiadr2.panstarrs1_best_neighbour'...
-Done.</code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb5">
+<div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="bu">print</span>(ps_best_neighbour_meta)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="bu">print</span>(ps_best_neighbour_meta)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -580,14 +573,15 @@ Description: Pan-STARRS1 BestNeighbour table lists each matched Gaia object with
 best neighbour in the external catalogue.
 There are 1 327 157 objects in the filtered version of Pan-STARRS1 used
 to compute this cross-match that have too early epochMean.
+Size (bytes): 98462015488
 Num. columns: 7</code></pre>
 </div>
 <p>And here are the columns.</p>
-<div class="codewrapper sourceCode" id="cb7">
+<div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="cf">for</span> column <span class="kw">in</span> ps_best_neighbour_meta.columns:</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>    <span class="bu">print</span>(column.name)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="cf">for</span> column <span class="kw">in</span> ps_best_neighbour_meta.columns:</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>    <span class="bu">print</span>(column.name)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -634,30 +628,30 @@ more interested in the final match, using both criteria.</p>
 </div>
 <p>Here is a query that selects these columns and returns the first 5
 rows.</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>ps_best_neighbour_query <span class="op">=</span> <span class="st">"""SELECT </span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="st">TOP 5</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="st">source_id, best_neighbour_multiplicity, number_of_mates, original_ext_source_id</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="st">FROM gaiadr2.panstarrs1_best_neighbour</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
+</div>
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>ps_best_neighbour_query <span class="op">=</span> <span class="st">"""SELECT </span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="st">TOP 5</span></span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="st">source_id, best_neighbour_multiplicity, number_of_mates, original_ext_source_id</span></span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="st">FROM gaiadr2.panstarrs1_best_neighbour</span></span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb10">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>ps_best_neighbour_job <span class="op">=</span> Gaia.launch_job_async(ps_best_neighbour_query)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>ps_best_neighbour_job <span class="op">=</span> Gaia.launch_job_async(ps_best_neighbour_query)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>INFO: Query finished. [astroquery.utils.tap.core]</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb12">
+<div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>ps_best_neighbour_results <span class="op">=</span> ps_best_neighbour_job.get_results()</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>ps_best_neighbour_results</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>ps_best_neighbour_results <span class="op">=</span> ps_best_neighbour_job.get_results()</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>ps_best_neighbour_results</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -677,22 +671,15 @@ rows.</p>
 match this to the photometry in the
 <code>panstarrs1_original_valid</code> table. Here is the metadata for
 the table that contains the Pan-STARRS data.</p>
+<div class="codewrapper sourceCode" id="cb13">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>ps_valid_meta <span class="op">=</span> Gaia.load_table(<span class="st">'gaiadr2.panstarrs1_original_valid'</span>)</span></code></pre>
+</div>
 <div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>ps_valid_meta <span class="op">=</span> Gaia.load_table(<span class="st">'gaiadr2.panstarrs1_original_valid'</span>)</span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code>Retrieving table 'gaiadr2.panstarrs1_original_valid'
-Parsing table 'gaiadr2.panstarrs1_original_valid'...
-Done.</code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb16">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="bu">print</span>(ps_valid_meta)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="bu">print</span>(ps_valid_meta)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -711,11 +698,11 @@ entries listed in the original ObjectThin table.
 [Output truncated]</code></pre>
 </div>
 <p>And here are the columns.</p>
-<div class="codewrapper sourceCode" id="cb18">
+<div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="cf">for</span> column <span class="kw">in</span> ps_valid_meta.columns:</span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>    <span class="bu">print</span>(column.name)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="cf">for</span> column <span class="kw">in</span> ps_valid_meta.columns:</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>    <span class="bu">print</span>(column.name)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -744,30 +731,30 @@ the <code>g</code> filter.</p></li>
 the <code>i</code> filter.</p></li>
 </ul><p>Here is a query that selects these variables and returns the first 5
 rows.</p>
-<div class="codewrapper sourceCode" id="cb20">
+<div class="codewrapper sourceCode" id="cb18">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>ps_valid_query <span class="op">=</span> <span class="st">"""SELECT </span></span>
-<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="st">TOP 5</span></span>
-<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a><span class="st">obj_id, g_mean_psf_mag, i_mean_psf_mag </span></span>
-<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a><span class="st">FROM gaiadr2.panstarrs1_original_valid</span></span>
-<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>ps_valid_query <span class="op">=</span> <span class="st">"""SELECT </span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="st">TOP 5</span></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="st">obj_id, g_mean_psf_mag, i_mean_psf_mag </span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="st">FROM gaiadr2.panstarrs1_original_valid</span></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb21">
+<div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>ps_valid_job <span class="op">=</span> Gaia.launch_job_async(ps_valid_query)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>ps_valid_job <span class="op">=</span> Gaia.launch_job_async(ps_valid_query)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>INFO: Query finished. [astroquery.utils.tap.core]</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb23">
+<div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>ps_valid_results <span class="op">=</span> ps_valid_job.get_results()</span>
-<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>ps_valid_results</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>ps_valid_results <span class="op">=</span> ps_valid_job.get_results()</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>ps_valid_results</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -808,35 +795,35 @@ until we are sure we are joining the tables correctly, then we will
 slowly add more layers of complexity, checking at each stage that our
 query still works. As a starting place, we will go all the way back to
 the cone search from episode 2.</p>
-<div class="codewrapper sourceCode" id="cb25">
+<div class="codewrapper sourceCode" id="cb23">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>test_cone_query <span class="op">=</span> <span class="st">"""SELECT </span></span>
-<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="st">TOP 10 </span></span>
-<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a><span class="st">source_id</span></span>
-<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a><span class="st">FROM gaiadr2.gaia_source</span></span>
-<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a><span class="st">WHERE 1=CONTAINS(</span></span>
-<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a><span class="st">  POINT(ra, dec),</span></span>
-<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a><span class="st">  CIRCLE(88.8, 7.4, 0.08333333))</span></span>
-<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>test_cone_query <span class="op">=</span> <span class="st">"""SELECT </span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="st">TOP 10 </span></span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a><span class="st">source_id</span></span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="st">FROM gaiadr2.gaia_source</span></span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a><span class="st">WHERE 1=CONTAINS(</span></span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a><span class="st">  POINT(ra, dec),</span></span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a><span class="st">  CIRCLE(88.8, 7.4, 0.08333333))</span></span>
+<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
 </div>
 <p>And we will run it, to make sure we have a working query to build
 on.</p>
-<div class="codewrapper sourceCode" id="cb26">
+<div class="codewrapper sourceCode" id="cb24">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>test_cone_job <span class="op">=</span> Gaia.launch_job(test_cone_query)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>test_cone_job <span class="op">=</span> Gaia.launch_job(test_cone_query)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>INFO: Query finished. [astroquery.utils.tap.core]</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb28">
+<div class="codewrapper sourceCode" id="cb26">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>test_cone_results <span class="op">=</span> test_cone_job.get_results()</span>
-<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>test_cone_results</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>test_cone_results <span class="op">=</span> test_cone_job.get_results()</span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>test_cone_results</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -858,25 +845,25 @@ on.</p>
 <code>source_id</code> with the format specifier <code>columns</code> so
 that we can alter what columns we want to return without having to
 modify our base query:</p>
-<div class="codewrapper sourceCode" id="cb30">
+<div class="codewrapper sourceCode" id="cb28">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>cone_base_query <span class="op">=</span> <span class="st">"""SELECT </span></span>
-<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a><span class="sc">{columns}</span></span>
-<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a><span class="st">FROM gaiadr2.gaia_source</span></span>
-<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a><span class="st">WHERE 1=CONTAINS(</span></span>
-<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a><span class="st">  POINT(ra, dec),</span></span>
-<span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a><span class="st">  CIRCLE(88.8, 7.4, 0.08333333))</span></span>
-<span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>cone_base_query <span class="op">=</span> <span class="st">"""SELECT </span></span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a><span class="sc">{columns}</span></span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a><span class="st">FROM gaiadr2.gaia_source</span></span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a><span class="st">WHERE 1=CONTAINS(</span></span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a><span class="st">  POINT(ra, dec),</span></span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a><span class="st">  CIRCLE(88.8, 7.4, 0.08333333))</span></span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
 </div>
 <p>As a reminder, here are the columns we want from the Gaia table:</p>
-<div class="codewrapper sourceCode" id="cb31">
+<div class="codewrapper sourceCode" id="cb29">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>columns <span class="op">=</span> <span class="st">'source_id, ra, dec, pmra, pmdec'</span></span>
-<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a></span>
-<span id="cb31-3"><a href="#cb31-3" tabindex="-1"></a>cone_query <span class="op">=</span> cone_base_query.<span class="bu">format</span>(columns<span class="op">=</span>columns)</span>
-<span id="cb31-4"><a href="#cb31-4" tabindex="-1"></a><span class="bu">print</span>(cone_query)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>columns <span class="op">=</span> <span class="st">'source_id, ra, dec, pmra, pmdec'</span></span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>cone_query <span class="op">=</span> cone_base_query.<span class="bu">format</span>(columns<span class="op">=</span>columns)</span>
+<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a><span class="bu">print</span>(cone_query)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -889,21 +876,21 @@ WHERE 1=CONTAINS(
   CIRCLE(88.8, 7.4, 0.08333333))</code></pre>
 </div>
 <p>We run the query again.</p>
-<div class="codewrapper sourceCode" id="cb33">
+<div class="codewrapper sourceCode" id="cb31">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>cone_job <span class="op">=</span> Gaia.launch_job_async(cone_query)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>cone_job <span class="op">=</span> Gaia.launch_job_async(cone_query)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>INFO: Query finished. [astroquery.utils.tap.core]</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb35">
+<div class="codewrapper sourceCode" id="cb33">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a>cone_results <span class="op">=</span> cone_job.get_results()</span>
-<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a>cone_results</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>cone_results <span class="op">=</span> cone_job.get_results()</span>
+<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a>cone_results</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -937,18 +924,18 @@ abbreviated name <code>gaia</code>.</p>
 <p>The <code>ON</code> clause indicates that we will match up the
 <code>source_id</code> column from the Gaia table with the
 <code>source_id</code> column from the best neighbor table.</p>
-<div class="codewrapper sourceCode" id="cb37">
+<div class="codewrapper sourceCode" id="cb35">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a>neighbours_base_query <span class="op">=</span> <span class="st">"""SELECT </span></span>
-<span id="cb37-2"><a href="#cb37-2" tabindex="-1"></a><span class="sc">{columns}</span></span>
-<span id="cb37-3"><a href="#cb37-3" tabindex="-1"></a><span class="st">FROM gaiadr2.gaia_source AS gaia</span></span>
-<span id="cb37-4"><a href="#cb37-4" tabindex="-1"></a><span class="st">JOIN gaiadr2.panstarrs1_best_neighbour AS best</span></span>
-<span id="cb37-5"><a href="#cb37-5" tabindex="-1"></a><span class="st">  ON gaia.source_id = best.source_id</span></span>
-<span id="cb37-6"><a href="#cb37-6" tabindex="-1"></a><span class="st">WHERE 1=CONTAINS(</span></span>
-<span id="cb37-7"><a href="#cb37-7" tabindex="-1"></a><span class="st">  POINT(gaia.ra, gaia.dec),</span></span>
-<span id="cb37-8"><a href="#cb37-8" tabindex="-1"></a><span class="st">  CIRCLE(88.8, 7.4, 0.08333333))</span></span>
-<span id="cb37-9"><a href="#cb37-9" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a>neighbours_base_query <span class="op">=</span> <span class="st">"""SELECT </span></span>
+<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a><span class="sc">{columns}</span></span>
+<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a><span class="st">FROM gaiadr2.gaia_source AS gaia</span></span>
+<span id="cb35-4"><a href="#cb35-4" tabindex="-1"></a><span class="st">JOIN gaiadr2.panstarrs1_best_neighbour AS best</span></span>
+<span id="cb35-5"><a href="#cb35-5" tabindex="-1"></a><span class="st">  ON gaia.source_id = best.source_id</span></span>
+<span id="cb35-6"><a href="#cb35-6" tabindex="-1"></a><span class="st">WHERE 1=CONTAINS(</span></span>
+<span id="cb35-7"><a href="#cb35-7" tabindex="-1"></a><span class="st">  POINT(gaia.ra, gaia.dec),</span></span>
+<span id="cb35-8"><a href="#cb35-8" tabindex="-1"></a><span class="st">  CIRCLE(88.8, 7.4, 0.08333333))</span></span>
+<span id="cb35-9"><a href="#cb35-9" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
 </div>
 <div id="sql-detail" class="callout">
 <div class="callout-square">
@@ -960,10 +947,10 @@ abbreviated name <code>gaia</code>.</p>
 <div class="callout-content">
 <p>In this example, the <code>ON</code> column has the same name in both
 tables, so we could replace the <code>ON</code> clause with a simpler <a href="https://docs.oracle.com/javadb/10.8.3.0/ref/rrefsqljusing.html" class="external-link"><code>USING</code>clause</a>:</p>
-<div class="codewrapper sourceCode" id="cb38">
+<div class="codewrapper sourceCode" id="cb36">
 <h3 class="code-label">SQL<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="kw">USING</span>(source_id)</span></code></pre>
+<pre class="sourceCode sql" tabindex="0"><code class="sourceCode sql"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="kw">USING</span>(source_id)</span></code></pre>
 </div>
 </div>
 </div>
@@ -987,21 +974,21 @@ one-to-one matches between the catalogs. Recall that
 PanSTARRs objects that match a Gaia object and
 <code>number_of_mates</code> tells us the number of Gaia objects that
 match a PanSTARRs object.</p>
-<div class="codewrapper sourceCode" id="cb39">
+<div class="codewrapper sourceCode" id="cb37">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>column_list_neighbours <span class="op">=</span> [<span class="st">'gaia.source_id'</span>,</span>
-<span id="cb39-2"><a href="#cb39-2" tabindex="-1"></a>               <span class="st">'gaia.ra'</span>,</span>
-<span id="cb39-3"><a href="#cb39-3" tabindex="-1"></a>               <span class="st">'gaia.dec'</span>,</span>
-<span id="cb39-4"><a href="#cb39-4" tabindex="-1"></a>               <span class="st">'gaia.pmra'</span>,</span>
-<span id="cb39-5"><a href="#cb39-5" tabindex="-1"></a>               <span class="st">'gaia.pmdec'</span>,</span>
-<span id="cb39-6"><a href="#cb39-6" tabindex="-1"></a>               <span class="st">'best.best_neighbour_multiplicity'</span>,</span>
-<span id="cb39-7"><a href="#cb39-7" tabindex="-1"></a>               <span class="st">'best.number_of_mates'</span>,</span>
-<span id="cb39-8"><a href="#cb39-8" tabindex="-1"></a>              ]</span>
-<span id="cb39-9"><a href="#cb39-9" tabindex="-1"></a>columns <span class="op">=</span> <span class="st">', '</span>.join(column_list_neighbours)</span>
-<span id="cb39-10"><a href="#cb39-10" tabindex="-1"></a></span>
-<span id="cb39-11"><a href="#cb39-11" tabindex="-1"></a>neighbours_query <span class="op">=</span> neighbours_base_query.<span class="bu">format</span>(columns<span class="op">=</span>columns)</span>
-<span id="cb39-12"><a href="#cb39-12" tabindex="-1"></a><span class="bu">print</span>(neighbours_query)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a>column_list_neighbours <span class="op">=</span> [<span class="st">'gaia.source_id'</span>,</span>
+<span id="cb37-2"><a href="#cb37-2" tabindex="-1"></a>               <span class="st">'gaia.ra'</span>,</span>
+<span id="cb37-3"><a href="#cb37-3" tabindex="-1"></a>               <span class="st">'gaia.dec'</span>,</span>
+<span id="cb37-4"><a href="#cb37-4" tabindex="-1"></a>               <span class="st">'gaia.pmra'</span>,</span>
+<span id="cb37-5"><a href="#cb37-5" tabindex="-1"></a>               <span class="st">'gaia.pmdec'</span>,</span>
+<span id="cb37-6"><a href="#cb37-6" tabindex="-1"></a>               <span class="st">'best.best_neighbour_multiplicity'</span>,</span>
+<span id="cb37-7"><a href="#cb37-7" tabindex="-1"></a>               <span class="st">'best.number_of_mates'</span>,</span>
+<span id="cb37-8"><a href="#cb37-8" tabindex="-1"></a>              ]</span>
+<span id="cb37-9"><a href="#cb37-9" tabindex="-1"></a>columns <span class="op">=</span> <span class="st">', '</span>.join(column_list_neighbours)</span>
+<span id="cb37-10"><a href="#cb37-10" tabindex="-1"></a></span>
+<span id="cb37-11"><a href="#cb37-11" tabindex="-1"></a>neighbours_query <span class="op">=</span> neighbours_base_query.<span class="bu">format</span>(columns<span class="op">=</span>columns)</span>
+<span id="cb37-12"><a href="#cb37-12" tabindex="-1"></a><span class="bu">print</span>(neighbours_query)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1015,21 +1002,21 @@ WHERE 1=CONTAINS(
   POINT(gaia.ra, gaia.dec),
   CIRCLE(88.8, 7.4, 0.08333333))</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb41">
+<div class="codewrapper sourceCode" id="cb39">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>neighbours_job <span class="op">=</span> Gaia.launch_job_async(neighbours_query)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>neighbours_job <span class="op">=</span> Gaia.launch_job_async(neighbours_query)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>INFO: Query finished. [astroquery.utils.tap.core]</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb43">
+<div class="codewrapper sourceCode" id="cb41">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a>neighbours_results <span class="op">=</span> neighbours_job.get_results()</span>
-<span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a>neighbours_results</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>neighbours_results <span class="op">=</span> neighbours_job.get_results()</span>
+<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a>neighbours_results</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1081,41 +1068,41 @@ and 9 columns.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb45">
+<div class="codewrapper sourceCode" id="cb43">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a>join_solution_query_base <span class="op">=</span> <span class="st">"""SELECT </span></span>
-<span id="cb45-2"><a href="#cb45-2" tabindex="-1"></a><span class="sc">{columns}</span></span>
-<span id="cb45-3"><a href="#cb45-3" tabindex="-1"></a><span class="st">FROM gaiadr2.gaia_source as gaia</span></span>
-<span id="cb45-4"><a href="#cb45-4" tabindex="-1"></a><span class="st">JOIN gaiadr2.panstarrs1_best_neighbour as best</span></span>
-<span id="cb45-5"><a href="#cb45-5" tabindex="-1"></a><span class="st">  ON gaia.source_id = best.source_id</span></span>
-<span id="cb45-6"><a href="#cb45-6" tabindex="-1"></a><span class="st">JOIN gaiadr2.panstarrs1_original_valid as ps</span></span>
-<span id="cb45-7"><a href="#cb45-7" tabindex="-1"></a><span class="st">  ON best.original_ext_source_id = ps.obj_id</span></span>
-<span id="cb45-8"><a href="#cb45-8" tabindex="-1"></a><span class="st">WHERE 1=CONTAINS(</span></span>
-<span id="cb45-9"><a href="#cb45-9" tabindex="-1"></a><span class="st">  POINT(gaia.ra, gaia.dec),</span></span>
-<span id="cb45-10"><a href="#cb45-10" tabindex="-1"></a><span class="st">  CIRCLE(88.8, 7.4, 0.08333333))</span></span>
-<span id="cb45-11"><a href="#cb45-11" tabindex="-1"></a><span class="st">"""</span></span>
-<span id="cb45-12"><a href="#cb45-12" tabindex="-1"></a></span>
-<span id="cb45-13"><a href="#cb45-13" tabindex="-1"></a>column_list <span class="op">=</span> [<span class="st">'gaia.source_id'</span>,</span>
-<span id="cb45-14"><a href="#cb45-14" tabindex="-1"></a>               <span class="st">'gaia.ra'</span>,</span>
-<span id="cb45-15"><a href="#cb45-15" tabindex="-1"></a>               <span class="st">'gaia.dec'</span>,</span>
-<span id="cb45-16"><a href="#cb45-16" tabindex="-1"></a>               <span class="st">'gaia.pmra'</span>,</span>
-<span id="cb45-17"><a href="#cb45-17" tabindex="-1"></a>               <span class="st">'gaia.pmdec'</span>,</span>
-<span id="cb45-18"><a href="#cb45-18" tabindex="-1"></a>               <span class="st">'best.best_neighbour_multiplicity'</span>,</span>
-<span id="cb45-19"><a href="#cb45-19" tabindex="-1"></a>               <span class="st">'best.number_of_mates'</span>,</span>
-<span id="cb45-20"><a href="#cb45-20" tabindex="-1"></a>               <span class="st">'ps.g_mean_psf_mag'</span>,</span>
-<span id="cb45-21"><a href="#cb45-21" tabindex="-1"></a>               <span class="st">'ps.i_mean_psf_mag'</span>]</span>
-<span id="cb45-22"><a href="#cb45-22" tabindex="-1"></a></span>
-<span id="cb45-23"><a href="#cb45-23" tabindex="-1"></a>columns <span class="op">=</span> <span class="st">', '</span>.join(column_list)</span>
-<span id="cb45-24"><a href="#cb45-24" tabindex="-1"></a></span>
-<span id="cb45-25"><a href="#cb45-25" tabindex="-1"></a>join_solution_query <span class="op">=</span> join_solution_query_base.<span class="bu">format</span>(columns<span class="op">=</span>columns)</span>
-<span id="cb45-26"><a href="#cb45-26" tabindex="-1"></a><span class="bu">print</span>(join_solution_query)</span>
-<span id="cb45-27"><a href="#cb45-27" tabindex="-1"></a></span>
-<span id="cb45-28"><a href="#cb45-28" tabindex="-1"></a>join_solution_job <span class="op">=</span> Gaia.launch_job_async(join_solution_query)</span>
-<span id="cb45-29"><a href="#cb45-29" tabindex="-1"></a>join_solution_results <span class="op">=</span> join_solution_job.get_results()</span>
-<span id="cb45-30"><a href="#cb45-30" tabindex="-1"></a>join_solution_results</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a>join_solution_query_base <span class="op">=</span> <span class="st">"""SELECT </span></span>
+<span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a><span class="sc">{columns}</span></span>
+<span id="cb43-3"><a href="#cb43-3" tabindex="-1"></a><span class="st">FROM gaiadr2.gaia_source as gaia</span></span>
+<span id="cb43-4"><a href="#cb43-4" tabindex="-1"></a><span class="st">JOIN gaiadr2.panstarrs1_best_neighbour as best</span></span>
+<span id="cb43-5"><a href="#cb43-5" tabindex="-1"></a><span class="st">  ON gaia.source_id = best.source_id</span></span>
+<span id="cb43-6"><a href="#cb43-6" tabindex="-1"></a><span class="st">JOIN gaiadr2.panstarrs1_original_valid as ps</span></span>
+<span id="cb43-7"><a href="#cb43-7" tabindex="-1"></a><span class="st">  ON best.original_ext_source_id = ps.obj_id</span></span>
+<span id="cb43-8"><a href="#cb43-8" tabindex="-1"></a><span class="st">WHERE 1=CONTAINS(</span></span>
+<span id="cb43-9"><a href="#cb43-9" tabindex="-1"></a><span class="st">  POINT(gaia.ra, gaia.dec),</span></span>
+<span id="cb43-10"><a href="#cb43-10" tabindex="-1"></a><span class="st">  CIRCLE(88.8, 7.4, 0.08333333))</span></span>
+<span id="cb43-11"><a href="#cb43-11" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb43-12"><a href="#cb43-12" tabindex="-1"></a></span>
+<span id="cb43-13"><a href="#cb43-13" tabindex="-1"></a>column_list <span class="op">=</span> [<span class="st">'gaia.source_id'</span>,</span>
+<span id="cb43-14"><a href="#cb43-14" tabindex="-1"></a>               <span class="st">'gaia.ra'</span>,</span>
+<span id="cb43-15"><a href="#cb43-15" tabindex="-1"></a>               <span class="st">'gaia.dec'</span>,</span>
+<span id="cb43-16"><a href="#cb43-16" tabindex="-1"></a>               <span class="st">'gaia.pmra'</span>,</span>
+<span id="cb43-17"><a href="#cb43-17" tabindex="-1"></a>               <span class="st">'gaia.pmdec'</span>,</span>
+<span id="cb43-18"><a href="#cb43-18" tabindex="-1"></a>               <span class="st">'best.best_neighbour_multiplicity'</span>,</span>
+<span id="cb43-19"><a href="#cb43-19" tabindex="-1"></a>               <span class="st">'best.number_of_mates'</span>,</span>
+<span id="cb43-20"><a href="#cb43-20" tabindex="-1"></a>               <span class="st">'ps.g_mean_psf_mag'</span>,</span>
+<span id="cb43-21"><a href="#cb43-21" tabindex="-1"></a>               <span class="st">'ps.i_mean_psf_mag'</span>]</span>
+<span id="cb43-22"><a href="#cb43-22" tabindex="-1"></a></span>
+<span id="cb43-23"><a href="#cb43-23" tabindex="-1"></a>columns <span class="op">=</span> <span class="st">', '</span>.join(column_list)</span>
+<span id="cb43-24"><a href="#cb43-24" tabindex="-1"></a></span>
+<span id="cb43-25"><a href="#cb43-25" tabindex="-1"></a>join_solution_query <span class="op">=</span> join_solution_query_base.<span class="bu">format</span>(columns<span class="op">=</span>columns)</span>
+<span id="cb43-26"><a href="#cb43-26" tabindex="-1"></a><span class="bu">print</span>(join_solution_query)</span>
+<span id="cb43-27"><a href="#cb43-27" tabindex="-1"></a></span>
+<span id="cb43-28"><a href="#cb43-28" tabindex="-1"></a>join_solution_job <span class="op">=</span> Gaia.launch_job_async(join_solution_query)</span>
+<span id="cb43-29"><a href="#cb43-29" tabindex="-1"></a>join_solution_results <span class="op">=</span> join_solution_job.get_results()</span>
+<span id="cb43-30"><a href="#cb43-30" tabindex="-1"></a>join_solution_results</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1146,35 +1133,35 @@ selects sources based on parallax, BP-RP color, sky coordinates, and
 proper motion.</p>
 <p>Here is <code>candidate_coord_pm_query_base</code> from the previous
 episode.</p>
-<div class="codewrapper sourceCode" id="cb47">
+<div class="codewrapper sourceCode" id="cb45">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a>candidate_coord_pm_query_base <span class="op">=</span> <span class="st">"""SELECT </span></span>
-<span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a><span class="sc">{columns}</span></span>
-<span id="cb47-3"><a href="#cb47-3" tabindex="-1"></a><span class="st">FROM gaiadr2.gaia_source</span></span>
-<span id="cb47-4"><a href="#cb47-4" tabindex="-1"></a><span class="st">WHERE parallax &lt; 1</span></span>
-<span id="cb47-5"><a href="#cb47-5" tabindex="-1"></a><span class="st">  AND bp_rp BETWEEN -0.75 AND 2 </span></span>
-<span id="cb47-6"><a href="#cb47-6" tabindex="-1"></a><span class="st">  AND 1 = CONTAINS(POINT(ra, dec), </span></span>
-<span id="cb47-7"><a href="#cb47-7" tabindex="-1"></a><span class="st">                   POLYGON(</span><span class="sc">{sky_point_list}</span><span class="st">))</span></span>
-<span id="cb47-8"><a href="#cb47-8" tabindex="-1"></a><span class="st">  AND pmra BETWEEN </span><span class="sc">{pmra_min}</span><span class="st"> AND  </span><span class="sc">{pmra_max}</span></span>
-<span id="cb47-9"><a href="#cb47-9" tabindex="-1"></a><span class="st">  AND pmdec BETWEEN </span><span class="sc">{pmdec_min}</span><span class="st"> AND </span><span class="sc">{pmdec_max}</span></span>
-<span id="cb47-10"><a href="#cb47-10" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a>candidate_coord_pm_query_base <span class="op">=</span> <span class="st">"""SELECT </span></span>
+<span id="cb45-2"><a href="#cb45-2" tabindex="-1"></a><span class="sc">{columns}</span></span>
+<span id="cb45-3"><a href="#cb45-3" tabindex="-1"></a><span class="st">FROM gaiadr2.gaia_source</span></span>
+<span id="cb45-4"><a href="#cb45-4" tabindex="-1"></a><span class="st">WHERE parallax &lt; 1</span></span>
+<span id="cb45-5"><a href="#cb45-5" tabindex="-1"></a><span class="st">  AND bp_rp BETWEEN -0.75 AND 2 </span></span>
+<span id="cb45-6"><a href="#cb45-6" tabindex="-1"></a><span class="st">  AND 1 = CONTAINS(POINT(ra, dec), </span></span>
+<span id="cb45-7"><a href="#cb45-7" tabindex="-1"></a><span class="st">                   POLYGON(</span><span class="sc">{sky_point_list}</span><span class="st">))</span></span>
+<span id="cb45-8"><a href="#cb45-8" tabindex="-1"></a><span class="st">  AND pmra BETWEEN </span><span class="sc">{pmra_min}</span><span class="st"> AND  </span><span class="sc">{pmra_max}</span></span>
+<span id="cb45-9"><a href="#cb45-9" tabindex="-1"></a><span class="st">  AND pmdec BETWEEN </span><span class="sc">{pmdec_min}</span><span class="st"> AND </span><span class="sc">{pmdec_max}</span></span>
+<span id="cb45-10"><a href="#cb45-10" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
 </div>
 <p>Now we can assemble the query using the sky point list and proper
 motion range we compiled in episode 5.</p>
-<div class="codewrapper sourceCode" id="cb48">
+<div class="codewrapper sourceCode" id="cb46">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a>columns <span class="op">=</span> <span class="st">'source_id, ra, dec, pmra, pmdec'</span></span>
-<span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a></span>
-<span id="cb48-3"><a href="#cb48-3" tabindex="-1"></a>candidate_coord_pm_query <span class="op">=</span> candidate_coord_pm_query_base.<span class="bu">format</span>(columns<span class="op">=</span>columns,</span>
-<span id="cb48-4"><a href="#cb48-4" tabindex="-1"></a>                            sky_point_list<span class="op">=</span>sky_point_list,</span>
-<span id="cb48-5"><a href="#cb48-5" tabindex="-1"></a>                            pmra_min<span class="op">=</span>pmra_min,</span>
-<span id="cb48-6"><a href="#cb48-6" tabindex="-1"></a>                            pmra_max<span class="op">=</span>pmra_max,</span>
-<span id="cb48-7"><a href="#cb48-7" tabindex="-1"></a>                            pmdec_min<span class="op">=</span>pmdec_min,</span>
-<span id="cb48-8"><a href="#cb48-8" tabindex="-1"></a>                            pmdec_max<span class="op">=</span>pmdec_max)</span>
-<span id="cb48-9"><a href="#cb48-9" tabindex="-1"></a></span>
-<span id="cb48-10"><a href="#cb48-10" tabindex="-1"></a><span class="bu">print</span>(candidate_coord_pm_query)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a>columns <span class="op">=</span> <span class="st">'source_id, ra, dec, pmra, pmdec'</span></span>
+<span id="cb46-2"><a href="#cb46-2" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" tabindex="-1"></a>candidate_coord_pm_query <span class="op">=</span> candidate_coord_pm_query_base.<span class="bu">format</span>(columns<span class="op">=</span>columns,</span>
+<span id="cb46-4"><a href="#cb46-4" tabindex="-1"></a>                            sky_point_list<span class="op">=</span>sky_point_list,</span>
+<span id="cb46-5"><a href="#cb46-5" tabindex="-1"></a>                            pmra_min<span class="op">=</span>pmra_min,</span>
+<span id="cb46-6"><a href="#cb46-6" tabindex="-1"></a>                            pmra_max<span class="op">=</span>pmra_max,</span>
+<span id="cb46-7"><a href="#cb46-7" tabindex="-1"></a>                            pmdec_min<span class="op">=</span>pmdec_min,</span>
+<span id="cb46-8"><a href="#cb46-8" tabindex="-1"></a>                            pmdec_max<span class="op">=</span>pmdec_max)</span>
+<span id="cb46-9"><a href="#cb46-9" tabindex="-1"></a></span>
+<span id="cb46-10"><a href="#cb46-10" tabindex="-1"></a><span class="bu">print</span>(candidate_coord_pm_query)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1190,21 +1177,21 @@ WHERE parallax &lt; 1
   AND pmdec BETWEEN -14.31 AND -11.2</code></pre>
 </div>
 <p>We run it to make sure we are starting with a working query.</p>
-<div class="codewrapper sourceCode" id="cb50">
+<div class="codewrapper sourceCode" id="cb48">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a>candidate_coord_pm_job <span class="op">=</span> Gaia.launch_job_async(candidate_coord_pm_query)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a>candidate_coord_pm_job <span class="op">=</span> Gaia.launch_job_async(candidate_coord_pm_query)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>INFO: Query finished. [astroquery.utils.tap.core]</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb52">
+<div class="codewrapper sourceCode" id="cb50">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>candidate_coord_pm_results <span class="op">=</span> candidate_coord_pm_job.get_results()</span>
-<span id="cb52-2"><a href="#cb52-2" tabindex="-1"></a>candidate_coord_pm_results</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a>candidate_coord_pm_results <span class="op">=</span> candidate_coord_pm_job.get_results()</span>
+<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a>candidate_coord_pm_results</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1247,41 +1234,41 @@ have 4300 rows and 9 columns.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb54">
+<div class="codewrapper sourceCode" id="cb52">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a>candidate_join_query_base <span class="op">=</span> <span class="st">"""</span></span>
-<span id="cb54-2"><a href="#cb54-2" tabindex="-1"></a><span class="st">SELECT </span></span>
-<span id="cb54-3"><a href="#cb54-3" tabindex="-1"></a><span class="sc">{columns}</span></span>
-<span id="cb54-4"><a href="#cb54-4" tabindex="-1"></a><span class="st">FROM gaiadr2.gaia_source as gaia</span></span>
-<span id="cb54-5"><a href="#cb54-5" tabindex="-1"></a><span class="st">JOIN gaiadr2.panstarrs1_best_neighbour as best</span></span>
-<span id="cb54-6"><a href="#cb54-6" tabindex="-1"></a><span class="st">  ON gaia.source_id = best.source_id</span></span>
-<span id="cb54-7"><a href="#cb54-7" tabindex="-1"></a><span class="st">JOIN gaiadr2.panstarrs1_original_valid as ps</span></span>
-<span id="cb54-8"><a href="#cb54-8" tabindex="-1"></a><span class="st">  ON best.original_ext_source_id = ps.obj_id</span></span>
-<span id="cb54-9"><a href="#cb54-9" tabindex="-1"></a><span class="st">WHERE parallax &lt; 1</span></span>
-<span id="cb54-10"><a href="#cb54-10" tabindex="-1"></a><span class="st">  AND bp_rp BETWEEN -0.75 AND 2 </span></span>
-<span id="cb54-11"><a href="#cb54-11" tabindex="-1"></a><span class="st">  AND 1 = CONTAINS(POINT(gaia.ra, gaia.dec), </span></span>
-<span id="cb54-12"><a href="#cb54-12" tabindex="-1"></a><span class="st">                   POLYGON(</span><span class="sc">{sky_point_list}</span><span class="st">))</span></span>
-<span id="cb54-13"><a href="#cb54-13" tabindex="-1"></a><span class="st">  AND gaia.pmra BETWEEN </span><span class="sc">{pmra_min}</span><span class="st"> AND  </span><span class="sc">{pmra_max}</span></span>
-<span id="cb54-14"><a href="#cb54-14" tabindex="-1"></a><span class="st">  AND gaia.pmdec BETWEEN </span><span class="sc">{pmdec_min}</span><span class="st"> AND </span><span class="sc">{pmdec_max}</span></span>
-<span id="cb54-15"><a href="#cb54-15" tabindex="-1"></a><span class="st">"""</span></span>
-<span id="cb54-16"><a href="#cb54-16" tabindex="-1"></a></span>
-<span id="cb54-17"><a href="#cb54-17" tabindex="-1"></a>columns <span class="op">=</span> <span class="st">', '</span>.join(column_list)</span>
-<span id="cb54-18"><a href="#cb54-18" tabindex="-1"></a></span>
-<span id="cb54-19"><a href="#cb54-19" tabindex="-1"></a>candidate_join_query <span class="op">=</span> candidate_join_query_base.<span class="bu">format</span>(columns<span class="op">=</span>columns,</span>
-<span id="cb54-20"><a href="#cb54-20" tabindex="-1"></a>                            sky_point_list<span class="op">=</span> sky_point_list,</span>
-<span id="cb54-21"><a href="#cb54-21" tabindex="-1"></a>                            pmra_min<span class="op">=</span>pmra_min,</span>
-<span id="cb54-22"><a href="#cb54-22" tabindex="-1"></a>                            pmra_max<span class="op">=</span>pmra_max,</span>
-<span id="cb54-23"><a href="#cb54-23" tabindex="-1"></a>                            pmdec_min<span class="op">=</span>pmdec_min,</span>
-<span id="cb54-24"><a href="#cb54-24" tabindex="-1"></a>                            pmdec_max<span class="op">=</span>pmdec_max)</span>
-<span id="cb54-25"><a href="#cb54-25" tabindex="-1"></a><span class="bu">print</span>(candidate_join_query)</span>
-<span id="cb54-26"><a href="#cb54-26" tabindex="-1"></a></span>
-<span id="cb54-27"><a href="#cb54-27" tabindex="-1"></a></span>
-<span id="cb54-28"><a href="#cb54-28" tabindex="-1"></a>candidate_join_job <span class="op">=</span> Gaia.launch_job_async(candidate_join_query)</span>
-<span id="cb54-29"><a href="#cb54-29" tabindex="-1"></a>candidate_table <span class="op">=</span> candidate_join_job.get_results()</span>
-<span id="cb54-30"><a href="#cb54-30" tabindex="-1"></a>candidate_table</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>candidate_join_query_base <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb52-2"><a href="#cb52-2" tabindex="-1"></a><span class="st">SELECT </span></span>
+<span id="cb52-3"><a href="#cb52-3" tabindex="-1"></a><span class="sc">{columns}</span></span>
+<span id="cb52-4"><a href="#cb52-4" tabindex="-1"></a><span class="st">FROM gaiadr2.gaia_source as gaia</span></span>
+<span id="cb52-5"><a href="#cb52-5" tabindex="-1"></a><span class="st">JOIN gaiadr2.panstarrs1_best_neighbour as best</span></span>
+<span id="cb52-6"><a href="#cb52-6" tabindex="-1"></a><span class="st">  ON gaia.source_id = best.source_id</span></span>
+<span id="cb52-7"><a href="#cb52-7" tabindex="-1"></a><span class="st">JOIN gaiadr2.panstarrs1_original_valid as ps</span></span>
+<span id="cb52-8"><a href="#cb52-8" tabindex="-1"></a><span class="st">  ON best.original_ext_source_id = ps.obj_id</span></span>
+<span id="cb52-9"><a href="#cb52-9" tabindex="-1"></a><span class="st">WHERE parallax &lt; 1</span></span>
+<span id="cb52-10"><a href="#cb52-10" tabindex="-1"></a><span class="st">  AND bp_rp BETWEEN -0.75 AND 2 </span></span>
+<span id="cb52-11"><a href="#cb52-11" tabindex="-1"></a><span class="st">  AND 1 = CONTAINS(POINT(gaia.ra, gaia.dec), </span></span>
+<span id="cb52-12"><a href="#cb52-12" tabindex="-1"></a><span class="st">                   POLYGON(</span><span class="sc">{sky_point_list}</span><span class="st">))</span></span>
+<span id="cb52-13"><a href="#cb52-13" tabindex="-1"></a><span class="st">  AND gaia.pmra BETWEEN </span><span class="sc">{pmra_min}</span><span class="st"> AND  </span><span class="sc">{pmra_max}</span></span>
+<span id="cb52-14"><a href="#cb52-14" tabindex="-1"></a><span class="st">  AND gaia.pmdec BETWEEN </span><span class="sc">{pmdec_min}</span><span class="st"> AND </span><span class="sc">{pmdec_max}</span></span>
+<span id="cb52-15"><a href="#cb52-15" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb52-16"><a href="#cb52-16" tabindex="-1"></a></span>
+<span id="cb52-17"><a href="#cb52-17" tabindex="-1"></a>columns <span class="op">=</span> <span class="st">', '</span>.join(column_list)</span>
+<span id="cb52-18"><a href="#cb52-18" tabindex="-1"></a></span>
+<span id="cb52-19"><a href="#cb52-19" tabindex="-1"></a>candidate_join_query <span class="op">=</span> candidate_join_query_base.<span class="bu">format</span>(columns<span class="op">=</span>columns,</span>
+<span id="cb52-20"><a href="#cb52-20" tabindex="-1"></a>                            sky_point_list<span class="op">=</span> sky_point_list,</span>
+<span id="cb52-21"><a href="#cb52-21" tabindex="-1"></a>                            pmra_min<span class="op">=</span>pmra_min,</span>
+<span id="cb52-22"><a href="#cb52-22" tabindex="-1"></a>                            pmra_max<span class="op">=</span>pmra_max,</span>
+<span id="cb52-23"><a href="#cb52-23" tabindex="-1"></a>                            pmdec_min<span class="op">=</span>pmdec_min,</span>
+<span id="cb52-24"><a href="#cb52-24" tabindex="-1"></a>                            pmdec_max<span class="op">=</span>pmdec_max)</span>
+<span id="cb52-25"><a href="#cb52-25" tabindex="-1"></a><span class="bu">print</span>(candidate_join_query)</span>
+<span id="cb52-26"><a href="#cb52-26" tabindex="-1"></a></span>
+<span id="cb52-27"><a href="#cb52-27" tabindex="-1"></a></span>
+<span id="cb52-28"><a href="#cb52-28" tabindex="-1"></a>candidate_join_job <span class="op">=</span> Gaia.launch_job_async(candidate_join_query)</span>
+<span id="cb52-29"><a href="#cb52-29" tabindex="-1"></a>candidate_table <span class="op">=</span> candidate_join_job.get_results()</span>
+<span id="cb52-30"><a href="#cb52-30" tabindex="-1"></a>candidate_table</span></code></pre>
 </div>
 </div>
 </div>
@@ -1291,10 +1278,10 @@ have 4300 rows and 9 columns.</p>
 <hr class="half-width"><p>To get more information about the matching process, we can inspect
 <code>best_neighbour_multiplicity</code>, which indicates for each star
 in Gaia how many stars in Pan-STARRS are equally likely matches.</p>
-<div class="codewrapper sourceCode" id="cb55">
+<div class="codewrapper sourceCode" id="cb53">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a>candidate_table[<span class="st">'best_neighbour_multiplicity'</span>]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" tabindex="-1"></a>candidate_table[<span class="st">'best_neighbour_multiplicity'</span>]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1318,11 +1305,11 @@ Pan-STARRS that is likely to be the same star.</p>
 <p>To check whether there are any values other than <code>1</code>, we
 can convert this column to a Pandas <code>Series</code> and use
 <code>describe</code>, which we saw in episode 3.</p>
-<div class="codewrapper sourceCode" id="cb57">
+<div class="codewrapper sourceCode" id="cb55">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a>multiplicity <span class="op">=</span> pd.Series(candidate_table[<span class="st">'best_neighbour_multiplicity'</span>])</span>
-<span id="cb57-2"><a href="#cb57-2" tabindex="-1"></a>multiplicity.describe()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a>multiplicity <span class="op">=</span> pd.Series(candidate_table[<span class="st">'best_neighbour_multiplicity'</span>])</span>
+<span id="cb55-2"><a href="#cb55-2" tabindex="-1"></a>multiplicity.describe()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1363,11 +1350,11 @@ its performing.</p>
 <p>Similarly, <code>number_of_mates</code> indicates the number of
 <em>other</em> stars in Gaia that match with the same star in
 Pan-STARRS.</p>
-<div class="codewrapper sourceCode" id="cb59">
+<div class="codewrapper sourceCode" id="cb57">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>mates <span class="op">=</span> pd.Series(candidate_table[<span class="st">'number_of_mates'</span>])</span>
-<span id="cb59-2"><a href="#cb59-2" tabindex="-1"></a>mates.describe()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a>mates <span class="op">=</span> pd.Series(candidate_table[<span class="st">'number_of_mates'</span>])</span>
+<span id="cb57-2"><a href="#cb57-2" tabindex="-1"></a>mates.describe()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1390,29 +1377,29 @@ also match.</p>
 <code>Table</code> and save our results so we can pick up where we left
 off without running this query again. Once again, we will make use of
 our <code>make_dataframe</code> function.</p>
-<div class="codewrapper sourceCode" id="cb61">
+<div class="codewrapper sourceCode" id="cb59">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" tabindex="-1"></a>candidate_df <span class="op">=</span> make_dataframe(candidate_table)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>candidate_df <span class="op">=</span> make_dataframe(candidate_table)</span></code></pre>
 </div>
 <p>The HDF5 file should already exist, so we’ll add
 <code>candidate_df</code> to it.</p>
-<div class="codewrapper sourceCode" id="cb62">
+<div class="codewrapper sourceCode" id="cb60">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">'gd1_data.hdf'</span></span>
-<span id="cb62-2"><a href="#cb62-2" tabindex="-1"></a></span>
-<span id="cb62-3"><a href="#cb62-3" tabindex="-1"></a>candidate_df.to_hdf(filename, <span class="st">'candidate_df'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">'gd1_data.hdf'</span></span>
+<span id="cb60-2"><a href="#cb60-2" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="#cb60-3" tabindex="-1"></a>candidate_df.to_hdf(filename, key<span class="op">=</span><span class="st">'candidate_df'</span>)</span></code></pre>
 </div>
 <p>We can use <code>getsize</code> to confirm that the file exists and
 check the size:</p>
-<div class="codewrapper sourceCode" id="cb63">
+<div class="codewrapper sourceCode" id="cb61">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a><span class="im">from</span> os.path <span class="im">import</span> getsize</span>
-<span id="cb63-2"><a href="#cb63-2" tabindex="-1"></a></span>
-<span id="cb63-3"><a href="#cb63-3" tabindex="-1"></a>MB <span class="op">=</span> <span class="dv">1024</span> <span class="op">*</span> <span class="dv">1024</span></span>
-<span id="cb63-4"><a href="#cb63-4" tabindex="-1"></a>getsize(filename) <span class="op">/</span> MB</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" tabindex="-1"></a><span class="im">from</span> os.path <span class="im">import</span> getsize</span>
+<span id="cb61-2"><a href="#cb61-2" tabindex="-1"></a></span>
+<span id="cb61-3"><a href="#cb61-3" tabindex="-1"></a>MB <span class="op">=</span> <span class="dv">1024</span> <span class="op">*</span> <span class="dv">1024</span></span>
+<span id="cb61-4"><a href="#cb61-4" tabindex="-1"></a>getsize(filename) <span class="op">/</span> MB</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1433,16 +1420,16 @@ file from someone else, you might need some additional information to
 make sure you are getting it right.</p>
 <p>Also, CSV files tend to be big, and slow to read and write.</p>
 <p>With those caveats, here is how to write one:</p>
-<div class="codewrapper sourceCode" id="cb65">
+<div class="codewrapper sourceCode" id="cb63">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" tabindex="-1"></a>candidate_df.to_csv(<span class="st">'gd1_data.csv'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a>candidate_df.to_csv(<span class="st">'gd1_data.csv'</span>)</span></code></pre>
 </div>
 <p>We can check the file size like this:</p>
-<div class="codewrapper sourceCode" id="cb66">
+<div class="codewrapper sourceCode" id="cb64">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" tabindex="-1"></a>getsize(<span class="st">'gd1_data.csv'</span>) <span class="op">/</span> MB</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" tabindex="-1"></a>getsize(<span class="st">'gd1_data.csv'</span>) <span class="op">/</span> MB</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1450,17 +1437,17 @@ make sure you are getting it right.</p>
 <pre class="output" tabindex="0"><code><span><span class="fl">0.8787498474121094</span></span></code></pre>
 </div>
 <p>We can read the CSV file back like this:</p>
-<div class="codewrapper sourceCode" id="cb68">
+<div class="codewrapper sourceCode" id="cb66">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" tabindex="-1"></a>read_back_csv <span class="op">=</span> pd.read_csv(<span class="st">'gd1_data.csv'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" tabindex="-1"></a>read_back_csv <span class="op">=</span> pd.read_csv(<span class="st">'gd1_data.csv'</span>)</span></code></pre>
 </div>
 <p>We will compare the first few rows of <code>candidate_df</code> and
 <code>read_back_csv</code></p>
-<div class="codewrapper sourceCode" id="cb69">
+<div class="codewrapper sourceCode" id="cb67">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" tabindex="-1"></a>candidate_df.head(<span class="dv">3</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a>candidate_df.head(<span class="dv">3</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1478,10 +1465,10 @@ make sure you are getting it right.</p>
    i_mean_psf_mag       phi1      phi2   pm_phi1   pm_phi2
 [Output truncated]</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb71">
+<div class="codewrapper sourceCode" id="cb69">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a>read_back_csv.head(<span class="dv">3</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" tabindex="-1"></a>read_back_csv.head(<span class="dv">3</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1600,7 +1587,7 @@ data.</li>
   "url": "https://datacarpentry.github.io/astronomy-python/06-join.html",
   "identifier": "https://datacarpentry.github.io/astronomy-python/06-join.html",
   "dateCreated": "2020-05-11",
-  "dateModified": "2025-12-09",
+  "dateModified": "2025-12-12",
   "datePublished": "2025-12-12"
 }
 
