@@ -468,9 +468,7 @@ defined, to verify that the results are as expected.
 ```python
 test_points = [(0.4, 20), 
            (0.4, 16)]
-```
 
-```python
 test_inside_mask = polygon.contains_points(test_points)
 test_inside_mask
 ```
@@ -511,7 +509,7 @@ Here is how we can save it in an HDF5 file.
 
 ```python
 filename = 'gd1_data.hdf'
-loop_df.to_hdf(filename, 'loop_df')
+loop_df.to_hdf(filename, key='loop_df')
 ```
 
 ## Selecting based on photometry
@@ -568,7 +566,7 @@ inside_mask.sum()
 ```
 
 ```output
-486
+np.int64(486)
 ```
 
 :::::::::::::::::::::::::
@@ -612,8 +610,8 @@ x = winner_df['phi1']
 y = winner_df['phi2']
 plt.plot(x, y, 'ko', markersize=0.7, alpha=0.9)
 
-plt.xlabel('$\phi_1$ [deg]')
-plt.ylabel('$\phi_2$ [deg]')
+plt.xlabel(r'$\phi_1$ [deg]')
+plt.ylabel(r'$\phi_2$ [deg]')
 plt.title('Proper motion + photometry selection', fontsize='medium')
 
 plt.axis('equal');
@@ -650,8 +648,8 @@ def plot_cmd_selection(df):
 
     plt.plot(x, y, 'ko', markersize=0.7, alpha=0.9)
 
-    plt.xlabel('$\phi_1$ [deg]')
-    plt.ylabel('$\phi_2$ [deg]')
+    plt.xlabel(r'$\phi_1$ [deg]')
+    plt.ylabel(r'$\phi_2$ [deg]')
     plt.title('Proper motion + photometry selection', fontsize='medium')
 
     plt.axis('equal')
@@ -676,7 +674,7 @@ Finally, we will write the selected stars to a file.
 
 ```python
 filename = 'gd1_data.hdf'
-winner_df.to_hdf(filename, 'winner_df')
+winner_df.to_hdf(filename, key='winner_df')
 ```
 
 ```python
