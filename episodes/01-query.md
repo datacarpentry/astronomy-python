@@ -238,6 +238,7 @@ Main Database accumulating catalogue version from which the catalogue
 release has been generated. It contains the basic source parameters,
 that is only final data (no epoch data) and no spectra (neither final
 nor epoch).
+Size (bytes): 4906520690688
 Num. columns: 96
 ```
 
@@ -300,6 +301,7 @@ the Institute for Astronomy at the University of Hawaii. Pan-STARRS1
 Catalogue curator:
 SSDC - ASI Space Science Data Center
 https://www.ssdc.asi.it/
+Size (bytes): 933802426368
 Num. columns: 26
 ```
 
