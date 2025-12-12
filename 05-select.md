@@ -473,7 +473,7 @@ Now we can save our `Series` using `to_hdf()`.
 
 ```python
 filename = 'gd1_data.hdf'
-point_series.to_hdf(filename, 'point_series')
+point_series.to_hdf(filename, key='point_series')
 ```
 
 :::::::::::::::::::::::::::::::::::::::::  callout
