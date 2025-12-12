@@ -196,12 +196,6 @@ Here is the metadata for `panstarrs1_best_neighbour`.
 ps_best_neighbour_meta = Gaia.load_table('gaiadr2.panstarrs1_best_neighbour')
 ```
 
-```output
-Retrieving table 'gaiadr2.panstarrs1_best_neighbour'
-Parsing table 'gaiadr2.panstarrs1_best_neighbour'...
-Done.
-```
-
 ```python
 print(ps_best_neighbour_meta)
 ```
@@ -212,6 +206,7 @@ Description: Pan-STARRS1 BestNeighbour table lists each matched Gaia object with
 best neighbour in the external catalogue.
 There are 1 327 157 objects in the filtered version of Pan-STARRS1 used
 to compute this cross-match that have too early epochMean.
+Size (bytes): 98462015488
 Num. columns: 7
 ```
 
@@ -306,12 +301,6 @@ Now that we know the Pan-STARRS `obj_id`, we are ready to match this to the phot
 
 ```python
 ps_valid_meta = Gaia.load_table('gaiadr2.panstarrs1_original_valid')
-```
-
-```output
-Retrieving table 'gaiadr2.panstarrs1_original_valid'
-Parsing table 'gaiadr2.panstarrs1_original_valid'...
-Done.
 ```
 
 ```python
@@ -972,7 +961,7 @@ The HDF5 file should already exist, so we'll add `candidate_df` to it.
 ```python
 filename = 'gd1_data.hdf'
 
-candidate_df.to_hdf(filename, 'candidate_df')
+candidate_df.to_hdf(filename, key='candidate_df')
 ```
 
 We can use `getsize` to confirm that the file exists and check the size:
