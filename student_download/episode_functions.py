@@ -7,7 +7,8 @@ from matplotlib import pyplot as plt
 
 import astropy.units as u
 from astropy.coordinates import SkyCoord
-from gala.coordinates import GD1Koposov10, reflex_correct
+from gd1 import GD1Koposov10
+from reflex import reflex_correct
 
 ##########################
 # Episode 2

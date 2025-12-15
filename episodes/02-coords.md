@@ -395,7 +395,7 @@ perpendicular to the direction of the stream (the y-axis in Figure 1).
 These are called the $\phi_1$ and $\phi_2$ coordinates, respectively.
 
 ```python
-from gala.coordinates import GD1Koposov10
+from gd1 import GD1Koposov10
 
 gd1_frame = GD1Koposov10()
 gd1_frame
@@ -404,6 +404,21 @@ gd1_frame
 ```output
 <GD1Koposov10 Frame>
 ```
+
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+## GD1Koposov10 import
+
+The `GD1Koposov10` reference frame is part of the `gala` package. For convience we provide 
+the stand alone file as part of the `student_download` zip file you downloaded. If your notebook 
+is not in your `student_download` directory, you will need to add the following before the import
+statement
+```python
+import sys
+sys.path.append(<path to student_download>)
+```
+Where `<path to student_download>` is the path to your `student_download` directory ending with `student_download`.
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 We can use it to find the coordinates of Betelgeuse in the GD-1 frame,
 like this:
