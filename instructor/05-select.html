@@ -339,7 +339,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Transform and Select</h1>
-        <p>Last updated on 2025-12-12 |
+        <p>Last updated on 2025-12-15 |
 
         <a href="https://github.com/datacarpentry/astronomy-python/edit/main/episodes/05-select.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -425,7 +425,14 @@ Whether you are working from a new notebook or coming back from a
 checkpoint, reloading the data will save you from having to run the
 query again.</p>
 <p>If you are starting this episode here or starting this episode in a
-new notebook, you will need to run the following lines of code.</p>
+new notebook, you will need to run the following lines of code. The last
+two lines of the import statements assume your notebook is being run in
+the <code>student_download</code> directory. If you are running it from
+a different directory you will need to add the path using
+<code>sys.path.append(&lt;path to student download&gt;)</code> where
+<code>&lt;path to student_download&gt;</code> is the path to your
+<code>student_download</code> directory ending with
+<code>student_download</code>.</p>
 <p>This imports previously imported functions:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -437,7 +444,9 @@ new notebook, you will need to run the following lines of code.</p>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="im">from</span> episode_functions <span class="im">import</span> <span class="op">*</span></span></code></pre>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="im">from</span> episode_functions <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="im">from</span> gd1 <span class="im">import</span> GD1Koposov10</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="im">from</span> reflex <span class="im">import</span> reflex_correct</span></code></pre>
 </div>
 <p>The following code loads in the data (instructions for downloading
 data can be found in the <a href="index.html#setup">setup instructions</a>).
@@ -1052,8 +1061,8 @@ the data.</li>
   "url": "https://datacarpentry.github.io/astronomy-python/instructor/05-select.html",
   "identifier": "https://datacarpentry.github.io/astronomy-python/instructor/05-select.html",
   "dateCreated": "2020-05-11",
-  "dateModified": "2025-12-12",
-  "datePublished": "2025-12-12"
+  "dateModified": "2025-12-15",
+  "datePublished": "2025-12-15"
 }
 
   </script><script>
