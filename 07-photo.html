@@ -417,7 +417,7 @@ section for information you will need to get started.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Read me </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <p>In the previous episode, we selected stars in GD-1 based on proper
 motion and downloaded the spatial, proper motion, and photometry
@@ -478,7 +478,7 @@ color-magnitude diagram, please expand the section below.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> The color magnitude diagram of GD-1 and foreground stars </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <p>As a pathologist can easily point to tumor on a biopsy slide, so too
 can astronomers who study stellar populations see two stellar main
@@ -861,7 +861,7 @@ expected.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb30">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -964,7 +964,7 @@ stars that fall inside the polygon.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb37">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1017,8 +1017,8 @@ have photometry data consistent with GD-1.</p>
 <span id="cb42-4"><a href="#cb42-4" tabindex="-1" aria-label="code-block-42-4"></a>y <span class="op">=</span> winner_df[<span class="st">'phi2'</span>]</span>
 <span id="cb42-5"><a href="#cb42-5" tabindex="-1" aria-label="code-block-42-5"></a>plt.plot(x, y, <span class="st">'ko'</span>, markersize<span class="op">=</span><span class="fl">0.7</span>, alpha<span class="op">=</span><span class="fl">0.9</span>)</span>
 <span id="cb42-6"><a href="#cb42-6" tabindex="-1" aria-label="code-block-42-6"></a></span>
-<span id="cb42-7"><a href="#cb42-7" tabindex="-1" aria-label="code-block-42-7"></a>plt.xlabel(<span class="vs">r'$\phi_1$ [deg]'</span>)</span>
-<span id="cb42-8"><a href="#cb42-8" tabindex="-1" aria-label="code-block-42-8"></a>plt.ylabel(<span class="vs">r'$\phi_2$ [deg]'</span>)</span>
+<span id="cb42-7"><a href="#cb42-7" tabindex="-1" aria-label="code-block-42-7"></a>plt.xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">phi_1</span><span class="dv">$</span><span class="vs"> </span><span class="pp">[deg]</span><span class="vs">'</span>)</span>
+<span id="cb42-8"><a href="#cb42-8" tabindex="-1" aria-label="code-block-42-8"></a>plt.ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">phi_2</span><span class="dv">$</span><span class="vs"> </span><span class="pp">[deg]</span><span class="vs">'</span>)</span>
 <span id="cb42-9"><a href="#cb42-9" tabindex="-1" aria-label="code-block-42-9"></a>plt.title(<span class="st">'Proper motion + photometry selection'</span>, fontsize<span class="op">=</span><span class="st">'medium'</span>)</span>
 <span id="cb42-10"><a href="#cb42-10" tabindex="-1" aria-label="code-block-42-10"></a></span>
 <span id="cb42-11"><a href="#cb42-11" tabindex="-1" aria-label="code-block-42-11"></a>plt.axis(<span class="st">'equal'</span>)<span class="op">;</span></span></code></pre>
@@ -1058,8 +1058,8 @@ the specific variable <code>winner_df</code> with the more generic
 <span id="cb44-4"><a href="#cb44-4" tabindex="-1" aria-label="code-block-44-4"></a></span>
 <span id="cb44-5"><a href="#cb44-5" tabindex="-1" aria-label="code-block-44-5"></a>    plt.plot(x, y, <span class="st">'ko'</span>, markersize<span class="op">=</span><span class="fl">0.7</span>, alpha<span class="op">=</span><span class="fl">0.9</span>)</span>
 <span id="cb44-6"><a href="#cb44-6" tabindex="-1" aria-label="code-block-44-6"></a></span>
-<span id="cb44-7"><a href="#cb44-7" tabindex="-1" aria-label="code-block-44-7"></a>    plt.xlabel(<span class="vs">r'$\phi_1$ [deg]'</span>)</span>
-<span id="cb44-8"><a href="#cb44-8" tabindex="-1" aria-label="code-block-44-8"></a>    plt.ylabel(<span class="vs">r'$\phi_2$ [deg]'</span>)</span>
+<span id="cb44-7"><a href="#cb44-7" tabindex="-1" aria-label="code-block-44-7"></a>    plt.xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">phi_1</span><span class="dv">$</span><span class="vs"> </span><span class="pp">[deg]</span><span class="vs">'</span>)</span>
+<span id="cb44-8"><a href="#cb44-8" tabindex="-1" aria-label="code-block-44-8"></a>    plt.ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">phi_2</span><span class="dv">$</span><span class="vs"> </span><span class="pp">[deg]</span><span class="vs">'</span>)</span>
 <span id="cb44-9"><a href="#cb44-9" tabindex="-1" aria-label="code-block-44-9"></a>    plt.title(<span class="st">'Proper motion + photometry selection'</span>, fontsize<span class="op">=</span><span class="st">'medium'</span>)</span>
 <span id="cb44-10"><a href="#cb44-10" tabindex="-1" aria-label="code-block-44-10"></a></span>
 <span id="cb44-11"><a href="#cb44-11" tabindex="-1" aria-label="code-block-44-11"></a>    plt.axis(<span class="st">'equal'</span>)</span></code></pre>
@@ -1178,7 +1178,7 @@ needed to replicate the results.</li>
   "identifier": "https://datacarpentry.github.io/astronomy-python/07-photo.html",
   "dateCreated": "2020-05-11",
   "dateModified": "2025-12-12",
-  "datePublished": "2026-04-28"
+  "datePublished": "2026-05-05"
 }
 
   </script><script>
