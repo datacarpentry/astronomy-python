@@ -185,7 +185,7 @@ stars.  But the main sequence of GD-1 appears as an overdense region in the lowe
 
 We want to be able to make this plot again, with any selection of PanSTARRs photometry,
 so this is a natural time to put it into a function that accepts as input
-an Astropy `Table` or Pandas `DataFrame`, as long as
+an Astropy `Table` or pandas `DataFrame`, as long as
 it has columns named `g_mean_psf_mag` and `i_mean_psf_mag`. To do this we will change
 our variable name from `candidate_df` to the more generic `dataframe`.
 

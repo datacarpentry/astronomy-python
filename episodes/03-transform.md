@@ -9,7 +9,7 @@ exercises: 5
 - Select rows and columns from an Astropy `Table`.
 - Use Matplotlib to make a scatter plot.
 - Use Gala to transform coordinates.
-- Make a Pandas `DataFrame` and use a Boolean `Series` to select rows.
+- Make a pandas `DataFrame` and use a Boolean `Series` to select rows.
 - Save a `DataFrame` in an HDF5 file.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -17,7 +17,7 @@ exercises: 5
 :::::::::::::::::::::::::::::::::::::::: questions
 
 - How do we make scatter plots in Matplotlib?
-- How do we store data in a Pandas `DataFrame`?
+- How do we store data in a pandas `DataFrame`?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -40,7 +40,7 @@ analysis, identifying stars with the proper motion we expect for GD-1.
 2. Then we will transform the coordinates and proper motion data from
   ICRS back to the coordinate frame of GD-1.
 
-3. We will put those results into a Pandas `DataFrame`.
+3. We will put those results into a pandas `DataFrame`.
   
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -471,7 +471,7 @@ We started with a rectangle in the GD-1 frame.  When
 transformed to the ICRS frame, it is a non-rectangular region.  Now,
 transformed back to the GD-1 frame, it is a rectangle again.
 
-## Pandas DataFrame
+## pandas DataFrame
 
 At this point we have two objects containing different sets of the
 data relating to identifying stars in GD-1.  `polygon_results` is the Astropy `Table` we downloaded from Gaia.
@@ -563,25 +563,25 @@ We could have: `proper_motion` contains the same data as
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
-## Pandas `DataFrame`s versus Astropy `Table`s
+## pandas `DataFrame`s versus Astropy `Table`s
 
-Two common choices are the Pandas `DataFrame` and Astropy `Table`.
-Pandas `DataFrame`s and Astropy `Table`s share many of the same characteristics
+Two common choices are the pandas `DataFrame` and Astropy `Table`.
+pandas `DataFrame`s and Astropy `Table`s share many of the same characteristics
 and most of the manipulations that we do can be done with either.  As you become
 more familiar with each, you will develop a sense of which one you prefer for
 different tasks.  For instance you may choose to use Astropy `Table`s to read
-in data, especially astronomy specific data formats, but Pandas `DataFrame`s to
+in data, especially astronomy specific data formats, but pandas `DataFrame`s to
 inspect the data. Fortunately, Astropy makes it easy to convert between the
-two data types. We will choose to use Pandas `DataFrame`, for two reasons:
+two data types. We will choose to use pandas `DataFrame`, for two reasons:
 
 1. It provides capabilities that are (almost) a superset of the other data
   structures, so it is the all-in-one solution.
 
-2. Pandas is a general-purpose tool that is useful in many domains,
+2. pandas is a general-purpose tool that is useful in many domains,
   especially data science.  If you are going to develop expertise in one
-  tool, Pandas is a good choice.
+  tool, pandas is a good choice.
 
-However, compared to an Astropy `Table`, Pandas has one big drawback:
+However, compared to an Astropy `Table`, pandas has one big drawback:
 it does not keep the metadata associated with the table, including the
 units for the columns.  Nevertheless, we think it's a useful data type
 to be familiar with.
@@ -589,7 +589,7 @@ to be familiar with.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-It is straightforward to convert an Astropy `Table` to a Pandas `DataFrame`.
+It is straightforward to convert an Astropy `Table` to a pandas `DataFrame`.
 
 ```python
 import pandas as pd
@@ -642,7 +642,7 @@ and consolidate them into a single function that we can use to take the
 coordinates and proper motion that we get as an Astropy `Table` from our
 Gaia query, add columns representing the reflex corrected
 GD-1 coordinates and proper motions, and transform it into a
-Pandas `DataFrame`.
+pandas `DataFrame`.
 This is a general function that we will use multiple times as we build different
 queries so we want to write it once and then call the function rather than having
 to copy and paste the code over and over again.
@@ -653,7 +653,7 @@ def make_dataframe(table):
     
     table: Astropy Table
     
-    returns: Pandas DataFrame
+    returns: pandas DataFrame
     """
     #Create a SkyCoord object with the coordinates and proper motions
     # in the input table
@@ -696,7 +696,7 @@ results_df = make_dataframe(polygon_results)
 
 At this point we have run a successful query and combined the results into a single `DataFrame`. This is a good time to save the data.
 
-To save a Pandas `DataFrame`, one option is to convert it to an
+To save a pandas `DataFrame`, one option is to convert it to an
 Astropy `Table`, like this:
 
 ```python
@@ -713,7 +713,7 @@ astropy.table.table.Table
 Then we could write the `Table` to a FITS file, as we did in the
 previous lesson.
 
-But, like Astropy, Pandas provides functions to write DataFrames in other formats; to
+But, like Astropy, pandas provides functions to write DataFrames in other formats; to
 see what they are [find the functions here that begin with
 `to_`](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html).
 
@@ -733,10 +733,10 @@ And HDF5 stores the metadata associated with the table, including
 column names, row labels, and data types (like FITS).
 
 Finally, HDF5 is a cross-language standard, so if you write an HDF5
-file with Pandas, you can read it back with many other software tools
+file with pandas, you can read it back with many other software tools
 (more than FITS).
 
-We can write a Pandas `DataFrame` to an HDF5 file like this:
+We can write a pandas `DataFrame` to an HDF5 file like this:
 
 ```python
 filename = 'gd1_data.hdf'
@@ -760,10 +760,10 @@ file if it already exists rather than append another dataset to it.
 In this episode, we re-loaded the Gaia data we saved from a previous query.
 
 We transformed the coordinates and proper motion from ICRS to a frame
-aligned with the orbit of GD-1, stored the results in a Pandas
+aligned with the orbit of GD-1, stored the results in a pandas
 `DataFrame`, and visualized them.
 
-We combined all of these steps into a single function that we can reuse in the future to go straight from the output of a query with object coordinates in the ICRS reference frame directly to a Pandas DataFrame that includes object coordinates in the GD-1 reference frame.
+We combined all of these steps into a single function that we can reuse in the future to go straight from the output of a query with object coordinates in the ICRS reference frame directly to a pandas DataFrame that includes object coordinates in the GD-1 reference frame.
 
 We saved our results to an HDF5 file which we can use to restart the analysis from this stage or verify our results at some future time.
 
@@ -771,8 +771,8 @@ We saved our results to an HDF5 file which we can use to restart the analysis fr
 
 - When you make a scatter plot, adjust the size of the markers and their transparency so the figure is not overplotted; otherwise it can misrepresent the data badly.
 - For simple scatter plots in Matplotlib, `plot` is faster than `scatter`.
-- An Astropy `Table` and a Pandas `DataFrame` are similar in many ways and they provide many of the same functions.  They have pros and cons, but for many projects, either one would be a reasonable choice.
-- To store data from a Pandas `DataFrame`, a good option is an HDF5 file, which can contain multiple Datasets (we'll dig in more in the Join lesson).
+- An Astropy `Table` and a pandas `DataFrame` are similar in many ways and they provide many of the same functions.  They have pros and cons, but for many projects, either one would be a reasonable choice.
+- To store data from a pandas `DataFrame`, a good option is an HDF5 file, which can contain multiple Datasets (we'll dig in more in the Join lesson).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 

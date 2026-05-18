@@ -435,7 +435,7 @@ our analysis at a later date we should save this information to a file.
 There are several ways we could do that, but since we are already
 storing data in an HDF5 file, we will do the same with these variables.
 
-To save them to an HDF5 file we first need to put them in a Pandas object.
+To save them to an HDF5 file we first need to put them in a pandas object.
 We have seen how to create a `Series` from a column in a `DataFrame`.
 Now we will build a `Series` from scratch.
 We do not need the full `DataFrame` format with multiple rows and columns

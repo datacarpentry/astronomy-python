@@ -29,7 +29,7 @@ If you are running short on time, we recommend eliminating or condensing these s
 ### Decisions Made
 
 - We explicitly recommend using Jupyter notebooks rather than Jupyter lab as we have found them more reliable across different platforms and they require less up front explanation.
-- As explained in the episodes, we think that it is valuable for learners to know a little bit about both Astropy `Tables` and Pandas `DataFrames` as they both have strengths and weaknesses as both an astronomy software standard and an industry standard.
+- As explained in the episodes, we think that it is valuable for learners to know a little bit about both Astropy `Tables` and pandas `DataFrames` as they both have strengths and weaknesses as both an astronomy software standard and an industry standard.
 - There is a lot of typing in this curriculum. To best keep with Carpentries live coding practices - we recommend that you copy and paste from previous cells as needed and not provide pre-filled notebooks. Provide learners with links to the on line lessons and reassure them that they can jump back in at the beginning of any episode if they are too overwhelmed an need a break.
 
 ### Introduction
@@ -44,7 +44,7 @@ If you are running short on time, we recommend eliminating or condensing these s
   - Python: general purpose programming language - used widely in astronomy and industry
   - Astropy: package with common astronomical functions and objects to facilitate analysis of astronomical data
   - Astroquery: python interface to SQL-flavored astronomical databases (this might be a good place to show all of the catalogs that astroquery supports)
-  - Pandas: python package to deal with arrays and databases - used widely by astronomy and industry
+  - pandas: python package to deal with arrays and databases - used widely by astronomy and industry
   - Matplotlib: python visualization package - used widely by astronomy and industry
 
 - Note that this is a balance of astronomy specific tools which allow us to efficiently interact with our specific data and broadly used tools which can prepare learners for a career outside of academia.
@@ -134,7 +134,7 @@ If you are running short on time, we recommend eliminating or condensing these s
 
 - This is likely the final episode of day 1 in a two day workshop.
 
-- This episode takes a slight detour to introduce a few features of Pandas DataFrames. To keep this connected to the story, you can talk about how data exploration is an important part of prototyping your query and making sure you are getting the results you expect in the format you expect them in.
+- This episode takes a slight detour to introduce a few features of pandas DataFrames. To keep this connected to the story, you can talk about how data exploration is an important part of prototyping your query and making sure you are getting the results you expect in the format you expect them in.
 
 - Starting with selecting the centerline, we do a series of filters on different data frames. Take a minute before you teach this section to make sure you understand what each one represents. We use `results_df` to build `centerline_df`. We use `centerline_df` to determine proper motion limits. We use the proper motion limits determined from `centerline_df` to select GD-1 stars from `results_df`. This is `selected_df`.
 
@@ -206,7 +206,7 @@ objects we are saving are small.
 
 - While CSV files are the most basic file format, if you are running short on time, this section can be skipped or abbreviated as learners have often likely encountered CSV files and writing them is not essential to the rest of the curriculum.
 
-- In case a learner asks about the extra `unnamed` column in the CSV section here is the explanation. You may notice that all Pandas `DataFrame`s have an index column which was not part of the original table definition.
+- In case a learner asks about the extra `unnamed` column in the CSV section here is the explanation. You may notice that all pandas `DataFrame`s have an index column which was not part of the original table definition.
   This essentially numbers each row. When we write a `DataFrame` in any other format, the index gets treated like a bonafide column.
   For this reason when we write a CSV file and then read it back into a `DataFrame` the index column gets written as an `unnamed` column and then when it is read back in, another index column is created leading to two extraneous columns.
 

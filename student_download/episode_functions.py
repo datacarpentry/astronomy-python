@@ -33,7 +33,7 @@ def make_dataframe(table):
     
     table: Astropy Table
     
-    returns: Pandas DataFrame
+    returns: pandas DataFrame
     """
     #Create a SkyCoord object with the coordinates and proper motions
     # in the input table
