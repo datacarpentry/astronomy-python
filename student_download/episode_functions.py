@@ -29,7 +29,7 @@ def skycoord_to_string(skycoord):
 # Episode 3
 ##########################
 def make_dataframe(table):
-    """Transform coordinates from ICRS to GD-1 frame.
+    """Transform and astropy table with coords in ICRS, convert to pandas dataframe with GD-1 coordinates.
     
     table: Astropy Table
     
@@ -54,14 +54,14 @@ def make_dataframe(table):
     # Correct GD-1 coordinates for solar system motion around galactic center
     skycoord_gd1 = reflex_correct(transformed)
 
-    #Add GD-1 reference frame columns for coordinates and proper motions
-    table['phi1'] = skycoord_gd1.phi1
-    table['phi2'] = skycoord_gd1.phi2
-    table['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
-    table['pm_phi2'] = skycoord_gd1.pm_phi2
-
     # Create DataFrame
     df = table.to_pandas()
+
+    # Add GD-1 reference frame columns for coordinates and proper motions
+    df['phi1'] = skycoord_gd1.phi1.value
+    df['phi2'] = skycoord_gd1.phi2.value
+    df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2.value
+    df['pm_phi2'] = skycoord_gd1.pm_phi2.value
 
     return df
 
