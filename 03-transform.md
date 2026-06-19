@@ -501,65 +501,8 @@ types can be awkward. It will be more convenient to choose one object and get al
 data into it.
 
 Now we can extract the columns we want from `skycoord_gd1` and add
-them as columns in the Astropy `Table` `polygon_results`.  `phi1` and `phi2` contain the
+them to a Pandas `DataFrame`.  `phi1` and `phi2` contain the
 transformed coordinates.
-
-```python
-polygon_results['phi1'] = skycoord_gd1.phi1
-polygon_results['phi2'] = skycoord_gd1.phi2
-polygon_results.info()
-```
-
-```output
-<Table length=140339>
-   name    dtype    unit                              description                                class    
---------- ------- -------- ------------------------------------------------------------------ ------------
-source_id   int64          Unique source identifier (unique within a particular Data Release) MaskedColumn
-       ra float64      deg                                                    Right ascension MaskedColumn
-      dec float64      deg                                                        Declination MaskedColumn
-     pmra float64 mas / yr                         Proper motion in right ascension direction MaskedColumn
-    pmdec float64 mas / yr                             Proper motion in declination direction MaskedColumn
- parallax float64      mas                                                           Parallax MaskedColumn
-     phi1 float64      deg                                                                          Column
-     phi2 float64      deg                                                                          Column
-```
-
-`pm_phi1_cosphi2` and `pm_phi2` contain the components of proper
-motion in the transformed frame.
-
-```python
-polygon_results['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
-polygon_results['pm_phi2'] = skycoord_gd1.pm_phi2
-polygon_results.info()
-```
-
-```output
-<Table length=140339>
-   name    dtype    unit                              description                                class    
---------- ------- -------- ------------------------------------------------------------------ ------------
-source_id   int64          Unique source identifier (unique within a particular Data Release) MaskedColumn
-       ra float64      deg                                                    Right ascension MaskedColumn
-      dec float64      deg                                                        Declination MaskedColumn
-     pmra float64 mas / yr                         Proper motion in right ascension direction MaskedColumn
-    pmdec float64 mas / yr                             Proper motion in declination direction MaskedColumn
- parallax float64      mas                                                           Parallax MaskedColumn
-     phi1 float64      deg                                                                          Column
-     phi2 float64      deg                                                                          Column
-  pm_phi1 float64 mas / yr                                                                          Column
-  pm_phi2 float64 mas / yr                                                                          Column
-```
-
-:::::::::::::::::::::::::::::::::::::::::  callout
-
-Detail
-If you notice that `SkyCoord` has an attribute called
-`proper_motion`, you might wonder why we are not using it.
-
-We could have: `proper_motion` contains the same data as
-`pm_phi1_cosphi2` and `pm_phi2`, but in a different format.
-
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
@@ -604,11 +547,43 @@ results_df.shape
 ```
 
 ```output
-(140339, 10)
+(140339, 6)
 ```
 
 It also provides `head`, which displays the first few rows.  `head` is
 useful for spot-checking large results as you go along.
+
+```python
+results_df.head()
+```
+
+```output
+            source_id          ra        dec       pmra       pmdec   parallax
+0  637987125186749568  142.483019  21.757716  -2.516838    2.941813  -0.257345
+1  638285195917112960  142.254529  22.476168   2.662702  -12.165984   0.422728
+2  638073505568978688  142.645286  22.166932  18.306747   -7.950660   0.103640
+3  638086386175786752  142.577394  22.227920   0.987786   -2.584105  -0.857327
+4  638049655615392384  142.589136  22.110783   0.244439   -4.941079   0.099625
+
+```
+
+Now we can add the GD-1 coordinates and proper motions as columns in the
+`DataFrame`.  We use the `.value` attribute to extract the numerical values
+without units, since Pandas `DataFrame`s do not preserve astropy units.
+
+```python
+results_df['phi1'] = skycoord_gd1.phi1.value
+results_df['phi2'] = skycoord_gd1.phi2.value
+results_df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2.value
+results_df['pm_phi2'] = skycoord_gd1.pm_phi2.value
+results_df.shape
+```
+
+```output
+(140339, 10)
+```
+
+And we can check the result with `head`:
 
 ```python
 results_df.head()
@@ -623,6 +598,30 @@ results_df.head()
 4  638049655615392384  142.589136  22.110783   0.244439   -4.941079   0.099625  -54.627448  -3.542738   1.466103   -0.185292
 
 ```
+
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+## Why `.value`?
+
+The attributes of a `SkyCoord` object, like `phi1` and `phi2`,
+are `Quantity` objects that carry units (for example, degrees).
+Pandas `DataFrame`s do not support `Quantity` columns, so we use
+the `.value` attribute to extract the numerical values without units.
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+Detail
+If you notice that `SkyCoord` has an attribute called
+`proper_motion`, you might wonder why we are not using it.
+
+We could have: `proper_motion` contains the same data as
+`pm_phi1_cosphi2` and `pm_phi2`, but in a different format.
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
@@ -649,7 +648,7 @@ to copy and paste the code over and over again.
 
 ```python
 def make_dataframe(table):
-    """Transform coordinates from ICRS to GD-1 frame.
+    """Transform and astropy table with coords in ICRS, convert to pandas dataframe with GD-1 coordinates.
     
     table: Astropy Table
     
@@ -674,14 +673,14 @@ def make_dataframe(table):
     # Correct GD-1 coordinates for solar system motion around galactic center
     skycoord_gd1 = reflex_correct(transformed)
 
-    #Add GD-1 reference frame columns for coordinates and proper motions
-    table['phi1'] = skycoord_gd1.phi1
-    table['phi2'] = skycoord_gd1.phi2
-    table['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2
-    table['pm_phi2'] = skycoord_gd1.pm_phi2
-
     # Create DataFrame
     df = table.to_pandas()
+
+    # Add GD-1 reference frame columns for coordinates and proper motions
+    df['phi1'] = skycoord_gd1.phi1.value
+    df['phi2'] = skycoord_gd1.phi2.value
+    df['pm_phi1'] = skycoord_gd1.pm_phi1_cosphi2.value
+    df['pm_phi2'] = skycoord_gd1.pm_phi2.value
 
     return df
 ```
