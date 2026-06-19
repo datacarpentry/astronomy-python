@@ -333,7 +333,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Plotting and Tabular Data</h1>
-        <p>Last updated on 2025-12-15 |
+        <p>Last updated on 2026-06-19 |
 
         <a href="https://github.com/datacarpentry/astronomy-python/edit/main/episodes/03-transform.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -412,7 +412,7 @@ section for information you will need to get started.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Read me </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <p>In the previous episode, we ran a query on the Gaia server,
 downloaded data for roughly 140,000 stars, and saved the data in a FITS
@@ -692,7 +692,7 @@ sky were scanned more than others.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb23">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -861,73 +861,8 @@ provides different capabilities. But working with multiple object types
 can be awkward. It will be more convenient to choose one object and get
 all of the data into it.</p>
 <p>Now we can extract the columns we want from <code>skycoord_gd1</code>
-and add them as columns in the Astropy <code>Table</code>
-<code>polygon_results</code>. <code>phi1</code> and <code>phi2</code>
-contain the transformed coordinates.</p>
-<div class="codewrapper sourceCode" id="cb34">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" tabindex="-1" aria-label="code-block-34-1"></a>polygon_results[<span class="st">'phi1'</span>] <span class="op">=</span> skycoord_gd1.phi1</span>
-<span id="cb34-2"><a href="#cb34-2" tabindex="-1" aria-label="code-block-34-2"></a>polygon_results[<span class="st">'phi2'</span>] <span class="op">=</span> skycoord_gd1.phi2</span>
-<span id="cb34-3"><a href="#cb34-3" tabindex="-1" aria-label="code-block-34-3"></a>polygon_results.info()</span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code>&lt;Table length=140339&gt;
-   name    dtype    unit                              description                                class
---------- ------- -------- ------------------------------------------------------------------ ------------
-source_id   int64          Unique source identifier (unique within a particular Data Release) MaskedColumn
-       ra float64      deg                                                    Right ascension MaskedColumn
-      dec float64      deg                                                        Declination MaskedColumn
-     pmra float64 mas / yr                         Proper motion in right ascension direction MaskedColumn
-    pmdec float64 mas / yr                             Proper motion in declination direction MaskedColumn
- parallax float64      mas                                                           Parallax MaskedColumn
-     phi1 float64      deg                                                                          Column
-     phi2 float64      deg                                                                          Column</code></pre>
-</div>
-<p><code>pm_phi1_cosphi2</code> and <code>pm_phi2</code> contain the
-components of proper motion in the transformed frame.</p>
-<div class="codewrapper sourceCode" id="cb36">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" tabindex="-1" aria-label="code-block-36-1"></a>polygon_results[<span class="st">'pm_phi1'</span>] <span class="op">=</span> skycoord_gd1.pm_phi1_cosphi2</span>
-<span id="cb36-2"><a href="#cb36-2" tabindex="-1" aria-label="code-block-36-2"></a>polygon_results[<span class="st">'pm_phi2'</span>] <span class="op">=</span> skycoord_gd1.pm_phi2</span>
-<span id="cb36-3"><a href="#cb36-3" tabindex="-1" aria-label="code-block-36-3"></a>polygon_results.info()</span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code>&lt;Table length=140339&gt;
-   name    dtype    unit                              description                                class
---------- ------- -------- ------------------------------------------------------------------ ------------
-source_id   int64          Unique source identifier (unique within a particular Data Release) MaskedColumn
-       ra float64      deg                                                    Right ascension MaskedColumn
-      dec float64      deg                                                        Declination MaskedColumn
-     pmra float64 mas / yr                         Proper motion in right ascension direction MaskedColumn
-    pmdec float64 mas / yr                             Proper motion in declination direction MaskedColumn
- parallax float64      mas                                                           Parallax MaskedColumn
-     phi1 float64      deg                                                                          Column
-     phi2 float64      deg                                                                          Column
-  pm_phi1 float64 mas / yr                                                                          Column
-  pm_phi2 float64 mas / yr                                                                          Column</code></pre>
-</div>
-<div id="callout2" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<span class="callout-header">Callout</span>
-<div class="callout-inner">
-<div class="callout-content">
-<p>Detail If you notice that <code>SkyCoord</code> has an attribute
-called <code>proper_motion</code>, you might wonder why we are not using
-it.</p>
-<p>We could have: <code>proper_motion</code> contains the same data as
-<code>pm_phi1_cosphi2</code> and <code>pm_phi2</code>, but in a
-different format.</p>
-</div>
-</div>
-</div>
+and add them to a Pandas <code>DataFrame</code>. <code>phi1</code> and
+<code>phi2</code> contain the transformed coordinates.</p>
 <div id="pandas-dataframes-versus-astropy-tables" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
@@ -962,28 +897,63 @@ useful data type to be familiar with.</p>
 </div>
 <p>It is straightforward to convert an Astropy <code>Table</code> to a
 Pandas <code>DataFrame</code>.</p>
-<div class="codewrapper sourceCode" id="cb38">
+<div class="codewrapper sourceCode" id="cb34">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" tabindex="-1" aria-label="code-block-38-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb38-2"><a href="#cb38-2" tabindex="-1" aria-label="code-block-38-2"></a></span>
-<span id="cb38-3"><a href="#cb38-3" tabindex="-1" aria-label="code-block-38-3"></a>results_df <span class="op">=</span> polygon_results.to_pandas()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" tabindex="-1" aria-label="code-block-34-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1" aria-label="code-block-34-2"></a></span>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1" aria-label="code-block-34-3"></a>results_df <span class="op">=</span> polygon_results.to_pandas()</span></code></pre>
 </div>
 <p><code>DataFrame</code> provides <code>shape</code>, which shows the
 number of rows and columns.</p>
+<div class="codewrapper sourceCode" id="cb35">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" tabindex="-1" aria-label="code-block-35-1"></a>results_df.shape</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>(140339, 6)</code></pre>
+</div>
+<p>It also provides <code>head</code>, which displays the first few
+rows. <code>head</code> is useful for spot-checking large results as you
+go along.</p>
+<div class="codewrapper sourceCode" id="cb37">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" tabindex="-1" aria-label="code-block-37-1"></a>results_df.head()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>            source_id          ra        dec       pmra       pmdec   parallax
+0  637987125186749568  142.483019  21.757716  -2.516838    2.941813  -0.257345
+1  638285195917112960  142.254529  22.476168   2.662702  -12.165984   0.422728
+2  638073505568978688  142.645286  22.166932  18.306747   -7.950660   0.103640
+3  638086386175786752  142.577394  22.227920   0.987786   -2.584105  -0.857327
+4  638049655615392384  142.589136  22.110783   0.244439   -4.941079   0.099625
+</code></pre>
+</div>
+<p>Now we can add the GD-1 coordinates and proper motions as columns in
+the <code>DataFrame</code>. We use the <code>.value</code> attribute to
+extract the numerical values without units, since Pandas
+<code>DataFrame</code>s do not preserve astropy units.</p>
 <div class="codewrapper sourceCode" id="cb39">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" tabindex="-1" aria-label="code-block-39-1"></a>results_df.shape</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" tabindex="-1" aria-label="code-block-39-1"></a>results_df[<span class="st">'phi1'</span>] <span class="op">=</span> skycoord_gd1.phi1.value</span>
+<span id="cb39-2"><a href="#cb39-2" tabindex="-1" aria-label="code-block-39-2"></a>results_df[<span class="st">'phi2'</span>] <span class="op">=</span> skycoord_gd1.phi2.value</span>
+<span id="cb39-3"><a href="#cb39-3" tabindex="-1" aria-label="code-block-39-3"></a>results_df[<span class="st">'pm_phi1'</span>] <span class="op">=</span> skycoord_gd1.pm_phi1_cosphi2.value</span>
+<span id="cb39-4"><a href="#cb39-4" tabindex="-1" aria-label="code-block-39-4"></a>results_df[<span class="st">'pm_phi2'</span>] <span class="op">=</span> skycoord_gd1.pm_phi2.value</span>
+<span id="cb39-5"><a href="#cb39-5" tabindex="-1" aria-label="code-block-39-5"></a>results_df.shape</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>(140339, 10)</code></pre>
 </div>
-<p>It also provides <code>head</code>, which displays the first few
-rows. <code>head</code> is useful for spot-checking large results as you
-go along.</p>
+<p>And we can check the result with <code>head</code>:</p>
 <div class="codewrapper sourceCode" id="cb41">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -999,6 +969,39 @@ go along.</p>
 3  638086386175786752  142.577394  22.227920   0.987786   -2.584105  -0.857327  -54.536457  -3.467966   3.837120    0.526461
 4  638049655615392384  142.589136  22.110783   0.244439   -4.941079   0.099625  -54.627448  -3.542738   1.466103   -0.185292
 </code></pre>
+</div>
+<div id="why-.value" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="why-.value" class="callout-inner">
+<h3 class="callout-title">Why <code>.value</code>?</h3>
+<div class="callout-content">
+<p>The attributes of a <code>SkyCoord</code> object, like
+<code>phi1</code> and <code>phi2</code>, are <code>Quantity</code>
+objects that carry units (for example, degrees). Pandas
+<code>DataFrame</code>s do not support <code>Quantity</code> columns, so
+we use the <code>.value</code> attribute to extract the numerical values
+without units.</p>
+</div>
+</div>
+</div>
+<div id="callout4" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div class="callout-inner">
+<div class="callout-content">
+<p>Detail If you notice that <code>SkyCoord</code> has an attribute
+called <code>proper_motion</code>, you might wonder why we are not using
+it.</p>
+<p>We could have: <code>proper_motion</code> contains the same data as
+<code>pm_phi1_cosphi2</code> and <code>pm_phi2</code>, but in a
+different format.</p>
+</div>
+</div>
 </div>
 <div id="attributes-vs-functions" class="callout">
 <div class="callout-square">
@@ -1027,7 +1030,7 @@ paste the code over and over again.</p>
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" tabindex="-1" aria-label="code-block-43-1"></a><span class="kw">def</span> make_dataframe(table):</span>
-<span id="cb43-2"><a href="#cb43-2" tabindex="-1" aria-label="code-block-43-2"></a>    <span class="co">"""Transform coordinates from ICRS to GD-1 frame.</span></span>
+<span id="cb43-2"><a href="#cb43-2" tabindex="-1" aria-label="code-block-43-2"></a>    <span class="co">"""Transform and astropy table with coords in ICRS, convert to pandas dataframe with GD-1 coordinates.</span></span>
 <span id="cb43-3"><a href="#cb43-3" tabindex="-1" aria-label="code-block-43-3"></a><span class="co">    </span></span>
 <span id="cb43-4"><a href="#cb43-4" tabindex="-1" aria-label="code-block-43-4"></a><span class="co">    table: Astropy Table</span></span>
 <span id="cb43-5"><a href="#cb43-5" tabindex="-1" aria-label="code-block-43-5"></a><span class="co">    </span></span>
@@ -1052,14 +1055,14 @@ paste the code over and over again.</p>
 <span id="cb43-24"><a href="#cb43-24" tabindex="-1" aria-label="code-block-43-24"></a>    <span class="co"># Correct GD-1 coordinates for solar system motion around galactic center</span></span>
 <span id="cb43-25"><a href="#cb43-25" tabindex="-1" aria-label="code-block-43-25"></a>    skycoord_gd1 <span class="op">=</span> reflex_correct(transformed)</span>
 <span id="cb43-26"><a href="#cb43-26" tabindex="-1" aria-label="code-block-43-26"></a></span>
-<span id="cb43-27"><a href="#cb43-27" tabindex="-1" aria-label="code-block-43-27"></a>    <span class="co">#Add GD-1 reference frame columns for coordinates and proper motions</span></span>
-<span id="cb43-28"><a href="#cb43-28" tabindex="-1" aria-label="code-block-43-28"></a>    table[<span class="st">'phi1'</span>] <span class="op">=</span> skycoord_gd1.phi1</span>
-<span id="cb43-29"><a href="#cb43-29" tabindex="-1" aria-label="code-block-43-29"></a>    table[<span class="st">'phi2'</span>] <span class="op">=</span> skycoord_gd1.phi2</span>
-<span id="cb43-30"><a href="#cb43-30" tabindex="-1" aria-label="code-block-43-30"></a>    table[<span class="st">'pm_phi1'</span>] <span class="op">=</span> skycoord_gd1.pm_phi1_cosphi2</span>
-<span id="cb43-31"><a href="#cb43-31" tabindex="-1" aria-label="code-block-43-31"></a>    table[<span class="st">'pm_phi2'</span>] <span class="op">=</span> skycoord_gd1.pm_phi2</span>
-<span id="cb43-32"><a href="#cb43-32" tabindex="-1" aria-label="code-block-43-32"></a></span>
-<span id="cb43-33"><a href="#cb43-33" tabindex="-1" aria-label="code-block-43-33"></a>    <span class="co"># Create DataFrame</span></span>
-<span id="cb43-34"><a href="#cb43-34" tabindex="-1" aria-label="code-block-43-34"></a>    df <span class="op">=</span> table.to_pandas()</span>
+<span id="cb43-27"><a href="#cb43-27" tabindex="-1" aria-label="code-block-43-27"></a>    <span class="co"># Create DataFrame</span></span>
+<span id="cb43-28"><a href="#cb43-28" tabindex="-1" aria-label="code-block-43-28"></a>    df <span class="op">=</span> table.to_pandas()</span>
+<span id="cb43-29"><a href="#cb43-29" tabindex="-1" aria-label="code-block-43-29"></a></span>
+<span id="cb43-30"><a href="#cb43-30" tabindex="-1" aria-label="code-block-43-30"></a>    <span class="co"># Add GD-1 reference frame columns for coordinates and proper motions</span></span>
+<span id="cb43-31"><a href="#cb43-31" tabindex="-1" aria-label="code-block-43-31"></a>    df[<span class="st">'phi1'</span>] <span class="op">=</span> skycoord_gd1.phi1.value</span>
+<span id="cb43-32"><a href="#cb43-32" tabindex="-1" aria-label="code-block-43-32"></a>    df[<span class="st">'phi2'</span>] <span class="op">=</span> skycoord_gd1.phi2.value</span>
+<span id="cb43-33"><a href="#cb43-33" tabindex="-1" aria-label="code-block-43-33"></a>    df[<span class="st">'pm_phi1'</span>] <span class="op">=</span> skycoord_gd1.pm_phi1_cosphi2.value</span>
+<span id="cb43-34"><a href="#cb43-34" tabindex="-1" aria-label="code-block-43-34"></a>    df[<span class="st">'pm_phi2'</span>] <span class="op">=</span> skycoord_gd1.pm_phi2.value</span>
 <span id="cb43-35"><a href="#cb43-35" tabindex="-1" aria-label="code-block-43-35"></a></span>
 <span id="cb43-36"><a href="#cb43-36" tabindex="-1" aria-label="code-block-43-36"></a>    <span class="cf">return</span> df</span></code></pre>
 </div>
@@ -1220,8 +1223,8 @@ the Join lesson).</li>
   "url": "https://datacarpentry.github.io/astronomy-python/instructor/03-transform.html",
   "identifier": "https://datacarpentry.github.io/astronomy-python/instructor/03-transform.html",
   "dateCreated": "2020-05-11",
-  "dateModified": "2025-12-15",
-  "datePublished": "2026-06-16"
+  "dateModified": "2026-06-19",
+  "datePublished": "2026-06-19"
 }
 
   </script><script>
