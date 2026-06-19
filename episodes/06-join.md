@@ -882,7 +882,7 @@ that for each candidate star we have identified exactly one source in
 Pan-STARRS that is likely to be the same star.
 
 To check whether there are any values other than `1`, we can convert
-this column to a Pandas `Series` and use `describe`, which we saw
+this column to a pandas `Series` and use `describe`, which we saw
 in episode 3.
 
 ```python
@@ -979,7 +979,7 @@ getsize(filename) / MB
 
 ## Another file format - CSV
 
-Pandas can write a variety of other formats, [which you can read about
+pandas can write a variety of other formats, [which you can read about
 here](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html).
 We won't cover all of them, but one other important one is
 [CSV](https://en.wikipedia.org/wiki/Comma-separated_values), which
@@ -1064,7 +1064,7 @@ the CSV file also does not.
 However, even if we had written a CSV file from an astropy `Table`, which does contain data type, 
 data type would not appear in the CSV file, highlighting a limitation of this format.
 Additionally, notice that the index in `candidate_df` has become an unnamed column
-in `read_back_csv` and a new index has been created.  The Pandas functions for writing and reading CSV
+in `read_back_csv` and a new index has been created.  The pandas functions for writing and reading CSV
 files provide options to avoid that problem, but this is an example of
 the kind of thing that can go wrong with CSV files.
 

@@ -1,12 +1,12 @@
 ---
-title: Plotting and Pandas
+title: Plotting and pandas
 teaching: 50
 exercises: 15
 ---
 
 ::::::::::::::::::::::::::::::::::::::: objectives
 
-- Use a Boolean Pandas `Series` to select rows in a `DataFrame`.
+- Use a Boolean pandas `Series` to select rows in a `DataFrame`.
 - Save multiple `DataFrame`s in an HDF5 file.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -30,7 +30,7 @@ analysis, identifying stars with the proper motion we expect for GD-1.
 
 ## Outline
 
-1. We will put those results into a Pandas `DataFrame`, which we will use
+1. We will put those results into a pandas `DataFrame`, which we will use
   to select stars near the centerline of GD-1.
 
 2. Plotting the proper motion of those stars, we will identify a region
@@ -88,7 +88,7 @@ results_df = pd.read_hdf(filename, 'results_df')
 
 ## Exploring data
 
-One benefit of using Pandas is that it provides functions for
+One benefit of using pandas is that it provides functions for
 exploring the data and checking for problems.
 One of the most useful of these functions is `describe`, which
 computes summary statistics for each column.
@@ -236,7 +236,7 @@ type(phi2)
 pandas.core.series.Series
 ```
 
-The result is a `Series`, which is the structure Pandas uses to
+The result is a `Series`, which is the structure pandas uses to
 represent columns.
 
 We can use a comparison operator, `>`, to compare the values in a
@@ -282,7 +282,7 @@ mask = (phi2 > phi2_min) & (phi2 < phi2_max)
 ## Logical operators
 
 Python's logical operators (`and`, `or`, and `not`)
-do not work with NumPy or Pandas.  Both libraries use the bitwise
+do not work with NumPy or pandas.  Both libraries use the bitwise
 operators (`&`, `|`, and `~`) to do elementwise logical operations
 ([explanation here](https://stackoverflow.com/questions/21415661/logical-operators-for-boolean-indexing-in-pandas)).
 
@@ -433,7 +433,7 @@ plt.plot(pm1_rect, pm2_rect, '-')
 Now that we have identified the bounds of the cluster in proper motion,
 we will use it to select rows from `results_df`.
 
-We will use the following function, which uses Pandas operators to make
+We will use the following function, which uses pandas operators to make
 a mask that selects rows where `series` falls between `low` and
 `high`.
 
@@ -563,7 +563,7 @@ Recall that we chose HDF5 because it is a binary format producing small files th
 
 Additionally, HDF5 files can contain more than one dataset and can store metadata associated with each dataset (such as column names or observatory information, like a FITS header).
 
-We can add to our existing Pandas `DataFrame` to an HDF5 file by omitting the `mode='w'` keyword like this:
+We can add to our existing pandas `DataFrame` to an HDF5 file by omitting the `mode='w'` keyword like this:
 
 ```python
 filename = 'gd1_data.hdf'
@@ -662,7 +662,7 @@ the proper motion limits we identified in this lesson, which will allow us to ex
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
 - A workflow is often prototyped on a small set of data which can be explored more easily and used to identify ways to limit a dataset to exactly the data you want.
-- To store data from a Pandas `DataFrame`, a good option is an HDF5 file, which can contain multiple Datasets.
+- To store data from a pandas `DataFrame`, a good option is an HDF5 file, which can contain multiple Datasets.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 

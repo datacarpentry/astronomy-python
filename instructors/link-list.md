@@ -45,7 +45,7 @@ title: Link List
 - [pandas.DataFrame](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html)
 - [NumPy indexing](https://numpy.org/doc/stable/reference/arrays.indexing.html)
 - [Context Managers](https://book.pythontips.com/en/latest/context_managers.html)
-- [Pandas input output tools (text, CSV, HDF5)](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html)
+- [pandas input output tools (text, CSV, HDF5)](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html)
 
 ## Astropy
 
@@ -85,7 +85,7 @@ title: Link List
 - [Flexible Image Transport System (FITS) (Wikipedia)](https://en.wikipedia.org/wiki/FITS)
 - [Hierarchical Data Format (HDF) (Wikipedia)](https://en.wikipedia.org/wiki/Hierarchical_Data_Format)
 - [Multi-Extension FITS File Format](https://hst-docs.stsci.edu/hstdhb/3-hst-file-formats/3-2-fits-file-format)
-- [Pandas input output tools (text, CSV, HDF5)](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html)
+- [pandas input output tools (text, CSV, HDF5)](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html)
 
 ## Astronomy background information
 
