@@ -221,7 +221,7 @@
 <li><a href="#scatter-plot">Scatter plot</a></li>
 <li><a href="#transform-back">Transform back</a></li>
 <li><a href="#reflex-correction">Reflex Correction</a></li>
-<li><a href="#pandas-dataframe">Pandas DataFrame</a></li>
+<li><a href="#pandas-dataframe">pandas DataFrame</a></li>
 <li><a href="#saving-the-dataframe">Saving the DataFrame</a></li>
 <li><a href="#summary">Summary</a></li>
         </ul></div><!--/div.accordion-body-->
@@ -233,7 +233,7 @@
 <div class="accordion accordion-flush" id="accordionFlush5">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading5">
-        <a href="04-motion.html">4. Plotting and Pandas</a>
+        <a href="04-motion.html">4. Plotting and pandas</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -327,7 +327,7 @@
           Previous: Coordinate
         </a>
         <a class="chapter-link float-end" href="../instructor/04-motion.html" rel="next">
-          Next: Plotting and Pandas...
+          Next: Plotting and pandas...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
       </div>
@@ -355,7 +355,7 @@
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul><li>How do we make scatter plots in Matplotlib?</li>
-<li>How do we store data in a Pandas <code>DataFrame</code>?</li>
+<li>How do we store data in a pandas <code>DataFrame</code>?</li>
 </ul></div>
 </div>
 </div>
@@ -366,7 +366,7 @@
 <ul><li>Select rows and columns from an Astropy <code>Table</code>.</li>
 <li>Use Matplotlib to make a scatter plot.</li>
 <li>Use Gala to transform coordinates.</li>
-<li>Make a Pandas <code>DataFrame</code> and use a Boolean
+<li>Make a pandas <code>DataFrame</code> and use a Boolean
 <code>Series</code> to select rows.</li>
 <li>Save a <code>DataFrame</code> in an HDF5 file.</li>
 </ul></div>
@@ -392,7 +392,7 @@ GD-1.</p>
 saved in a FITS file.</p></li>
 <li><p>Then we will transform the coordinates and proper motion data
 from ICRS back to the coordinate frame of GD-1.</p></li>
-<li><p>We will put those results into a Pandas
+<li><p>We will put those results into a pandas
 <code>DataFrame</code>.</p></li>
 </ol></div>
 </div>
@@ -830,7 +830,7 @@ the motion of the solar system around the Galactic center.</p></li>
 <figure><img src="../fig/03-transform_files/03-transform_43_0.png" alt="Scatter plot of phi1 versus phi2 in GD-1 coordinates, showing selected region is rectangular." class="figure mx-auto d-block"></figure><p>We started with a rectangle in the GD-1 frame. When transformed to
 the ICRS frame, it is a non-rectangular region. Now, transformed back to
 the GD-1 frame, it is a rectangle again.</p>
-</section><section><h2 class="section-heading" id="pandas-dataframe">Pandas DataFrame<a class="anchor" aria-label="anchor" href="#pandas-dataframe"></a></h2>
+</section><section><h2 class="section-heading" id="pandas-dataframe">pandas DataFrame<a class="anchor" aria-label="anchor" href="#pandas-dataframe"></a></h2>
 <hr class="half-width"><p>At this point we have two objects containing different sets of the
 data relating to identifying stars in GD-1. <code>polygon_results</code>
 is the Astropy <code>Table</code> we downloaded from Gaia.</p>
@@ -869,26 +869,26 @@ and add them to a Pandas <code>DataFrame</code>. <code>phi1</code> and
 </div>
 <span class="callout-header">Callout</span>
 <div id="pandas-dataframes-versus-astropy-tables" class="callout-inner">
-<h3 class="callout-title">Pandas <code>DataFrame</code>s versus Astropy
+<h3 class="callout-title">pandas <code>DataFrame</code>s versus Astropy
 <code>Table</code>s</h3>
 <div class="callout-content">
-<p>Two common choices are the Pandas <code>DataFrame</code> and Astropy
-<code>Table</code>. Pandas <code>DataFrame</code>s and Astropy
+<p>Two common choices are the pandas <code>DataFrame</code> and Astropy
+<code>Table</code>. pandas <code>DataFrame</code>s and Astropy
 <code>Table</code>s share many of the same characteristics and most of
 the manipulations that we do can be done with either. As you become more
 familiar with each, you will develop a sense of which one you prefer for
 different tasks. For instance you may choose to use Astropy
 <code>Table</code>s to read in data, especially astronomy specific data
-formats, but Pandas <code>DataFrame</code>s to inspect the data.
+formats, but pandas <code>DataFrame</code>s to inspect the data.
 Fortunately, Astropy makes it easy to convert between the two data
-types. We will choose to use Pandas <code>DataFrame</code>, for two
+types. We will choose to use pandas <code>DataFrame</code>, for two
 reasons:</p>
 <ol style="list-style-type: decimal"><li><p>It provides capabilities that are (almost) a superset of the
 other data structures, so it is the all-in-one solution.</p></li>
-<li><p>Pandas is a general-purpose tool that is useful in many domains,
+<li><p>pandas is a general-purpose tool that is useful in many domains,
 especially data science. If you are going to develop expertise in one
-tool, Pandas is a good choice.</p></li>
-</ol><p>However, compared to an Astropy <code>Table</code>, Pandas has one
+tool, pandas is a good choice.</p></li>
+</ol><p>However, compared to an Astropy <code>Table</code>, pandas has one
 big drawback: it does not keep the metadata associated with the table,
 including the units for the columns. Nevertheless, we think it’s a
 useful data type to be familiar with.</p>
@@ -896,7 +896,7 @@ useful data type to be familiar with.</p>
 </div>
 </div>
 <p>It is straightforward to convert an Astropy <code>Table</code> to a
-Pandas <code>DataFrame</code>.</p>
+pandas <code>DataFrame</code>.</p>
 <div class="codewrapper sourceCode" id="cb34">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -1022,7 +1022,7 @@ done and consolidate them into a single function that we can use to take
 the coordinates and proper motion that we get as an Astropy
 <code>Table</code> from our Gaia query, add columns representing the
 reflex corrected GD-1 coordinates and proper motions, and transform it
-into a Pandas <code>DataFrame</code>. This is a general function that we
+into a pandas <code>DataFrame</code>. This is a general function that we
 will use multiple times as we build different queries so we want to
 write it once and then call the function rather than having to copy and
 paste the code over and over again.</p>
@@ -1034,7 +1034,7 @@ paste the code over and over again.</p>
 <span id="cb43-3"><a href="#cb43-3" tabindex="-1" aria-label="code-block-43-3"></a><span class="co">    </span></span>
 <span id="cb43-4"><a href="#cb43-4" tabindex="-1" aria-label="code-block-43-4"></a><span class="co">    table: Astropy Table</span></span>
 <span id="cb43-5"><a href="#cb43-5" tabindex="-1" aria-label="code-block-43-5"></a><span class="co">    </span></span>
-<span id="cb43-6"><a href="#cb43-6" tabindex="-1" aria-label="code-block-43-6"></a><span class="co">    returns: Pandas DataFrame</span></span>
+<span id="cb43-6"><a href="#cb43-6" tabindex="-1" aria-label="code-block-43-6"></a><span class="co">    returns: pandas DataFrame</span></span>
 <span id="cb43-7"><a href="#cb43-7" tabindex="-1" aria-label="code-block-43-7"></a><span class="co">    """</span></span>
 <span id="cb43-8"><a href="#cb43-8" tabindex="-1" aria-label="code-block-43-8"></a>    <span class="co">#Create a SkyCoord object with the coordinates and proper motions</span></span>
 <span id="cb43-9"><a href="#cb43-9" tabindex="-1" aria-label="code-block-43-9"></a>    <span class="co"># in the input table</span></span>
@@ -1076,7 +1076,7 @@ paste the code over and over again.</p>
 <hr class="half-width"><p>At this point we have run a successful query and combined the results
 into a single <code>DataFrame</code>. This is a good time to save the
 data.</p>
-<p>To save a Pandas <code>DataFrame</code>, one option is to convert it
+<p>To save a pandas <code>DataFrame</code>, one option is to convert it
 to an Astropy <code>Table</code>, like this:</p>
 <div class="codewrapper sourceCode" id="cb45">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1093,7 +1093,7 @@ to an Astropy <code>Table</code>, like this:</p>
 </div>
 <p>Then we could write the <code>Table</code> to a FITS file, as we did
 in the previous lesson.</p>
-<p>But, like Astropy, Pandas provides functions to write DataFrames in
+<p>But, like Astropy, pandas provides functions to write DataFrames in
 other formats; to see what they are <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html" class="external-link">find
 the functions here that begin with <code>to_</code></a>.</p>
 <p>One of the best options is HDF5, which is Version 5 of <a href="https://en.wikipedia.org/wiki/Hierarchical_Data_Format" class="external-link">Hierarchical
@@ -1107,9 +1107,9 @@ FITS files</a> can also contain more than one table.)</p>
 <p>And HDF5 stores the metadata associated with the table, including
 column names, row labels, and data types (like FITS).</p>
 <p>Finally, HDF5 is a cross-language standard, so if you write an HDF5
-file with Pandas, you can read it back with many other software tools
+file with pandas, you can read it back with many other software tools
 (more than FITS).</p>
-<p>We can write a Pandas <code>DataFrame</code> to an HDF5 file like
+<p>We can write a pandas <code>DataFrame</code> to an HDF5 file like
 this:</p>
 <div class="codewrapper sourceCode" id="cb47">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1132,11 +1132,11 @@ dataset to it.</p>
 <hr class="half-width"><p>In this episode, we re-loaded the Gaia data we saved from a previous
 query.</p>
 <p>We transformed the coordinates and proper motion from ICRS to a frame
-aligned with the orbit of GD-1, stored the results in a Pandas
+aligned with the orbit of GD-1, stored the results in a pandas
 <code>DataFrame</code>, and visualized them.</p>
 <p>We combined all of these steps into a single function that we can
 reuse in the future to go straight from the output of a query with
-object coordinates in the ICRS reference frame directly to a Pandas
+object coordinates in the ICRS reference frame directly to a pandas
 DataFrame that includes object coordinates in the GD-1 reference
 frame.</p>
 <p>We saved our results to an HDF5 file which we can use to restart the
@@ -1153,11 +1153,11 @@ their transparency so the figure is not overplotted; otherwise it can
 misrepresent the data badly.</li>
 <li>For simple scatter plots in Matplotlib, <code>plot</code> is faster
 than <code>scatter</code>.</li>
-<li>An Astropy <code>Table</code> and a Pandas <code>DataFrame</code>
+<li>An Astropy <code>Table</code> and a pandas <code>DataFrame</code>
 are similar in many ways and they provide many of the same functions.
 They have pros and cons, but for many projects, either one would be a
 reasonable choice.</li>
-<li>To store data from a Pandas <code>DataFrame</code>, a good option is
+<li>To store data from a pandas <code>DataFrame</code>, a good option is
 an HDF5 file, which can contain multiple Datasets (we’ll dig in more in
 the Join lesson).</li>
 </ul></div>
@@ -1175,7 +1175,7 @@ the Join lesson).</li>
           Previous: Coordinate
         </a>
         <a class="chapter-link float-end" href="../instructor/04-motion.html" rel="next">
-          Next: Plotting and Pandas...
+          Next: Plotting and pandas...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
       </div>
